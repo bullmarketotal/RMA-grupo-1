@@ -4,8 +4,10 @@ from sqlalchemy.orm import Session
 
 from fastapi import FastAPI
 
-app = FastAPI()
+# importamos los routers desde nuestros modulos
+#from router import router
 
+app = FastAPI()
 
 @app.get("/")
 def read_root():
@@ -16,5 +18,5 @@ def read_root():
 def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
-
-
+# asociamos los routers a nuestra app
+#app.include_router(router)
