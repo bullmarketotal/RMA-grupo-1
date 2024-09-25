@@ -367,3 +367,5 @@ $RECYCLE.BIN/
 *.msp
 
 # End of https://www.toptal.com/developers/gitignore/api/node,linux,python,react
+
+back/entornoHector
