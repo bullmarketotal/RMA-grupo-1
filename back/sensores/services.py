@@ -1,8 +1,8 @@
 from typing import List
 from sqlalchemy.orm import Session
-from src.sensores.models import Sensor, Ubicacion
-from src import exceptions
-from src.sensores import schemas
+from back.sensores.models import Sensor, Ubicacion
+from back import exceptions
+from back.sensores import schemas
 
 # operaciones CRUD para Personas
 

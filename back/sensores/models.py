@@ -1,10 +1,10 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from src.database import Base
+from back.database import Base
 from enum import auto, StrEnum
 from datetime import datetime, UTC
-from src.models import BaseModel
+from back.models import BaseModel
 
 
 class Sensor(BaseModel):

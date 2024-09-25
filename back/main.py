@@ -1,7 +1,7 @@
 from typing import Union
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from src.sensores.router import router as sensores_router
+from back.sensores.router import router as sensores_router
 from fastapi import FastAPI
 
 # importamos los routers desde nuestros modulos
