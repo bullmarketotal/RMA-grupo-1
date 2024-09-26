@@ -16,3 +16,5 @@ def read_sensores(db: Session = Depends(get_db)):
 @router.post("/sensores", response_model=schemas.Sensor)
 def create_sensor(sensor: schemas.SensorCreate, db: Session = Depends(get_db)):
     return services.crear_sensor(db, sensor)
+
+
