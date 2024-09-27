@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import NavBar from "./components/NavBar"
 import Form from "./components/Form"
-import GraphTemperatura from './components/GraphTemperatura'
+import GraphDoble from './components/GraphDoble.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,7 +13,7 @@ function App() {
     <>
       <NavBar/>
       <Form/>
-      <GraphTemperatura/>
+      <GraphDoble/>
     </>
   )
 }
