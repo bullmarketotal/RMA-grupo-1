@@ -1,12 +1,30 @@
 import React from 'react';
-import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, Brush, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 let date = new Date();
-date.setHours(0);
+
+/**
+ * Convierte numero de ticks (epochs de Unix) a un string de fecha
+ * @param {number} ticks 
+ * @returns DD/MM/YYYY hh:mm
+ */
+function dateFormatter(ticks) {
+  const date = new Date(ticks);
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = date.getFullYear();
+
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
 
 function generarHora() {
-  date.setHours(date.getHours() + 2)
-  return date.getHours();
+  date.setHours(date.getHours() + 1)
+  return date.getTime();
 }
 
 const data = [
@@ -67,10 +85,11 @@ export default function GraphDoble() {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="hora" type="number"/>
+          <XAxis dataKey="hora" type="number" domain={['dataMin', 'dataMax']} tickFormatter={dateFormatter} interval={0}/>
           <YAxis />
-          <Tooltip labelFormatter={label => label + ':00hs'} formatter={value => value + 'm'}/>
+          <Tooltip labelFormatter={dateFormatter} formatter={value => value + 'm'}/>
           <Area type="linear" dataKey="nivel" stroke="#8884d8" fill="#8884d8" />
+          <Brush/>
         </AreaChart>
       </ResponsiveContainer>
       <p>Temperatura</p>
@@ -88,7 +107,7 @@ export default function GraphDoble() {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="hora" type="number"/>
+          <XAxis dataKey="hora" type="number" domain={['dataMin', 'dataMax']} tickFormatter={dateFormatter} tickCount={5} interval={0}/>
           <YAxis />
           <Tooltip labelFormatter={() => ''} formatter={value => value + '°C'}/>
           <Line type="monotone" dataKey="temp" stroke="#ff5733" strokeWidth={3}/>
