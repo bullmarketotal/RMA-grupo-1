@@ -2,6 +2,15 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { dateFormatter } from '../utils';
 
+/*
+    El prop "data" debe tener la forma:
+    {
+        fecha (en ticks, obteniendose mediante el metodo getTime() de los objetos Date) (este campo incluye también la hora),
+        nivel (m),
+        temp (ºC)
+    }
+*/ 
+
 export default function GraphTemp({data, syncId}) {
     return (
         <ResponsiveContainer width="100%" height={200}>

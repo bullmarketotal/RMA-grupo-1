@@ -2,6 +2,14 @@ import React from 'react';
 import GraphTemp from './GraphTemp';
 import GraphNivel from './GraphNivel';
 
+/*
+    El prop "data" debe tener la forma:
+    {
+        fecha (en ticks, obteniendose mediante el metodo getTime() de los objetos Date) (este campo incluye también la hora),
+        nivel (m),
+        temp (ºC)
+    }
+*/ 
 
 export default function GraphDoble({data}) {
   return (
