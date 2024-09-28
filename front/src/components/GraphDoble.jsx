@@ -1,18 +1,16 @@
 import React from 'react';
 import { AreaChart, Area, Brush, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-let date = new Date();
-
 /**
- * Convierte numero de ticks (epochs de Unix) a un string de fecha
+ * Convierte numero de ticks a un string de fecha (ticks: epochs de Unix; el número devuelto por el metodo getTime() de los objetos Date) 
  * @param {number} ticks 
- * @returns DD/MM/YYYY hh:mm
+ * @returns {string} DD/MM/YYYY hh:mm
  */
 function dateFormatter(ticks) {
   const date = new Date(ticks);
 
   const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
 
   const hours = String(date.getHours()).padStart(2, '0');
@@ -22,52 +20,7 @@ function dateFormatter(ticks) {
 }
 
 
-function generarHora() {
-  date.setHours(date.getHours() + 1)
-  return date.getTime();
-}
-
-const data = [
-  {
-    hora: generarHora(),
-    nivel: 2.3,
-    temp: 18.8
-  },
-  {
-    hora: generarHora(),
-    nivel: 4.2,
-    temp: 12.2
-  },
-  {
-    hora: generarHora(),
-    nivel: 4.8,
-    temp: 8.3
-  },
-  {
-    hora: generarHora(),
-    nivel: 7.9,
-    temp: 19.4
-  },
-  {
-    hora: generarHora(),
-    nivel: 3.2,
-    temp: 22.4
-  },
-  {
-    hora: generarHora(),
-    nivel: 1.9,
-    temp: 25.2
-  },
-  {
-    hora: generarHora(),
-    nivel: 0.8,
-    temp: 27.1
-  }
-];
-
-console.log(data)
-
-export default function GraphDoble() {
+export default function GraphDoble({data}) {
   return (
     <div style={{ width: '100%' }}>
       <h4>Nivel hidrométrico</h4>
