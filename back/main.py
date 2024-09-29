@@ -2,6 +2,7 @@ from typing import Union
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from back.sensores.router import router as sensores_router
+from back.paquete.router import router as paquetes_router
 from fastapi import FastAPI
 import os
 from contextlib import asynccontextmanager
@@ -26,6 +27,20 @@ async def db_creation_lifespan(app: FastAPI):
 
 app = FastAPI(root_path=ROOT_PATH, lifespan=db_creation_lifespan)
 
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # asociamos los routers a nuestra app
 app.include_router(sensores_router)
+app.include_router(paquetes_router)
+

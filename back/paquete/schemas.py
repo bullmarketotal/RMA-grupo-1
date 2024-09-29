@@ -1,32 +1,31 @@
 
 from pydantic import BaseModel, EmailStr, field_validator
 from typing import List, Optional
-from back.paquete.schemas import Paquete
+from datetime import datetime 
 
 
 ##ESQUEMAS DE SENSORES
-class SensorBase(BaseModel):
-    identificador: str
-    porcentajeBateria: int
+class PaqueteBase(BaseModel):
+    sensor_id: int
+    temperatura: float
+    nivel_hidrometrico: float
+    time: datetime
 
+    
 
-class SensorCreate(SensorBase):
+class PaqueteCreate(PaqueteBase):
     pass
 
 
-class SensorUpdate(SensorBase):
+class PaqueteUpdate(PaqueteBase):
     pass
 
 
 
-class Sensor(SensorBase):
+class Paquete(PaqueteBase):
     id: int
-    latitud: Optional[int]
-    longitud: Optional[int]
+    
 
     # from_atributes=True permite que Pydantic trabaje con modelos SQLAlchemy
     # más info.: https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.from_attributes
     model_config = {"from_attributes": True}
-
-
-
