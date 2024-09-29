@@ -5,7 +5,7 @@ import GraphNivel from './GraphNivel';
 /*
     El prop "data" debe tener la forma:
     {
-        fecha (en ticks, obteniendose mediante el metodo getTime() de los objetos Date) (este campo incluye también la hora),
+        fechaHora (en ticks, obteniendose mediante el metodo getTime() de los objetos Date),
         nivel (m),
         temp (ºC)
     }

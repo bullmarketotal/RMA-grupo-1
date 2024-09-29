@@ -1,15 +1,15 @@
 import React from 'react';
 import { AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { dateFormatter } from '../utils';
+import { tickFormatter, dateFormatter, getHourlyTicks } from '../utils-graphs';
 
 /*
     El prop "data" debe tener la forma:
     {
-        fecha (en ticks, obteniendose mediante el metodo getTime() de los objetos Date) (este campo incluye también la hora),
+        fechaHora (en ticks, obteniendose mediante el metodo getTime() de los objetos Date),
         nivel (m),
         temp (ºC)
     }
-*/ 
+*/
 
 
 export default function GraphNivel({data, syncId}) {
@@ -28,7 +28,13 @@ export default function GraphNivel({data, syncId}) {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="hora" type="number" domain={['dataMin', 'dataMax']} tickFormatter={dateFormatter} interval={0}/>
+          <XAxis 
+            dataKey="fechaHora"
+            type="number"
+            ticks={getHourlyTicks(data)}
+            domain={['dataMin', 'dataMax']}
+            tickFormatter={tickFormatter}
+            />
           <YAxis />
           <Tooltip labelFormatter={dateFormatter} formatter={value => value + 'm'}/>
           <Area type="linear" dataKey="nivel" stroke="#8884d8" fill="#8884d8" />

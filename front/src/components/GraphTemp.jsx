@@ -1,17 +1,17 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { dateFormatter } from '../utils';
+import { tickFormatter, getHourlyTicks } from '../utils-graphs';
 
 /*
     El prop "data" debe tener la forma:
     {
-        fecha (en ticks, obteniendose mediante el metodo getTime() de los objetos Date) (este campo incluye también la hora),
+        fechaHora (en ticks, obteniendose mediante el metodo getTime() de los objetos Date),
         nivel (m),
         temp (ºC)
     }
 */ 
 
-export default function GraphTemp({data, syncId}) {
+export default function GraphTemp({data, syncId=0}) {
     return (
         <ResponsiveContainer width="100%" height={200}>
         <LineChart
@@ -27,7 +27,13 @@ export default function GraphTemp({data, syncId}) {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="hora" type="number" domain={['dataMin', 'dataMax']} tickFormatter={dateFormatter} tickCount={5} interval={0}/>
+          <XAxis 
+            dataKey="fechaHora"
+            type="number"
+            ticks={getHourlyTicks(data)}
+            domain={['dataMin', 'dataMax']}
+            tickFormatter={tickFormatter}
+            />
           <YAxis />
           <Tooltip labelFormatter={() => ''} formatter={value => value + '°C'}/>
           <Line type="monotone" dataKey="temp" stroke="#ff5733" strokeWidth={3}/>
