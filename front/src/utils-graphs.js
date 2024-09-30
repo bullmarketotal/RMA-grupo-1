@@ -13,10 +13,7 @@ export function tickFormatter(ticks) {
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
 
-  if (hours === '00')
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
-  else
-    return `${hours}:${minutes}`
+  return `${hours}:${minutes}`
 }
 
 /**

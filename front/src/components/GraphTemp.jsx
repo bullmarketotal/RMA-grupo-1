@@ -1,6 +1,6 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { tickFormatter, getHourlyTicks } from '../utils-graphs';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Label } from 'recharts';
+import { tickFormatter, getMidnightTicks } from '../utils-graphs';
 
 /*
     El prop "data" debe tener la forma:
@@ -12,6 +12,8 @@ import { tickFormatter, getHourlyTicks } from '../utils-graphs';
 */ 
 
 export default function GraphTemp({data, syncId=0}) {
+    const midnightTicks = getMidnightTicks(data[0].fechaHora, data[data.length - 1].fechaHora);
+
     return (
         <ResponsiveContainer width="100%" height={200}>
         <LineChart
@@ -34,6 +36,14 @@ export default function GraphTemp({data, syncId=0}) {
             tickFormatter={tickFormatter}
             />
           <YAxis />
+          {midnightTicks.map(tick => {
+            const fecha = new Date(tick);
+            const fechaStr = fecha.getDate() + "/" + fecha.getMonth()
+            return (
+          <ReferenceLine key={tick} x={tick} stroke="gray">
+            <Label value={fechaStr} position="bottom"/>
+          </ReferenceLine>
+        )})}
           <Tooltip labelFormatter={() => ''} formatter={value => value + '°C'}/>
           <Line type="monotone" dataKey="temp" stroke="#ff5733" strokeWidth={3}/>
         </LineChart>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Label } from 'recharts';
 import { tickFormatter, dateFormatter, getMidnightTicks } from '../utils-graphs';
 
 /*
@@ -43,7 +43,9 @@ export default function GraphNivel({data, syncId}) {
             const fecha = new Date(tick);
             const fechaStr = fecha.getDate() + "/" + fecha.getMonth()
             return (
-          <ReferenceLine key={tick} x={tick} stroke="gray" label={fechaStr}/>
+              <ReferenceLine key={tick} x={tick} stroke="gray">
+              <Label value={fechaStr} position="bottom"/>
+            </ReferenceLine>
         )})}
           <Tooltip labelFormatter={dateFormatter} formatter={value => value + 'm'}/>
           <Area type="linear" dataKey="nivel" stroke="#8884d8" fill="#8884d8" />
