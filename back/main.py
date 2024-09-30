@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from back.database import engine
-from back.models import BaseModel
+from back.models import ModeloBase
 from fastapi.middleware.cors import CORSMiddleware
 
 # importamos los routers desde nuestros modulos
@@ -21,7 +21,7 @@ ROOT_PATH = os.getenv(f"ROOT_PATH_{ENV.upper()}")
 
 @asynccontextmanager
 async def db_creation_lifespan(app: FastAPI):
-    BaseModel.metadata.create_all(bind=engine)
+    ModeloBase.metadata.create_all(bind=engine)
     yield
 
 
