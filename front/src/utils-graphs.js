@@ -57,7 +57,7 @@ export const getHourlyTicks = (data) => {
 
 export const randomDataForDoubleChart = () => {
   const data = [];
-  const startDate = new Date(2024, 8, 30, 23, 0, 0); // Empieza el 30 de septiembre de 2024 a medianoche
+  const startDate = new Date(2024, 8, 29, 20, 5, 0); // Empieza el 30 de septiembre de 2024 a medianoche
   let temp = 15; // Temperatura inicial
   let nivel = 2; // Nivel inicial
 
@@ -82,4 +82,28 @@ export const randomDataForDoubleChart = () => {
     });
   }
   return data;
+}
+
+export const getMidnightTicks = (firstTick, lastTick) => {
+  const firstDate = new Date(firstTick);
+  const firstMidnight = new Date(firstDate);
+  firstMidnight.setHours(0, 0, 0);
+
+
+  // Si el primer tick es después de la medianoche, no queremos retroceder un día, así que verificamos:
+  if (firstDate.getTime() > firstMidnight.getTime()) {
+    firstMidnight.setDate(firstMidnight.getDate() + 1); // Ajusta al día siguiente si es necesario
+  }
+
+  // Genera una lista de medianoches a partir del primer tick
+  const midnightTicks = [];
+  const oneDayInMs = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+  let currentMidnight = firstMidnight.getTime();
+
+  // Sigue generando medianoches hasta que pases el último tick
+  while (currentMidnight <= lastTick) {
+    midnightTicks.push(currentMidnight);
+    currentMidnight += oneDayInMs; // Suma 24 horas
+  }
+  return midnightTicks;
 }
