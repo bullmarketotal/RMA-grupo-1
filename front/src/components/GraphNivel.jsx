@@ -30,8 +30,8 @@ export default function GraphNivel({data, syncId}) {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey="fechaHora"
+            tickCount={7}
             type="number"
-            ticks={getHourlyTicks(data)}
             domain={['dataMin', 'dataMax']}
             tickFormatter={tickFormatter}
             />

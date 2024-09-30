@@ -30,7 +30,6 @@ export default function GraphTemp({data, syncId=0}) {
           <XAxis 
             dataKey="fechaHora"
             type="number"
-            ticks={getHourlyTicks(data)}
             domain={['dataMin', 'dataMax']}
             tickFormatter={tickFormatter}
             />

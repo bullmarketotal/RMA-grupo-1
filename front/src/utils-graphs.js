@@ -14,7 +14,7 @@ export function tickFormatter(ticks) {
   const minutes = String(date.getMinutes()).padStart(2, '0');
 
   if (hours === '00')
-    return `${day}/${month}/${year}`;
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
   else
     return `${hours}:${minutes}`
 }
@@ -57,11 +57,11 @@ export const getHourlyTicks = (data) => {
 
 export const randomDataForDoubleChart = () => {
   const data = [];
-  const startDate = new Date(2024, 8, 30, 0, 0, 0); // Empieza el 30 de septiembre de 2024 a medianoche
+  const startDate = new Date(2024, 8, 30, 23, 0, 0); // Empieza el 30 de septiembre de 2024 a medianoche
   let temp = 15; // Temperatura inicial
   let nivel = 2; // Nivel inicial
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 90; i++) {
     const fechaHora = new Date(startDate.getTime() + i * 20 * 60 * 1000); // 20 minutos entre cada fecha
     temp += (Math.random() - 0.5) * 2; // Simulación de variaciones de temperatura, max +-1 grado por registro
     if (i >= 8 && i < 16) temp += 0.5; // Aumenta la temperatura durante las horas del día
@@ -76,7 +76,7 @@ export const randomDataForDoubleChart = () => {
     if (nivel > 5) nivel = 5;
 
     data.push({
-      fechaHora: fechaHora,
+      fechaHora: fechaHora.getTime(),
       temp: parseFloat(temp.toFixed(2)),
       nivel: parseFloat(nivel.toFixed(2)),
     });
