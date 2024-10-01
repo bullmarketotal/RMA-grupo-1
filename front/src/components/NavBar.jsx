@@ -5,7 +5,7 @@ function NavBar() {
     return(
         <>
         <nav className="navbar">
-        <div class="navbar-title">RED DE MONITOREO</div>
+        <div className="navbar-title">RED DE MONITOREO</div>
             <ul>
                 <li><a className="navbar-link" href="#agregar-datos">Agregar Datos</a></li>
                 <li><a className="navbar-link" href="#ver-datos">Ver Datos</a></li>
