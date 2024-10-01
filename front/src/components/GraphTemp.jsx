@@ -33,19 +33,22 @@ export default function GraphTemp({data, syncId=0}) {
             dataKey="fechaHora"
             type="number"
             domain={['dataMin', 'dataMax']}
+            tick={false}
             tickFormatter={tickFormatter}
             />
-          <YAxis />
+          <YAxis unit={'ºC'} data={data} ticks={[-10, 0, 10, 20, 30, 40]} domain={['dataMin', 'dataMax']}/>
+          <Line type="monotone" dataKey="temp" stroke="#ff5733" strokeWidth={3} dot={false}/>
           {midnightTicks.map(tick => {
             const fecha = new Date(tick);
             const fechaStr = fecha.getDate() + "/" + fecha.getMonth()
             return (
           <ReferenceLine key={tick} x={tick} stroke="gray">
-            <Label value={fechaStr} position="bottom"/>
+            <Label value={fechaStr} position="insideBottomLeft"/>
           </ReferenceLine>
         )})}
+          <ReferenceLine key={0} y={0} stroke="gray" strokeDasharray={8}>
+          </ReferenceLine>
           <Tooltip labelFormatter={() => ''} formatter={value => value + '°C'}/>
-          <Line type="monotone" dataKey="temp" stroke="#ff5733" strokeWidth={3}/>
         </LineChart>
       </ResponsiveContainer>
     )

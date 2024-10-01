@@ -54,21 +54,27 @@ export const getHourlyTicks = (data) => {
 
 export const randomDataForDoubleChart = () => {
   const data = [];
-  const startDate = new Date(2024, 8, 29, 20, 5, 0); // Empieza el 30 de septiembre de 2024 a medianoche
+  const ENTRY_COUNT = 500;
+  const MAX_TEMP = 40;
+  const MIN_TEMP = -10;
+  const MINUTES_BETWEEN_ENTRIES = 20;
+
+  const startDate = new Date(2024, 8, 29, 20, 5, 0);
+  startDate.setDate(startDate.getDate() - 7);
   let temp = 15; // Temperatura inicial
   let nivel = 2; // Nivel inicial
 
-  for (let i = 0; i < 90; i++) {
-    const fechaHora = new Date(startDate.getTime() + i * 20 * 60 * 1000); // 20 minutos entre cada fecha
-    temp += (Math.random() - 0.5) * 2; // Simulación de variaciones de temperatura, max +-1 grado por registro
-    if (i >= 8 && i < 16) temp += 0.5; // Aumenta la temperatura durante las horas del día
-    if (i >= 16) temp -= 0.5; // Baja la temperatura hacia la tarde/noche
+  for (let i = 0; i < ENTRY_COUNT; i++) {
+    const fechaHora = new Date(startDate.getTime() + i * MINUTES_BETWEEN_ENTRIES * 60 * 1000); // 20 minutos entre cada fecha
+    temp += (Math.random() - 0.5) * 4; // Simulación de variaciones de temperatura, max +-1 grado por registro
+    if (fechaHora.getHours() >= 8 && fechaHora.getHours() < 16) temp += 1; // Aumenta la temperatura durante las horas del día
+    if (fechaHora.getHours() >= 16) temp -= 1; // Baja la temperatura hacia la tarde/noche
 
     // Temperatura entre 0 y 30 grados
-    if (temp < 0) temp = 0;
-    if (temp > 30) temp = 30;
+    if (temp < MIN_TEMP) temp = MIN_TEMP;
+    if (temp > MAX_TEMP) temp = MAX_TEMP;
 
-    nivel += (Math.random() - 0.5) * 0.5; // Simulación de variación de nivel
+    nivel += (Math.random() - 0.53) * 0.5; // Simulación de variación de nivel
     if (nivel < 0) nivel = 0;
     if (nivel > 5) nivel = 5;
 

@@ -36,20 +36,26 @@ export default function GraphNivel({data, syncId}) {
             tickCount={7}
             type="number"
             domain={['dataMin', 'dataMax']}
+            tick={false}
             tickFormatter={tickFormatter}
             />
-          <YAxis />
+          <YAxis unit={'m'} />
           {midnightTicks.map(tick => {
             const fecha = new Date(tick);
             const fechaStr = fecha.getDate() + "/" + fecha.getMonth()
             return (
               <ReferenceLine key={tick} x={tick} stroke="gray">
-              <Label value={fechaStr} position="bottom"/>
+              <Label value={fechaStr} position="insideBottomLeft"/>
             </ReferenceLine>
         )})}
           <Tooltip labelFormatter={dateFormatter} formatter={value => value + 'm'}/>
           <Area type="linear" dataKey="nivel" stroke="#8884d8" fill="#8884d8" />
-          <Brush/>
+          <Brush 
+            height={30}
+            stroke="#8884d8"
+            travellerWidth={10}
+            tickFormatter={(val) => dateFormatter(data[val].fechaHora) }
+          />
         </AreaChart>
       </ResponsiveContainer>
     )
