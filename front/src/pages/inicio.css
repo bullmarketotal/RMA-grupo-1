@@ -1,0 +1,10 @@
+.inicio {
+    align-items: center;
+    background-color: blanchedalmond;
+}
+
+.images img {
+    width: 500px; /* Ajusta el ancho según necesites */
+    height: auto; /* Mantiene la proporción de aspecto */
+    margin: 0 10px; /* Espaciado entre imágenes */
+}
