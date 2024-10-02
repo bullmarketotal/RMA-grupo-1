@@ -1,6 +1,6 @@
 import React from 'react';
-import { AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { tickFormatter, dateFormatter, getHourlyTicks } from '../utils-graphs';
+import { AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Label } from 'recharts';
+import { tickFormatter, dateFormatter, getMidnightTicks } from '../utils-graphs';
 
 /*
     El prop "data" debe tener la forma:
@@ -13,7 +13,10 @@ import { tickFormatter, dateFormatter, getHourlyTicks } from '../utils-graphs';
 
 
 export default function GraphNivel({data, syncId}) {
-    return (
+  
+  const midnightTicks = getMidnightTicks(data[0].fechaHora, data[data.length - 1].fechaHora);
+
+  return (
         <ResponsiveContainer width="100%" height={200}>
         <AreaChart
           width={500}
@@ -30,16 +33,30 @@ export default function GraphNivel({data, syncId}) {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey="fechaHora"
+            tickCount={7}
             type="number"
-            ticks={getHourlyTicks(data)}
             domain={['dataMin', 'dataMax']}
+            tick={false}
             tickFormatter={tickFormatter}
             />
-          <YAxis />
+          <YAxis unit={'m'} />
+          {midnightTicks.map(tick => {
+            const fecha = new Date(tick);
+            const fechaStr = fecha.getDate() + "/" + fecha.getMonth()
+            return (
+              <ReferenceLine key={tick} x={tick} stroke="gray">
+              <Label value={fechaStr} position="insideBottomLeft"/>
+            </ReferenceLine>
+        )})}
           <Tooltip labelFormatter={dateFormatter} formatter={value => value + 'm'}/>
           <Area type="linear" dataKey="nivel" stroke="#8884d8" fill="#8884d8" />
-          <Brush/>
+          <Brush 
+            height={30}
+            stroke="#8884d8"
+            travellerWidth={10}
+            tickFormatter={(val) => dateFormatter(data[val].fechaHora) }
+          />
         </AreaChart>
       </ResponsiveContainer>
     )
-}
+} 

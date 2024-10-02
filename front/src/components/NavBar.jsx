@@ -6,6 +6,7 @@ import { Link, Outlet } from 'react-router-dom';
 import "./NavBar.css"
 
 function NavBar() {
+
   return (
     <>
       <Navbar bg="primary" data-bs-theme="dark">

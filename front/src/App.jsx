@@ -8,7 +8,7 @@ import Graficos from "./pages/graficos.jsx"
 import ListaSensores from "./pages/list-sensor.jsx"
 import Tabla from "./pages/tabla-datos.jsx"
 import Inicio from "./pages/inicio.jsx"
-
+import { randomDataForDoubleChart } from './utils-graphs.js'
 
 
 function App() {
@@ -24,12 +24,12 @@ function App() {
             <Route path="tabla-datos" element={<Tabla/>}/>
             <Route path="create-sensor" element={<CreateSensor/>}/>
 
-
             <Route path="*" element={ <Navigate to="/"/>} />
           </Route>
         </Routes>
       </BrowserRouter>
     </div>
+
   )
 }
 
