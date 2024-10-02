@@ -54,3 +54,50 @@
 .navbar a:hover::after {
     transform: scaleX(1); /* Muestra el subrayado al pasar el mouse */
 }
+
+/* NavBar.css */
+
+.navbar .nav-link {
+    color: #fff; /* Color de texto en los enlaces */
+    transition: box-shadow 0.3s; /* Efecto suave al pasar el mouse */
+}
+
+.navbar .nav-link:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombreado al pasar el mouse */
+}
+
+/* Estilos para la sidebar */
+.sidebar {
+    position: fixed;
+    left: -250px; /* Fuera de la vista inicialmente */
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333; /* Color de fondo de la sidebar */
+    transition: left 0.3s; /* Suave animación para abrir/cerrar */
+    z-index: 1000;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: #fff; /* Color del texto en la sidebar */
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+/* Mostrar la sidebar */
+.sidebar.open {
+    left: 0; /* Mostrar la sidebar */
+}
