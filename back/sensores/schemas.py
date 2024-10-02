@@ -8,6 +8,8 @@ from typing import List, Optional
 class SensorBase(BaseModel):
     identificador: str
     porcentajeBateria: int
+    latitud: Optional[int]
+    longitud: Optional[int]
 
 
 class SensorCreate(SensorBase):

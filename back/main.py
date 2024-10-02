@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # importamos los routers desde nuestros modulos
 #from router import router
+load_dotenv()
 
 ENV = os.getenv("ENV")
 ROOT_PATH = os.getenv(f"ROOT_PATH_{ENV.upper()}")
@@ -26,6 +27,16 @@ async def db_creation_lifespan(app: FastAPI):
 
 app = FastAPI(root_path=ROOT_PATH, lifespan=db_creation_lifespan)
 
+origins = [
+    "http://localhost:5173",
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # asociamos los routers a nuestra app
 app.include_router(sensores_router)
