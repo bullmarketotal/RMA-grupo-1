@@ -7,30 +7,13 @@ import NavBar from '../components/NavBar';
 import TablaDatos from './tabla-datos';
 import GraphDoble from '../components/GraphDoble';
 import { Navigate } from 'react-router-dom';
+import { randomDataForDoubleChart } from '../utils-graphs';
 
 
 const AppRoutes = () => {
     //data para probar
     const now = new Date();
-    const data =[ 
-        {
-        fechaHora: now.getTime(),  // Obtener los ticks (milisegundos desde 1970)
-        nivel: 5.5,                // Ejemplo de nivel en metros (puedes cambiarlo)
-        temp: 22.3                 // Ejemplo de temperatura en grados Celsius (puedes cambiarlo)
-    },
-    {
-        fechaHora: now.getTime(),  
-        nivel: 8.5,                
-        temp: 19.3                 
-    },
-    {
-        fechaHora: now.getTime(),  
-        nivel: 3.5,                
-        temp: 4.3                
-    }
-    //////////////////////////////7
-
-    ];
+    const data = randomDataForDoubleChart();
   return (
     <Routes>
           <Route path="/" element={<NavBar />}>
