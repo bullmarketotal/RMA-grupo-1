@@ -1,12 +1,15 @@
 import useSWR from 'swr';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import { useState, useEffect } from 'react';
 
 const SensorList = () => {
-  const { data, error } = useSWR('http://localhost:8000/sensores', fetcher);
+  const [data, setData] = useState([]);
 
-  if (error) return <div className="alert alert-danger">Error al cargar los sensores</div>;
+  useEffect(()=>{
+    fetch("http://localhost:8000/sensores").then(res =>{return res.json(); }
+          ).then(res => {setData(res); console.log(res)})          
+  },[])     
+
 
   return (
     <div className="container mt-5"> 

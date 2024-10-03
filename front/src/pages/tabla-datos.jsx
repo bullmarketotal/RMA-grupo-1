@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Datos = () => {
+const TablaDatos = () => {
   return (
     <div>
-      <h1>Datos</h1>
+      <h1>Tabla de Datos</h1>
       {/* Tu contenido aquí */}
     </div>
   );
 };
 
-export default Datos; // Asegúrate de tener esta línea
+export default TablaDatos; // Asegúrate de tener esta línea
