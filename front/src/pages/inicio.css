@@ -1,10 +1,20 @@
 .inicio {
-    align-items: center;
-    background-color: blanchedalmond;
+    text-align: center; /* Centra el texto dentro del div */
+    margin: 100px; /* Agrega un margen alrededor del div */
+    background-color: rgb(198, 203, 211);
+}
+
+.header {
+    display: flex; /* Usa flexbox para alinear texto e imagen */
+    align-items: center; /* Alinea verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+}
+
+.images {
+    margin-left: 20px; /* Espacio entre el texto y la imagen */
 }
 
 .images img {
-    width: 500px; /* Ajusta el ancho según necesites */
-    height: auto; /* Mantiene la proporción de aspecto */
-    margin: 0 10px; /* Espaciado entre imágenes */
+    max-width: 200px; /* Tamaño máximo de la imagen */
+    height: auto; /* Mantiene la relación de aspecto */
 }
