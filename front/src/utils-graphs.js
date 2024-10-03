@@ -1,35 +1,35 @@
 /**
- * Convierte numero de ticks a un string de fecha y hora (ticks: epochs de Unix; el número devuelto por el metodo getTime() de los objetos Date) 
- * @param {number} ticks 
+ * Convierte numero de ticks a un string de fecha y hora (ticks: epochs de Unix; el número devuelto por el metodo getTime() de los objetos Date)
+ * @param {number} ticks
  * @returns {string} DD/MM/YYYY hh:mm
  */
 export function tickFormatter(ticks) {
   const date = new Date(ticks);
 
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
 
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
 
-  return `${hours}:${minutes}`
+  return `${hours}:${minutes}`;
 }
 
 /**
-* Convierte numero de ticks a un string de fecha y hora (ticks: epochs de Unix; el número devuelto por el metodo getTime() de los objetos Date) 
-* @param {number} ticks 
-* @returns {string} DD/MM/YYYY hh:mm
-*/
+ * Convierte numero de ticks a un string de fecha y hora (ticks: epochs de Unix; el número devuelto por el metodo getTime() de los objetos Date)
+ * @param {number} ticks
+ * @returns {string} DD/MM/YYYY hh:mm
+ */
 export function dateFormatter(ticks) {
   const date = new Date(ticks);
 
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
 
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
 
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
@@ -38,8 +38,8 @@ export function dateFormatter(ticks) {
  * Función para generar ticks que son solo horas enteras */
 export const getHourlyTicks = (data) => {
   const oneHourInTicks = 3600 * 1000;
-  const dataMin = Math.min(...data.map(d => d.fechaHora));
-  const dataMax = Math.max(...data.map(d => d.fechaHora));
+  const dataMin = Math.min(...data.map((d) => d.fechaHora));
+  const dataMax = Math.max(...data.map((d) => d.fechaHora));
 
   const start = Math.ceil(dataMin / oneHourInTicks) * oneHourInTicks; // Primera hora completa
   const end = Math.floor(dataMax / oneHourInTicks) * oneHourInTicks; // Última hora completa
@@ -65,7 +65,9 @@ export const randomDataForDoubleChart = () => {
   let nivel = 2; // Nivel inicial
 
   for (let i = 0; i < ENTRY_COUNT; i++) {
-    const fechaHora = new Date(startDate.getTime() + i * MINUTES_BETWEEN_ENTRIES * 60 * 1000); // 20 minutos entre cada fecha
+    const fechaHora = new Date(
+      startDate.getTime() + i * MINUTES_BETWEEN_ENTRIES * 60 * 1000
+    ); // 20 minutos entre cada fecha
     temp += (Math.random() - 0.5) * 4; // Simulación de variaciones de temperatura, max +-1 grado por registro
     if (fechaHora.getHours() >= 8 && fechaHora.getHours() < 16) temp += 1; // Aumenta la temperatura durante las horas del día
     if (fechaHora.getHours() >= 16) temp -= 1; // Baja la temperatura hacia la tarde/noche
@@ -85,13 +87,12 @@ export const randomDataForDoubleChart = () => {
     });
   }
   return data;
-}
+};
 
 export const getMidnightTicks = (firstTick, lastTick) => {
   const firstDate = new Date(firstTick);
   const firstMidnight = new Date(firstDate);
   firstMidnight.setHours(0, 0, 0);
-
 
   // Si el primer tick es después de la medianoche, no queremos retroceder un día, así que verificamos:
   if (firstDate.getTime() > firstMidnight.getTime()) {
@@ -109,4 +110,4 @@ export const getMidnightTicks = (firstTick, lastTick) => {
     currentMidnight += oneDayInMs; // Suma 24 horas
   }
   return midnightTicks;
-}
+};
