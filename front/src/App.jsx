@@ -1,42 +1,36 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Asegúrate de importar Navigate
-import React, { useState } from 'react';
-import NavBar from "./components/NavBar";
-import Sidebar from './components/SideBar';
-import SensorForm from './components/SensorForm';
-import SensorList from './components/SensorList'; 
+import NavBar from "./components/NavBar"
+import Form from "./components/Form"
+import GraphDoble from './components/GraphDoble.jsx'
+import React from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import CreateSensor from "./pages/create-sensor.jsx"
+import Graficos from "./pages/graficos.jsx"
+import ListaSensores from "./pages/list-sensor.jsx"
+import Tabla from "./pages/tabla-datos.jsx"
+import Inicio from "./pages/inicio.jsx"
+import { randomDataForDoubleChart } from './utils-graphs.js'
+
 
 function App() {
-    const [isOpen, setIsOpen] = useState(false);
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+  return (
+    <div className ="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<NavBar />}>
+            <Route index element={<Inicio/>}/>
+            <Route path="graficos" element={<Graficos/>}/>
+            <Route path="list-sensor" element={<ListaSensores/>}/>
+            <Route path="tabla-datos" element={<Tabla/>}/>
+            <Route path="create-sensor" element={<CreateSensor/>}/>
 
-    return (
-        <Router>
-            <div className="d-flex" style={{ margin: 0, padding: 0 }}>
-                <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
+            <Route path="*" element={ <Navigate to="/"/>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
 
-                <div 
-                    className="content"
-                    style={{ 
-                        width: isOpen ? 'calc(100% - 250px)' : '100%', 
-                        marginRight: isOpen ? '250px' : '0', 
-                        transition: 'margin-right 0.8s, width 0.8s',
-                    }}
-                >
-                    <NavBar toggleSidebar={toggleSidebar} />
-                    
-                    <div className="p-4">
-                        <Routes>
-                            <Route path="/crear-sensor" element={<SensorForm />} />
-                            <Route path="/sensores" element={<SensorList />} />
-                        </Routes>
-                    </div>
-                </div>
-            </div>
-        </Router>
-    );
+  )
 }
 
 export default App;
