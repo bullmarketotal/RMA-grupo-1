@@ -5,10 +5,11 @@ from paho.mqtt.enums import MQTTProtocolVersion
 from dotenv import load_dotenv
 from datetime import datetime
 from sqlalchemy.orm import Session
-from paquete.schemas import PaqueteCreate
-from paquete.services import crear_paquete
-from database import get_db
-
+#import paquete.schemas as schemas
+#import paquete.services as services
+from back.database import get_db
+from back.paquete.schemas import PaqueteCreate
+from back.paquete.services import crear_paquete
 
 load_dotenv()
 TOPIC = os.getenv("MQTT_TOPIC")
@@ -21,7 +22,7 @@ def message_handling(client, userdata, msg):
     temperatura=mensaje.get("data")
     time=mensaje.get("time")
 
-    crear_paquete(next(get_db()),PaqueteCreate(
+    crear_paquete(next(get_db()), PaqueteCreate(
         sensor_id=sensor_id,
         temperatura=temperatura,
         #nivel hidrometrico temporal
@@ -63,4 +64,5 @@ except Exception as e:
 finally:
     print("Desconectando del broker MQTT")
     client.disconnect()
+
 

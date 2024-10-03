@@ -11,4 +11,3 @@ router = APIRouter()
 @router.get("/paquetes", response_model=list[schemas.Paquete])
 def read_Paquetes(db: Session = Depends(get_db)):
     return services.listar_Paquetes(db)
-
