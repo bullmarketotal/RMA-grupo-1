@@ -1,0 +1,103 @@
+.navbar {
+    background-color: rgb(15, 134, 232);
+    height: 70px;
+    padding: 20px;
+    display: grid; /* Usa Grid */
+    grid-template-columns: 1fr 2fr; /* Título ocupa 1/3, enlaces 2/3 */
+    justify-content: center; /* Centra horizontalmente los elementos */
+    align-items: center; /* Centra verticalmente los elementos */
+}
+
+.navbar-title {
+    color: white; /* Color del texto del título */
+    font-size: 24px; /* Tamaño del título */
+    font-weight: bold; /* Grosor del título */
+    grid-column: 1; /* Asegura que esté en la primera columna */
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Mantiene los elementos en línea */
+    grid-column: 2; /* Asegura que esté en la segunda columna */
+}
+
+.navbar li {
+    margin-right: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-family: Arial, sans-serif; /* Cambia la fuente a Arial */
+    transition: text-decoration 0.3s; /* Añade transición al subrayado */
+}
+
+.navbar a:hover {
+    color: white; /* Color del texto en hover */
+}
+
+.navbar a::after {
+    content: ''; /* Crea un pseudo-elemento */
+    display: block;
+    width: 100%; /* Ancho completo */
+    height: 3px; /* Grosor del subrayado */
+    background: white; /* Color del subrayado */
+    transform: scaleX(0); /* Inicialmente oculto */
+    transition: transform 0.3s ease; /* Transición suave */
+    margin-top: 5px; /* Espacio entre el texto y el subrayado */
+}
+
+.navbar a:hover::after {
+    transform: scaleX(1); /* Muestra el subrayado al pasar el mouse */
+}
+
+/* NavBar.css */
+
+.navbar .nav-link {
+    color: #fff; /* Color de texto en los enlaces */
+    transition: box-shadow 0.3s; /* Efecto suave al pasar el mouse */
+}
+
+.navbar .nav-link:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombreado al pasar el mouse */
+}
+
+/* Estilos para la sidebar */
+.sidebar {
+    position: fixed;
+    left: -250px; /* Fuera de la vista inicialmente */
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333; /* Color de fondo de la sidebar */
+    transition: left 0.3s; /* Suave animación para abrir/cerrar */
+    z-index: 1000;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: #fff; /* Color del texto en la sidebar */
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+/* Mostrar la sidebar */
+.sidebar.open {
+    left: 0; /* Mostrar la sidebar */
+}

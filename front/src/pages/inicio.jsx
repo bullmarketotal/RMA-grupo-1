@@ -1,17 +1,19 @@
 import React from 'react';
-import logo from '../images/cooperativa.logo.png'; // Importa la imagen
+import logoCooperativa from '../images/cooperativa.logo.png'; // Importa la imagen
+import logoUNPSJB from '../images/unpsjb.png'; // Importa la imagen
 import "./inicio.css"
 
 const Inicio = () => {
-    return(
+    return (
         <div className="inicio">
-        <h2>Proyecto de red de monitoreo para cuenca</h2>
-        <div className="images">
-            <img src={logo} alt="Imagen 1" />
-            <img src={logo} alt="Imagen 2" />
+            <div className="header">
+                <h2>Demo de aplicacion web para Red de monitoreo de la Cuenca Inferior del Río Chubut.</h2>
+                <div className="images">
+                    <img src={logoUNPSJB} alt="Imagen 2" />
+                </div>
+            </div>
         </div>
-        </div>
-  );
+    );
 };
 
 export default Inicio; // Asegúrate de tener esta línea

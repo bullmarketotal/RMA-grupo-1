@@ -14,6 +14,12 @@ import { tickFormatter, dateFormatter, getMidnightTicks } from '../utils-graphs'
 
 export default function GraphNivel({data, syncId}) {
   
+
+ 
+  if (!data || data.length === 0) {
+    return <div>No hay datos disponibles</div>;
+    console.log(data) 
+  }
   const midnightTicks = getMidnightTicks(data[0].fechaHora, data[data.length - 1].fechaHora);
 
   return (

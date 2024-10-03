@@ -16,7 +16,7 @@ export default function GraphDoble({data}) {
     <div style={{ width: '100%' }}>
       <h4>Nivel hidrométrico</h4>
       <GraphNivel data={data} syncId={0} />
-      <p>Temperatura</p>
+      <h4>Temperatura</h4>
       <GraphTemp data={data} syncId={0}/>
     </div>
   );
