@@ -12,7 +12,7 @@ import { tickFormatter, dateFormatter, getMidnightTicks } from '../utils-graphs'
 */
 
 
-export default function GraphNivel({data, syncId}) {
+export default function GraphNivel({data, syncId, noBrush}) {
   
 
  
@@ -56,12 +56,17 @@ export default function GraphNivel({data, syncId}) {
         )})}
           <Tooltip labelFormatter={dateFormatter} formatter={value => value + 'm'}/>
           <Area type="linear" dataKey="nivel" stroke="#8884d8" fill="#8884d8" />
-          <Brush 
-            height={30}
-            stroke="#8884d8"
-            travellerWidth={10}
-            tickFormatter={(val) => dateFormatter(data[val].fechaHora) }
-          />
+          {
+          !noBrush ? (
+            <Brush
+              height={30}
+              stroke="#8884d8"
+              travellerWidth={10}
+              tickFormatter={(val) => dateFormatter(data[val].fechaHora)}
+            />
+  ) : null
+}
+          
         </AreaChart>
       </ResponsiveContainer>
     )
