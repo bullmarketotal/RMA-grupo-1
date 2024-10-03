@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # importamos los routers desde nuestros modulos
 #from router import router
+load_dotenv()
 
 ENV = os.getenv("ENV")
 ROOT_PATH = os.getenv(f"ROOT_PATH_{ENV.upper()}")
