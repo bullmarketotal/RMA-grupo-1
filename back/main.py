@@ -27,15 +27,17 @@ def iniciar_thread() -> None:
     sub = Subscriptor(client=paho.Client(), on_message_callback=mi_callback)
     sub.connect(config.host, config.port, config.keepalive)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     ModeloBase.metadata.create_all(bind=engine)
-    
+
     # Iniciar un hilo para el sub
     thread_sub = threading.Thread(target=iniciar_thread)
     thread_sub.start()
     print("El suscriptor se está ejecutando.")
-    yield 
+    yield
+
 
 app = FastAPI(root_path=ROOT_PATH, lifespan=lifespan)
 
@@ -52,4 +54,3 @@ app.add_middleware(
 # asociamos los routers a nuestra app
 app.include_router(sensores_router)
 app.include_router(paquetes_router)
-

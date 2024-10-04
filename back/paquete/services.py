@@ -9,5 +9,5 @@ def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:
     return Paquete.create(db, paquete)
 
 
-def listar_Paquetes(db: Session) -> List[Paquete]:
-    return Paquete.get_all(db)
+def listar_paquetes(db: Session, limit: int, offset: int):
+    return db.query(Paquete).offset(offset).limit(limit).all()

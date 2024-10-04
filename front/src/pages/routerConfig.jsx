@@ -4,7 +4,7 @@ import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
 import Inicio from "./inicio";
 import NavBar from "../components/NavBar";
-import TablaDatos from "./tabla-datos";
+import TablaDatos from "./TablaDatos";
 import GraphDoble from "../components/GraphDoble";
 import { Navigate } from "react-router-dom";
 import { randomDataForDoubleChart } from "../utils-graphs";
