@@ -1,3 +1,4 @@
+from pydantic import BaseModel as Schema
 from sqlalchemy import update
 from sqlalchemy.orm import Session, declarative_base
 
@@ -13,40 +14,39 @@ def keyvalgen(obj):
             yield k, v
 
 
-class BaseModel(Base):
+class ModeloBase(Base):
     """Modelo base para los módulos de nuestra app."""
 
     __abstract__ = True
 
-    def save(self, db: Session, commit: bool = True):
+    def save(self, db: Session):
         db.add(self)
-        if commit:
-            db.commit()
-            db.refresh(self)
+        db.commit()
+        db.refresh(self)
         return self
 
-    def delete(self, db: Session, commit: bool = True):
+    def delete(self, db: Session):
         db.delete(self)
         db.commit()
         return self
 
-    def update(self, db: Session, **kwargs):
+    def update(self, db: Session, schema: Schema):
         # identificamos la instancia en la db
         primary_key = self.id
         # creamos la sentencia de update filtrando al objeto.
         stmt = (
             update(self.__class__)
             .where(self.__class__.id == primary_key)
-            .values(**kwargs)
+            .values(**schema.model_dump(exclude_unset=True))
         )
 
         db.execute(stmt)
         return self.save(db)
 
     @classmethod
-    def create(cls, db: Session, commit: bool = True, **kwargs):
-        instance = cls(**kwargs)
-        return instance.save(db, commit=commit)
+    def create(cls, db: Session, schema: Schema):
+        instance = cls(**schema.model_dump())
+        return instance.save(db)
 
     @classmethod
     def get(cls, db: Session, id: int):
