@@ -1,7 +1,12 @@
 .inicio {
     text-align: center; /* Centra el texto dentro del div */
     margin: 100px; /* Agrega un margen alrededor del div */
-    background-color: rgb(198, 203, 211);
+    /*background-color: rgb(198, 203, 211);*/
+
+
+}
+.inicio h1 {
+    color: #367bb9; /* Cambia 'blue' por el color que desees */
 }
 
 .header {
