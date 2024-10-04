@@ -1,19 +1,21 @@
 import useSWR from "swr";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
+import SensorCard from "../components/SensorCard.jsx";
 
 const SensorList = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/sensores")
-      .then((res) => {
-        return res.json();
-      })
+    fetch("http://127.0.0.1:8000/sensores")
+      .then((res) => res.json())
       .then((res) => {
         setData(res);
-        console.log(res);
-      });
+        console.log("res: " + res);
+      })
+      .catch((error) =>
+        console.error("Error al hacer fetch a lista de sensores: " + error)
+      );
   }, []);
 
   return (
@@ -21,19 +23,9 @@ const SensorList = () => {
       <div className="card">
         <div className="card-body">
           <h1 className="card-title mb-4">Lista de Sensores</h1>
-          <ul className="list-group">
-            {data.map((sensor) => (
-              <li
-                key={sensor.id}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <span>{sensor.identificador}</span>
-                <span className="badge bg-primary rounded-pill">
-                  {sensor.porcentajeBateria}%
-                </span>
-              </li>
-            ))}
-          </ul>
+          {data.map((sensor) => (
+            <SensorCard sensor={sensor} />
+          ))}
         </div>
       </div>
     </div>

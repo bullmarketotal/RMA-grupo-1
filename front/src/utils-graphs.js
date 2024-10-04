@@ -52,15 +52,15 @@ export const getHourlyTicks = (data) => {
   return ticks;
 };
 
-export const randomDataForDoubleChart = () => {
+export const randomDataForDoubleChart = (count) => {
   const data = [];
-  const ENTRY_COUNT = 500;
+  const ENTRY_COUNT = count || 500;
   const MAX_TEMP = 40;
   const MIN_TEMP = -10;
   const MINUTES_BETWEEN_ENTRIES = 20;
 
-  const startDate = new Date(2024, 8, 29, 20, 5, 0);
-  startDate.setDate(startDate.getDate() - 7);
+  const startDate = new Date(2024, 10, 4, 17, 5, 0);
+  //startDate.setDate(startDate.getDate() - 7);
   let temp = 15; // Temperatura inicial
   let nivel = 2; // Nivel inicial
 

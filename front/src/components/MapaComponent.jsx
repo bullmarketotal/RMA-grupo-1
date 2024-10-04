@@ -4,12 +4,11 @@ import "leaflet/dist/leaflet.css";
 
 const MapaComponent = ({ setFormData }) => {
   useEffect(() => {
-    // Verifica si el mapa ya está inicializado y lo destruye si es necesario
     if (L.DomUtil.get("map") !== null) {
-      L.DomUtil.get("map")._leaflet_id = null; // Elimina el ID del mapa para evitar conflictos
+      L.DomUtil.get("map")._leaflet_id = null;
     }
 
-    const map = L.map("map").setView([-43.248953, -65.305053], 15); // Coordenadas iniciales
+    const map = L.map("map").setView([-43.5042843, -65.7791978], 8); // Coordenadas iniciales
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -18,14 +17,12 @@ const MapaComponent = ({ setFormData }) => {
 
     const marker = L.marker([51.505, -0.09]).addTo(map);
 
-    // Actualiza las coordenadas al hacer clic en el mapa
     map.on("click", function (e) {
       const { lat, lng } = e.latlng;
-      marker.setLatLng([lat, lng]); // Mueve el marcador
-      setFormData((prev) => ({ ...prev, latitud: lat, longitud: lng })); // Actualiza los campos del formulario
+      marker.setLatLng([lat, lng]);
+      setFormData((prev) => ({ ...prev, latitud: lat, longitud: lng }));
     });
 
-    // Limpia el mapa cuando el componente se desmonte
     return () => {
       map.remove();
     };

@@ -3,12 +3,11 @@ from typing import List, Optional
 from back.paquete.schemas import Paquete
 
 
-##ESQUEMAS DE SENSORES
 class SensorBase(BaseModel):
     identificador: str
     porcentajeBateria: int
-    latitud: Optional[int]
-    longitud: Optional[int]
+    latitud: Optional[float]  # Cambiado a float
+    longitud: Optional[float]  # Cambiado a float
 
 
 class SensorCreate(SensorBase):
@@ -21,9 +20,7 @@ class SensorUpdate(SensorBase):
 
 class Sensor(SensorBase):
     id: int
-    latitud: Optional[int]
-    longitud: Optional[int]
+    latitud: Optional[float]  # Cambiado a float
+    longitud: Optional[float]  # Cambiado a float
 
-    # from_atributes=True permite que Pydantic trabaje con modelos SQLAlchemy
-    # más info.: https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.from_attributes
     model_config = {"from_attributes": True}
