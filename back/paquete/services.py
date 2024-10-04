@@ -11,4 +11,3 @@ def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:
 
 def listar_Paquetes(db: Session) -> List[Paquete]:
     return Paquete.get_all(db)
-

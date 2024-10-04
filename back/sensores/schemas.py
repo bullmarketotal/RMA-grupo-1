@@ -1,4 +1,3 @@
-
 from pydantic import BaseModel, EmailStr, field_validator
 from typing import List, Optional
 from back.paquete.schemas import Paquete
@@ -20,7 +19,6 @@ class SensorUpdate(SensorBase):
     pass
 
 
-
 class Sensor(SensorBase):
     id: int
     latitud: Optional[int]
@@ -29,6 +27,3 @@ class Sensor(SensorBase):
     # from_atributes=True permite que Pydantic trabaje con modelos SQLAlchemy
     # más info.: https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.from_attributes
     model_config = {"from_attributes": True}
-
-
-

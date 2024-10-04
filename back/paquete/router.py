@@ -6,7 +6,8 @@ from back.paquete import services, schemas, models
 
 router = APIRouter()
 
-#Rutas para Paquetees
+# Rutas para Paquetees
+
 
 @router.get("/paquetes", response_model=list[schemas.Paquete])
 def read_Paquetes(db: Session = Depends(get_db)):

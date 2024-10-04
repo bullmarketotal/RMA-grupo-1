@@ -13,5 +13,3 @@ def crear_sensor(db: Session, sensor: schemas.SensorCreate) -> Sensor:
 
 def listar_sensores(db: Session) -> List[Sensor]:
     return Sensor.get_all(db)
-
-
