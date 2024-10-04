@@ -8,10 +8,7 @@ from back.sensores import schemas
 
 
 def crear_sensor(db: Session, sensor: schemas.SensorCreate) -> Sensor:
-    return Sensor.create(db, identificador=sensor.identificador, porcentajeBateria=sensor.porcentajeBateria, latitud = sensor.latitud, longitud = sensor.longitud)
-
+    return Sensor.create(db, identificador=sensor.identificador, porcentajeBateria=sensor.porcentajeBateria, latitud=sensor.latitud, longitud=sensor.longitud)
 
 def listar_sensores(db: Session) -> List[Sensor]:
     return Sensor.get_all(db)
-
-

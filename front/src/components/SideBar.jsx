@@ -8,7 +8,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             className={`bg-dark text-white sidebar`} 
             style={{ 
                 width: '250px', 
-                height: 'calc(100vh - 56px)', // 100% de la altura menos la altura del navbar
+                height: 'calc(100vh - 56px)', 
                 position: 'fixed', 
                 top: '56px',
                 right: isOpen ? '0' : '-250px', 
@@ -18,7 +18,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             <ul className="list-unstyled p-3">
                 <li className="mb-2">
                     <Link 
-                        to="/crear-sensor" // Cambia esto a la ruta correcta
+                        to="/crear-sensor" 
                         className="text-white d-block p-2 rounded bg-secondary text-decoration-none"
                         onClick={toggleSidebar}
                     >
@@ -27,7 +27,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 </li>
                 <li className="mb-2">
                     <Link 
-                        to="/consultar-datos" // Asegúrate de que esta ruta esté configurada
+                        to="/consultar-datos" 
                         className="text-white d-block p-2 rounded bg-secondary text-decoration-none"
                         onClick={toggleSidebar}
                     >
@@ -36,7 +36,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 </li>
                 <li className="mb-2">
                     <Link 
-                        to="/sobre-nosotros" // Asegúrate de que esta ruta esté configurada
+                        to="/sobre-nosotros" 
                         className="text-white d-block p-2 rounded bg-secondary text-decoration-none"
                         onClick={toggleSidebar}
                     >
