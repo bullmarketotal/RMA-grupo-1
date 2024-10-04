@@ -1,6 +1,7 @@
 import os
 from contextlib import asynccontextmanager
 from typing import Union
+import threading
 
 import paho.mqtt.client as paho
 from dotenv import load_dotenv
@@ -22,13 +23,21 @@ ENV = os.getenv("ENV")
 ROOT_PATH = os.getenv(f"ROOT_PATH_{ENV.upper()}")
 
 
+def iniciar_thread() -> None:
+    sub = Subscriptor(client=paho.Client(), on_message_callback=mi_callback)
+    sub.connect(config.host, config.port, config.keepalive)
+
 @asynccontextmanager
-async def db_creation_lifespan(app: FastAPI):
+async def lifespan(app: FastAPI):
     ModeloBase.metadata.create_all(bind=engine)
-    yield
+    
+    # Iniciar un hilo para el sub
+    thread_sub = threading.Thread(target=iniciar_thread)
+    thread_sub.start()
+    print("El suscriptor se está ejecutando.")
+    yield 
 
-
-app = FastAPI(root_path=ROOT_PATH, lifespan=db_creation_lifespan)
+app = FastAPI(root_path=ROOT_PATH, lifespan=lifespan)
 
 origins = ["http://localhost:5173", "http://127.0.0.1:5173", "localhost"]
 
@@ -40,12 +49,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # asociamos los routers a nuestra app
 app.include_router(sensores_router)
 app.include_router(paquetes_router)
 
-
-# crea un Sub
-sub = Subscriptor(client=paho.Client(), on_message_callback=mi_callback)
-sub.connect(config.host, config.port, config.keepalive)
