@@ -30,11 +30,7 @@ async def db_creation_lifespan(app: FastAPI):
 
 app = FastAPI(root_path=ROOT_PATH, lifespan=db_creation_lifespan)
 
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "localhost"
-]
+origins = ["http://localhost:5173", "http://127.0.0.1:5173", "localhost"]
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,6 +1,6 @@
+from pydantic import BaseModel as Schema
 from sqlalchemy import update
 from sqlalchemy.orm import Session, declarative_base
-from pydantic import BaseModel as Schema
 
 Base = declarative_base()
 
