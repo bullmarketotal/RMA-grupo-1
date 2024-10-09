@@ -64,6 +64,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+rma-generador/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -335,7 +336,7 @@ pyrightconfig.json
 **/*.back.*
 
 node_modules
-
+rma-generador
 *.sublime*
 
 psd
