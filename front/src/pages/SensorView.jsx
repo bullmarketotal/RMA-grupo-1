@@ -13,6 +13,11 @@ const CARD_HEIGHT = 200;
 const SensorView = () => {
     const { id } = useParams();
     const [sensor, setSensor] = useState({ id, identificador: "RMA-1", latitud: -43.2466030899736, longitud: -65.4921152059314 })
+    const [view, setView] = useState('graph')
+
+    const handleViewChange = event => {
+        setView(event.target.id);
+    }
 
     return (
         <div className="container mt-5">
@@ -81,19 +86,20 @@ const SensorView = () => {
                             </div>
                         </div>
                     </div>
-                    <div id="mapa" className="d-none d-lg-block" style={{ height: CARD_HEIGHT + 'px', width: '350px', "background-color": 'lightblue' }}></div>
+                    <div id="mapa" className="d-none d-lg-block" style={{ height: CARD_HEIGHT + 'px', width: '350px', backgroundColor: 'lightblue' }}></div>
                 </div>
                 <hr />
             </div>
             <div id="data-visualizer">
                 <div className="btn-group mb-4" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked />
-                    <label className="btn btn-outline-primary" for="btnradio1">Gráfico</label>
+                    <input type="radio" className="btn-check" name="btnradio" id="graph" autocomplete="off" defaultChecked onChange={handleViewChange}/>
+                    <label className="btn btn-outline-primary" htmlFor="graph">Gráfico</label>
 
-                    <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off" />
-                    <label className="btn btn-outline-primary" for="btnradio2">Tabla</label>
+                    <input type="radio" className="btn-check" name="btnradio" id="table" autocomplete="off" onChange={handleViewChange} />
+                    <label className="btn btn-outline-primary" htmlFor="table">Tabla</label>
                 </div>
-                <GraphDoble data={randomDataForDoubleChart()}/>
+                {view === 'graph'? <GraphDoble data={randomDataForDoubleChart()}/> : <div>*Tabla*</div>}
+                
             </div>
         </div>
     );
