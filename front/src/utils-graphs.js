@@ -81,9 +81,9 @@ export const randomDataForDoubleChart = (count) => {
     if (nivel > 5) nivel = 5;
 
     data.push({
-      fechaHora: fechaHora.getTime(),
-      temp: parseFloat(temp.toFixed(2)),
-      nivel: parseFloat(nivel.toFixed(2)),
+      date: fechaHora.getTime(),
+      temperatura: parseFloat(temp.toFixed(2)),
+      nivel_hidrometrico: parseFloat(nivel.toFixed(2)),
     });
   }
   return data;

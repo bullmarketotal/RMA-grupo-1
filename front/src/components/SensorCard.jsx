@@ -48,7 +48,7 @@ const SensorCard = ({ sensor }) => {
         </div>
         <div className="d-flex justify-content-between align-items-center">
           <div className="col-md-3">
-            <a href="/graficos" className="btn btn-primary me-1">
+            <a href={"/sensor/" + sensor.id} className="btn btn-primary me-1">
               Ver datos
             </a>
             <a href="#" className="btn btn-primary">
