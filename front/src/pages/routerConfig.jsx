@@ -8,7 +8,7 @@ import TablaDatos from "./TablaDatos";
 import GraphDoble from "../components/GraphDoble";
 import { Navigate } from "react-router-dom";
 import { randomDataForDoubleChart } from "../utils-graphs";
-
+import ApiFetch from "../components/ApiFetch";
 const AppRoutes = () => {
   //data para probar
   const now = new Date();
@@ -19,7 +19,7 @@ const AppRoutes = () => {
         <Route index element={<Inicio />} />
         <Route path="graficos" element={<GraphDoble data={data} />} />
         <Route path="list-sensor" element={<SensorList />} />
-        <Route path="tabla-datos" element={<TablaDatos />} />
+        <Route path="tabla-datos" element={<ApiFetch />} />
         <Route path="create-sensor" element={<SensorForm />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>

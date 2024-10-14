@@ -12,7 +12,14 @@ def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:
     return Paquete.create(db, paquete)
 
 
-def listar_paquetes(db: Session, limit: int, offset: int, sensor_id: Optional[int] = None, date: Optional[datetime] = None):
+def listar_paquetes(
+    db: Session, 
+    limit: int, 
+    offset: int, 
+    sensor_id: Optional[int] = None, 
+    start_date: Optional[datetime] = None, 
+    end_date: Optional[datetime] = None
+):
 
     query = db.query(Paquete)
 
@@ -20,9 +27,14 @@ def listar_paquetes(db: Session, limit: int, offset: int, sensor_id: Optional[in
     if sensor_id:
         query = query.filter(Paquete.sensor_id == sensor_id)
 
-    # Filtro por date (fecha) si se proporciona
-    if date:
-        query = query.filter(func.date(Paquete.date) == date.date())
+    # Filtro por rango de fechas si se proporcionan ambas
+    if start_date and end_date:
+        query = query.filter(func.date(Paquete.date).between(start_date.date(), end_date.date()))
+    
+    # Filtro por una sola fecha si solo se proporciona una
+    elif start_date:
+        query = query.filter(func.date(Paquete.date) == start_date.date())
 
     # Aplica el límite y el offset
     return query.offset(offset).limit(limit).all()
+
