@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import TablaDatos from "../pages/TablaDatos";
+import TablaDatos from "../components/TablaDatos";
 
 const api = import.meta.env.VITE_API_URL;
 
@@ -42,7 +42,7 @@ export default function ApiFetch({ initialSensorId }) {
   }, [sensorId, startDate, endDate]);
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-2">
       <div className="mb-3">
         {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
         {!initialSensorId && (
