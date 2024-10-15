@@ -6,7 +6,7 @@ from back.database import get_db
 from back.paquete import models, schemas, services
 
 router = APIRouter()
-
+    
 # Rutas para Paquetees
 
 

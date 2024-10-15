@@ -106,6 +106,7 @@ const TablaDatos = ({items}) => {
         </div>
       </div>
     </div>
+    
   );
 };
 export default TablaDatos;

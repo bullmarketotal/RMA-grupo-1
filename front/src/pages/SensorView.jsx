@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom';
 import GraphDoble from '../components/GraphDoble'
 import { randomDataForDoubleChart } from "../utils-graphs";
 
+import ApiFetch from "../components/ApiFetch";
+
 const api = import.meta.env.VITE_API_URL;
 
 const CARD_HEIGHT = 200;
@@ -98,7 +100,7 @@ const SensorView = () => {
                     <input type="radio" className="btn-check" name="btnradio" id="table" autocomplete="off" onChange={handleViewChange} />
                     <label className="btn btn-outline-primary" htmlFor="table">Tabla</label>
                 </div>
-                {view === 'graph'? <GraphDoble data={randomDataForDoubleChart()}/> : <div>*Tabla*</div>}
+                {view === 'graph'? <GraphDoble data={randomDataForDoubleChart()}/> : <ApiFetch initialSensorId={id} />} {/* el componente ApiFetch recibe un id para podes buscarlo diractamente sus datos y que la lista los muestre */}
                 
             </div>
         </div>

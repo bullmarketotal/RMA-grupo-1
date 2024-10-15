@@ -22,7 +22,7 @@ const AppRoutes = () => {
         <Route path="list-sensor" element={<SensorList />} />
         <Route path="tabla-datos" element={<ApiFetch />} />
         <Route path="create-sensor" element={<SensorForm />} />
-        <Route path="sensor/:id" element={<SensorView/> } />
+        <Route path="sensor/:id" element={<SensorView/> } /> 
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>
