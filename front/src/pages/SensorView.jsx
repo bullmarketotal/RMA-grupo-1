@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import GraphDoble from '../components/GraphDoble'
 import { randomDataForDoubleChart } from "../utils-graphs";
 
-import ApiFetch from "../components/ApiFetch";
+import ApiFetch from "./ApiFetch";
 
 const api = import.meta.env.VITE_API_URL;
 

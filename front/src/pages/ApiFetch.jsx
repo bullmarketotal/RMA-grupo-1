@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import TablaDatos from "../pages/TablaDatos";
+import TablaDatos from "../components/TablaDatos";
 
 const api = import.meta.env.VITE_API_URL;
 
