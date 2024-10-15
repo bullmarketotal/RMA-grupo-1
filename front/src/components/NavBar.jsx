@@ -31,12 +31,9 @@ function NavBar() {
               <Nav.Link as={Link} to="/tabla-datos" className="nav-link">
                 Datos
               </Nav.Link>
-              <Nav.Link as={Link} to="/graficos" className="nav-link">
-                Gráficos
-              </Nav.Link>
               </Nav>
               <Nav>
-                <Button variant="outline-light">Iniciar Sesión</Button>
+                <Button variant="outline-light" className="ms-2 mb-2">Iniciar Sesión</Button>
               </Nav>
           </Navbar.Collapse>
         </Container>
