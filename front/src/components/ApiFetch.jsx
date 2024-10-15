@@ -42,7 +42,7 @@ export default function ApiFetch({ initialSensorId }) {
   }, [sensorId, startDate, endDate]);
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-2">
       <div className="mb-3">
         {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
         {!initialSensorId && (
