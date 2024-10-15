@@ -18,7 +18,6 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<NavBar />}>
         <Route index element={<Inicio />} />
-        <Route path="graficos" element={<GraphDoble data={data} />} />
         <Route path="list-sensor" element={<SensorList />} />
         <Route path="tabla-datos" element={<ApiFetch />} />
         <Route path="create-sensor" element={<SensorForm />} />
