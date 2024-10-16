@@ -63,7 +63,7 @@ const SensorForm = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container-fluid mt-5">
       <div className="card">
         <div className="card-body">
           <h2 className="card-title mb-4">Crear Sensor</h2>
