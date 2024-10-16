@@ -3,8 +3,8 @@ import { useTable } from "react-table";
 import "bootstrap/dist/css/bootstrap.min.css";
 const api = import.meta.env.VITE_API_URL;
 
-const TablaDatos = () => {
-  const [items, setItems] = useState([]);
+const TablaDatos = ({items}) => {
+  //const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const limit = 10;
@@ -12,7 +12,8 @@ const TablaDatos = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      try {
+
+/*      try {
         const offset = (page - 1) * limit;
 
         const response = await fetch(
@@ -30,6 +31,7 @@ const TablaDatos = () => {
       } finally {
         setLoading(false);
       }
+*/ 
     };
     fetchData();
   }, [page]);
@@ -104,6 +106,7 @@ const TablaDatos = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 export default TablaDatos;

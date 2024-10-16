@@ -20,20 +20,19 @@ import {
 /*
     El prop "data" debe tener la forma:
     {
-        fechaHora (en ticks, obteniendose mediante el metodo getTime() de los objetos Date),
-        nivel (m),
+        date (en ticks, obteniendose mediante el metodo getTime() de los objetos Date),
+        nivel_hidrometrico (m),
         temp (ºC)
     }
 */
 
 export default function GraphNivel({ data, syncId, noBrush }) {
-  if (!data || data.length === 0) {
+  if (!data || data.length === 0)
     return <div>No hay datos disponibles</div>;
-    console.log(data);
-  }
+
   const midnightTicks = getMidnightTicks(
-    data[0].fechaHora,
-    data[data.length - 1].fechaHora
+    data[0].date,
+    data[data.length - 1].date
   );
 
   return (
@@ -52,7 +51,7 @@ export default function GraphNivel({ data, syncId, noBrush }) {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
-          dataKey="fechaHora"
+          dataKey="date"
           tickCount={7}
           type="number"
           domain={["dataMin", "dataMax"]}
@@ -73,13 +72,13 @@ export default function GraphNivel({ data, syncId, noBrush }) {
           labelFormatter={dateFormatter}
           formatter={(value) => value + "m"}
         />
-        <Area type="linear" dataKey="nivel" stroke="#8884d8" fill="#8884d8" />
+        <Area type="linear" dataKey="nivel_hidrometrico" stroke="#8884d8" fill="#8884d8" />
         {!noBrush ? (
           <Brush
             height={30}
             stroke="#8884d8"
             travellerWidth={10}
-            tickFormatter={(val) => dateFormatter(data[val].fechaHora)}
+            tickFormatter={(val) => dateFormatter(data[val].date)}
           />
         ) : null}
       </AreaChart>

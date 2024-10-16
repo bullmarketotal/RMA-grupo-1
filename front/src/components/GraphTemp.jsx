@@ -15,16 +15,16 @@ import { tickFormatter, getMidnightTicks } from "../utils-graphs";
 /*
     El prop "data" debe tener la forma:
     {
-        fechaHora (en ticks, obteniendose mediante el metodo getTime() de los objetos Date),
-        nivel (m),
-        temp (ºC)
+        date (en ticks, obteniendose mediante el metodo getTime() de los objetos Date),
+        nivel_hidrométrico (m),
+        temperatura (ºC)
     }
 */
 
 export default function GraphTemp({ data, syncId = 0 }) {
   const midnightTicks = getMidnightTicks(
-    data[0].fechaHora,
-    data[data.length - 1].fechaHora
+    data[0].date,
+    data[data.length - 1].date
   );
 
   return (
@@ -43,7 +43,7 @@ export default function GraphTemp({ data, syncId = 0 }) {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
-          dataKey="fechaHora"
+          dataKey="date"
           type="number"
           domain={["dataMin", "dataMax"]}
           tick={false}
@@ -57,7 +57,7 @@ export default function GraphTemp({ data, syncId = 0 }) {
         />
         <Line
           type="monotone"
-          dataKey="temp"
+          dataKey="temperatura"
           stroke="#ff5733"
           strokeWidth={3}
           dot={false}

@@ -27,12 +27,12 @@ const SensorCard = ({ sensor }) => {
               <br />
               <span className="fs-5">
                 <i className="fa fa-tint" aria-hidden="true"></i>{" "}
-                {Math.round(data[data.length - 1].nivel * 10) / 10}m
+                {Math.round(data[data.length - 1].nivel_hidrometrico * 10) / 10}m
               </span>
               <br />
               <span className="fs-5">
                 <i className="fa fa-thermometer" aria-hidden="true"></i>{" "}
-                {Math.round(data[data.length - 1].temp * 10) / 10}ºC
+                {Math.round(data[data.length - 1].temperatura * 10) / 10}ºC
               </span>
               <br />
               <span className="fw-lighter">hace 12 minutos</span>
@@ -48,7 +48,7 @@ const SensorCard = ({ sensor }) => {
         </div>
         <div className="d-flex justify-content-between align-items-center">
           <div className="col-md-3">
-            <a href="/graficos" className="btn btn-primary me-1">
+            <a href={"/sensor/" + sensor.id} className="btn btn-primary me-1">
               Ver datos
             </a>
             <a href="#" className="btn btn-primary">
