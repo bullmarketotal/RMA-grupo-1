@@ -12,7 +12,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from back.models import ModeloBase
 from back.usuarios.schemas import UsuarioBase
-from back.usuarios.utils import pwd_context
 
 
 class Usuario(ModeloBase):
