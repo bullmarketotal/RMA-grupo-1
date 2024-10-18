@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, Outlet } from "react-router-dom";
+import { AuthContext } from "../components/AuthContext";
 import "./NavBar.css";
 
 function NavBar() {
+  const { isAuthenticated, logout } = useContext(AuthContext);
+
   return (
     <>
       <Navbar bg="primary" data-bs-theme="dark" expand="lg">
@@ -35,9 +37,21 @@ function NavBar() {
               </Nav.Link>
             </Nav>
             <Nav>
-              <Button variant="outline-light" className="ms-2 mb-2">
-                Iniciar Sesión
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  variant="outline-light"
+                  className="ms-2 mb-2"
+                  onClick={logout}
+                >
+                  Cerrar Sesión
+                </Button>
+              ) : (
+                <Link to="/login">
+                  <Button variant="outline-light" className="ms-2 mb-2">
+                    Iniciar Sesión
+                  </Button>
+                </Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
