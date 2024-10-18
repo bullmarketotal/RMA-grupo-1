@@ -1,7 +1,7 @@
 import os
+import threading
 from contextlib import asynccontextmanager
 from typing import Union
-import threading
 
 import paho.mqtt.client as paho
 from dotenv import load_dotenv
@@ -12,9 +12,10 @@ from back.database import engine
 from back.models import ModeloBase
 from back.paquete.router import router as paquetes_router
 from back.sensores.router import router as sensores_router
-from back.serv.config import config
-from back.serv.paquetes import mi_callback
-from back.serv.sub import Subscriptor
+from back.usuarios.router import router as usuarios_router
+from back.depends.config import config
+from back.depends.paquetes import mi_callback
+from back.depends.sub import Subscriptor
 
 # importamos los routers desde nuestros modulos
 # from router import router
@@ -45,12 +46,13 @@ origins = ["http://localhost:5173", "http://127.0.0.1:5173", "localhost"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins,  # Allows all origins from the list
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
 
 # asociamos los routers a nuestra app
 app.include_router(sensores_router)
 app.include_router(paquetes_router)
+app.include_router(usuarios_router)

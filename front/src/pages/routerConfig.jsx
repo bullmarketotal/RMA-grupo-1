@@ -1,15 +1,13 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import NavBar from "../components/NavBar";
+import { randomDataForDoubleChart } from "../utils-graphs";
+import ApiFetch from "./ApiFetch";
 import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
+import SensorView from "./SensorView";
 import Inicio from "./inicio";
-import NavBar from "../components/NavBar";
-import TablaDatos from "../components/TablaDatos";
-import GraphDoble from "../components/GraphDoble";
-import { Navigate } from "react-router-dom";
-import { randomDataForDoubleChart } from "../utils-graphs";
-import SensorView from "./SensorView"
-import ApiFetch from "./ApiFetch";
+
 const AppRoutes = () => {
   //data para probar
   const now = new Date();
@@ -21,7 +19,7 @@ const AppRoutes = () => {
         <Route path="list-sensor" element={<SensorList />} />
         <Route path="tabla-datos" element={<ApiFetch />} />
         <Route path="create-sensor" element={<SensorForm />} />
-        <Route path="sensor/:id" element={<SensorView/> } /> 
+        <Route path="sensor/:id" element={<SensorView />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>

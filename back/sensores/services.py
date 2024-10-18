@@ -1,8 +1,10 @@
 from typing import List
+
 from sqlalchemy.orm import Session
-from back.sensores.models import Sensor
+
 from back import exceptions
 from back.sensores import schemas
+from back.sensores.models import Sensor
 
 # operaciones CRUD para Sensores
 

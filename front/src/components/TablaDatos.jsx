@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useTable } from "react-table";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useState } from "react";
+import { useTable } from "react-table";
 const api = import.meta.env.VITE_API_URL;
 
-const TablaDatos = ({items}) => {
+const TablaDatos = ({ items }) => {
   //const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -13,7 +13,7 @@ const TablaDatos = ({items}) => {
     const fetchData = async () => {
       setLoading(true);
 
-/*      try {
+      /*      try {
         const offset = (page - 1) * limit;
 
         const response = await fetch(
@@ -31,7 +31,7 @@ const TablaDatos = ({items}) => {
       } finally {
         setLoading(false);
       }
-*/ 
+*/
     };
     fetchData();
   }, [page]);
@@ -106,7 +106,6 @@ const TablaDatos = ({items}) => {
         </div>
       </div>
     </div>
-    
   );
 };
 export default TablaDatos;

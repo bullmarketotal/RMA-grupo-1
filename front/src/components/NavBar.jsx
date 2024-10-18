@@ -1,18 +1,20 @@
 import React from "react";
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, Outlet } from "react-router-dom";
 import "./NavBar.css";
-
 
 function NavBar() {
   return (
     <>
       <Navbar bg="primary" data-bs-theme="dark" expand="lg">
-        <Container fluid className="d-flex justify-content-between align-items-center">
+        <Container
+          fluid
+          className="d-flex justify-content-between align-items-center"
+        >
           <Navbar.Brand className="navbar-title" as={Link} to="/">
             RED DE MONITOREO
           </Navbar.Brand>
@@ -31,10 +33,12 @@ function NavBar() {
               <Nav.Link as={Link} to="/tabla-datos" className="nav-link">
                 Datos
               </Nav.Link>
-              </Nav>
-              <Nav>
-                <Button variant="outline-light" className="ms-2 mb-2">Iniciar Sesión</Button>
-              </Nav>
+            </Nav>
+            <Nav>
+              <Button variant="outline-light" className="ms-2 mb-2">
+                Iniciar Sesión
+              </Button>
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>

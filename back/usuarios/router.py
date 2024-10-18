@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from back.database import get_db
-from back.paquete import schemas, services
+from back.paquete import models, schemas, services
 
 router = APIRouter()
 
