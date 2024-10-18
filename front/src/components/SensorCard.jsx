@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 import "../assets/font-awesome/css/font-awesome.min.css";
-import GraphTemp from "./GraphTemp";
-import GraphNivel from "./GraphNivel";
 import { randomDataForDoubleChart } from "../utils-graphs";
+import GraphNivel from "./GraphNivel";
+import GraphTemp from "./GraphTemp";
 
 const SensorCard = ({ sensor }) => {
   const data = randomDataForDoubleChart(50); // Reemplazar por busqueda real de datos
@@ -27,7 +26,7 @@ const SensorCard = ({ sensor }) => {
               <br />
               <span className="fs-5">
                 <i className="fa fa-tint" aria-hidden="true"></i>{" "}
-                {Math.round(data[data.length - 1].nivel_hidrometrico * 10) / 10}m
+                {Math.round(data[data.length - 1].nivel_hidrometrico * 10) / 10}
               </span>
               <br />
               <span className="fs-5">

@@ -1,9 +1,11 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
+from datetime import UTC, datetime
+from enum import StrEnum, auto
+from typing import List, Optional
+
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from enum import auto, StrEnum
-from datetime import datetime, UTC
+
 from back.models import ModeloBase
-from typing import Optional, List
 from back.paquete.models import Paquete
 
 

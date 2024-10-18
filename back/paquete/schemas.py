@@ -1,6 +1,7 @@
-from pydantic import BaseModel, EmailStr, field_validator
-from typing import List, Optional
 from datetime import datetime
+from typing import List, Optional
+
+from pydantic import BaseModel, EmailStr, field_validator
 
 
 ##ESQUEMAS DE SENSORES

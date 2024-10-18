@@ -5,7 +5,7 @@ from typing import Callable, Optional
 
 import paho.mqtt.client as paho
 
-from back.serv.config import config
+from back.depends.config import config
 
 
 @dataclass

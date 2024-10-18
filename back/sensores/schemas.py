@@ -1,5 +1,7 @@
-from pydantic import BaseModel, EmailStr, field_validator
 from typing import List, Optional
+
+from pydantic import BaseModel, EmailStr, field_validator
+
 from back.paquete.schemas import Paquete
 
 

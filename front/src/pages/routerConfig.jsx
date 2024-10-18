@@ -1,27 +1,38 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import NavBar from "../components/NavBar";
+import { randomDataForDoubleChart } from "../utils-graphs";
+import ApiFetch from "./ApiFetch";
 import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
+import SensorView from "./SensorView";
 import Inicio from "./inicio";
-import NavBar from "../components/NavBar";
-import TablaDatos from "../components/TablaDatos";
-import GraphDoble from "../components/GraphDoble";
-import { Navigate } from "react-router-dom";
-import { randomDataForDoubleChart } from "../utils-graphs";
-import SensorView from "./SensorView"
-import ApiFetch from "./ApiFetch";
+import LoginPage from "./LoginPage";
+import ProtectedRoute from "./ProtectedRoute";
+
 const AppRoutes = () => {
-  //data para probar
-  const now = new Date();
+  // data para probar
   const data = randomDataForDoubleChart();
+
   return (
     <Routes>
       <Route path="/" element={<NavBar />}>
         <Route index element={<Inicio />} />
         <Route path="list-sensor" element={<SensorList />} />
         <Route path="tabla-datos" element={<ApiFetch />} />
-        <Route path="create-sensor" element={<SensorForm />} />
-        <Route path="sensor/:id" element={<SensorView/> } /> 
+
+        {/* Ruta protegida */}
+        <Route
+          path="create-sensor"
+          element={
+            <ProtectedRoute>
+              <SensorForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="sensor/:id" element={<SensorView />} />
+
+        <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>
