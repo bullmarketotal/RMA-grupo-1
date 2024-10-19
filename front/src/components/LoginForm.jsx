@@ -19,6 +19,7 @@ const LoginForm = ({ onLogin, loading }) => {
           type="text"
           className="form-control"
           id="usuario"
+          placeholder="Ingrese su usuario"
           value={usuario}
           onChange={(e) => setUsuario(e.target.value)}
           required
@@ -32,6 +33,7 @@ const LoginForm = ({ onLogin, loading }) => {
           type="password"
           className="form-control"
           id="password"
+          placeholder="Ingrese su contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
