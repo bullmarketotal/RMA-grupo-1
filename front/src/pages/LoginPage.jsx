@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
-  const handleLogin = async (usuario, password) => {
+  const handleLogin = async (user, password) => {
     setLoading(true);
     setError("");
 
@@ -22,7 +22,7 @@ const LoginPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ usuario, password }),
+        body: JSON.stringify({ user, password }),
       });
 
       if (!res.ok) {
@@ -41,7 +41,7 @@ const LoginPage = () => {
     }
   };
 
-  const handleRegister = async (usuario, password) => {
+  const handleRegister = async (user, password) => {
     setLoading(true);
     setError("");
 
@@ -51,7 +51,7 @@ const LoginPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ usuario, password }),
+        body: JSON.stringify({ user, password }),
       });
 
       if (!res.ok) {
