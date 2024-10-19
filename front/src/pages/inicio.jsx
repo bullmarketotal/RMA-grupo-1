@@ -1,5 +1,4 @@
 import React from "react";
-import logoCooperativa from "../images/cooperativa.logo.png"; // Importa la imagen
 import logoUNPSJB from "../images/unpsjb.png"; // Importa la imagen
 import "./inicio.css";
 

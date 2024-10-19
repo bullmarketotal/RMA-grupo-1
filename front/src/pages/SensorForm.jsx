@@ -1,6 +1,6 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import MapaComponent from "../components/MapaComponent";
 
 const SensorForm = () => {

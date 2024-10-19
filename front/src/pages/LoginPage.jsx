@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
-import { AuthContext } from "../components/AuthContext";
 
 const api = import.meta.env.VITE_API_URL;
 

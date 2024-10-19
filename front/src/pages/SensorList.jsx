@@ -1,6 +1,5 @@
-import useSWR from "swr";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import SensorCard from "../components/SensorCard.jsx";
 const api = import.meta.env.VITE_API_URL;
 

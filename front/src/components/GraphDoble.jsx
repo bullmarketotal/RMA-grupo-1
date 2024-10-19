@@ -1,6 +1,6 @@
 import React from "react";
-import GraphTemp from "./GraphTemp";
 import GraphNivel from "./GraphNivel";
+import GraphTemp from "./GraphTemp";
 
 /*
     El prop "data" debe tener la forma:

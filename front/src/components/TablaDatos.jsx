@@ -7,7 +7,6 @@ const TablaDatos = ({ items }) => {
   //const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const limit = 10;
 
   useEffect(() => {
     const fetchData = async () => {
