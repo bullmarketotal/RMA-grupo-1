@@ -12,7 +12,7 @@ class Usuario(ModeloBase):
     __tablename__ = "usuarios"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    user: Mapped[str] = mapped_column(String, index=True)
+    user: Mapped[str] = mapped_column(String, unique=True, index=True)
     password: Mapped[str] = mapped_column(String, index=True)
     date: Mapped[datetime] = mapped_column(
         DateTime,
