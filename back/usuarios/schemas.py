@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 ##ESQUEMA DE USUARIOS##
 class UsuarioBase(BaseModel):
-    usuario: str
+    user: str
     password: str  # hashed_password
 
 

@@ -11,8 +11,6 @@ const RegisterForm = ({ onRegister, error }) => {
 
   return (
     <form onSubmit={handleSubmit} className="mb-4">
-      {error && <div className="alert alert-danger">{error}</div>}{" "}
-      {/* Mostrar el error aquí */}
       <div className="mb-3">
         <label htmlFor="usuario" className="form-label">
           Usuario
@@ -41,7 +39,7 @@ const RegisterForm = ({ onRegister, error }) => {
           required
         />
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary" disabled={error}>
         Registrarse
       </button>
     </form>

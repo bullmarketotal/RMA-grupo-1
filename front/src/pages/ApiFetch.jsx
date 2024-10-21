@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useState } from "react";
 import TablaDatos from "../components/TablaDatos";
 
 const api = import.meta.env.VITE_API_URL;
@@ -47,17 +47,21 @@ export default function ApiFetch({ initialSensorId }) {
         {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
         {!initialSensorId && (
           <>
-            <label className="form-label"><strong>Filtrar por ID Sensor</strong></label>
+            <label className="form-label">
+              <strong>Filtrar por ID Sensor</strong>
+            </label>
             <input
               type="int"
-              value={sensorId}  
+              value={sensorId}
               onChange={(e) => setSensorId(e.target.value)}
               className="form-control mt-2"
             />
           </>
         )}
-        
-        <label className="form-label mt-3"><strong>Desde</strong></label>
+
+        <label className="form-label mt-3">
+          <strong>Desde</strong>
+        </label>
         <input
           type="date"
           value={startDate}
@@ -65,7 +69,9 @@ export default function ApiFetch({ initialSensorId }) {
           className="form-control mt-2"
         />
 
-        <label className="form-label mt-3"><strong>Hasta</strong></label>
+        <label className="form-label mt-3">
+          <strong>Hasta</strong>
+        </label>
         <input
           type="date"
           value={endDate}
@@ -73,7 +79,7 @@ export default function ApiFetch({ initialSensorId }) {
           className="form-control mt-2"
         />
       </div>
-      
+
       <TablaDatos items={items} />
     </div>
   );

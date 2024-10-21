@@ -27,24 +27,15 @@ def listar_usuarios(db: Session) -> List[Usuario]:
 
 
 def crear_usuario(db: Session, usuario: schemas.UsuarioCreate) -> Usuario:
-    new_usuario = Usuario(
-        usuario=usuario.usuario,
+    new_usuario = schemas.UsuarioCreate(
+        user=usuario.user,
         password=pwd_context.hash(usuario.password),
-        date=datetime.now(UTC),
-    )
-
-    print(
-        f"Usuario creado: username - {new_usuario.usuario}, password (hashed) - {new_usuario.password}"
     )
     return Usuario.create(db, new_usuario)
 
 
 def autenticar_usuario(db: Session, usuario: str, password: str):
-    db_usuario = db.query(Usuario).filter(Usuario.usuario == usuario).first()
-
-    if pwd_context.verify(password, db_usuario.password):
-        print("La contraseña es correcta")
-
+    db_usuario = db.query(Usuario).filter(Usuario.user == usuario).first()
     if not db_usuario:
         raise HTTPException(status_code=400, detail="No se encontró el usuario")
     if not pwd_context.verify(password, db_usuario.password):
@@ -64,8 +55,8 @@ def crear_token(data: dict, expire_minutes: timedelta = None):
 
 
 def login_usuario(db: Session, usuario: schemas.UsuarioBase) -> crear_token:
-    db_usuario = autenticar_usuario(db, usuario.usuario, usuario.password)
+    db_usuario = autenticar_usuario(db, usuario.user, usuario.password)
 
     token_expires = timedelta(minutes=TOKEN_EXPIRE_MINUTES)
-    token = crear_token(data={"sub": db_usuario.usuario}, expire_minutes=token_expires)
+    token = crear_token(data={"sub": db_usuario.user}, expire_minutes=token_expires)
     return {"token": token, "token_type": "bearer"}

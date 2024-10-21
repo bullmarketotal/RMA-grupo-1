@@ -3,12 +3,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { randomDataForDoubleChart } from "../utils-graphs";
 import ApiFetch from "./ApiFetch";
-import SensorForm from "./SensorForm";
-import SensorList from "./SensorList";
-import SensorView from "./SensorView";
 import Inicio from "./inicio";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
+import SensorForm from "./SensorForm";
+import SensorList from "./SensorList";
+import SensorView from "./SensorView";
 
 const AppRoutes = () => {
   // data para probar

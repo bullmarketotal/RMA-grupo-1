@@ -8,8 +8,8 @@ from back.paquete.schemas import Paquete
 class SensorBase(BaseModel):
     identificador: str
     porcentajeBateria: int
-    latitud: Optional[float]  # Cambiado a float
-    longitud: Optional[float]  # Cambiado a float
+    latitud: Optional[float]
+    longitud: Optional[float]
 
 
 class SensorCreate(SensorBase):
@@ -22,7 +22,6 @@ class SensorUpdate(SensorBase):
 
 class Sensor(SensorBase):
     id: int
-    latitud: Optional[float]  # Cambiado a float
-    longitud: Optional[float]  # Cambiado a float
-
+    latitud: Optional[float]
+    longitud: Optional[float]
     model_config = {"from_attributes": True}

@@ -1,17 +1,17 @@
 import React from "react";
 
 import {
-  LineChart,
+  CartesianGrid,
+  Label,
   Line,
+  LineChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-  Label,
 } from "recharts";
-import { tickFormatter, getMidnightTicks } from "../utils-graphs";
+import { getMidnightTicks, tickFormatter } from "../utils-graphs";
 
 /*
     El prop "data" debe tener la forma:

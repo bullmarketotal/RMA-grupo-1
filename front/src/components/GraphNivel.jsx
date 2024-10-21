@@ -1,20 +1,20 @@
 import React from "react";
 import {
-  AreaChart,
   Area,
+  AreaChart,
   Brush,
+  CartesianGrid,
+  Label,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-  Label,
 } from "recharts";
 import {
-  tickFormatter,
   dateFormatter,
   getMidnightTicks,
+  tickFormatter,
 } from "../utils-graphs";
 
 /*
@@ -27,8 +27,7 @@ import {
 */
 
 export default function GraphNivel({ data, syncId, noBrush }) {
-  if (!data || data.length === 0)
-    return <div>No hay datos disponibles</div>;
+  if (!data || data.length === 0) return <div>No hay datos disponibles</div>;
 
   const midnightTicks = getMidnightTicks(
     data[0].date,
@@ -72,7 +71,12 @@ export default function GraphNivel({ data, syncId, noBrush }) {
           labelFormatter={dateFormatter}
           formatter={(value) => value + "m"}
         />
-        <Area type="linear" dataKey="nivel_hidrometrico" stroke="#8884d8" fill="#8884d8" />
+        <Area
+          type="linear"
+          dataKey="nivel_hidrometrico"
+          stroke="#8884d8"
+          fill="#8884d8"
+        />
         {!noBrush ? (
           <Brush
             height={30}

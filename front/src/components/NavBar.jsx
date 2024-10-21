@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, Outlet } from "react-router-dom";
-import { AuthContext } from "../components/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import "./NavBar.css";
 
 function NavBar() {
