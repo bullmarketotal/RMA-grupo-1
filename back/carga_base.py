@@ -1,9 +1,9 @@
 """ 
     EL SCRIPT SE EJECUTA EN EL MISMO ENTORNO (VENV) QUE USAMOS PARA EJECUTAR FASTAPI
 
-    Por default el script va a generar 100 entradas de datos.
-    
-    Al invocarlo con --count N, se van a generar N entradas
+    python carga_base.py --count N
+
+    con "count" definimos cuantos datos queremos que genere. Por default va a generar 100 entradas.
  """
 
 from datetime import datetime, timedelta
