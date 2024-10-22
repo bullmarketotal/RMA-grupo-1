@@ -1,9 +1,18 @@
+""" 
+    EL SCRIPT SE EJECUTA EN EL MISMO ENTORNO (VENV) QUE USAMOS PARA EJECUTAR FASTAPI
+
+    Por default el script va a generar 100 entradas de datos.
+    
+    Al invocarlo con --count N, se van a generar N entradas
+ """
+
 from datetime import datetime, timedelta
 
 # CONFIGURACION
 
-# Cantidad de datos a enviar
-ENTRY_COUNT = 1
+DEFAULT_ENTRY_COUNT = 100
+TIME_BETWEEN_MESSAGES = 0.2 # segundos
+
 # Temperaturas máximas y minimas permitidas
 MAX_TEMP = 40
 MIN_TEMP = -10
@@ -25,6 +34,15 @@ import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
 load_dotenv()
+
+import argparse
+
+# Configuración de argparse para manejar argumentos de línea de comandos
+parser = argparse.ArgumentParser(description='Enviar datos de temperatura y nivel hidrométrico a través de MQTT.')
+parser.add_argument('--count', type=int, default=DEFAULT_ENTRY_COUNT, help='Número de entradas a generar')
+args = parser.parse_args()
+
+ENTRY_COUNT = args.count
 
 # Configuración MQTT
 BROKER = os.getenv("MQTT_HOST")
@@ -61,7 +79,7 @@ for i in range(ENTRY_COUNT):
      # Crear el mensaje JSON
     mensaje = {
         "id": 1,
-        "data": temp,
+        "temperatura": temp,
         "nivel_hidrometrico": nivel,
         "time": fecha_hora.strftime("%Y-%m-%d %H:%M:%S.%f")
     }
@@ -74,5 +92,5 @@ for i in range(ENTRY_COUNT):
 
     # Imprimir el mensaje para verificar
     print(f"Mensaje enviado: {mensaje_json}")
-    time.sleep(0.2)
+    time.sleep(TIME_BETWEEN_MESSAGES)
 

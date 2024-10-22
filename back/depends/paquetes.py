@@ -22,8 +22,8 @@ def procesar_mensaje(mensaje) -> Optional[PaqueteBase]:
     try:
         mensaje_paquete = {
             "sensor_id": mensaje_json["id"],
-            "temperatura": float(mensaje_json["data"]),
-            "nivel_hidrometrico": None,  # agregar al prod JSON
+            "temperatura": float(mensaje_json["temperatura"]),
+            "nivel_hidrometrico": float(mensaje_json["nivel_hidrometrico"]),
             "date": datetime.strptime(mensaje_json["time"], "%Y-%m-%d %H:%M:%S.%f"),
         }
         paquete = PaqueteBase(**mensaje_paquete)
