@@ -1,7 +1,7 @@
 """ 
     EL SCRIPT SE EJECUTA EN EL MISMO ENTORNO (VENV) QUE USAMOS PARA EJECUTAR FASTAPI
 
-    python carga_base.py --count N
+    python carga_base.py --count N1 --nodo N2
 
     con "count" definimos cuantos datos queremos que genere. Por default va a generar 100 entradas.
  """
@@ -10,8 +10,9 @@ from datetime import datetime, timedelta
 
 # CONFIGURACION
 
-DEFAULT_ENTRY_COUNT = 100
-TIME_BETWEEN_MESSAGES = 0.2 # segundos
+DEFAULT_ENTRY_COUNT = 500 # abarca 7 dias
+TIME_BETWEEN_MESSAGES = 0.1 # segundos
+DEFAULT_NODO = 1
 
 # Temperaturas máximas y minimas permitidas
 MAX_TEMP = 40
@@ -21,7 +22,6 @@ MIN_TEMP = -10
 MINUTES_BETWEEN_ENTRIES = 20
 
 # Valores iniciales
-start_date = datetime.now() - timedelta(days=7)
 temp = 15  
 nivel = 2  
 
@@ -40,9 +40,12 @@ import argparse
 # Configuración de argparse para manejar argumentos de línea de comandos
 parser = argparse.ArgumentParser(description='Enviar datos de temperatura y nivel hidrométrico a través de MQTT.')
 parser.add_argument('--count', type=int, default=DEFAULT_ENTRY_COUNT, help='Número de entradas a generar')
+parser.add_argument('--nodo', type=int, default=DEFAULT_NODO, help="Nodo de sensor a utilizar")
 args = parser.parse_args()
 
 ENTRY_COUNT = args.count
+
+start_date = datetime.now() - timedelta(minutes=args.count * MINUTES_BETWEEN_ENTRIES)
 
 # Configuración MQTT
 BROKER = os.getenv("MQTT_HOST")
@@ -78,7 +81,7 @@ for i in range(ENTRY_COUNT):
 
      # Crear el mensaje JSON
     mensaje = {
-        "id": 1,
+        "id": args.nodo,
         "temperatura": temp,
         "nivel_hidrometrico": nivel,
         "time": fecha_hora.strftime("%Y-%m-%d %H:%M:%S.%f")
