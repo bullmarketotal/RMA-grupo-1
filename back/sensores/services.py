@@ -1,11 +1,13 @@
 from typing import List
 
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 
 from back import exceptions
 from back.sensores import schemas
 from back.sensores.models import Sensor
 from back.sensores.schemas import SensorData
+from back.paquete.models import Paquete
 from datetime import datetime
 
 # operaciones CRUD para Sensores
@@ -19,6 +21,12 @@ def listar_sensores(db: Session) -> List[Sensor]:
     return Sensor.get_all(db)
 
 def sensor_con_datos(id: int, db: Session) -> SensorData:
+
+    sql_query = select(Paquete).filter_by(id=id)
+
+    data = db.execute(sql_query).all()
+    print(data)
+
     return {
         "sensor": {
             "id": 1,
