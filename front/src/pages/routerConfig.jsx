@@ -2,13 +2,13 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { randomDataForDoubleChart } from "../utils-graphs";
-import ApiFetch from "./ApiFetch";
 import Inicio from "./inicio";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
 import SensorView from "./SensorView";
+import TablaDatos from "../components/TablaDatos";
 
 const AppRoutes = () => {
   // data para probar
@@ -19,7 +19,7 @@ const AppRoutes = () => {
       <Route path="/" element={<NavBar />}>
         <Route index element={<Inicio />} />
         <Route path="list-sensor" element={<SensorList />} />
-        <Route path="tabla-datos" element={<ApiFetch />} />
+        {/* <Route path="tabla-datos" element={<TablaDatos />} /> */}
 
         {/* Ruta protegida */}
         <Route

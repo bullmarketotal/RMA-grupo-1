@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
 const api = import.meta.env.VITE_API_URL;
 
-const TablaDatos = ({ items }) => {
+//TO-DO: modificar margenes.
+const TablaDatos = ({items}) => {
   //const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
