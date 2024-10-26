@@ -27,10 +27,8 @@ def sensor_con_datos(nodo_id: int, db: Session) -> SensorData:
     nodo_query = select(Sensor).where(Sensor.id == nodo_id)
     nodo = db.execute(nodo_query).scalars().first()
 
-    print(nodo)
-
     if not nodo:
-        raise HTTPException(status_code=404, detail={message: "Nodo no encontrado", id: nodo_id})
+        raise HTTPException(status_code=404, detail="Nodo no encontrado")
     
 
     # Mediciones
