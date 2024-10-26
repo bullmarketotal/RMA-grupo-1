@@ -1,9 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../assets/font-awesome/css/font-awesome.min.css";
 import GraphDoble from "../components/GraphDoble";
 import { randomDataForDoubleChart } from "../utils-graphs";
+import NodoRecentDataContainer from "../components/NodoRecentDataContainer";
 
 import FiltrosFetch from "./FiltrosFetch";
 import TablaDatos from "../components/TablaDatos";
@@ -14,14 +15,37 @@ const CARD_HEIGHT = 200;
 
 const SensorView = () => {
   const { id } = useParams();
-  const [sensor, setSensor] = useState({
-    id,
-    identificador: "RMA-1",
-    latitud: -43.2466030899736,
-    longitud: -65.4921152059314,
+  const [nodo, setNodo] = useState({
+    sensor: {
+      id,
+      identificador: null,
+      latitud: null,
+      longitud: null,
+    },
+    data: []
   });
+  const [loading, setLoading] = useState(true);
   const [view, setView] = useState("graph");
   const [data, setData] = useState([]);
+
+
+  useEffect(()=>{
+    fetch(`${import.meta.env.VITE_API_URL}/sensordata/${id}`)
+      .then(res => res.json())
+      .then(info => {
+        setNodo({
+          sensor: {
+            id,
+            identificador: info.sensor.identificador,
+            latitud: info.sensor.latitud,
+            longitud: info.sensor.latitud,
+          },
+          data: info.data
+        })
+        setLoading(false)
+      })
+      .catch(err => console.error("Se produjo un error al obtener la información del nodo: " + err))
+  }, [])
 
 
   const handleViewChange = (event) => {
@@ -33,13 +57,22 @@ const SensorView = () => {
       <div id="main">
         <div id="header" className="d-flex justify-content-between pb-4">
           <div id="info-sensor">
-            <h2>
-              <i className="fa fa-rss" aria-hidden="true" />{" "}
-              {sensor.identificador}
+            <h2 className="d-flex align-items-center">
+              <i className="fa fa-rss me-2" aria-hidden="true" />
+              {loading ? (
+                <p className="placeholder-glow">
+                  <span className="placeholder col-12">RMA-ejemplo</span>
+                </p>
+              ) : (
+                nodo.sensor.identificador
+              )}
             </h2>
             <span>
               <i className="fa fa-map-marker me-2" aria-hidden="true" />{" "}
-              {sensor.latitud}, {sensor.longitud}
+              <span>
+              <b>Latitud:</b> {nodo.sensor.latitud.toFixed(5)} <b> Longitud:</b>  {nodo.sensor.longitud.toFixed(5)}
+
+              </span>
             </span>
           </div>
           <button
@@ -53,77 +86,10 @@ const SensorView = () => {
           id="content"
           className="d-flex justify-content-between align-items-start"
         >
-          <div
-            id="card-container"
-            className="d-flex align-items-center"
-            style={{ height: CARD_HEIGHT }}
-          >
-            <div className="card me-5 p-3">
-              <div className="card-body align-items-center">
-                <p className="card-text fs-3 d-flex">
-                  <div className="me-4">
-                    <i className="fa fa-tint me-2" aria-hidden="true" />
-                    1.3m
-                  </div>
-                  <div>
-                    <i className="fa fa-thermometer me-2" aria-hidden="true" />
-                    12.4ºC
-                  </div>
-                </p>
-                <h6 className="card-subtitle mb-2 text-body-secondary">
-                  Hace 12 minutos
-                </h6>
-              </div>
-            </div>
-            <div className="card me-2 p-1">
-              <div className="card-header">
-                <h6 className="card-title text-center">Máximo 24hs</h6>
-              </div>
-              <div className="card-body d-flex flex-column justify-content-center align-items-center">
-                <p className="card-text fs-5">
-                  <div>
-                    <i className="fa fa-tint me-2" aria-hidden="true" />
-                    3.3m
-                  </div>
-                </p>
-                <h6 className="card-subtitle mb-2 text-body-secondary">
-                  13:02
-                </h6>
-              </div>
-            </div>
-            <div className="card me-2 p-1">
-              <div className="card-header">
-                <h6 className="card-title text-center">Máximo 7 días</h6>
-              </div>
-              <div className="card-body d-flex flex-column justify-content-center align-items-center">
-                <p className="card-text fs-5">
-                  <div>
-                    <i className="fa fa-tint me-2" aria-hidden="true" />
-                    4.2m
-                  </div>
-                </p>
-                <h6 className="card-subtitle mb-2 text-body-secondary">
-                  04/10/2024 09:39
-                </h6>
-              </div>
-            </div>
-            <div className="card p-1">
-              <div className="card-header  text-center">
-                <h6>Máximo mensual</h6>
-              </div>
-              <div className="card-body d-flex flex-column justify-content-center align-items-center">
-                <p className="card-text fs-5">
-                  <div>
-                    <i className="fa fa-tint me-2" aria-hidden="true" />
-                    5.0m
-                  </div>
-                </p>
-                <h6 className="card-subtitle mb-2 text-body-secondary">
-                  04/10/2024 09:39
-                </h6>
-              </div>
-            </div>
-          </div>
+          {
+            loading? null : <NodoRecentDataContainer data={nodo.data} CARD_HEIGHT={CARD_HEIGHT}></NodoRecentDataContainer>
+          }
+          
           <div
             id="mapa"
             className="d-none d-lg-block"
