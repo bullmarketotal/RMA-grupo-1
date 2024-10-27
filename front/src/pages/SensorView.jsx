@@ -6,9 +6,9 @@ import GraphDoble from "../components/GraphDoble";
 import { randomDataForDoubleChart } from "../utils-graphs";
 import NodoRecentDataContainer from "../components/NodoRecentDataContainer";
 
-
 import FiltrosFetch from "./FiltrosFetch";
 import TablaDatos from "../components/TablaDatos";
+
 
 const api = import.meta.env.VITE_API_URL;
 

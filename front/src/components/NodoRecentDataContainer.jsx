@@ -1,3 +1,5 @@
+import Max24hsCard from "./Max24hsCard";
+
 export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
 
     const CARD_WIDTH = "25%";
@@ -51,22 +53,7 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
                 </h6>
               </div>
             </div>
-            <div className="card me-2 p-1" style={{width: CARD_WIDTH}}>
-              <div className="card-header">
-                <h6 className="card-title text-center">Máximo 24hs</h6>
-              </div>
-              <div className="card-body d-flex flex-column justify-content-center align-items-center">
-                <p className="card-text fs-5">
-                  <div>
-                    <i className="fa fa-tint me-2" aria-hidden="true" />
-                    3.3m
-                  </div>
-                </p>
-                <h6 className="card-subtitle mb-2 text-body-secondary">
-                  13:02
-                </h6>
-              </div>
-            </div>
+            <Max24hsCard data={data} CARD_WIDTH={CARD_WIDTH}/>
             <div className="card me-2 p-1"  style={{width: CARD_WIDTH}}>
               <div className="card-header">
                 <h6 className="card-title text-center">Máximo 7 días</h6>
