@@ -7,8 +7,8 @@ const api = import.meta.env.VITE_API_URL;
 export default function FiltrosFetch({ initialSensorId, setData }) {
   const [items, setItems] = useState([]);
   const [sensorId, setSensorId] = useState(initialSensorId || ""); // Si ya hay un sensor, lo usa
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState( (new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)).toISOString().substring(0, 10)); // 7 dias antes como default
+  const [endDate, setEndDate] = useState((new Date()).toISOString().substring(0, 10)); // hoy como default
   const limit = 10;
   const [applyFilters, setApplyFilters] = useState(false);
 
@@ -45,7 +45,7 @@ export default function FiltrosFetch({ initialSensorId, setData }) {
   }, [applyFilters]);
 
   return (
-    <div className="container" style={{ marginTop: "40px" }}>
+    <div className="container mt-1">
     <div className="mb-3 d-flex align-items-center">
       {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
       {!initialSensorId && (
@@ -75,7 +75,7 @@ export default function FiltrosFetch({ initialSensorId, setData }) {
       <input
         type="date"
         value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
+        onChange={(e) => setStartDate( e.target.value)}
         className="form-control form-control-sm d-inline-block me-3"
         style={{ width: "130px" }}
       />
