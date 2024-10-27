@@ -22,17 +22,17 @@ const SensorView = () => {
       latitud: null,
       longitud: null,
     },
-    data: []
+    data: [],
   });
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState("graph");
   const [data, setData] = useState([]);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/sensordata/${id}`)
-      .then(res => res.json())
-      .then(info => {
+      .then((res) => res.json())
+      .then((info) => {
         setNodo({
           sensor: {
             id,
@@ -40,13 +40,16 @@ const SensorView = () => {
             latitud: info.sensor.latitud,
             longitud: info.sensor.latitud,
           },
-          data: info.data
-        })
-        setLoading(false)
+          data: info.data,
+        });
+        setLoading(false);
       })
-      .catch(err => console.error("Se produjo un error al obtener la información del nodo: " + err))
-  }, [])
-
+      .catch((err) =>
+        console.error(
+          "Se produjo un error al obtener la información del nodo: " + err
+        )
+      );
+  }, []);
 
   const handleViewChange = (event) => {
     setView(event.target.id);
@@ -70,8 +73,12 @@ const SensorView = () => {
             <span>
               <i className="fa fa-map-marker me-2" aria-hidden="true" />{" "}
               <span>
-              <b>Latitud:</b> {nodo.sensor.latitud.toFixed(5)} <b> Longitud:</b>  {nodo.sensor.longitud.toFixed(5)}
-
+                {loading ? null : (
+                  <>
+                    <b>Latitud:</b> {nodo.sensor.latitud.toFixed(5)}
+                    <b> Longitud:</b> {nodo.sensor.longitud.toFixed(5)}
+                  </>
+                )}
               </span>
             </span>
           </div>
@@ -86,10 +93,13 @@ const SensorView = () => {
           id="content"
           className="d-flex justify-content-between align-items-start"
         >
-          {
-            loading? null : <NodoRecentDataContainer data={nodo.data} CARD_HEIGHT={CARD_HEIGHT}></NodoRecentDataContainer>
-          }
-          
+          {loading || !nodo.data?.length ? null : (
+            <NodoRecentDataContainer
+              data={nodo.data}
+              CARD_HEIGHT={CARD_HEIGHT}
+            ></NodoRecentDataContainer>
+          )}
+
           <div
             id="mapa"
             className="d-none d-lg-block"

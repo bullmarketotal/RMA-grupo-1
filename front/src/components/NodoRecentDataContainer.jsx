@@ -5,16 +5,20 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
         const now = new Date();
         
         const minutesBetween = (now - lastTime) / (1000 * 60);
-
+        console.log(minutesBetween)
         // Retorno segun hace cuanto haya sido
         if(minutesBetween < 1)
             return `Hace menos de un minuto`
+        if(minutesBetween < 2)
+            return `Hace un minuto`
         if(minutesBetween < 59)
-            return `Hace ${minutesBetween} minutos`
+            return `Hace ${minutesBetween.toFixed(0)} minutos`
+        if(minutesBetween < 120)
+            return `Hace 1 hora`
         if(minutesBetween < 60 * 24)
-            return `Hace ${Math.floor(minutesBetween / 60)} horas`
+            return `Hace ${Math.floor(minutesBetween / 60).toFixed(0)} horas`
         
-        return `Hace ${Math.floor(minutesBetween / (60 * 24))} días`
+        return `Hace ${Math.floor(minutesBetween / (60 * 24)).toFixed(0)} días`
     }
 
     return (
