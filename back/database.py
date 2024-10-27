@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 load_dotenv()
 
-engine = create_engine(os.getenv("DB_URL"), connect_args={"check_same_thread": False}, max_overflow=40)
+engine = create_engine(os.getenv("DB_URL"), connect_args={"check_same_thread": False}, max_overflow=-1)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 

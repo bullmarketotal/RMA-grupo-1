@@ -8,7 +8,7 @@ from back.sensores import schemas
 from back.sensores.models import Sensor
 from back.sensores.schemas import SensorData
 from back.paquete.models import Paquete
-from datetime import datetime
+from datetime import datetime, timedelta
 from fastapi import HTTPException
 
 # operaciones CRUD para Sensores
@@ -33,8 +33,10 @@ def sensor_con_datos(nodo_id: int, db: Session) -> SensorData:
 
     # Mediciones
     data_query = db.query(Paquete)
+    fecha_limite = datetime.now() - timedelta(days=7)
 
-    data_query = data_query.filter(Paquete.sensor_id == nodo_id)
+    data_query = data_query.filter(Paquete.sensor_id == nodo_id, Paquete.date >= fecha_limite)
+    print(data_query)
     data = data_query.all()
 
     return {
