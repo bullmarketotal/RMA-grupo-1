@@ -27,7 +27,7 @@ export default function Max24hsCard({ data, CARD_WIDTH }) {
   return (
     <div className="card me-2" style={{ width: CARD_WIDTH }}>
       <div className="card-header">
-        <h6 className="card-title text-center">Pico 24hs</h6>
+        <h6 className="card-title text-center mb-0">Pico 24hs</h6>
       </div>
       <div className="card-body d-flex flex-column justify-content-center align-items-center">
         <p className="card-text fs-5">
