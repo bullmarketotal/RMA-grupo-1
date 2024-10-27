@@ -5,7 +5,8 @@ import "../assets/font-awesome/css/font-awesome.min.css";
 import GraphDoble from "../components/GraphDoble";
 import { randomDataForDoubleChart } from "../utils-graphs";
 
-import ApiFetch from "./ApiFetch";
+import FiltrosFetch from "./FiltrosFetch";
+import TablaDatos from "../components/TablaDatos";
 
 const api = import.meta.env.VITE_API_URL;
 
@@ -20,6 +21,8 @@ const SensorView = () => {
     longitud: -65.4921152059314,
   });
   const [view, setView] = useState("graph");
+  const [data, setData] = useState([]);
+
 
   const handleViewChange = (event) => {
     setView(event.target.id);
@@ -164,12 +167,15 @@ const SensorView = () => {
             Tabla
           </label>
         </div>
+         {/* Hola gonza jeje, esto esta pensado para que sensor view(este componente) se encargue de obtener los datos y pasaselos a 
+            grapgdoble, pero nose si te sirve asi. */}
+        <FiltrosFetch initialSensorId={id} setData={setData} />
         {view === "graph" ? (
           <GraphDoble data={randomDataForDoubleChart()} />
         ) : (
-          <ApiFetch initialSensorId={id} />
+            <TablaDatos items={data}/>
         )}{" "}
-        {/* el componente ApiFetch recibe un id para podes buscarlo diractamente sus datos y que la lista los muestre */}
+        {/* FiltrosFetch recibe el setData del componente que lo invoque y devuelve el arreglo con los paquetes. */}
       </div>
     </div>
   );
