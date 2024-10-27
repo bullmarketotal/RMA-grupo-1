@@ -45,7 +45,7 @@ export default function FiltrosFetch({ initialSensorId, setData }) {
   }, [applyFilters]);
 
   return (
-    <div className="container" style={{ marginTop: "40px" }}>
+    <div className="container mt-1">
     <div className="mb-3 d-flex align-items-center">
       {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
       {!initialSensorId && (
