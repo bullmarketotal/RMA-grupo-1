@@ -9,17 +9,23 @@ import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
 import SensorView from "./SensorView";
 import TablaDatos from "../components/TablaDatos";
+import FiltrosFetch from "./FiltrosFetch";
+import { useState } from "react";
 
 const AppRoutes = () => {
   // data para probar
   const data = randomDataForDoubleChart();
+  const [items,setItems] = useState([]); // esto vuela es solo pa mostrar algo xd
 
   return (
     <Routes>
       <Route path="/" element={<NavBar />}>
         <Route index element={<Inicio />} />
         <Route path="list-sensor" element={<SensorList />} />
-        {/* <Route path="tabla-datos" element={<TablaDatos />} /> */}
+        <Route path="tabla-datos" element={  <div>
+                                                <FiltrosFetch setData={setItems} />
+                                                <TablaDatos items={items} />
+                                            </div>} /> 
 
         {/* Ruta protegida */}
         <Route

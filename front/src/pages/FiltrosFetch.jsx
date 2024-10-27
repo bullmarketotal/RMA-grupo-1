@@ -42,10 +42,10 @@ export default function FiltrosFetch({ initialSensorId, setData }) {
       }
     };
     fetchData();
-  }, [sensorId, applyFilters]);
+  }, [applyFilters]);
 
   return (
-    <div className="container mt-2">
+    <div className="container" style={{ marginTop: "40px" }}>
     <div className="mb-3 d-flex align-items-center">
       {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
       {!initialSensorId && (
@@ -53,13 +53,19 @@ export default function FiltrosFetch({ initialSensorId, setData }) {
           <label className="form-label me-2 mb-0">
             <strong>ID Sensor</strong>
           </label>
-          <input
-            type="number"
-            value={sensorId}
-            onChange={(e) => setSensorId(e.target.value)}
-            className="form-control form-control-sm d-inline-block me-3"
-            style={{ width: "80px" }}
-          />
+          <select
+          value={sensorId}
+          onChange={(e) => setSensorId(e.target.value)}
+          className="form-control form-control-sm d-inline-block me-3"
+          style={{ width: "80px" }}
+        >
+          <option value="">Seleccionar</option>
+          {/* {items.map((node) => (
+            <option key={node.id} value={node.id}>
+              {node.id} 
+            </option>
+          ))} */}
+        </select>
         </>
       )}
   
