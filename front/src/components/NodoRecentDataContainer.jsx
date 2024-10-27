@@ -1,5 +1,7 @@
+import { dateFormatter } from "../utils-graphs";
 import Max24hsCard from "./Max24hsCard";
 import Max7dCard from "./Max7dCard";
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
 
@@ -11,7 +13,7 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
         const now = new Date();
         
         const minutesBetween = (now - lastTime) / (1000 * 60);
-        console.log(minutesBetween)
+
         // Retorno segun hace cuanto haya sido
         if(minutesBetween < 1)
             return `Hace menos de un minuto`
@@ -32,6 +34,7 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
             id="card-container"
             className="d-flex align-items-center"
             style={{ height: CARD_HEIGHT }}
+            title={dateFormatter(new Date(data[data.length-1].date).getTime())}
           >
             <div className="card me-5 p-3" style={{width: MAIN_CARD_WIDTH}}>
               <div className="card-body align-items-center">

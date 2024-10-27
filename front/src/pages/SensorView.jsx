@@ -59,7 +59,7 @@ const SensorView = () => {
   return (
     <div className="container mt-5">
       <div id="main">
-        <div id="header" className="d-flex justify-content-between pb-4">
+        <div id="header" className="d-flex justify-content-between pb-1">
           <div id="info-sensor">
             <h2 className="d-flex align-items-center">
               <i className="fa fa-rss me-2" aria-hidden="true" />
@@ -71,6 +71,7 @@ const SensorView = () => {
                 nodo.sensor.identificador
               )}
             </h2>
+            <p>Una breve descripción del nodo irá incluida acá una vez que se implemente este campo en la base de datos.</p>
             <span>
               <i className="fa fa-map-marker me-2" aria-hidden="true" />{" "}
               <span>
@@ -82,6 +83,7 @@ const SensorView = () => {
                 )}
               </span>
             </span>
+            
           </div>
           <button
             id="btn-modificar"
