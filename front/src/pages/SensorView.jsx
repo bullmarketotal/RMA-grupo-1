@@ -6,6 +6,7 @@ import GraphDoble from "../components/GraphDoble";
 import { randomDataForDoubleChart } from "../utils-graphs";
 import NodoRecentDataContainer from "../components/NodoRecentDataContainer";
 
+
 import FiltrosFetch from "./FiltrosFetch";
 import TablaDatos from "../components/TablaDatos";
 
@@ -102,10 +103,10 @@ const SensorView = () => {
 
           <div
             id="mapa"
-            className="d-none d-lg-block"
+            className="d-none d-xl-block"
             style={{
               height: CARD_HEIGHT + "px",
-              width: "350px",
+              width: "320px",
               backgroundColor: "lightblue",
             }}
           ></div>

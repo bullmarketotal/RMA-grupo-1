@@ -1,5 +1,8 @@
 export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
 
+    const CARD_WIDTH = "25%";
+    const MAIN_CARD_WIDTH = "350px";
+
     const obtenerStringTiempoDesdeUltimoDato = () => {
         const lastTime = new Date(data[data.length - 1].date)
         const now = new Date();
@@ -27,7 +30,7 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
             className="d-flex align-items-center"
             style={{ height: CARD_HEIGHT }}
           >
-            <div className="card me-5 p-3">
+            <div className="card me-5 p-3" style={{width: MAIN_CARD_WIDTH}}>
               <div className="card-body align-items-center">
                 <p className="card-text fs-3 d-flex">
                   <span className="me-4">
@@ -48,7 +51,7 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
                 </h6>
               </div>
             </div>
-            <div className="card me-2 p-1">
+            <div className="card me-2 p-1" style={{width: CARD_WIDTH}}>
               <div className="card-header">
                 <h6 className="card-title text-center">Máximo 24hs</h6>
               </div>
@@ -64,7 +67,7 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
                 </h6>
               </div>
             </div>
-            <div className="card me-2 p-1">
+            <div className="card me-2 p-1"  style={{width: CARD_WIDTH}}>
               <div className="card-header">
                 <h6 className="card-title text-center">Máximo 7 días</h6>
               </div>
@@ -80,7 +83,7 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
                 </h6>
               </div>
             </div>
-            <div className="card p-1">
+            <div className="card p-1"  style={{width: CARD_WIDTH}}>
               <div className="card-header  text-center">
                 <h6>Máximo mensual</h6>
               </div>
