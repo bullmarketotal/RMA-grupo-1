@@ -22,13 +22,11 @@ const SensorView = () => {
       identificador: null,
       latitud: null,
       longitud: null,
-    },
-    data: [],
+    }
   });
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState("graph");
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/sensordata/${id}`)
@@ -40,9 +38,9 @@ const SensorView = () => {
             identificador: info.sensor.identificador,
             latitud: info.sensor.latitud,
             longitud: info.sensor.longitud,
-          },
-          data: info.data,
+          }
         });
+        setData(info.data);
         setLoading(false);
       })
       .catch((err) =>
@@ -51,6 +49,8 @@ const SensorView = () => {
         )
       );
   }, []);
+
+
 
   const handleViewChange = (event) => {
     setView(event.target.id);
@@ -96,9 +96,9 @@ const SensorView = () => {
           id="content"
           className="d-flex justify-content-between align-items-start"
         >
-          {loading || !nodo.data?.length ? null : (
+          {loading || !data?.length ? null : (
             <NodoRecentDataContainer
-              data={nodo.data}
+              data={data}
               CARD_HEIGHT={CARD_HEIGHT}
             ></NodoRecentDataContainer>
           )}
@@ -116,41 +116,41 @@ const SensorView = () => {
         <hr />
       </div>
       <div id="data-visualizer">
-        <div
-          className="btn-group mb-4"
-          role="group"
-          aria-label="Basic radio toggle button group"
-        >
-          <input
-            type="radio"
-            className="btn-check"
-            name="btnradio"
-            id="graph"
-            autocomplete="off"
-            defaultChecked
-            onChange={handleViewChange}
-          />
-          <label className="btn btn-outline-primary" htmlFor="graph">
-            Gráfico
-          </label>
+        <div className="d-flex justify-content-start">
+          <div
+            className="btn-group mb-4 me-3"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              className="btn-check"
+              name="btnradio"
+              id="graph"
+              autocomplete="off"
+              defaultChecked
+              onChange={handleViewChange}
+            />
+            <label className="btn btn-outline-primary" htmlFor="graph">
+              Gráfico
+            </label>
 
-          <input
-            type="radio"
-            className="btn-check"
-            name="btnradio"
-            id="table"
-            autocomplete="off"
-            onChange={handleViewChange}
-          />
-          <label className="btn btn-outline-primary" htmlFor="table">
-            Tabla
-          </label>
+            <input
+              type="radio"
+              className="btn-check"
+              name="btnradio"
+              id="table"
+              autocomplete="off"
+              onChange={handleViewChange}
+            />
+            <label className="btn btn-outline-primary" htmlFor="table">
+              Tabla
+            </label>
+          </div>
+          <FiltrosFetch initialSensorId={id} setData={setData}/>
         </div>
-         {/* Hola gonza jeje, esto esta pensado para que sensor view(este componente) se encargue de obtener los datos y pasaselos a 
-            grapgdoble, pero nose si te sirve asi. */}
-        <FiltrosFetch initialSensorId={id} setData={setData} />
         {view === "graph" ? (
-          <GraphDoble data={randomDataForDoubleChart()} />
+          <GraphDoble data={data} />
         ) : (
             <TablaDatos items={data}/>
         )}{" "}

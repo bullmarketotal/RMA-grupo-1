@@ -1,7 +1,7 @@
 export default function Max24hsCard({ data, CARD_WIDTH }) {
   const maxNivel24hs = (() => {
     const dateOf24hoursBefore = new Date(Date.now() - 1000 * 60 * 60 * 24);
-    console.log(dateOf24hoursBefore);
+    
     // caso sin datos en las ult. 24 horas
     if (data[data.length - 1] < dateOf24hoursBefore)
       return {
