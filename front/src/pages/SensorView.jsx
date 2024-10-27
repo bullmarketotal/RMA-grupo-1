@@ -39,7 +39,7 @@ const SensorView = () => {
             id,
             identificador: info.sensor.identificador,
             latitud: info.sensor.latitud,
-            longitud: info.sensor.latitud,
+            longitud: info.sensor.longitud,
           },
           data: info.data,
         });
