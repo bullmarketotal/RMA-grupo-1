@@ -7,18 +7,23 @@ import { Link, Outlet } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "./NavBar.css";
 
+
+
 function NavBar() {
   const { isAuthenticated, logout } = useContext(AuthContext);
+  const logo = "/logo-recortado.png"; 
+
 
   return (
     <>
-      <Navbar bg="primary" data-bs-theme="dark" expand="lg">
-        <Container
-          fluid
-          className="d-flex justify-content-between align-items-center"
-        >
-          <Navbar.Brand className="navbar-title" as={Link} to="/">
-            RED DE MONITOREO
+      <Navbar bg="primary" data-bs-theme="dark" expand="lg"  style={{  position: 'sticky' ,  top: 0, zIndex: 1000,height: '100px' }}> {/* Altura fija del navbar */}
+        <Container fluid className="d-flex justify-content-between align-items-center">
+          <Navbar.Brand className="navbar-title d-flex align-items-center" as={Link} to="/">
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ width: 180 , height: 60 , marginRight: '10px' }} // Ajusta el tamaño aquí
+            />
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -74,6 +79,7 @@ function NavBar() {
       </section>
     </>
   );
+  
 }
 
 export default NavBar;

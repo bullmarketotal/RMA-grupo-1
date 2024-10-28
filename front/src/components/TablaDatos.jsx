@@ -1,7 +1,54 @@
 import React from "react";
 import { useTable } from "react-table";
 
+//TO-DO: modificar margenes.
 const TablaDatos = ({ items }) => {
+  //const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      /*      try {
+        const offset = (page - 1) * limit;
+
+        const response = await fetch(
+          `${api}/paquetes?limit=${limit}&offset=${offset}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Error en la solicitud a API");
+        }
+        const data = await response.json();
+
+        setItems((prevItems) => [...prevItems, ...data]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+*/
+    };
+    fetchData();
+  }, [page]);
+
+  const handleScroll = () => {
+    const bottom =
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
+    if (bottom && !loading) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [loading]);
+
   const columns = React.useMemo(
     () => [
       { Header: "ID Sensor", accessor: "sensor_id" },

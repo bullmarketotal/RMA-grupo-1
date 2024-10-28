@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, field_validator
 
-from back.paquete.schemas import Paquete
+from back.paquete.schemas import Paquete, PaqueteSend
 
 
 class SensorBase(BaseModel):
@@ -25,3 +25,10 @@ class Sensor(SensorBase):
     latitud: Optional[float]
     longitud: Optional[float]
     model_config = {"from_attributes": True}
+
+
+# Información del sensor junto a sus datos observados
+
+class SensorData(BaseModel):
+    sensor: Sensor
+    data: List[PaqueteSend]
