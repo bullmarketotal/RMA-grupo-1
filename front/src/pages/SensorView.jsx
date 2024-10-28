@@ -13,6 +13,8 @@ const CARD_HEIGHT = 200;
 
 const SensorView = () => {
   const { id } = useParams();
+
+  const [items, setItems] = useState([]);
   const [sensor, setSensor] = useState({
     id,
     identificador: "RMA-1",
@@ -167,7 +169,7 @@ const SensorView = () => {
         {view === "graph" ? (
           <GraphDoble data={randomDataForDoubleChart()} />
         ) : (
-          <ApiFetch initialSensorId={id} />
+          <ApiFetch initialSensorId={id} setData={setItems} />
         )}{" "}
         {/* el componente ApiFetch recibe un id para podes buscarlo diractamente sus datos y que la lista los muestre */}
       </div>

@@ -96,6 +96,7 @@ const ApiFetch = () => {
           />
 
           {/* Tabla de datos */}
+
           {loading && <LoadingSpinner />}
           <TablaDatos items={items} />
 

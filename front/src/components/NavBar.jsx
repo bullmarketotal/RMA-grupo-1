@@ -43,13 +43,6 @@ function NavBar() {
                 Sensores
               </Nav.Link>
 
-              {/* Ver sensores al estar autenticado */}
-              {isAuthenticated && (
-                <Nav.Link as={Link} to="/list-sensor" className="nav-link">
-                  Sensores
-                </Nav.Link>
-              )}
-
               <Nav.Link as={Link} to="/tabla-datos" className="nav-link">
                 Datos
               </Nav.Link>
