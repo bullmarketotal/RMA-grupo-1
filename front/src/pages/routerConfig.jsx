@@ -22,6 +22,7 @@ const AppRoutes = () => {
         <Route path="tabla-datos" element={<ApiFetch />} />
 
         {/* Ruta protegida */}
+
         <Route
           path="create-sensor"
           element={

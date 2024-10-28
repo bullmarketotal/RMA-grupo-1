@@ -23,7 +23,7 @@ def read_paquetes(
     offset: int = Query(0, ge=0),
     sensor_id: Optional[int] = None,  ## filtrar por id de sensor
     start_date: Optional[datetime] = None,  ## filtrar por fechas
-    end_date: Optional[datetime] = None,  ## rt
+    end_date: Optional[datetime] = None,  ## hasta
     db: Session = Depends(get_db),
 ):
     return services.listar_paquetes(

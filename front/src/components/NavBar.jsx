@@ -20,22 +20,41 @@ function NavBar() {
           <Navbar.Brand className="navbar-title" as={Link} to="/">
             RED DE MONITOREO
           </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Nav.Link as={Link} to="/" className="nav-link">
                 Inicio
               </Nav.Link>
+
               <Nav.Link as={Link} to="/create-sensor" className="nav-link">
                 Crear Sensor
               </Nav.Link>
-              <Nav.Link as={Link} to="/list-sensor" className="nav-link">
+
+              {/* Ver sensores al estar autenticado */}
+              <Nav.Link
+                as={Link}
+                to="/list-sensor"
+                className="nav-link"
+                style={{ display: isAuthenticated ? "block" : "none" }}
+              >
                 Sensores
               </Nav.Link>
+
+              {/* Ver sensores al estar autenticado */}
+              {isAuthenticated && (
+                <Nav.Link as={Link} to="/list-sensor" className="nav-link">
+                  Sensores
+                </Nav.Link>
+              )}
+
               <Nav.Link as={Link} to="/tabla-datos" className="nav-link">
                 Datos
               </Nav.Link>
             </Nav>
+
             <Nav>
               {isAuthenticated ? (
                 <Button

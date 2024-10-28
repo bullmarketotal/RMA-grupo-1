@@ -1,21 +1,30 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
+import Filtro from "../components/Filtro";
 import TablaDatos from "../components/TablaDatos";
+import Paginacion from "../components/Paginacion";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const api = import.meta.env.VITE_API_URL;
 
-export default function ApiFetch({ initialSensorId }) {
+const ApiFetch = () => {
   const [items, setItems] = useState([]);
-  const [sensorId, setSensorId] = useState(initialSensorId || ""); // Si ya hay un sensor, lo usa
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sensorId, setSensorId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const limit = 10;
 
   useEffect(() => {
     const fetchData = async () => {
-      const offset = limit;
+      setLoading(true);
+      setErrorMessage(""); // Reinicia el mensaje de error
       try {
-        let url = `${api}/paquetes?limit=${limit}`;
+        const offset = (page - 1) * limit;
+        let url = `${api}/paquetes?limit=${limit}&offset=${offset}`;
 
         if (sensorId) {
           url += `&sensor_id=${sensorId}`;
@@ -29,58 +38,79 @@ export default function ApiFetch({ initialSensorId }) {
 
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error("Error en la solicitud a API");
+          throw new Error("Error en la solicitud a la API");
         }
         const data = await response.json();
         setItems(data);
-        console.log(data);
+        setTotalPages(Math.ceil(data.length / limit));
       } catch (error) {
+        setErrorMessage("Error al cargar los datos.");
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchData();
-  }, [sensorId, startDate, endDate]);
+  }, [page, sensorId, startDate, endDate]);
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleFilterReset = () => {
+    setSensorId("");
+    setStartDate("");
+    setEndDate("");
+    setPage(1); // Restablece a la primera página luego de un filtro
+  };
 
   return (
-    <div className="container mt-2">
-      <div className="mb-3">
-        {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
-        {!initialSensorId && (
-          <>
-            <label className="form-label">
-              <strong>Filtrar por ID Sensor</strong>
-            </label>
-            <input
-              type="int"
-              value={sensorId}
-              onChange={(e) => setSensorId(e.target.value)}
-              className="form-control mt-2"
-            />
-          </>
-        )}
+    <div className="container mt-5">
+      <div className="card">
+        <div className="card-body">
+          <h1 className="card-title mb-4">Tabla de Datos</h1>
 
-        <label className="form-label mt-3">
-          <strong>Desde</strong>
-        </label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="form-control mt-2"
-        />
+          {/* Mensaje de error */}
+          {errorMessage && (
+            <div className="alert alert-danger">{errorMessage}</div>
+          )}
 
-        <label className="form-label mt-3">
-          <strong>Hasta</strong>
-        </label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="form-control mt-2"
-        />
+          {/* Filtros */}
+          <Filtro
+            sensorId={sensorId}
+            setSensorId={setSensorId}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            handleFilterReset={handleFilterReset}
+          />
+
+          {/* Tabla de datos */}
+          {loading && <LoadingSpinner />}
+          <TablaDatos items={items} />
+
+          {/* Paginación */}
+          <Paginacion
+            page={page}
+            totalPages={totalPages}
+            handleNextPage={handleNextPage}
+            handlePreviousPage={handlePreviousPage}
+            loading={loading}
+          />
+        </div>
       </div>
-
-      <TablaDatos items={items} />
     </div>
   );
-}
+};
+
+export default ApiFetch;

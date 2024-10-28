@@ -4,7 +4,7 @@ from typing import List, Optional
 from pydantic import BaseModel, EmailStr, field_validator
 
 
-##ESQUEMAS DE SENSORES
+##ESQUEMAS DE Paquetes
 class PaqueteBase(BaseModel):
     sensor_id: int
     temperatura: float
