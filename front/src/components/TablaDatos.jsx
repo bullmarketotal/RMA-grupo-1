@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
-
 //TO-DO: modificar margenes.
 const TablaDatos = ({ items }) => {
   //const [items, setItems] = useState([]);
