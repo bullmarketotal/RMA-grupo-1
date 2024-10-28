@@ -11,7 +11,7 @@ import "./NavBar.css";
 
 function NavBar() {
   const { isAuthenticated, logout } = useContext(AuthContext);
-  const logo = "/logo-con-letra.png"; 
+  const logo = "/logo-recortado.png"; 
 
 
   return (
@@ -22,7 +22,7 @@ function NavBar() {
             <img
               src={logo}
               alt="Logo"
-              style={{ width: '200px', height: '200px', marginRight: '10px' }} // Ajusta el tamaño aquí
+              style={{ width: 180 , height: 60 , marginRight: '10px' }} // Ajusta el tamaño aquí
             />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
