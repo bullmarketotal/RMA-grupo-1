@@ -2,8 +2,9 @@ export default function Max7dCard({ data, CARD_WIDTH }) {
   const maxNivel7dias = (() => {
     const dateOf7daysBefore = new Date(Date.now() - 1000 * 60 * 60 * 24 * 7);
 
-    // caso sin datos en las ult. 24 horas
-    if (data[data.length - 1] < dateOf7daysBefore)
+    const dateOfLatestData = new Date(data[data.length - 1].date);
+
+    if (dateOfLatestData < dateOf7daysBefore)
       return {
         nivel_hidrometrico: "--",
         stringTime: `Sin datos`,
