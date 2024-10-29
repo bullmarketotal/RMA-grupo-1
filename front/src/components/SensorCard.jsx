@@ -1,12 +1,32 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useDebugValue, useEffect, useState } from "react";
 import "../assets/font-awesome/css/font-awesome.min.css";
 import { randomDataForDoubleChart } from "../utils-graphs";
 import GraphNivel from "./GraphNivel";
 import GraphTemp from "./GraphTemp";
+import LoadingSpinner from './LoadingSpinner'
 
 const SensorCard = ({ sensor }) => {
-  const data = randomDataForDoubleChart(50); // Reemplazar por busqueda real de datos
+
+  const [data, setData] = useState([]);
+  const [loadingGraphs, setLoadingGraphs] = useState(true)
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const dateOf24hoursBefore = new Date(Date.now() - 1000 * 60 * 60 * 24);
+
+  const stringOfDateOf24hoursBefore = dateOf24hoursBefore.toISOString()
+
+  useEffect(() => {
+    console.log("sensor id: " + sensor.id)
+    fetch(`${API_URL}/paquetes?start_date=${stringOfDateOf24hoursBefore}&sensor_id=${sensor.id}`)
+      .then(res => res.json())
+      .then(res => {
+        setData(res)
+        setLoadingGraphs(false)
+      })
+
+  }, [])
+
 
   return (
     <div className="card">
@@ -26,32 +46,37 @@ const SensorCard = ({ sensor }) => {
               <br />
               <span className="fs-5">
                 <i className="fa fa-tint" aria-hidden="true"></i>{" "}
-                {Math.round(data[data.length - 1].nivel_hidrometrico * 10) / 10}
+                {Math.round(data[data.length - 1]?.nivel_hidrometrico * 10) / 10}
               </span>
               <br />
               <span className="fs-5">
                 <i className="fa fa-thermometer" aria-hidden="true"></i>{" "}
-                {Math.round(data[data.length - 1].temperatura * 10) / 10}ºC
+                {Math.round(data[data.length - 1]?.temperatura * 10) / 10}ºC
               </span>
               <br />
               <span className="fw-lighter">hace 12 minutos</span>
             </p>
           </div>
-          <div className="col-md-4">
-            <GraphTemp data={data}></GraphTemp>
-          </div>
+          {!loadingGraphs ?
+            <>
+              <div className="col-md-4">
+                <GraphTemp data={data} syncId={sensor.id}></GraphTemp>
+              </div>
+              <div className="col-md-4">
+                <GraphNivel data={data} noBrush={true} syncId={sensor.id}></GraphNivel>
+              </div>
+            </>
+            :
+            <div className="col-md-8 d-flex justify-content-center">
+              <LoadingSpinner/>
+            </div>
+          }
 
-          <div className="col-md-4">
-            <GraphNivel data={data} noBrush={true}></GraphNivel>
-          </div>
         </div>
         <div className="d-flex justify-content-between align-items-center">
           <div className="col-md-3">
             <a href={"/sensor/" + sensor.id} className="btn btn-primary me-1">
               Ver datos
-            </a>
-            <a href="#" className="btn btn-primary">
-              Editar
             </a>
           </div>
           <div className="col-md-9 d-flex col-md-9">

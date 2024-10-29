@@ -3,7 +3,10 @@ export default function Max24hsCard({ data, CARD_WIDTH }) {
     const dateOf24hoursBefore = new Date(Date.now() - 1000 * 60 * 60 * 24);
     
     // caso sin datos en las ult. 24 horas
-    if (data[data.length - 1] < dateOf24hoursBefore)
+
+    const dateOfLatestData = new Date(data[data.length - 1].date);
+
+    if (dateOfLatestData < dateOf24hoursBefore)
       return {
         nivel_hidrometrico: "--",
         stringTime: `Sin datos`,
