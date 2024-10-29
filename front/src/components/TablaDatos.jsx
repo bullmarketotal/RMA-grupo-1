@@ -14,7 +14,7 @@ const TablaDatos = ({ items }) => {
         const offset = (page - 1) * limit;
 
         const response = await fetch(
-          `${api}/paquetes?limit=${limit}&offset=${offset}`
+          ${api}/paquetes?limit=${limit}&offset=${offset}
         );
 
         if (!response.ok) {
@@ -81,12 +81,12 @@ const TablaDatos = ({ items }) => {
           return (
             <tr
               {...row.getRowProps()}
-              key={`${row.original.sensor_id}-${row.original.date}`}
+              key={"${row.original.sensor_id}-${row.original.date}"}
             >
               {row.cells.map((cell) => (
                 <td
                   {...cell.getCellProps()}
-                  key={`${row.id}-${cell.column.id}`}
+                  key={"${row.id}-${cell.column.id}"}
                 >
                   {cell.render("Cell")}
                 </td>

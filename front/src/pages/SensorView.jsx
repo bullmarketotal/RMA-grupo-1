@@ -2,16 +2,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../assets/font-awesome/css/font-awesome.min.css";
+import FiltrosFetch from "../components/FiltrosFetch";
 import GraphDoble from "../components/GraphDoble";
-import { randomDataForDoubleChart } from "../utils-graphs";
+import LoadingSpinner from "../components/LoadingSpinner";
 import NodoRecentDataContainer from "../components/NodoRecentDataContainer";
-
-import FiltrosFetch from "./FiltrosFetch";
+import Paginacion from "../components/Paginacion";
 import TablaDatos from "../components/TablaDatos";
 
 const api = import.meta.env.VITE_API_URL;
-
 const CARD_HEIGHT = 200;
+const itemsPerPage = 15; // Definimos la cantidad de items por página
 
 const SensorView = () => {
   const { id } = useParams();
@@ -26,9 +26,12 @@ const SensorView = () => {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState("graph");
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalItems = data.length; // Calcular el total de items
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/sensordata/${id}`)
+    fetch(`${api}/sensordata/${id}`)
       .then((res) => res.json())
       .then((info) => {
         setNodo({
@@ -47,10 +50,20 @@ const SensorView = () => {
           "Se produjo un error al obtener la información del nodo: " + err
         )
       );
-  }, []);
+  }, [id]);
 
   const handleViewChange = (event) => {
     setView(event.target.id);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const getVisibleData = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
   };
 
   return (
@@ -60,13 +73,7 @@ const SensorView = () => {
           <div id="info-sensor">
             <h2 className="d-flex align-items-center">
               <i className="fa fa-rss me-2" aria-hidden="true" />
-              {loading ? (
-                <p className="placeholder-glow">
-                  <span className="placeholder col-12">RMA-ejemplo</span>
-                </p>
-              ) : (
-                nodo.sensor.identificador
-              )}
+              {loading ? <LoadingSpinner /> : nodo.sensor.identificador}
             </h2>
             <p>
               Una breve descripción del nodo irá incluida acá una vez que se
@@ -95,13 +102,14 @@ const SensorView = () => {
           id="content"
           className="d-flex justify-content-between align-items-start"
         >
-          {loading || !data?.length ? null : (
+          {loading || !data?.length ? (
+            <LoadingSpinner />
+          ) : (
             <NodoRecentDataContainer
               data={data}
               CARD_HEIGHT={CARD_HEIGHT}
             ></NodoRecentDataContainer>
           )}
-
           <div
             id="mapa"
             className="d-none d-xl-block"
@@ -126,7 +134,7 @@ const SensorView = () => {
               className="btn-check"
               name="btnradio"
               id="graph"
-              autocomplete="off"
+              autoComplete="off"
               defaultChecked
               onChange={handleViewChange}
             />
@@ -139,24 +147,49 @@ const SensorView = () => {
               className="btn-check"
               name="btnradio"
               id="table"
-              autocomplete="off"
+              autoComplete="off"
               onChange={handleViewChange}
             />
             <label className="btn btn-outline-primary" htmlFor="table">
               Tabla
             </label>
           </div>
-          <FiltrosFetch initialSensorId={id} setData={setData} />
+          <FiltrosFetch
+            initialSensorId={id}
+            setData={setData}
+            totalItems={totalItems}
+          />
         </div>
         {view === "graph" ? (
-          <GraphDoble data={data} />
+          loading ? (
+            <LoadingSpinner />
+          ) : (
+            <GraphDoble data={data} />
+          )
         ) : (
-          <TablaDatos items={data} />
-        )}{" "}
-        {/* FiltrosFetch recibe el setData del componente que lo invoque y devuelve el arreglo con los paquetes. */}
+          view === "table" && (
+            <div>
+              <FiltrosFetch
+                initialSensorId={id}
+                setData={setData}
+                totalItems={totalItems}
+              />
+              <Paginacion
+                itemsPerPage={itemsPerPage}
+                totalItems={totalItems}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <TablaDatos items={getVisibleData()} />
+              )}
+            </div>
+          )
+        )}
       </div>
     </div>
   );
 };
-
 export default SensorView;

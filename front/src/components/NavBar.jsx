@@ -7,22 +7,33 @@ import { Link, Outlet } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "./NavBar.css";
 
-
-
 function NavBar() {
   const { isAuthenticated, logout } = useContext(AuthContext);
-  const logo = "/logo-recortado.png"; 
-
+  const logo = "/logo-recortado.png";
 
   return (
     <>
-      <Navbar bg="primary" data-bs-theme="dark" expand="lg"  style={{  position: 'sticky' ,  top: 0, zIndex: 1000,height: '100px' }}> {/* Altura fija del navbar */}
-        <Container fluid className="d-flex justify-content-between align-items-center">
-          <Navbar.Brand className="navbar-title d-flex align-items-center" as={Link} to="/">
+      <Navbar
+        bg="primary"
+        data-bs-theme="dark"
+        expand="lg"
+        style={{ position: "sticky", top: 0, zIndex: 1000, height: "100px" }}
+      >
+        {" "}
+        {/* Altura fija del navbar */}
+        <Container
+          fluid
+          className="d-flex justify-content-between align-items-center"
+        >
+          <Navbar.Brand
+            className="navbar-title d-flex align-items-center"
+            as={Link}
+            to="/"
+          >
             <img
               src={logo}
               alt="Logo"
-              style={{ width: 180 , height: 60 , marginRight: '10px' }} // Ajusta el tamaño aquí
+              style={{ width: 180, height: 60, marginRight: "10px" }} // Ajusta el tamaño aquí
             />
           </Navbar.Brand>
 
@@ -48,9 +59,9 @@ function NavBar() {
                 Sensores
               </Nav.Link>
 
-              <Nav.Link as={Link} to="/tabla-datos" className="nav-link">
+              {/* <Nav.Link as={Link} to="/tabla-datos" className="nav-link">
                 Datos
-              </Nav.Link>
+              </Nav.Link> */}
             </Nav>
 
             <Nav>
@@ -79,7 +90,6 @@ function NavBar() {
       </section>
     </>
   );
-  
 }
 
 export default NavBar;
