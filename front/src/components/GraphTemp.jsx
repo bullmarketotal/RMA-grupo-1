@@ -23,10 +23,29 @@ import { getMidnightTicks, tickFormatter } from "../utils-graphs";
 */
 
 export default function GraphTemp({ data, syncId = 0 }) {
-  const midnightTicks = getMidnightTicks(
-    data[0].date,
-    data[data.length - 1].date
-  );
+
+  console.log("A GRAFICAR TEMP:")
+  console.log(data);
+
+  if(data.length === 0)
+    return (
+      <div>No se recibieron datos para el gráfico.</div>
+  )
+
+   // si las fechas no son un nro de ticks, se parsea
+   if(! Number.isInteger(data[0] && data[0].date)) {
+    data.forEach((punto, i) => {
+      punto.date = (new Date(punto.date)).getTime()
+    })
+  }
+
+  let midnightTicks
+
+  if(data?.length)
+    midnightTicks = getMidnightTicks(
+      data[0].date,
+      data[data.length - 1].date
+    );
 
   return (
     <ResponsiveContainer width="100%" height={200}>
