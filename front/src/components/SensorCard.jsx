@@ -9,16 +9,20 @@ import LoadingSpinner from './LoadingSpinner'
 const SensorCard = ({ sensor }) => {
 
   const [data, setData] = useState([]);
+  const [loadingGraphs, setLoadingGraphs] = useState(true)
+
   const API_URL = import.meta.env.VITE_API_URL;
   const dateOf24hoursBefore = new Date(Date.now() - 1000 * 60 * 60 * 24);
 
   const stringOfDateOf24hoursBefore = dateOf24hoursBefore.toISOString()
 
   useEffect(() => {
-    fetch(`${API_URL}/paquetes?start_date=${stringOfDateOf24hoursBefore}&sensor_id${sensor.id}`)
+    console.log("sensor id: " + sensor.id)
+    fetch(`${API_URL}/paquetes?start_date=${stringOfDateOf24hoursBefore}&sensor_id=${sensor.id}`)
       .then(res => res.json())
       .then(res => {
         setData(res)
+        setLoadingGraphs(false)
       })
 
   }, [])
@@ -53,7 +57,7 @@ const SensorCard = ({ sensor }) => {
               <span className="fw-lighter">hace 12 minutos</span>
             </p>
           </div>
-          {data.length > 0 ?
+          {!loadingGraphs ?
             <>
               <div className="col-md-4">
                 <GraphTemp data={data} syncId={sensor.id}></GraphTemp>

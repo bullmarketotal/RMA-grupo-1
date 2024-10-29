@@ -21,7 +21,7 @@ const SensorList = () => {
         <div className="card-body">
           <h1 className="card-title mb-4">Lista de Sensores</h1>
           {data.map((sensor) => (
-            <SensorCard sensor={sensor} />
+            <SensorCard sensor={sensor} key={sensor.id}/>
           ))}
         </div>
       </div>

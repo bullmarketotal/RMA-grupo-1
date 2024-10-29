@@ -24,9 +24,6 @@ import { getMidnightTicks, tickFormatter } from "../utils-graphs";
 
 export default function GraphTemp({ data, syncId = 0 }) {
 
-  console.log("A GRAFICAR TEMP:")
-  console.log(data);
-
   if(data.length === 0)
     return (
       <div>No se recibieron datos para el gráfico.</div>
