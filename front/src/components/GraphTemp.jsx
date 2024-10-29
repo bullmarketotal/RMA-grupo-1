@@ -63,7 +63,7 @@ export default function GraphTemp({ data, syncId = 0 }) {
           dataKey="date"
           type="number"
           domain={["dataMin", "dataMax"]}
-          tick={false}
+          tick={true}
           tickFormatter={tickFormatter}
         />
         <YAxis

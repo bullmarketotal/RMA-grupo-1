@@ -66,7 +66,7 @@ export default function GraphNivel({ data, syncId, noBrush }) {
           tickCount={7}
           type="number"
           domain={["dataMin", "dataMax"]}
-          tick={false}
+          tick={true}
           tickFormatter={tickFormatter}
         />
         <YAxis unit={"m"} />
