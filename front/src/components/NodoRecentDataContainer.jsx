@@ -14,9 +14,8 @@ export default function NodoRecentDataContainer({data, CARD_HEIGHT}) {
             id="card-container"
             className="d-flex align-items-center"
             style={{ height: CARD_HEIGHT }}
-            title={dateFormatter(new Date(data[data.length-1].date).getTime())}
           >
-            <div className="card me-5 p-3" style={{width: MAIN_CARD_WIDTH}}>
+            <div className="card me-5 p-3" style={{width: MAIN_CARD_WIDTH}} title={dateFormatter(new Date(data[data.length-1].date).getTime())}>
               <div className="card-body align-items-center">
                 <p className="card-text fs-3 d-flex">
                   <span className="me-4">
