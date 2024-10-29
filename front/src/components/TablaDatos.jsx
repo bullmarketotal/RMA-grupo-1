@@ -1,34 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
-//TO-DO: modificar margenes.
+
 const TablaDatos = ({ items }) => {
-  //const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
-      /*      try {
-        const offset = (page - 1) * limit;
-
-        const response = await fetch(
-          ${api}/paquetes?limit=${limit}&offset=${offset}
-        );
-
-        if (!response.ok) {
-          throw new Error("Error en la solicitud a API");
-        }
-        const data = await response.json();
-
-        setItems((prevItems) => [...prevItems, ...data]);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-*/
+      setLoading(false);
     };
     fetchData();
   }, [page]);
@@ -53,7 +33,22 @@ const TablaDatos = ({ items }) => {
       { Header: "ID Sensor", accessor: "sensor_id" },
       { Header: "Temperatura", accessor: "temperatura" },
       { Header: "Nivel Hidrométrico", accessor: "nivel_hidrometrico" },
-      { Header: "Fecha", accessor: "date" },
+      {
+        Header: "Fecha y Hora",
+        accessor: "date",
+        Cell: ({ value }) => {
+          // Convertir el timestamp
+          const date = new Date(value);
+          return date.toLocaleString("es-ES", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+        },
+      },
     ],
     []
   );
@@ -81,12 +76,12 @@ const TablaDatos = ({ items }) => {
           return (
             <tr
               {...row.getRowProps()}
-              key={"${row.original.sensor_id}-${row.original.date}"}
+              key={`${row.original.sensor_id}-${row.original.date}`}
             >
               {row.cells.map((cell) => (
                 <td
                   {...cell.getCellProps()}
-                  key={"${row.id}-${cell.column.id}"}
+                  key={`${row.id}-${cell.column.id}`}
                 >
                   {cell.render("Cell")}
                 </td>

@@ -19,7 +19,7 @@ router = APIRouter()
 
 @router.get("/paquetes", response_model=list[schemas.Paquete])
 def read_paquetes(
-    limit: int = Query(10, ge=1),
+    limit: Optional[int] = Query(None, ge=1),
     offset: int = Query(0, ge=0),
     sensor_id: Optional[int] = None,  ## filtrar por id de sensor
     start_date: Optional[datetime] = None,  ## filtrar por fechas

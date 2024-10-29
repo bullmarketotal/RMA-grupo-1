@@ -169,11 +169,6 @@ const SensorView = () => {
           ) : (
             view === "table" && (
               <div>
-                <FiltrosFetch
-                  initialSensorId={id}
-                  setData={setData}
-                  totalItems={totalItems}
-                />
                 <Paginacion
                   itemsPerPage={itemsPerPage}
                   totalItems={totalItems}
