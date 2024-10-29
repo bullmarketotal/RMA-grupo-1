@@ -17,8 +17,7 @@ const SensorCard = ({ sensor }) => {
   const stringOfDateOf24hoursBefore = dateOf24hoursBefore.toISOString()
 
   useEffect(() => {
-    console.log("sensor id: " + sensor.id)
-    fetch(`${API_URL}/paquetes?start_date=${stringOfDateOf24hoursBefore}&sensor_id=${sensor.id}`)
+    fetch(`${API_URL}/paquetes?start_date=${stringOfDateOf24hoursBefore}&end_date=${(new Date()).toISOString()}&sensor_id=${sensor.id}&limit=200`)
       .then(res => res.json())
       .then(res => {
         setData(res)
