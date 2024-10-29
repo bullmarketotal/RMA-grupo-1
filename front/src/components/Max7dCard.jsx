@@ -34,12 +34,10 @@ export default function Max7dCard({ data, CARD_WIDTH }) {
       </div>
       <div className="card-body d-flex flex-column justify-content-center align-items-center">
         <p className="card-text fs-5">
-          <div>
             <i className="fa fa-tint me-2" aria-hidden="true" />
             {maxNivel7dias.nivel_hidrometrico}m
-          </div>
         </p>
-        <h6 className="card-subtitle mb-2 text-body-secondary" style={{"white-space": "nowrap", overflow: "hidden"}}>
+        <h6 className="card-subtitle mb-2 text-body-secondary" style={{"whiteSpace": "nowrap", overflow: "hidden"}}>
           {maxNivel7dias.stringTime}
         </h6>
       </div>

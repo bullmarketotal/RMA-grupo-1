@@ -127,7 +127,7 @@ const SensorView = () => {
               className="btn-check"
               name="btnradio"
               id="graph"
-              autocomplete="off"
+              autoComplete="off"
               defaultChecked
               onChange={handleViewChange}
             />
@@ -140,7 +140,7 @@ const SensorView = () => {
               className="btn-check"
               name="btnradio"
               id="table"
-              autocomplete="off"
+              autoComplete="off"
               onChange={handleViewChange}
             />
             <label className="btn btn-outline-primary" htmlFor="table">
