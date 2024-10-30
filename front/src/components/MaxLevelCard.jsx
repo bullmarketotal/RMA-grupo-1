@@ -1,65 +1,17 @@
 import PropTypes from "prop-types";
+import { filterDataByTime, getMaxValue } from "./utils/sensorUtils";
 
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
-const formatDate = (date, timeFrame) => {
-  const options = { hour: "2-digit", minute: "2-digit", hour12: false };
-  const dateObj = new Date(date); // Convierte a objeto Date
-  if (timeFrame === TIMEFRAME_24H) {
-    return dateObj.toLocaleTimeString([], options) + " hs";
-  } else {
-    return `${String(dateObj.getDate()).padStart(2, "0")}/${String(
-      dateObj.getMonth() + 1
-    ).padStart(2, "0")} - ${dateObj.toLocaleTimeString([], options)} hs`;
-  }
-};
-
-const getMaxNivel = (data, timeFrame) => {
-  const dateOfTimeFrame = new Date(Date.now() - timeFrame);
-
-  if (
-    data.length === 0 ||
-    new Date(data[data.length - 1].date) < dateOfTimeFrame
-  ) {
-    return {
-      nivel_hidrometrico: "--",
-      stringTime: `Sin datos`,
-    };
-  }
-
-  const max = data.reduce(
-    (acc, current) => {
-      const currentDate = new Date(current.date);
-      return currentDate >= dateOfTimeFrame &&
-        current.nivel_hidrometrico > acc.nivel_hidrometrico
-        ? current
-        : acc;
-    },
-    { nivel_hidrometrico: -Infinity }
-  );
-
-  if (max.nivel_hidrometrico === -Infinity) {
-    return {
-      nivel_hidrometrico: "--",
-      stringTime: `Sin datos`,
-    };
-  }
-
-  const dateOfMax = new Date(max.date);
-  return {
-    nivel_hidrometrico: max.nivel_hidrometrico.toFixed(1),
-    stringTime: formatDate(dateOfMax, timeFrame),
-  };
-};
-
-export default function MaxLevelCard({ data, CARD_WIDTH, timeFrame }) {
-  const maxNivel = getMaxNivel(data, timeFrame);
+function MaxLevelCard({ data, CARD_WIDTH, timeFrame }) {
+  const filteredData = filterDataByTime(data, timeFrame);
+  const maxNivel = getMaxValue(filteredData, "nivel_hidrometrico");
 
   return (
-    <div className="card me-2" style={{ width: CARD_WIDTH }}>
+    <div className="card me-3" style={{ width: CARD_WIDTH }}>
       <div className="card-header">
-        <h6 className="card-title text-center mb-0">
+        <h6 className="card-title text-center mb-1">
           Pico {timeFrame === TIMEFRAME_24H ? "24hs" : "7 días"}
         </h6>
       </div>
@@ -79,14 +31,4 @@ export default function MaxLevelCard({ data, CARD_WIDTH, timeFrame }) {
   );
 }
 
-MaxLevelCard.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      nivel_hidrometrico: PropTypes.number.isRequired,
-      date: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-    })
-  ).isRequired,
-  CARD_WIDTH: PropTypes.string.isRequired,
-  timeFrame: PropTypes.number.isRequired,
-};
+export default MaxLevelCard;
