@@ -23,7 +23,7 @@ const obtenerTimeAgoString = (lastData) => {
 
 export default function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
   const CARD_WIDTH = "30%";
-  const MAIN_CARD_WIDTH = "340px";
+  const MAIN_CARD_WIDTH = "350px";
 
   const lastData = data[data.length - 1]; // Último dato
   const timeAgoString = obtenerTimeAgoString(lastData); // Cadena de tiempo
@@ -35,13 +35,13 @@ export default function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
       style={{ height: CARD_HEIGHT }}
       title={dateFormatter(new Date(lastData.date).getTime())}
     >
-      <div className="card me-3 p-3" style={{ width: MAIN_CARD_WIDTH }}>
+      <div className="card me-3" style={{ width: MAIN_CARD_WIDTH }}>
         <div className="card-header">
-          <h6 className="card-title text-center mb-0">Últimos Datos</h6>
+          <h6 className="card-title text-center mb-1">Últimos Datos</h6>
         </div>
         <div className="card-body d-flex flex-column align-items-center">
-          <div className="card-text fs-4 d-flex justify-content-center align-items-center">
-            <span className="me-4 d-flex align-items-center">
+          <div className="card-text fs-5 d-flex justify-content-center align-items-center">
+            <span className="me-3 d-flex align-items-center">
               <i className="fa fa-tint me-2" aria-hidden="true" />
               {lastData.nivel_hidrometrico.toFixed(2)} m
             </span>
@@ -55,13 +55,11 @@ export default function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
           </h6>
         </div>
       </div>
-
       <MaxLevelCard
         data={data}
         CARD_WIDTH={CARD_WIDTH}
         timeFrame={TIMEFRAME_24H}
       />
-
       <MaxLevelCard
         data={data}
         CARD_WIDTH={CARD_WIDTH}
