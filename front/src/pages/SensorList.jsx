@@ -20,7 +20,7 @@ const SensorList = () => {
 
   return (
     <div className="container mt-5">
-      <div className="card">
+      <div className="card shadow">
         <div className="card-body">
           <h1 className="card-title mb-4">Lista de Sensores</h1>
           {data.map((sensor) => (

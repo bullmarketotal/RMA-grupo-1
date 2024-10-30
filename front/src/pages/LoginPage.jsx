@@ -69,7 +69,7 @@ const LoginPage = () => {
 
   return (
     <div className="container mt-5">
-      <div className="card">
+      <div className="card shadow">
         <div className="card-body">
           <h1 className="card-title mb-4">
             {isAuthenticated

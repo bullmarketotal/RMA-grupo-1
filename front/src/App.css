@@ -1,32 +1,4 @@
 body {
   margin: 0; /* Elimina el margen predeterminado del body */
-  background-color: rgb(255, 255, 255); /* Color gris clarito para el fondo */
-}
-
-/* Personaliza el scrollbar en navegadores basados en WebKit (Chrome, Safari) */
-::-webkit-scrollbar {
-  width: 5px; /* Ancho del scrollbar */
-  height: 8px; /* Altura para scrollbar horizontal */
-}
-
-::-webkit-scrollbar-track {
-  background: #fff; /* Color del fondo del scrollbar */
-  border-radius: 10px; /* Esquinas redondeadas */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(15, 134, 232); /* Color del "pulgar" del scrollbar */
-  border-radius: 10px; /* Esquinas redondeadas */
-  border: 1px solid #fff; /* Espacio alrededor del pulgar */
-}
-
-/* Ocultar flechas del scrollbar en navegadores WebKit */
-::-webkit-scrollbar-button {
-  display: none; /* Ocultar flechas */
-}
-
-/* Para Firefox */
-html {
-  scrollbar-width: thin; /* Hacer el scrollbar más delgado */
-  scrollbar-color: rgb(15, 134, 232) #fff; /* Colores del pulgar y el fondo del scrollbar */
+  background-color: rgb(241, 244, 246); /* Color gris clarito para el fondo */
 }

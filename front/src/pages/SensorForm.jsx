@@ -54,91 +54,84 @@ const SensorForm = () => {
     }
   };
 
-  const handleMapClick = ({ lat, lng }) => {
-    setFormData({
-      ...formData,
-      latitud: lat,
-      longitud: lng,
-    });
-  };
-
   return (
     <div className="container mt-5">
-      <div className="card">
+      <div className="card shadow">
         <div className="card-body">
           <h2 className="card-title mb-4">Crear Sensor</h2>
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="identificador" className="form-label">
-                Identificador
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="identificador"
-                name="identificador"
-                value={formData.identificador}
-                onChange={handleChange}
-                required
-              />
+            <div className="row mb-3">
+              <div className="col">
+                <label htmlFor="identificador" className="form-label">
+                  Identificador
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="identificador"
+                  name="identificador"
+                  value={formData.identificador}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="col">
+                <label htmlFor="porcentajeBateria" className="form-label">
+                  Porcentaje de Batería
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="porcentajeBateria"
+                  name="porcentajeBateria"
+                  value={formData.porcentajeBateria}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="porcentajeBateria" className="form-label">
-                Porcentaje de Batería
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="porcentajeBateria"
-                name="porcentajeBateria"
-                value={formData.porcentajeBateria}
-                onChange={handleChange}
-                required
-              />
+            {/* Fila para Latitud y Longitud */}
+            <div className="row mb-3">
+              <div className="col">
+                <label htmlFor="latitud" className="form-label">
+                  Latitud
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="latitud"
+                  name="latitud"
+                  value={formData.latitud}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="col">
+                <label htmlFor="longitud" className="form-label">
+                  Longitud
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="longitud"
+                  name="longitud"
+                  value={formData.longitud}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="latitud" className="form-label">
-                Latitud
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="latitud"
-                name="latitud"
-                value={formData.latitud}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="longitud" className="form-label">
-                Longitud
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="longitud"
-                name="longitud"
-                value={formData.longitud}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <MapaComponent setFormData={setFormData} />{" "}
-            {/* Pasa setFormData al componente de mapa */}
+            <MapaComponent setFormData={setFormData} />
           </form>
-        </div>
-      </div>
-
-      <div className="card mt-4">
-        <div className="card-body d-flex justify-content-center">
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleSubmit}
-          >
-            Crear Sensor
-          </button>
+          <div className="card-body d-flex justify-content-center">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={handleSubmit}
+            >
+              Crear Sensor
+            </button>
+          </div>
         </div>
       </div>
     </div>

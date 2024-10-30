@@ -52,7 +52,7 @@ const MapaComponent = ({ setFormData }) => {
 
   return (
     <div style={{ position: "relative" }}>
-      <div id="map" style={{ height: "400px" }}></div>
+      <div id="map" style={{ height: "500px" }}></div>
       <button
         type="button"
         onClick={centerMap}

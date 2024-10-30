@@ -1,33 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTable } from "react-table";
 
 const TablaDatos = ({ items }) => {
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setLoading(false);
-    };
-    fetchData();
-  }, [page]);
-
-  const handleScroll = () => {
-    const bottom =
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
-    if (bottom && !loading) {
-      setPage((prev) => prev + 1);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [loading]);
-
   const columns = React.useMemo(
     () => [
       { Header: "ID Sensor", accessor: "sensor_id" },
@@ -63,9 +37,7 @@ const TablaDatos = ({ items }) => {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()} key={column.id}>
-                {column.render("Header")}
-              </th>
+              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
             ))}
           </tr>
         ))}
@@ -74,17 +46,9 @@ const TablaDatos = ({ items }) => {
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr
-              {...row.getRowProps()}
-              key={`${row.original.sensor_id}-${row.original.date}`}
-            >
+            <tr {...row.getRowProps()}>
               {row.cells.map((cell) => (
-                <td
-                  {...cell.getCellProps()}
-                  key={`${row.id}-${cell.column.id}`}
-                >
-                  {cell.render("Cell")}
-                </td>
+                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
               ))}
             </tr>
           );

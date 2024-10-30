@@ -42,7 +42,6 @@ const SensorView = () => {
         setLoading(false);
       });
   }, [id]);
-
   const handleViewChange = (event) => setView(event.target.id);
 
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
@@ -55,14 +54,9 @@ const SensorView = () => {
 
   return (
     <div className="container mt-5">
-      <div id="main" className="card mb-4">
+      <div id="main" className="card mb-4 shadow">
         <div className="card-body">
-          <SensorHeader
-            identificador={nodo.sensor.identificador}
-            latitud={nodo.sensor.latitud}
-            longitud={nodo.sensor.longitud}
-            loading={loading}
-          />
+          <SensorHeader sensor={nodo.sensor} loading={loading} />
           <SensorInfoPanel
             data={data}
             loading={loading}

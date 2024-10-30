@@ -20,6 +20,7 @@ def read_sensores(db: Session = Depends(get_db)):
 def create_sensor(sensor: schemas.SensorCreate, db: Session = Depends(get_db)):
     return services.crear_sensor(db, sensor)
 
+
 @router.get("/sensordata/{id}", response_model=schemas.SensorData)
 def read_sensor_with_data(id: int, db: Session = Depends(get_db)):
     return services.sensor_con_datos(id, db)

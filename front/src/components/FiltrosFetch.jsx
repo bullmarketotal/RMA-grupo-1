@@ -27,9 +27,6 @@ export default function FiltrosFetch({ initialSensorId, setData, totalItems }) {
       try {
         let url = `${api}/paquetes?sensor_id=${sensorId}`;
 
-        if (sensorId) {
-          url += `&sensor_id=${sensorId}`;
-        }
         if (startDate) {
           url += `&start_date=${encodeURIComponent(startDate)}`;
         }

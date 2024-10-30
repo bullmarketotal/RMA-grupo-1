@@ -18,7 +18,7 @@ const SensorDataVisualizer = ({
   getVisibleData,
   sensorId,
 }) => (
-  <div id="data-visualizer" className="card mb-4">
+  <div id="data-visualizer" className="card mb-4 shadow">
     <div className="card-body">
       <div className="d-flex justify-content-start">
         <div
