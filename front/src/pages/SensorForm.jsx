@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapaComponent from "../components/MapaComponent";
+import { useNotification } from "../context/NotificationContext";
 
 const SensorForm = () => {
   const [formData, setFormData] = useState({
@@ -10,8 +11,10 @@ const SensorForm = () => {
     latitud: "",
     longitud: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,15 +25,12 @@ const SensorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const dataToSend = {
       ...formData,
-      latitud: isNaN(parseFloat(formData.latitud))
-        ? null
-        : parseFloat(formData.latitud),
-      longitud: isNaN(parseFloat(formData.longitud))
-        ? null
-        : parseFloat(formData.longitud),
+      latitud: isNaN(parseFloat(formData.latitud)) ? null : parseFloat(formData.latitud),
+      longitud: isNaN(parseFloat(formData.longitud)) ? null : parseFloat(formData.longitud),
     };
 
     try {
@@ -43,30 +43,24 @@ const SensorForm = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("Sensor creado:", data);
+        showNotification("Sensor creado exitosamente!", "success");
         navigate("/sensores");
       } else {
-        console.error("Error al crear el sensor");
+        showNotification("Error al crear el sensor.", "error");
       }
     } catch (error) {
+      showNotification("Error al enviar la solicitud.", "error");
       console.error("Error al enviar la solicitud:", error);
+    } finally {
+      setIsSubmitting(false);
     }
-  };
-
-  const handleMapClick = ({ lat, lng }) => {
-    setFormData({
-      ...formData,
-      latitud: lat,
-      longitud: lng,
-    });
   };
 
   return (
     <div className="container mt-5">
-      <div className="card">
+      <div className="card shadow-sm border-light">
         <div className="card-body">
-          <h2 className="card-title mb-4">Crear Sensor</h2>
+          <h2 className="card-title mb-4 text-left">Crear Sensor</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="identificador" className="form-label">
@@ -124,21 +118,22 @@ const SensorForm = () => {
                 required
               />
             </div>
-            <MapaComponent setFormData={setFormData} />{" "}
-            {/* Pasa setFormData al componente de mapa */}
-          </form>
-        </div>
-      </div>
+            <MapaComponent setFormData={setFormData} />
 
-      <div className="card mt-4">
-        <div className="card-body d-flex justify-content-center">
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleSubmit}
-          >
-            Crear Sensor
-          </button>
+            <div className="d-flex justify-content-center mt-4">
+              <button
+                type="submit"
+                className="btn btn-primary px-4 py-2"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                ) : (
+                  "Crear Sensor"
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
