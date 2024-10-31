@@ -43,7 +43,7 @@ const SensorDataVisualizer = ({ data, loading }) => {
               Tabla
             </label>
           </div>
-          <FiltrosFetch initialSensorId={data.sensor.id} />
+          <FiltrosFetch initialSensorId={data.id}  />
         </div>
 
         {view === "graph" ? (

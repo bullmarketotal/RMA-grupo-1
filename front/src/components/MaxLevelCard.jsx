@@ -6,10 +6,11 @@ const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
 function MaxLevelCard({ data, CARD_WIDTH, timeFrame }) {
   console.log("data", data);
+  console.log("timeFrame", timeFrame);
   const filteredData = filterDataByTime(data, timeFrame);
-  console.log(filteredData);
+  console.log("filterred",filteredData);
   const maxNivel = getMaxValue(filteredData, "nivel_hidrometrico");
-  console.log(maxNivel);
+
 
   return (
     <div className="card me-3" style={{ width: CARD_WIDTH }}>

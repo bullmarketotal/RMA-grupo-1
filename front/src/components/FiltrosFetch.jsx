@@ -37,8 +37,10 @@ export default function FiltrosFetch({ initialSensorId, setData }) {
       setData(data); // Actualiza los datos en el componente padre
     } catch (error) {
       console.error("Error fetching data:", error);
-    }
+    }  
   };
+
+  
 
   return (
     <div className="container mt-1">

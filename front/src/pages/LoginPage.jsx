@@ -33,7 +33,7 @@ const LoginPage = () => {
       // Llamar al login del contexto
       login(data.token);
 
-      console.log("Token:", data.token);
+     // console.log("Token:", data.token);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,7 +59,7 @@ const LoginPage = () => {
       }
       const data = await res.json();
 
-      console.log("Registro exitoso:", data);
+     // console.log("Registro exitoso:", data);
     } catch (err) {
       setError(err.message);
     } finally {

@@ -51,3 +51,21 @@ def sensor_con_datos(nodo_id: int, db: Session) -> SensorData:
         },
         "data": data,
     }
+
+def get_sensor(nodo_id: int, db: Session) -> Sensor:
+       # Info sensor
+    nodo_query = select(Sensor).where(Sensor.id == nodo_id)
+    nodo = db.execute(nodo_query).scalars().first()
+
+    if not nodo:
+        raise HTTPException(status_code=404, detail="Nodo no encontrado")
+
+    return {
+        
+        "identificador": nodo.identificador,
+        "porcentajeBateria": 50,
+        "latitud": nodo.latitud,
+        "longitud": nodo.longitud,
+        "id": nodo.id,
+             
+    }    

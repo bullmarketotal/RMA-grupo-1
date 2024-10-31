@@ -13,7 +13,7 @@ const TableView = ({ data, loading }) => {
     identificador,
   }));
 
-  console.log(newData);
+ // console.log(newData);
   const [currentPage, setCurrentPage] = useState(1);
   const getVisibleData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;

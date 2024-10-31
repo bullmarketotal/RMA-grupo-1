@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SensorHeader from "../components/SensorHeader";
 import SensorInfoPanel from "../components/SensorInfoPanel";
 import SensorDataVisualizer from "../components/SensorDataVisualizer";
@@ -12,6 +12,11 @@ const SensorView = () => {
   const startDate = null;
   const endDate = null;
   const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
+ // const [loading,setLoading] = useState(true);
+  //const [error,setError] = useState("");
+  console.log("dataaa", data);
+  
+  //useEffect(useFetchSensorData,[]);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <p>{error}</p>;

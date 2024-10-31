@@ -44,7 +44,7 @@ const SensorForm = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Sensor creado:", data);
+       // console.log("Sensor creado:", data);
         navigate("/sensores");
       } else {
         console.error("Error al crear el sensor");

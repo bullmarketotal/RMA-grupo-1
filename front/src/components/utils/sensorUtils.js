@@ -1,10 +1,14 @@
 export function filterDataByTime(data, timeFrame) {
   const currentTime = Date.now();
   const thresholdTime = currentTime - timeFrame;
-  console.log("thresholdTime", thresholdTime, "currentTime", currentTime);
+  //console.log("thresholdTime", thresholdTime, "currentTime", currentTime);
 
-  const result = data.filter((item) => item.date >= thresholdTime);
-  console.log(result);
+  const result = data.filter((item) => {
+    // Convierte la fecha a timestamp si es un string
+    const itemDate = typeof item.date === "string" ? new Date(item.date).getTime() : item.date;
+    return itemDate >= thresholdTime;
+  });
+ // console.log(result);
   return result;
 }
 
