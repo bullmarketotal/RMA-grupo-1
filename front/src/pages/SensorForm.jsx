@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapaComponent from "../components/MapaComponent";
+import { useNotification } from "../context/NotificationContext";
 
 const SensorForm = () => {
   const [formData, setFormData] = useState({
@@ -10,8 +11,10 @@ const SensorForm = () => {
     latitud: "",
     longitud: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,6 +25,7 @@ const SensorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const dataToSend = {
       ...formData,
@@ -43,14 +47,16 @@ const SensorForm = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-       // console.log("Sensor creado:", data);
+        showNotification("Sensor creado exitosamente!", "success");
         navigate("/sensores");
       } else {
-        console.error("Error al crear el sensor");
+        showNotification("Error al crear el sensor.", "error");
       }
     } catch (error) {
+      showNotification("Error al enviar la solicitud.", "error");
       console.error("Error al enviar la solicitud:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -122,16 +128,25 @@ const SensorForm = () => {
               </div>
             </div>
             <MapaComponent setFormData={setFormData} />
+
+            <div className="d-flex justify-content-center mt-4">
+              <button
+                type="submit"
+                className="btn btn-primary px-4 py-2"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                ) : (
+                  "Crear Sensor"
+                )}
+              </button>
+            </div>
           </form>
-          <div className="card-body d-flex justify-content-center">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={handleSubmit}
-            >
-              Crear Sensor
-            </button>
-          </div>
         </div>
       </div>
     </div>

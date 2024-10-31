@@ -4,14 +4,15 @@ import React, { useEffect, useState } from "react";
 
 const MapaComponent = ({ setFormData }) => {
   const limites = [
-    //no se estan usando
-    [-44.342, -67.145], // suroeste
-    [-42.594, -68.54], // noreste
+    [-42.342, -62.145], // suroeste
+    [-45.594, -71.54],  // noreste
   ];
 
   const posicionInicial = [-43.5042843, -65.7791978];
   const zoomInicial = 9;
+  
   const [map, setMap] = useState(null); // Estado para almacenar la referencia al mapa
+  const [marker, setMarker] = useState(null); // Estado para el marcador
 
   useEffect(() => {
     if (L.DomUtil.get("map") !== null) {
@@ -19,8 +20,9 @@ const MapaComponent = ({ setFormData }) => {
     }
 
     const mapInstance = L.map("map", {
-      maxBoundsViscosity: 0,
-      minZoom: 9,
+      maxBounds: limites,
+      minZoom:7,
+      maxBoundsViscosity: 0.1,
     }).setView(posicionInicial, zoomInicial);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -28,13 +30,22 @@ const MapaComponent = ({ setFormData }) => {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(mapInstance);
 
-    const marker = L.marker(posicionInicial).addTo(mapInstance); //marcador
+    const newMarker = L.marker(posicionInicial, { draggable: true }).addTo(mapInstance);
+    setMarker(newMarker); // Guardar el marcador en el estado
+
+    newMarker.on("dragend", function (e) {
+      const position = newMarker.getLatLng();
+      const { lat, lng } = position;
+      setFormData((prev) => ({ ...prev, latitud: lat, longitud: lng }));
+    });
 
     mapInstance.on("click", function (e) {
       const { lat, lng } = e.latlng;
-      marker.setLatLng([lat, lng]); // actualiza la posicion del marcador
-      mapInstance.setView([lat, lng], mapInstance.getZoom());
-      setFormData((prev) => ({ ...prev, latitud: lat, longitud: lng }));
+      if (mapInstance.getBounds().contains([lat, lng])) {
+        newMarker.setLatLng([lat, lng]); // actualiza la posición del marcador
+        mapInstance.setView([lat, lng], mapInstance.getZoom());
+        setFormData((prev) => ({ ...prev, latitud: lat, longitud: lng }));
+      }
     });
 
     setMap(mapInstance);
