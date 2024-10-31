@@ -21,12 +21,13 @@ const NavBar = () => {
           position: "sticky",
           top: 0,
           zIndex: 1000,
-          height: "60px",
+          height: "70px",
         }}
       >
         <Container
           fluid
           className="d-flex justify-content-between align-items-center"
+          style={{ maxWidth: "1400px", margin: "0 auto" }}
         >
           <Navbar.Brand as={Link} to="/">
             <img
@@ -53,12 +54,18 @@ const NavBar = () => {
             </Nav>
             <Nav>
               {isAuthenticated ? (
-                <Button variant="outline-light" onClick={logout}>
+                <Button
+                  variant="outline-light"
+                  onClick={logout}
+                  className="mx-2"
+                >
                   Cerrar Sesión
                 </Button>
               ) : (
                 <Link to="/login">
-                  <Button variant="outline-light">Iniciar Sesión</Button>
+                  <Button variant="outline-light" className="mx-2">
+                    Iniciar Sesión
+                  </Button>
                 </Link>
               )}
             </Nav>
