@@ -54,9 +54,18 @@ const TablaDatos = ({items}) => {
   const columns = React.useMemo(
     () => [
       { Header: "ID Sensor", accessor: "sensor_id" },
-      { Header: "Temperatura", accessor: "temperatura" },
-      { Header: "Nivel Hidrométrico", accessor: "nivel_hidrometrico" },
-      { Header: "Fecha", accessor: "date" },
+      { Header: "Temperatura", accessor: (row) => `${Math.floor(row.temperatura)}ºC` },
+      { Header: "Nivel Hidrométrico", accessor: (row) => row.nivel_hidrometrico.toFixed(2) },
+      { Header: "Fecha y Hora", accessor: (row) => {
+          const date = new Date(row.date);
+          const day = String(date.getDate()).padStart(2, '0');
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const year = date.getFullYear();
+          const hours = String(date.getHours()).padStart(2, '0');
+          const minutes = String(date.getMinutes()).padStart(2, '0');
+          return `${day}/${month}/${year} ${hours}:${minutes}`; // Formato dd/mm/aaaa hh:mm
+        }
+      }
     ],
     []
   );
