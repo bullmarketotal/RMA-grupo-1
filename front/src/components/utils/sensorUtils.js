@@ -1,7 +1,11 @@
 export function filterDataByTime(data, timeFrame) {
   const currentTime = Date.now();
   const thresholdTime = currentTime - timeFrame;
-  return data.filter((item) => item.date >= thresholdTime);
+  console.log("thresholdTime", thresholdTime, "currentTime", currentTime);
+
+  const result = data.filter((item) => item.date >= thresholdTime);
+  console.log(result);
+  return result;
 }
 
 export function getMaxValue(data, key) {

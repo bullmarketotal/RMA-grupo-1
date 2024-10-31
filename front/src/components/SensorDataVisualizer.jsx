@@ -1,93 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import FiltrosFetch from "../components/FiltrosFetch";
-import GraphDoble from "../components/GraphDoble";
-import TablaDatos from "../components/TablaDatos";
-import Paginacion from "../components/Paginacion";
-import LoadingSpinner from "../components/LoadingSpinner";
+import GraphView from "../components/GraphView";
+import TableView from "../components/TableView";
 
-const SensorDataVisualizer = ({
-  view,
-  handleViewChange,
-  data,
-  setData,
-  totalItems,
-  loading,
-  itemsPerPage,
-  currentPage,
-  handlePageChange,
-  getVisibleData,
-  sensorId,
-}) => (
-  <div id="data-visualizer" className="card mb-4 shadow">
-    <div className="card-body">
-      <div className="d-flex justify-content-start">
-        <div
-          className="btn-group mb-4 me-3"
-          role="group"
-          aria-label="Basic radio toggle button group"
-        >
-          <input
-            type="radio"
-            className="btn-check"
-            name="btnradio"
-            id="graph"
-            autoComplete="off"
-            defaultChecked
-            onChange={handleViewChange}
-          />
-          <label className="btn btn-outline-primary" htmlFor="graph">
-            Gráfico
-          </label>
+const SensorDataVisualizer = ({ data, loading }) => {
+  const [view, setView] = useState("graph");
+  const handleViewChange = (event) => {
+    setView(event.target.id);
+  };
 
-          <input
-            type="radio"
-            className="btn-check"
-            name="btnradio"
-            id="table"
-            autoComplete="off"
-            onChange={handleViewChange}
-          />
-          <label className="btn btn-outline-primary" htmlFor="table">
-            Tabla
-          </label>
-        </div>
-        <FiltrosFetch
-          initialSensorId={sensorId}
-          setData={setData}
-          totalItems={totalItems}
-        />
-      </div>
-      {view === "graph" ? (
-        loading ? (
-          <LoadingSpinner />
-        ) : (
-          <GraphDoble data={data} />
-        )
-      ) : (
-        view === "table" && (
-          <div>
-            <Paginacion
-              itemsPerPage={itemsPerPage}
-              totalItems={totalItems}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
+  return (
+    <div id="data-visualizer" className="card mb-4 shadow">
+      <div className="card-body">
+        <div className="d-flex justify-content-start">
+          <div
+            className="btn-group mb-4 me-3"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              className="btn-check"
+              name="btnradio"
+              id="graph"
+              autoComplete="off"
+              checked={view === "graph"}
+              onChange={handleViewChange}
             />
-            {loading ? (
-              <LoadingSpinner />
-            ) : (
-              <TablaDatos items={getVisibleData()} />
-            )}
-            <Paginacion
-              itemsPerPage={itemsPerPage}
-              totalItems={totalItems}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
+            <label className="btn btn-outline-primary w-100" htmlFor="graph">
+              Gráfico
+            </label>
+            <input
+              type="radio"
+              className="btn-check"
+              name="btnradio"
+              id="table"
+              autoComplete="off"
+              checked={view === "table"}
+              onChange={handleViewChange}
             />
+            <label className="btn btn-outline-primary w-100" htmlFor="table">
+              Tabla
+            </label>
           </div>
-        )
-      )}
+          <FiltrosFetch initialSensorId={data.sensor.id} />
+        </div>
+
+        {view === "graph" ? (
+          <GraphView data={data.data} loading={loading} />
+        ) : (
+          <TableView data={data} loading={loading} />
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default SensorDataVisualizer;

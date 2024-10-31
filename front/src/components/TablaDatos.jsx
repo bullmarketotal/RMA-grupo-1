@@ -4,7 +4,7 @@ import { useTable } from "react-table";
 const TablaDatos = ({ items }) => {
   const columns = React.useMemo(
     () => [
-      { Header: "ID Sensor", accessor: "sensor_id" },
+      { Header: "ID Sensor", accessor: "identificador" },
       { Header: "Temperatura", accessor: "temperatura" },
       { Header: "Nivel Hidrométrico", accessor: "nivel_hidrometrico" },
       {
@@ -30,7 +30,6 @@ const TablaDatos = ({ items }) => {
   const data = React.useMemo(() => items, [items]);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
-
   return (
     <table className="table table-striped" {...getTableProps()}>
       <thead>

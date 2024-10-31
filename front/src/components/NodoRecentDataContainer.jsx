@@ -3,6 +3,7 @@ import MaxLevelCard from "./MaxLevelCard";
 import Max24hsCard from "./Max24hsCard";
 import Max7dCard from "./Max7dCard";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
@@ -21,10 +22,12 @@ const obtenerTimeAgoString = (lastData) => {
   return `Hace ${Math.floor(minutesBetween / (60 * 24)).toFixed(0)} días`;
 };
 
-export default function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
+function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
   const CARD_WIDTH = "30%";
   const MAIN_CARD_WIDTH = "350px";
-
+  if (!data || data.length === 0) {
+    return <p>No hay datos disponibles.</p>;
+  }
   const lastData = data[data.length - 1]; // Último dato
   const timeAgoString = obtenerTimeAgoString(lastData); // Cadena de tiempo
 
@@ -55,16 +58,14 @@ export default function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
           </h6>
         </div>
       </div>
+      <Max7dCard data={data} CARD_WIDTH={CARD_WIDTH} />
       <MaxLevelCard
         data={data}
         CARD_WIDTH={CARD_WIDTH}
         timeFrame={TIMEFRAME_24H}
       />
-      <MaxLevelCard
-        data={data}
-        CARD_WIDTH={CARD_WIDTH}
-        timeFrame={TIMEFRAME_7D}
-      />
     </div>
   );
 }
+
+export default NodoRecentDataContainer;

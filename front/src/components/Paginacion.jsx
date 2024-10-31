@@ -6,8 +6,7 @@ const Paginacion = ({
   onPageChange,
   itemsPerPage,
 }) => {
-  // Asegúrate de que itemsPerPage tenga un valor predeterminado
-  const itemsPerPageValue = itemsPerPage || 10;
+  const itemsPerPageValue = itemsPerPage || 15;
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPageValue));
 
   const handlePageChange = (pageNumber) => {
@@ -15,7 +14,6 @@ const Paginacion = ({
       onPageChange(pageNumber);
     }
   };
-
   return (
     <nav>
       <ul className="pagination">
@@ -23,6 +21,7 @@ const Paginacion = ({
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             className="page-link"
+            disabled={currentPage === 1}
           >
             Anterior
           </button>
@@ -48,6 +47,7 @@ const Paginacion = ({
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             className="page-link"
+            disabled={currentPage === totalPages}
           >
             Siguiente
           </button>

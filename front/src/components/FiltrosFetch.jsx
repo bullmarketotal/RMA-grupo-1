@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 
 const api = import.meta.env.VITE_API_URL;
 
-export default function FiltrosFetch({ initialSensorId, setData, totalItems }) {
-  const [items, setItems] = useState([]);
+export default function FiltrosFetch({ initialSensorId, setData }) {
   const [sensorId, setSensorId] = useState(initialSensorId || "");
   const [startDate, setStartDate] = useState(
     new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
@@ -14,43 +13,32 @@ export default function FiltrosFetch({ initialSensorId, setData, totalItems }) {
   const [endDate, setEndDate] = useState(
     new Date().toISOString().substring(0, 10)
   );
-  const [applyFilters, setApplyFilters] = useState(false);
 
   const handleApplyFilters = () => {
-    setApplyFilters(true);
+    // Maneja el filtrado de datos aquí, llamando a una función de filtrado en el componente padre
+    fetchData();
   };
 
-  useEffect(() => {
-    if (!applyFilters) return;
-
-    const fetchData = async () => {
-      try {
-        let url = `${api}/paquetes?sensor_id=${sensorId}`;
-
-        if (startDate) {
-          url += `&start_date=${encodeURIComponent(startDate)}`;
-        }
-        if (endDate) {
-          url += `&end_date=${encodeURIComponent(endDate)}`;
-        }
-
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Error en la solicitud a API");
-        }
-        const data = await response.json();
-        setItems(data);
-        setData(data);
-        totalItems = data.length;
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setApplyFilters(false); // Restablece el estado después de aplicar los filtros
+  const fetchData = async () => {
+    try {
+      let url = `${api}/paquetes?sensor_id=${sensorId}`;
+      if (startDate) {
+        url += `&start_date=${encodeURIComponent(startDate)}`;
       }
-    };
+      if (endDate) {
+        url += `&end_date=${encodeURIComponent(endDate)}`;
+      }
 
-    fetchData();
-  }, [applyFilters, sensorId, startDate, endDate, api, setData]);
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Error en la solicitud a API");
+      }
+      const data = await response.json();
+      setData(data); // Actualiza los datos en el componente padre
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <div className="container mt-1">
@@ -67,15 +55,10 @@ export default function FiltrosFetch({ initialSensorId, setData, totalItems }) {
               style={{ width: "80px" }}
             >
               <option value="">Seleccionar</option>
-              {/* {items.map((node) => (
-                <option key={node.id} value={node.id}>
-                  {node.id} 
-                </option>
-              ))} */}
+              {/* Aquí debes mapear tus sensores */}
             </select>
           </>
         )}
-
         <label className="form-label me-2 mb-0">
           <strong>Desde</strong>
         </label>
@@ -102,7 +85,7 @@ export default function FiltrosFetch({ initialSensorId, setData, totalItems }) {
           className="btn btn-primary btn-sm ms-3"
           onClick={handleApplyFilters}
         >
-          Aplicar Filtro{" "}
+          Aplicar Filtro
         </button>
       </div>
     </div>
