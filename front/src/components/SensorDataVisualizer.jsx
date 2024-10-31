@@ -3,7 +3,7 @@ import FiltrosFetch from "../components/FiltrosFetch";
 import GraphView from "../components/GraphView";
 import TableView from "../components/TableView";
 
-const SensorDataVisualizer = ({ data, loading }) => {
+const SensorDataVisualizer = ({ data, loading, onFilterChange }) => {
   const [view, setView] = useState("graph");
   const handleViewChange = (event) => {
     setView(event.target.id);
@@ -43,7 +43,7 @@ const SensorDataVisualizer = ({ data, loading }) => {
               Tabla
             </label>
           </div>
-          <FiltrosFetch initialSensorId={data.id} />
+          <FiltrosFetch onFilterChange={onFilterChange} />
         </div>
 
         {view === "graph" ? (

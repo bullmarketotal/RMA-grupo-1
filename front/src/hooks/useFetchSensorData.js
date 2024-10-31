@@ -14,7 +14,7 @@ const useFetchSensorData = (id, startDate, endDate) => {
         const sensorUrl = `${api}/sensor/${id}`;
         const sensorRes = await fetch(sensorUrl);
         if (!sensorRes.ok) {
-          throw new Error("Error al obtener la información del sensor");
+          throw new Error("Error al obtener el sensor");
         }
         const sensorResult = await sensorRes.json();
 
@@ -32,7 +32,7 @@ const useFetchSensorData = (id, startDate, endDate) => {
         setData({ sensor: sensorResult, paquetes: paquetesResult });
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("No se pudo cargar la información del sensor o los paquetes.");
+        setError("Error en la carga de datos");
       } finally {
         setLoading(false);
       }
