@@ -1,4 +1,4 @@
-""" 
+"""
     EL SCRIPT SE EJECUTA EN EL MISMO ENTORNO (VENV) QUE USAMOS PARA EJECUTAR FASTAPI
 
     python carga_base.py --count N1 --nodo N2
@@ -11,15 +11,16 @@ from datetime import datetime, timedelta
 # CONFIGURACION
 
 DEFAULT_ENTRY_COUNT = 500 # abarca 7 dias
-TIME_BETWEEN_MESSAGES = 0.1 # segundos
+# Cada cuantos minutos llegan los datos
+MINUTES_BETWEEN_ENTRIES = 20
 DEFAULT_NODO = 1
 
 # Temperaturas máximas y minimas permitidas
 MAX_TEMP = 40
 MIN_TEMP = -10
 
-# Cada cuantos minutos llegan los datos
-MINUTES_BETWEEN_ENTRIES = 20
+# Delay entre mensajes
+TIME_BETWEEN_MESSAGES = 0.1 # segundos
 
 # Valores iniciales
 temp = 15  

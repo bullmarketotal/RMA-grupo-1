@@ -9,10 +9,7 @@ const SensorList = () => {
   useEffect(() => {
     fetch(`${api}/sensores`)
       .then((res) => res.json())
-      .then((res) => {
-        setData(res);
-        console.log("res: " + res);
-      })
+      .then((res) => setData(res))
       .catch((error) =>
         console.error("Error al hacer fetch a lista de sensores: " + error)
       );
@@ -22,9 +19,11 @@ const SensorList = () => {
     <div className="container mt-5">
       <div className="card">
         <div className="card-body">
-          <h1 className="card-title mb-4">Lista de Sensores</h1>
+          <h1 className="card-title mb-4">Lista de Nodos</h1>
           {data.map((sensor) => (
-            <SensorCard sensor={sensor} />
+              <div className="mb-3" key={sensor.id}>
+                 <SensorCard sensor={sensor} />
+              </div>
           ))}
         </div>
       </div>

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
 const api = import.meta.env.VITE_API_URL;
 
-const TablaDatos = ({ items }) => {
+//TO-DO: modificar margenes.
+const TablaDatos = ({items}) => {
   //const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -51,13 +52,22 @@ const TablaDatos = ({ items }) => {
   }, [loading]);
 
   const columns = React.useMemo(
-    () => [
-      { Header: "ID Sensor", accessor: "sensor_id" },
-      { Header: "Temperatura", accessor: "temperatura" },
-      { Header: "Nivel Hidrométrico", accessor: "nivel_hidrometrico" },
-      { Header: "Fecha", accessor: "date" },
-    ],
-    []
+  () => [
+    { Header: "ID Nodo", accessor: "sensor_id" },
+    { Header: "Temperatura", accessor: (row) => `${Math.floor(row.temperatura)}ºC` },
+    { Header: "Nivel Hidrométrico", accessor: (row) => row.nivel_hidrometrico.toFixed(2) },
+    { Header: "Fecha y Hora", accessor: (row) => {
+        const date = new Date(row.date);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${day}/${month}/${year} ${hours}:${minutes}hs`; // Formato dd/mm/aaaa hh:mm
+      }
+    }
+  ],
+  []
   );
 
   const data = React.useMemo(() => items, [items]);
@@ -65,15 +75,13 @@ const TablaDatos = ({ items }) => {
     useTable({ columns, data });
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-0">
       {" "}
       {}
       <div className="card">
         {" "}
         {}
         <div className="card-body">
-          <h1 className="card-title mb-4">Tabla de Datos</h1>
-          {loading && <p>Cargando...</p>}
           <table className="table table-striped" {...getTableProps()}>
             {" "}
             {}

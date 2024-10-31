@@ -13,6 +13,7 @@ from back.models import ModeloBase
 from back.paquete.router import router as paquetes_router
 from back.sensores.router import router as sensores_router
 from back.usuarios.router import router as usuarios_router
+from back.roles.router import router as roles_router
 from back.depends.config import config
 from back.depends.paquetes import mi_callback
 from back.depends.sub import Subscriptor
@@ -56,3 +57,4 @@ app.add_middleware(
 app.include_router(sensores_router)
 app.include_router(paquetes_router)
 app.include_router(usuarios_router)
+app.include_router(roles_router)

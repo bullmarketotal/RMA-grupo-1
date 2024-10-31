@@ -34,6 +34,18 @@ export default function GraphNivel({ data, syncId, noBrush }) {
     data[data.length - 1].date
   );
 
+  if(data.length === 0)
+    return (
+      <div>No se recibieron datos para el gráfico de nivel hidrométrico.</div>
+  )
+
+   // si las fechas no son un nro de ticks, se parsea
+   if(! Number.isInteger(data[0] && data[0].date)) {
+    data.forEach((punto, i) => {
+      punto.date = (new Date(punto.date)).getTime()
+    })
+  }
+
   return (
     <ResponsiveContainer width="100%" height={200}>
       <AreaChart
@@ -54,7 +66,7 @@ export default function GraphNivel({ data, syncId, noBrush }) {
           tickCount={7}
           type="number"
           domain={["dataMin", "dataMax"]}
-          tick={false}
+          tick={true}
           tickFormatter={tickFormatter}
         />
         <YAxis unit={"m"} />
