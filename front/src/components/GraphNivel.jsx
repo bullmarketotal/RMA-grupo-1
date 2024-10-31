@@ -16,6 +16,7 @@ import {
   getMidnightTicks,
   tickFormatter,
 } from "../utils-graphs";
+import CustomTooltip from "./CustomTooltip";
 
 /*
     El prop "data" debe tener la forma:
@@ -79,10 +80,7 @@ export default function GraphNivel({ data, syncId, noBrush }) {
             </ReferenceLine>
           );
         })}
-        <Tooltip
-          labelFormatter={dateFormatter}
-          formatter={(value) => value + "m"}
-        />
+        <Tooltip content={CustomTooltip}/>
         <Area
           type="linear"
           dataKey="nivel_hidrometrico"
