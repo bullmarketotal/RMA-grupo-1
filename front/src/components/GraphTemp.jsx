@@ -12,6 +12,7 @@ import {
   YAxis,
 } from "recharts";
 import { getMidnightTicks, tickFormatter } from "../utils-graphs";
+import CustomTooltip from "./CustomTooltip";
 
 /*
     El prop "data" debe tener la forma:
@@ -94,11 +95,15 @@ export default function GraphTemp({ data, syncId = 0 }) {
           stroke="gray"
           strokeDasharray={8}
         ></ReferenceLine>
-        <Tooltip
-          labelFormatter={() => ""}
-          formatter={(value) => value + "°C"}
-        />
+        <Tooltip content={CustomTooltip}/>
       </LineChart>
     </ResponsiveContainer>
   );
 }
+
+/*
+<Tooltip
+          labelFormatter={() => ""}
+          formatter={(value) => value + "°C"}
+        />
+*/
