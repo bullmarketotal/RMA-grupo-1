@@ -58,7 +58,12 @@ function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
           </h6>
         </div>
       </div>
-      <Max7dCard data={data} CARD_WIDTH={CARD_WIDTH} />
+      <MaxLevelCard
+        data={data}
+        CARD_WIDTH={CARD_WIDTH}
+        timeFrame={TIMEFRAME_7D}
+      />
+
       <MaxLevelCard
         data={data}
         CARD_WIDTH={CARD_WIDTH}

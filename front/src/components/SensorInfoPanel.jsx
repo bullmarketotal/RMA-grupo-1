@@ -12,10 +12,13 @@ const SensorInfoPanel = ({ data, loading }) => {
       className="d-flex justify-content-between align-items-start"
     >
       <div>
-        {loading || !data.data.length ? (
+        {loading || !data.paquetes.length ? (
           <LoadingSpinner />
         ) : (
-          <NodoRecentDataContainer data={data.data} CARD_HEIGHT={CARD_HEIGHT} />
+          <NodoRecentDataContainer
+            data={data.paquetes}
+            CARD_HEIGHT={CARD_HEIGHT}
+          />
         )}
       </div>
       <div
@@ -24,6 +27,7 @@ const SensorInfoPanel = ({ data, loading }) => {
         style={{
           height: CARD_HEIGHT + "px",
           width: "400px",
+          backgroundColor: "grey",
         }}
       >
         {/* <MiniMap lat={data.sensor.lat} lng={data.sensor.lng} /> */}

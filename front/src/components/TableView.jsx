@@ -5,15 +5,15 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 const TableView = ({ data, loading }) => {
   const itemsPerPage = 15;
-  const totalItems = data.data.length;
+  const totalItems = data.paquetes.length;
   const identificador = data.sensor.identificador;
 
-  const newData = data.data.map((item) => ({
+  const newData = data.paquetes.map((item) => ({
     ...item,
     identificador,
   }));
 
- // console.log(newData);
+  // console.log(newData);
   const [currentPage, setCurrentPage] = useState(1);
   const getVisibleData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;

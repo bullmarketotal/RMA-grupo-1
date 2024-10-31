@@ -43,11 +43,11 @@ const SensorDataVisualizer = ({ data, loading }) => {
               Tabla
             </label>
           </div>
-          <FiltrosFetch initialSensorId={data.id}  />
+          <FiltrosFetch initialSensorId={data.id} />
         </div>
 
         {view === "graph" ? (
-          <GraphView data={data.data} loading={loading} />
+          <GraphView data={data.paquetes} loading={loading} />
         ) : (
           <TableView data={data} loading={loading} />
         )}

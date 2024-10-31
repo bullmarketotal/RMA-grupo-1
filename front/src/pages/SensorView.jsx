@@ -9,14 +9,14 @@ import useFetchSensorData from "../hooks/useFetchSensorData";
 
 const SensorView = () => {
   const { id } = useParams();
-  const startDate = null;
-  const endDate = null;
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
- // const [loading,setLoading] = useState(true);
-  //const [error,setError] = useState("");
-  console.log("dataaa", data);
-  
-  //useEffect(useFetchSensorData,[]);
+
+  const handleFilterChange = (newStartDate, newEndDate) => {
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+  };
 
   if (loading) return <LoadingSpinner />;
   if (error) return <p>{error}</p>;
@@ -29,7 +29,11 @@ const SensorView = () => {
           <SensorInfoPanel data={data} loading={loading} />
         </div>
       </div>
-      <SensorDataVisualizer data={data} loading={loading} />
+      <SensorDataVisualizer
+        data={data}
+        loading={loading}
+        onFilterChange={handleFilterChange}
+      />
     </div>
   );
 };
