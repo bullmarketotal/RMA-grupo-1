@@ -8,7 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
 import SensorView from "./SensorView";
-
+import "./AppRoutes.css";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -26,7 +26,6 @@ const AppRoutes = () => {
           }
         />
         <Route path="sensor/:id" element={<SensorView />} />
-
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>

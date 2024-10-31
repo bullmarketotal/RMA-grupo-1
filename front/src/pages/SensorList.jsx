@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import SensorCard from "../components/SensorCard.jsx";
-import LoadingSpinner from "../components/LoadingSpinner.jsx";
-import useFetchSensores from "../hooks/useFetchSensores.js";
+import SensorCard from "../components/SensorCard";
+import LoadingSpinner from "../components/LoadingSpinner";
+import useFetchSensores from "../hooks/useFetchSensores";
 
 const SensorList = () => {
   const { data, loading, error } = useFetchSensores();

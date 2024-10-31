@@ -3,12 +3,6 @@
   flex-direction: column;
   height: 100vh; /* Ocupa toda la altura de la ventana */
 }
-
-.content {
-  overflow-y: auto; /* Habilita la barra de desplazamiento vertical */
-  flex: 1; /* Ocupa todo el espacio restante */
-  padding: 20px; /* Espaciado opcional */
-}
 /* Estilo para el scrollbar en navegadores WebKit (Chrome, Safari) */
 ::-webkit-scrollbar {
   width: 8px; /* Ancho del scrollbar */

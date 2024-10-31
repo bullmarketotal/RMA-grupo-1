@@ -19,7 +19,7 @@
   font-size: 24px;
   font-weight: bold;
   text-decoration: none;
-  margin-right: 70px; /* Espacio entre el título y los enlaces */
+  margin-right: 80px; /* Espacio entre el título y los enlaces */
 }
 
 /* Enlaces de navegación */
@@ -104,4 +104,12 @@ section {
 /* Mostrar la sidebar */
 .sidebar.open {
   left: 0; /* Mostrar la sidebar */
+}
+.content-container {
+  padding-top: 60px; /* Espacio igual a la altura de la barra de navegación */
+  height: calc(
+    100vh - 60px
+  ); /* Ajusta la altura para que ocupe el resto de la pantalla */
+  overflow-y: auto; /* Habilita el scroll solo en el contenido */
+  background-color: #f8f9fa; /* Color de fondo para el contenido (opcional) */
 }
