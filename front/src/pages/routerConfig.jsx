@@ -4,12 +4,13 @@ import NavBar from "../components/NavBar";
 import { randomDataForDoubleChart } from "../utils-graphs";
 import Inicio from "./inicio";
 import LoginPage from "./LoginPage";
+import DatosPage from "./DatosView";
 import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
 import SensorView from "./SensorView";
 import TablaDatos from "../components/TablaDatos";
-import FiltrosFetch from "./FiltrosFetch";
+import FiltrosFetch from "../components/FiltrosFetch";
 import { useState } from "react";
 
 const AppRoutes = () => {
@@ -22,11 +23,7 @@ const AppRoutes = () => {
       <Route path="/" element={<NavBar />}>
         <Route index element={<Inicio />} />
         <Route path="list-sensor" element={<SensorList />} />
-        <Route path="tabla-datos" element={  <div>
-                                                <FiltrosFetch setData={setItems} />
-                                                <TablaDatos items={items} />
-                                            </div>} /> 
-
+        <Route path="datos-view" element={<DatosPage />}/>
         {/* Ruta protegida */}
         <Route
           path="create-sensor"

@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import TablaDatos from "../components/TablaDatos";
+import TablaDatos from "./TablaDatos";
 
 const api = import.meta.env.VITE_API_URL;
 
@@ -45,13 +45,13 @@ export default function FiltrosFetch({ initialSensorId, setData }) {
   }, [applyFilters]);
 
   return (
-    <div className="container mt-1">
-    <div className="mb-3 d-flex align-items-center">
+    <div className="container mt-1" style={{ paddingLeft: '4px' }}>
+    <div className="mb-4 d-flex justify-content-start align-items-center">
       {/* Solo muestra el filtro por sensor si no viene un sensorId predefinido */}
       {!initialSensorId && (
         <>
           <label className="form-label me-2 mb-0">
-            <strong>ID Sensor</strong>
+            <strong>ID Nodo</strong>
           </label>
           <select
           value={sensorId}

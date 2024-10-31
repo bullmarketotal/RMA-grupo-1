@@ -66,7 +66,7 @@ const SensorForm = () => {
     <div className="container mt-5">
       <div className="card">
         <div className="card-body">
-          <h2 className="card-title mb-4">Crear Sensor</h2>
+          <h1 className="card-title mb-4">Crear Nodo</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="identificador" className="form-label">

@@ -6,7 +6,7 @@ import GraphDoble from "../components/GraphDoble";
 import { randomDataForDoubleChart } from "../utils-graphs";
 import NodoRecentDataContainer from "../components/NodoRecentDataContainer";
 
-import FiltrosFetch from "./FiltrosFetch";
+import FiltrosFetch from "../components/FiltrosFetch";
 import TablaDatos from "../components/TablaDatos";
 
 

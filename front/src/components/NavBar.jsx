@@ -32,12 +32,12 @@ function NavBar() {
                 Inicio
               </Nav.Link>
               <Nav.Link as={Link} to="/create-sensor" className="nav-link">
-                Crear Sensor
+                Crear Nodo
               </Nav.Link>
               <Nav.Link as={Link} to="/list-sensor" className="nav-link">
-                Sensores
+                Nodos
               </Nav.Link>
-              <Nav.Link as={Link} to="/tabla-datos" className="nav-link">
+              <Nav.Link as={Link} to="/datos-view" className="nav-link">
                 Datos
               </Nav.Link>
             </Nav>
