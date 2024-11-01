@@ -64,7 +64,7 @@ const SensorForm = () => {
     <div className="container mt-5">
       <div className="card shadow">
         <div className="card-body">
-          <h2 className="card-title mb-4">Crear Sensor</h2>
+          <h2 className="card-title mb-4">Crear Nodo</h2>
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
               <div className="col">
@@ -142,7 +142,7 @@ const SensorForm = () => {
                     aria-hidden="true"
                   ></span>
                 ) : (
-                  "Crear Sensor"
+                  "Crear Nodo"
                 )}
               </button>
             </div>

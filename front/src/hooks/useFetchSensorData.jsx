@@ -31,6 +31,7 @@ const useFetchSensorData = (id, startDate, endDate) => {
         if (!paquetesRes.ok) {
           throw new Error("Error al obtener los datos de paquetes");
         }
+
         const paquetesResult = await paquetesRes.json();
         const formattedPaquetes = convertFieldToTimestamp(
           paquetesResult,
