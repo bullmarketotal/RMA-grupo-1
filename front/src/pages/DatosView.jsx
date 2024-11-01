@@ -55,7 +55,6 @@ const DatosPage = () => {
           ) : (
             <TableView data={data} loading={loading} />
           )}
-          {/* <TableView data={data} loading={loading} /> */}
         </div>
       </div>
     </div>
