@@ -41,7 +41,7 @@
 .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.2);
   /* Cambia el color de fondo */
-  transform: scale(1.05);
+  transform: scale(1.02);
   /* Efecto de ampliación */
 }
 /* Efecto de subrayado */
@@ -116,12 +116,11 @@ section {
   background-color: rgba(255, 255, 255, 0.2);
   /* Fondo suave al pasar el mouse */
   color: #fff;
-  /* Asegúrate de que el texto sea blanco */
 }
 .navbar-brand {
   margin-right: 20px;
-  /* Ajusta el espacio del logo */
 }
+
 /* Estilo general para el body */
 body {
   margin: 0;
@@ -131,6 +130,7 @@ body {
   height: 100vh;
   /* Asegura que el body ocupe toda la altura de la ventana */
 }
+
 /* Contenedor del contenido */
 .content-container {
   padding-top: 20px;

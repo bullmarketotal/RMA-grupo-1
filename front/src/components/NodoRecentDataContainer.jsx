@@ -1,26 +1,10 @@
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { dateFormatter } from "../utils-graphs";
 import MaxLevelCard from "./MaxLevelCard";
-import Max24hsCard from "./Max24hsCard";
-import Max7dCard from "./Max7dCard";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import obtenerTimeAgoString from "./utils/date";
 
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
-
-const obtenerTimeAgoString = (lastData) => {
-  const lastTime = new Date(lastData.date);
-  const now = new Date();
-  const minutesBetween = (now - lastTime) / (1000 * 60);
-
-  if (minutesBetween < 1) return `Hace menos de un minuto`;
-  if (minutesBetween < 2) return `Hace un minuto`;
-  if (minutesBetween < 59) return `Hace ${minutesBetween.toFixed(0)} minutos`;
-  if (minutesBetween < 120) return `Hace 1 hora`;
-  if (minutesBetween < 60 * 24)
-    return `Hace ${Math.floor(minutesBetween / 60).toFixed(0)} horas`;
-
-  return `Hace ${Math.floor(minutesBetween / (60 * 24)).toFixed(0)} días`;
-};
 
 function NodoRecentDataContainer({ data, CARD_HEIGHT }) {
   const CARD_WIDTH = "30%";
