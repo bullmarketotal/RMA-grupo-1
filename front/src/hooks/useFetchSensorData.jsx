@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { convertFieldToTimestamp } from "../components/utils/date";
 
 const api = import.meta.env.VITE_API_URL;
 
@@ -31,10 +32,13 @@ const useFetchSensorData = (id, startDate, endDate) => {
           throw new Error("Error al obtener los datos de paquetes");
         }
         const paquetesResult = await paquetesRes.json();
-
+        const formattedPaquetes = convertFieldToTimestamp(
+          paquetesResult,
+          "date"
+        );
         setData({
           sensor: sensorResult,
-          paquetes: paquetesResult,
+          paquetes: formattedPaquetes,
         });
       } catch (err) {
         console.error("Error fetching data:", err);
