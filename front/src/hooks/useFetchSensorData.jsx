@@ -40,7 +40,6 @@ const useFetchSensorData = (id, startDate, endDate) => {
 
     fetchSensorData();
   }, [id, startDate, endDate]);
-  console.log("hola", data);
   return { data, loading, error };
 };
 
