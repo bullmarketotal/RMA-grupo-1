@@ -31,25 +31,41 @@ const TablaDatos = ({ items }) => {
   const data = React.useMemo(() => items, [items]);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
+
   return (
     <table className="table table-striped" {...getTableProps()}>
       <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-            ))}
-          </tr>
-        ))}
+        {headerGroups.map((headerGroup) => {
+          const { key, ...headerGroupProps } =
+            headerGroup.getHeaderGroupProps();
+          return (
+            <tr key={key} {...headerGroupProps}>
+              {headerGroup.headers.map((column) => {
+                const { key, ...columnProps } = column.getHeaderProps();
+                return (
+                  <th key={key} {...columnProps}>
+                    {column.render("Header")}
+                  </th>
+                );
+              })}
+            </tr>
+          );
+        })}
       </thead>
       <tbody {...getTableBodyProps()}>
         {rows.map((row) => {
           prepareRow(row);
+          const { key, ...rowProps } = row.getRowProps();
           return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => (
-                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-              ))}
+            <tr key={key} {...rowProps}>
+              {row.cells.map((cell) => {
+                const { key, ...cellProps } = cell.getCellProps();
+                return (
+                  <td key={key} {...cellProps}>
+                    {cell.render("Cell")}
+                  </td>
+                );
+              })}
             </tr>
           );
         })}

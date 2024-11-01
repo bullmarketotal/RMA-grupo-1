@@ -21,7 +21,6 @@ const DatosPage = () => {
     setStartDate(newStartDate);
     setEndDate(newEndDate);
   };
-  console.log(data);
   return (
     <div className="container mt-5">
       <div className="card shadow">
