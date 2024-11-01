@@ -5,11 +5,10 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from back import exceptions
 from back.paquete.models import Paquete
 from back.sensores import schemas
 from back.sensores.models import Sensor
-from back.sensores.schemas import SensorData
+from back.sensores.schemas import SensorData, SensorUpdate
 
 # operaciones CRUD para Sensores
 
@@ -52,8 +51,9 @@ def sensor_con_datos(nodo_id: int, db: Session) -> SensorData:
         "data": data,
     }
 
+
 def get_sensor(nodo_id: int, db: Session) -> Sensor:
-       # Info sensor
+    # Info sensor
     nodo_query = select(Sensor).where(Sensor.id == nodo_id)
     nodo = db.execute(nodo_query).scalars().first()
 
@@ -61,11 +61,20 @@ def get_sensor(nodo_id: int, db: Session) -> Sensor:
         raise HTTPException(status_code=404, detail="Nodo no encontrado")
 
     return {
-        
         "identificador": nodo.identificador,
         "porcentajeBateria": 50,
         "latitud": nodo.latitud,
         "longitud": nodo.longitud,
         "id": nodo.id,
-             
-    }    
+    }
+
+
+def modificar_sensor(
+    db: Session, nodo_id: int, sensor_actualizado: SensorUpdate
+) -> Sensor:
+    # Buscar el sensor por ID
+    sensor = Sensor.get(db, nodo_id)
+    if not sensor:
+        raise HTTPException(status_code=404, detail="Sensor no encontrado")
+
+    return sensor.update(db, sensor_actualizado)
