@@ -1,11 +1,11 @@
-from datetime import UTC, datetime
-from enum import StrEnum, auto
-from typing import List, Optional
+from datetime import datetime
+from typing import Optional
 
-from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import DateTime, Float, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from back.models import ModeloBase
+from back.sensores.models import Sensor
 
 
 class Paquete(ModeloBase):
@@ -18,3 +18,6 @@ class Paquete(ModeloBase):
         Float, index=True, nullable=True
     )
     date: Mapped[datetime] = mapped_column(DateTime, index=True)
+
+    # Relación con Sensor
+    sensor: Mapped[Sensor] = relationship("Sensor", back_populates="paquetes")
