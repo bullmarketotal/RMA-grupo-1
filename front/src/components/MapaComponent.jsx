@@ -1,16 +1,16 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const MapaComponent = ({ setFormData }) => {
   const limites = [
     [-42.342, -62.145], // suroeste
-    [-45.594, -71.54],  // noreste
+    [-45.594, -71.54], // noreste
   ];
 
   const posicionInicial = [-43.5042843, -65.7791978];
   const zoomInicial = 9;
-  
+
   const [map, setMap] = useState(null); // Estado para almacenar la referencia al mapa
   const [marker, setMarker] = useState(null); // Estado para el marcador
 
@@ -21,8 +21,9 @@ const MapaComponent = ({ setFormData }) => {
 
     const mapInstance = L.map("map", {
       maxBounds: limites,
-      minZoom:7,
+      minZoom: 7,
       maxBoundsViscosity: 0.1,
+      attributionControl: false,
     }).setView(posicionInicial, zoomInicial);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -30,7 +31,9 @@ const MapaComponent = ({ setFormData }) => {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(mapInstance);
 
-    const newMarker = L.marker(posicionInicial, { draggable: true }).addTo(mapInstance);
+    const newMarker = L.marker(posicionInicial, { draggable: true }).addTo(
+      mapInstance
+    );
     setMarker(newMarker); // Guardar el marcador en el estado
 
     newMarker.on("dragend", function (e) {
