@@ -1,3 +1,8 @@
+/**
+ * Obtiene una cadena del tiempo transcurrido desde una fecha
+ * @param {*} lastData
+ * @returns
+ */
 export const obtenerTimeAgoString = (lastData) => {
   const lastTime = new Date(lastData.date);
   const now = new Date();
@@ -15,6 +20,8 @@ export const obtenerTimeAgoString = (lastData) => {
 
 /**
  * Formatea una fecha a "HH:mm hs"
+ * @param {*} date
+ * @returns
  */
 export const formatTime = (date) => {
   return `${String(date.getHours()).padStart(2, "0")}:${String(
@@ -23,7 +30,26 @@ export const formatTime = (date) => {
 };
 
 /**
- * Convierte una fecha a un timestamp.
+ * Convierte un string a timestamp
+ * @param {*} date
+ * @returns
  */
 export const convertToTimestamp = (date) =>
   typeof date === "string" ? new Date(date).getTime() : date;
+
+/**
+ * Convierte un campo especifico a Timestamp en una Colección
+ * @param {*} collection
+ * @param {*} dateField
+ * @returns
+ */
+export const convertFieldToTimestamp = (collection, dateField) => {
+  return collection.map((item) => {
+    const dateValue = item[dateField];
+    const timestamp = convertToTimestamp(dateValue);
+    return {
+      ...item,
+      [dateField]: timestamp,
+    };
+  });
+};
