@@ -22,7 +22,6 @@ export default function FiltrosFetch({ onFilterChange }) {
     <div className="container mt-1">
       <div className="mb-3 d-flex align-items-center">
         <label className="form-label me-2 mb-0">
-          <strong>ID Sensor</strong>
           <strong>Desde</strong>
         </label>
         <input
