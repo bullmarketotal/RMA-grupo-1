@@ -4,8 +4,10 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import MiniMap from "../components/MiniMap";
 
 const CARD_HEIGHT = 300;
+const CARD_WIDTH = 400;
 
 const SensorInfoPanel = ({ data, loading }) => {
+  const { latitud, longitud } = data.sensor;
   return (
     <div
       id="content"
@@ -25,12 +27,12 @@ const SensorInfoPanel = ({ data, loading }) => {
         id="mapa"
         className="d-none d-xl-block"
         style={{
-          height: CARD_HEIGHT + "px",
-          width: "400px",
+          height: `${CARD_HEIGHT}px`,
+          width: `${CARD_WIDTH}px`,
           backgroundColor: "grey",
         }}
       >
-        {/* <MiniMap lat={data.sensor.lat} lng={data.sensor.lng} /> */}
+        <MiniMap lat={latitud} lng={longitud} />
       </div>
     </div>
   );
