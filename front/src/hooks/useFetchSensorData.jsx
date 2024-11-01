@@ -8,7 +8,7 @@ const useFetchSensorData = (id, startDate, endDate) => {
     sensor: null,
     paquetes: [],
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
