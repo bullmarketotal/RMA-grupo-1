@@ -47,8 +47,10 @@ const SensorForm = () => {
       });
 
       if (response.ok) {
+        const newSensor = await response.json();
+        console.log("-------------------------", newSensor);
         showNotification("Sensor creado exitosamente!", "success");
-        navigate("/sensores");
+        navigate(`/sensor/${newSensor.id}`);
       } else {
         showNotification("Error al crear el sensor.", "error");
       }
@@ -59,12 +61,11 @@ const SensorForm = () => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="container mt-5">
       <div className="card shadow">
         <div className="card-body">
-          <h2 className="card-title mb-4">Crear Sensor</h2>
+          <h2 className="card-title mb-4">Crear Nodo</h2>
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
               <div className="col">
@@ -142,7 +143,7 @@ const SensorForm = () => {
                     aria-hidden="true"
                   ></span>
                 ) : (
-                  "Crear Sensor"
+                  "Crear Nodo"
                 )}
               </button>
             </div>
