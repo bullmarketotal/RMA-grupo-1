@@ -15,7 +15,7 @@ const useCustomHook = (param1, param2) => {
       setError(null);
       try {
         /**
-         * Aquí va la logica
+         * Inicia la logica
          */
         const response = await fetch(`API_ENDPOINT/${param1}/${param2}`);
 
@@ -24,6 +24,9 @@ const useCustomHook = (param1, param2) => {
         }
         const result = await response.json();
         setData(result);
+        /**
+         * Termina la logica
+         */
       } catch (err) {
         setError(err.message);
       } finally {
