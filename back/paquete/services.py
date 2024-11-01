@@ -38,5 +38,8 @@ def listar_paquetes(
     elif start_date:
         query = query.filter(func.date(Paquete.date) == start_date.date())
 
+    # Obtener el total de registros
+    total = query.count()
+
     # Aplica el límite y el offset
     return query.offset(offset).limit(limit).all()

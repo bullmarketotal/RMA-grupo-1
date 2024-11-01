@@ -1,86 +1,146 @@
+:root {
+  --primary-color: rgb(15, 134, 232);
+  --text-color: white;
+  --hover-background: rgba(255, 255, 255, 0.1);
+  --link-color: white;
+  --link-hover-color: #e0e0e0;
+  --navbar-height: 180;
+  /* Altura fija del navbar */
+}
+/* Navbar */
 .navbar {
-  background-color: rgb(15, 134, 232);
+  background-color: var(--primary-color);
+  height: var(--navbar-height);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
-
+.navbar {
+  background-color: var(--primary-color);
+  height: var(--navbar-height);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  /* Sombra */
+}
+/* Estilo del título */
 .navbar-title {
-  color: white; /* Color del texto del título */
-  font-size: 24px; /* Tamaño del título */
-  font-weight: bold; /* Grosor del título */
-  grid-column: 1; /* Asegura que esté en la primera columna */
-  text-decoration: none; /* Elimina el subrayado */
-  margin-right: 70px; /* Espacio entre el título y los enlaces */
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 80px;
+  /* Espacio entre el título y los enlaces */
 }
-
-.navbar-links {
-  display: flex; /* Mantiene los elementos en línea */
-  grid-column: 2; /* Asegura que esté en la segunda columna */
-  justify-content: center; /* Centra los enlaces horizontalmente */
-}
-
+/* Enlaces de navegación */
 .nav-link {
-  color: white; /* Color del texto de los enlaces */
-  text-decoration: none; /* Elimina el subrayado */
-  padding: 10px 15px; /* Espaciado interno */
-  font-weight: bold; /* Grosor del texto */
-  font-family: Arial, sans-serif; /* Cambia la fuente a Arial */
-  transition: color 0.3s; /* Transición para el color */
-  position: relative; /* Para el pseudo-elemento */
-  display: inline-block; /* Mantiene los enlaces en línea */
-  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  color: var(--link-color);
+  transition: background-color 0.3s, color 0.3s, transform 0.3s;
+  /* Agregar efecto de transformación */
+  padding: 10px 15px;
+  font-weight: bold;
+  white-space: nowrap;
+  /* Evita que el texto se divida en varias líneas */
 }
-
 .nav-link:hover {
-  color: white; /* Color del texto en hover */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Cambia el color de fondo */
+  transform: scale(1.02);
+  /* Efecto de ampliación */
 }
-
+/* Efecto de subrayado */
 .nav-link::after {
-  content: ""; /* Crea un pseudo-elemento */
+  content: "";
   display: block;
-  width: 100%; /* Ancho completo */
-  height: 3px; /* Grosor del subrayado */
-  background: white; /* Color del subrayado */
-  transform: scaleX(0); /* Inicialmente oculto */
-  transition: transform 0.3s ease; /* Transición suave */
-  margin-top: 5px; /* Espacio entre el texto y el subrayado */
+  width: 100%;
+  height: 3px;
+  background: var(--link-hover-color);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  margin-top: 5px;
 }
-
 .nav-link:hover::after {
-  transform: scaleX(1); /* Muestra el subrayado al pasar el mouse */
+  transform: scaleX(1);
 }
-
+.nav {
+  margin-left: auto;
+  /* Alinear los elementos a la derecha */
+}
+section {
+  padding: 20px;
+  /* Espaciado alrededor de la sección de contenido */
+  overflow-y: auto;
+  /* Habilita el desplazamiento solo en el contenido */
+  flex: 1;
+  /* Asegura que esta sección ocupe el espacio disponible */
+}
 /* no se que esta sidebar */
 /* Estilos para la sidebar */
 .sidebar {
   position: fixed;
-  left: -250px; /* Fuera de la vista inicialmente */
+  left: -250px;
+  /* Fuera de la vista inicialmente */
   top: 0;
   width: 250px;
   height: 100%;
-  background-color: #333; /* Color de fondo de la sidebar */
-  transition: left 0.3s; /* Suave animación para abrir/cerrar */
+  background-color: #333;
+  /* Color de fondo de la sidebar */
+  transition: left 0.3s;
+  /* Suave animación para abrir/cerrar */
   z-index: 1000;
   padding: 20px;
 }
-
 .sidebar ul {
   list-style: none;
   padding: 0;
 }
-
 .sidebar ul li {
   margin: 10px 0;
 }
-
 .sidebar ul li a {
-  color: #fff; /* Color del texto en la sidebar */
+  color: #fff;
+  /* Color del texto en la sidebar */
   text-decoration: none;
 }
-
 .sidebar ul li a:hover {
-  text-decoration: underline; /* Subrayado al pasar el mouse */
+  text-decoration: underline;
+  /* Subrayado al pasar el mouse */
 }
-
 /* Mostrar la sidebar */
 .sidebar.open {
-  left: 0; /* Mostrar la sidebar */
+  left: 0;
+  /* Mostrar la sidebar */
+}
+.btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.6);
+  /* Más sutil */
+  transition: background-color 0.3s, color 0.3s;
+}
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Fondo suave al pasar el mouse */
+  color: #fff;
+}
+.navbar-brand {
+  margin-right: 20px;
+}
+
+/* Estilo general para el body */
+body {
+  margin: 0;
+  /* Elimina el margen por defecto */
+  overflow: hidden;
+  /* Evita que el body tenga scroll */
+  height: 100vh;
+  /* Asegura que el body ocupe toda la altura de la ventana */
+}
+
+/* Contenedor del contenido */
+.content-container {
+  padding-top: 20px;
+  /* Espacio adicional para que no esté pegado a la navbar */
+  height: calc(100vh - 70px);
+  /* Ajusta la altura para que ocupe el resto de la pantalla */
+  overflow-y: overlay;
+  /* Habilita el scroll solo en el contenido */
+  background-color: #f8f9fa;
+  /* Color de fondo opcional */
+  padding: 20px;
+  /* Espaciado alrededor del contenido */
 }

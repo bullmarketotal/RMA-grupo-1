@@ -29,8 +29,12 @@ const SensorForm = () => {
 
     const dataToSend = {
       ...formData,
-      latitud: isNaN(parseFloat(formData.latitud)) ? null : parseFloat(formData.latitud),
-      longitud: isNaN(parseFloat(formData.longitud)) ? null : parseFloat(formData.longitud),
+      latitud: isNaN(parseFloat(formData.latitud))
+        ? null
+        : parseFloat(formData.latitud),
+      longitud: isNaN(parseFloat(formData.longitud))
+        ? null
+        : parseFloat(formData.longitud),
     };
 
     try {
@@ -58,65 +62,70 @@ const SensorForm = () => {
 
   return (
     <div className="container mt-5">
-      <div className="card shadow-sm border-light">
+      <div className="card shadow">
         <div className="card-body">
-          <h1 className="card-title mb-4">Crear Nodo</h1>
+          <h2 className="card-title mb-4">Crear Sensor</h2>
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="identificador" className="form-label">
-                Identificador
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="identificador"
-                name="identificador"
-                value={formData.identificador}
-                onChange={handleChange}
-                required
-              />
+            <div className="row mb-3">
+              <div className="col">
+                <label htmlFor="identificador" className="form-label">
+                  Identificador
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="identificador"
+                  name="identificador"
+                  value={formData.identificador}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="col">
+                <label htmlFor="porcentajeBateria" className="form-label">
+                  Porcentaje de Batería
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="porcentajeBateria"
+                  name="porcentajeBateria"
+                  value={formData.porcentajeBateria}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="porcentajeBateria" className="form-label">
-                Porcentaje de Batería
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="porcentajeBateria"
-                name="porcentajeBateria"
-                value={formData.porcentajeBateria}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="latitud" className="form-label">
-                Latitud
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="latitud"
-                name="latitud"
-                value={formData.latitud}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="longitud" className="form-label">
-                Longitud
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="longitud"
-                name="longitud"
-                value={formData.longitud}
-                onChange={handleChange}
-                required
-              />
+            {/* Fila para Latitud y Longitud */}
+            <div className="row mb-3">
+              <div className="col">
+                <label htmlFor="latitud" className="form-label">
+                  Latitud
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="latitud"
+                  name="latitud"
+                  value={formData.latitud}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="col">
+                <label htmlFor="longitud" className="form-label">
+                  Longitud
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="longitud"
+                  name="longitud"
+                  value={formData.longitud}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
             <MapaComponent setFormData={setFormData} />
 
@@ -127,7 +136,11 @@ const SensorForm = () => {
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
-                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
                 ) : (
                   "Crear Sensor"
                 )}

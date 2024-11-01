@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import { AuthContext } from "../context/AuthContext";
 
 const api = import.meta.env.VITE_API_URL;
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
       // Llamar al login del contexto
       login(data.token);
 
-      console.log("Token:", data.token);
+     // console.log("Token:", data.token);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,7 +59,7 @@ const LoginPage = () => {
       }
       const data = await res.json();
 
-      console.log("Registro exitoso:", data);
+     // console.log("Registro exitoso:", data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -69,7 +69,7 @@ const LoginPage = () => {
 
   return (
     <div className="container mt-5">
-      <div className="card">
+      <div className="card shadow">
         <div className="card-body">
           <h1 className="card-title mb-4">
             {isAuthenticated

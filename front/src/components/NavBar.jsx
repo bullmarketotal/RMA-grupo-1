@@ -7,37 +7,48 @@ import { Link, Outlet } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "./NavBar.css";
 
-
-
-function NavBar() {
+const NavBar = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
-  const logo = "/logo-recortado.png"; 
-
+  const logo = "/logo-recortado.png";
 
   return (
     <>
-      <Navbar bg="primary" data-bs-theme="dark" expand="lg"  style={{  position: 'sticky' ,  top: 0, zIndex: 1000}}> {/* Altura fija del navbar */}
-        <Container fluid className="d-flex justify-content-between align-items-center">
-{          <Navbar.Brand className="navbar-title d-flex align-items-center" as={Link} to="/">
-{            <img
+      <Navbar
+        bg="primary"
+        data-bs-theme="dark"
+        expand="lg"
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+          height: "70px",
+        }}
+      >
+        <Container
+          fluid
+          className="d-flex justify-content-between align-items-center"
+          style={{ maxWidth: "1400px", margin: "0 auto" }}
+        >
+          <Navbar.Brand as={Link} to="/">
+            <img
               src={logo}
               alt="Logo"
-              style={{ width: 180 , height: 60 , marginRight: '10px' }} // Ajusta el tamaño aquí
-            /> }
-          </Navbar.Brand> }
+              style={{ width: 180, height: 60, marginRight: "10px" }}
+            />
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/" className="nav-link">
+              <Nav.Link as={Link} to="/">
                 Inicio
               </Nav.Link>
-              <Nav.Link as={Link} to="/create-sensor" className="nav-link">
+              <Nav.Link as={Link} to="/create-sensor">
                 Crear Nodo
               </Nav.Link>
-              <Nav.Link as={Link} to="/list-sensor" className="nav-link">
+              <Nav.Link as={Link} to="/list-sensor">
                 Nodos
               </Nav.Link>
-              <Nav.Link as={Link} to="/datos-view" className="nav-link">
+              <Nav.Link as={Link} to="/datos-view">
                 Datos
               </Nav.Link>
             </Nav>
@@ -45,14 +56,14 @@ function NavBar() {
               {isAuthenticated ? (
                 <Button
                   variant="outline-light"
-                  className="ms-2 mb-2"
                   onClick={logout}
+                  className="mx-2"
                 >
                   Cerrar Sesión
                 </Button>
               ) : (
                 <Link to="/login">
-                  <Button variant="outline-light" className="ms-2 mb-2">
+                  <Button variant="outline-light" className="mx-2">
                     Iniciar Sesión
                   </Button>
                 </Link>
@@ -61,13 +72,11 @@ function NavBar() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
-      <section>
+      <div className="content-container">
         <Outlet />
-      </section>
+      </div>
     </>
   );
-  
-}
+};
 
 export default NavBar;

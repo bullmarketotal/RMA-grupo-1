@@ -1,0 +1,41 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+/* Estilo para el scrollbar en navegadores WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Ancho del scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(
+    241,
+    244,
+    246
+  ); /* Fondo del track (más claro que el color principal de la navbar) */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(15, 134, 232); /* Color del "thumb" que se desplaza */
+  border-radius: 10px; /* Bordes redondeados */
+}
+/* Ocultar flechas del scrollbar */
+::-webkit-scrollbar-button {
+  display: none; /* Ocultar flechas */
+}
+
+/* Estilo para Firefox */
+.scrollable {
+  scrollbar-width: thin; /* Hacer el scrollbar delgado */
+  scrollbar-color: rgb(15, 134, 232) rgb(241, 244, 246); /* Color del "thumb" y el track */
+}
+/* Aplicar a cualquier contenedor scrollable */
+.scrollable {
+  overflow-y: auto; /* Habilitar el scroll vertical */
+  max-height: 400px; /* Altura máxima del contenedor */
+  padding: 10px; /* Espacio interno */
+  border-radius: 10px; /* Bordes redondeados */
+  background: rgb(241, 244, 246); /* Fondo blanco para contraste */
+}

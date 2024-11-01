@@ -4,7 +4,13 @@ from typing import List, Optional
 from pydantic import BaseModel, EmailStr, field_validator
 
 
+##ESQUEMAS DE Paquetes
+class PaqueteBase(BaseModel):
+    sensor_id: int
+
+
 ## ESQUEMAS DE PAQUETES
+
 
 # Necesitaba un schema donde no se incluya el ID del sensor. Es medio raro pero no quería modificar el PaqueteBase. -gonzalo
 class PaqueteSend(BaseModel):

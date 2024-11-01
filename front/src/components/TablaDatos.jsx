@@ -1,73 +1,31 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTable } from "react-table";
-const api = import.meta.env.VITE_API_URL;
 
-//TO-DO: modificar margenes.
-const TablaDatos = ({items}) => {
-  //const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      /*      try {
-        const offset = (page - 1) * limit;
-
-        const response = await fetch(
-          `${api}/paquetes?limit=${limit}&offset=${offset}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Error en la solicitud a API");
-        }
-        const data = await response.json();
-
-        setItems((prevItems) => [...prevItems, ...data]);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-*/
-    };
-    fetchData();
-  }, [page]);
-
-  const handleScroll = () => {
-    const bottom =
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
-    if (bottom && !loading) {
-      setPage((prev) => prev + 1);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [loading]);
-
+const TablaDatos = ({ items }) => {
+  // useMemo Evita renderizados innecesarios
   const columns = React.useMemo(
-  () => [
-    { Header: "ID Nodo", accessor: "sensor_id" },
-    { Header: "Temperatura", accessor: (row) => `${Math.floor(row.temperatura)}ºC` },
-    { Header: "Nivel Hidrométrico", accessor: (row) => row.nivel_hidrometrico.toFixed(2) },
-    { Header: "Fecha y Hora", accessor: (row) => {
-        const date = new Date(row.date);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        return `${day}/${month}/${year} ${hours}:${minutes}hs`; // Formato dd/mm/aaaa hh:mm
-      }
-    }
-  ],
-  []
+    () => [
+      { Header: "ID Sensor", accessor: "identificador" },
+      { Header: "Temperatura", accessor: "temperatura" },
+      { Header: "Nivel Hidrométrico", accessor: "nivel_hidrometrico" },
+      {
+        Header: "Fecha y Hora",
+        accessor: "date",
+        Cell: ({ value }) => {
+          // Convertir el timestamp
+          const date = new Date(value);
+          return date.toLocaleString("es-ES", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+        },
+      },
+    ],
+    []
   );
 
   const data = React.useMemo(() => items, [items]);
@@ -75,44 +33,45 @@ const TablaDatos = ({items}) => {
     useTable({ columns, data });
 
   return (
-    <div className="container mt-0">
-      {" "}
-      {}
-      <div className="card">
-        {" "}
-        {}
-        <div className="card-body">
-          <table className="table table-striped" {...getTableProps()}>
-            {" "}
-            {}
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row);
-
+    <table className="table table-striped" {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup) => {
+          const { key, ...headerGroupProps } =
+            headerGroup.getHeaderGroupProps();
+          return (
+            <tr key={key} {...headerGroupProps}>
+              {headerGroup.headers.map((column) => {
+                const { key, ...columnProps } = column.getHeaderProps();
                 return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    ))}
-                  </tr>
+                  <th key={key} {...columnProps}>
+                    {column.render("Header")}
+                  </th>
                 );
               })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+            </tr>
+          );
+        })}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          const { key, ...rowProps } = row.getRowProps();
+          return (
+            <tr key={key} {...rowProps}>
+              {row.cells.map((cell) => {
+                const { key, ...cellProps } = cell.getCellProps();
+                return (
+                  <td key={key} {...cellProps}>
+                    {cell.render("Cell")}
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };
+
 export default TablaDatos;
