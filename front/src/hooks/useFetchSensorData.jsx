@@ -3,13 +3,16 @@ import { useEffect, useState } from "react";
 const api = import.meta.env.VITE_API_URL;
 
 const useFetchSensorData = (id, startDate, endDate) => {
-  const [data, setData] = useState({ sensor: null, paquetes: [] });
+  const [data, setData] = useState({
+    sensor: null,
+    paquetes: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchSensorData = async () => {
-      setLoading(true);
+      setLoading(true); //Inicio la petición
       try {
         const sensorUrl = `${api}/sensor/${id}`;
         const sensorRes = await fetch(sensorUrl);
@@ -29,7 +32,10 @@ const useFetchSensorData = (id, startDate, endDate) => {
         }
         const paquetesResult = await paquetesRes.json();
 
-        setData({ sensor: sensorResult, paquetes: paquetesResult });
+        setData({
+          sensor: sensorResult,
+          paquetes: paquetesResult,
+        });
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Error en la carga de datos");
@@ -39,8 +45,13 @@ const useFetchSensorData = (id, startDate, endDate) => {
     };
 
     fetchSensorData();
-  }, [id, startDate, endDate]);
-  return { data, loading, error };
+  }, [id, startDate, endDate]); //cada vez que cambien los valores de id, startDate, o endDate se ejecuta el useEffect.
+
+  return {
+    data,
+    loading,
+    error,
+  };
 };
 
 export default useFetchSensorData;

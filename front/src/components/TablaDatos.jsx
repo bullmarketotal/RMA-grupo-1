@@ -2,6 +2,7 @@ import React from "react";
 import { useTable } from "react-table";
 
 const TablaDatos = ({ items }) => {
+  // useMemo Evita renderizados innecesarios
   const columns = React.useMemo(
     () => [
       { Header: "ID Sensor", accessor: "identificador" },

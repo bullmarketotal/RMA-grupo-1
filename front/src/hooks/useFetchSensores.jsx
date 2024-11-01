@@ -23,7 +23,11 @@ function useFetchSensores() {
     fetchData();
   }, []);
 
-  return { data, loading, error };
+  return {
+    data,
+    loading,
+    error,
+  };
 }
 
 export default useFetchSensores;

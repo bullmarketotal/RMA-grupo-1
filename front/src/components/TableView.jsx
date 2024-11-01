@@ -34,15 +34,13 @@ const TableView = ({ data, loading }) => {
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
-
       {loading ? <LoadingSpinner /> : <TablaDatos items={getVisibleData()} />}
-
       <Paginacion
         itemsPerPage={itemsPerPage}
         totalItems={totalItems}
         currentPage={currentPage}
         onPageChange={handlePageChange}
-      />
+      />{" "}
     </div>
   );
 };
