@@ -135,10 +135,12 @@ body {
 .content-container {
   padding-top: 20px;
   /* Espacio adicional para que no esté pegado a la navbar */
-  height: calc(100vh - 80px);
+  height: calc(100vh - 70px);
   /* Ajusta la altura para que ocupe el resto de la pantalla */
-  overflow-y: auto;
+  overflow-y: overlay;
   /* Habilita el scroll solo en el contenido */
   background-color: #f8f9fa;
   /* Color de fondo opcional */
+  padding: 20px;
+  /* Espaciado alrededor del contenido */
 }

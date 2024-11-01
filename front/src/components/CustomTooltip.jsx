@@ -9,7 +9,7 @@ export default function CustomTooltip({ payload }) {
       style={{
         backgroundColor: "white",
         border: "solid 1px black",
-        "border-radius": "black",
+        borderRadius: "black",
         padding: "4px",
       }}
     >
