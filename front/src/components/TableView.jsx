@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TablaDatos from "../components/TablaDatos";
 import Paginacion from "../components/Paginacion";
 import LoadingSpinner from "../components/LoadingSpinner";
+import "../components/styles.css";
 
 const TableView = ({ data, loading }) => {
   const itemsPerPage = 15;
@@ -13,8 +14,8 @@ const TableView = ({ data, loading }) => {
     identificador,
   }));
 
-  // console.log(newData);
   const [currentPage, setCurrentPage] = useState(1);
+
   const getVisibleData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -33,7 +34,9 @@ const TableView = ({ data, loading }) => {
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
+
       {loading ? <LoadingSpinner /> : <TablaDatos items={getVisibleData()} />}
+
       <Paginacion
         itemsPerPage={itemsPerPage}
         totalItems={totalItems}
@@ -44,4 +47,4 @@ const TableView = ({ data, loading }) => {
   );
 };
 
-export default TableView;
+export default React.memo(TableView); // Evita renderizados innecesarios
