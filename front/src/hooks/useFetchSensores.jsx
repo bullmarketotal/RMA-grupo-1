@@ -4,7 +4,7 @@ const api = import.meta.env.VITE_API_URL;
 
 function useFetchSensores() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
