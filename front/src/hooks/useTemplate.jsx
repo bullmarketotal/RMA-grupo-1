@@ -38,8 +38,8 @@ const useCustomHook = (param1, param2) => {
     //Dependencias que activan el useEffect
   }, [param1, param2]);
   // como lo utilizo en el componente:
-  // const [param1Value, setFilterValue] = useState("initialFilter"); // Estado para el filtro
-  // const [param2Value, setSortOrder] = useState("asc"); // Estado para el orden de clasificación
+  // const [param1Value, setParam1] = useState("ValorInicialParam1"); // Estado para el filtro
+  // const [param2Value, setParam2] = useState("ValorInicialParam2"); // Estado para el orden de clasificación
 
   // Retornar los valores y funciones necesarios
   return { data, loading, error };
