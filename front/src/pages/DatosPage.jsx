@@ -1,10 +1,8 @@
-import FiltrosFetch from "../components/FiltrosFetch";
-import TableView from "../components/organisms/TableView";
 import { useState } from "react";
-import useFetchSensorData from "../hooks/useFetchSensorData";
-import useFetchSensores from "../hooks/useFetchSensores";
-import LoadingSpinner from "../components/atoms/LoadingSpinner";
-import { Container, Header } from "../components/atoms";
+import { useFetchSensorData, useFetchSensores } from "../hooks";
+import { Container, Header, LoadingSpinner } from "../components/atoms";
+import { FiltroDatos } from "../components/molecules";
+import { TableView } from "../components/organisms";
 
 const DatosPage = () => {
   const [id, setId] = useState(1);
@@ -49,7 +47,7 @@ const DatosPage = () => {
             </select>
           </div>
         )}
-        <FiltrosFetch onFilterChange={handleFilterChange} className="mb-3" />
+        <FiltroDatos onFilterChange={handleFilterChange} className="mb-3" />
         {loading ? (
           <LoadingSpinner />
         ) : (

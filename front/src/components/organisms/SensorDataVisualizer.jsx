@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FiltrosFetch from "../FiltrosFetch";
+import { FiltroDatos } from "../molecules";
 import { GraphView, TableView } from "../organisms";
 import { Card } from "../atoms";
 
@@ -42,7 +42,7 @@ const SensorDataVisualizer = ({ data, loading, onFilterChange }) => {
             Tabla
           </label>
         </div>
-        <FiltrosFetch onFilterChange={onFilterChange} />
+        <FiltroDatos onFilterChange={onFilterChange} />
       </div>
 
       {view === "graph" ? (

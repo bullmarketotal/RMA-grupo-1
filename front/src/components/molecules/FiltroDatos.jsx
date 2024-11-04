@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const api = import.meta.env.VITE_API_URL;
 
-export default function FiltrosFetch({ onFilterChange }) {
+export default function FiltroDatos({ onFilterChange }) {
   const [startDate, setStartDate] = useState(
     new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
       .toISOString()

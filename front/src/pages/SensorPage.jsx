@@ -1,12 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import SensorHeader from "../components/molecules/SensorHeader";
-import SensorInfoPanel from "../components/molecules/SensorInfoPanel";
-import SensorDataVisualizer from "../components/molecules/SensorDataVisualizer";
-import LoadingSpinner from "../components/atoms/LoadingSpinner";
-import useFetchSensorData from "../hooks/useFetchSensorData";
-import { Container, Header } from "../components/atoms";
+import { Container, Header, LoadingDots } from "../components/atoms";
+import { SensorHeader, SensorInfoPanel } from "../components/molecules";
+import { SensorDataVisualizer } from "../components/organisms";
+import { useFetchSensorData } from "../hooks";
 
 const SensorPage = () => {
   const { id } = useParams();
@@ -19,7 +17,7 @@ const SensorPage = () => {
     setEndDate(newEndDate);
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <LoadingDots />;
   if (error) return <p>{error}</p>;
 
   return (

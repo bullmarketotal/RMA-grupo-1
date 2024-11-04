@@ -1,3 +1,4 @@
+export { default as FiltroDatos } from "./FiltroDatos";
 export { default as Form } from "./Form";
 export { default as GraphNivel } from "./GraphNivel";
 export { default as GraphTemp } from "../molecules/GraphTemp";
@@ -6,7 +7,6 @@ export { default as MapaComponent } from "./MapaComponent";
 export { default as MaxLevelCard } from "./MaxLevelCard";
 export { default as Paginacion } from "./Paginacion";
 export { default as RegisterForm } from "./RegisterForm";
-export { default as SensorDataVisualizer } from "./SensorDataVisualizer";
 export { default as SensorHeader } from "./SensorHeader";
 export { default as SensorInfoPanel } from "./SensorInfoPanel";
 export { default as TablaDatos } from "./TablaDatos";
