@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
+import { LoadingSpinner } from "../atoms";
 
 const SensorHeader = ({ sensor, loading }) => {
   const { identificador, latitud, longitud } = sensor;

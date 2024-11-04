@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
-import LoginForm from "../components/LoginForm";
-import RegisterForm from "../components/RegisterForm";
+import { LoadingSpinner } from "../components/atoms";
+import { LoginForm, RegisterForm } from "../components/molecules";
 import { AuthContext } from "../context/AuthContext";
 
 const api = import.meta.env.VITE_API_URL;
@@ -33,7 +32,7 @@ const LoginPage = () => {
       // Llamar al login del contexto
       login(data.token);
 
-     // console.log("Token:", data.token);
+      // console.log("Token:", data.token);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,7 +58,7 @@ const LoginPage = () => {
       }
       const data = await res.json();
 
-     // console.log("Registro exitoso:", data);
+      // console.log("Registro exitoso:", data);
     } catch (err) {
       setError(err.message);
     } finally {

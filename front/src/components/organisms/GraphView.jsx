@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import GraphNivel from "./GraphNivel";
-import GraphTemp from "./GraphTemp";
-import LoadingSpinner from "./LoadingSpinner";
+import { GraphNivel, GraphTemp } from "../molecules";
+import { LoadingSpinner } from "../atoms";
 
 const GraphView = ({ data, loading }) => {
   if (loading) {
@@ -29,17 +28,4 @@ const GraphView = ({ data, loading }) => {
     </div>
   );
 };
-
-// Definición de PropTypes
-GraphView.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      date: PropTypes.number.isRequired, // Debe ser un número (ticks de fecha)
-      nivel_hidrometrico: PropTypes.number.isRequired, // Debe ser un número (nivel hidrométrico)
-      temperatura: PropTypes.number.isRequired, // Debe ser un número (temperatura)
-    })
-  ).isRequired,
-  loading: PropTypes.bool.isRequired, // loading es un booleano y es requerido
-};
-
 export default GraphView;

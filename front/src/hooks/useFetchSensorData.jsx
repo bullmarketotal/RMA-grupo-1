@@ -13,7 +13,7 @@ const useFetchSensorData = (id, startDate, endDate) => {
 
   useEffect(() => {
     const fetchSensorData = async () => {
-      setLoading(true); //Inicio la petición
+      setLoading(true);
       try {
         const sensorUrl = `${api}/sensor/${id}`;
         const sensorRes = await fetch(sensorUrl);

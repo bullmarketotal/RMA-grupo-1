@@ -1,7 +1,6 @@
 import React from "react";
-import NodoRecentDataContainer from "../components/NodoRecentDataContainer";
-import LoadingSpinner from "../components/LoadingSpinner";
-import MiniMap from "../components/MiniMap";
+import { NodoRecentDataContainer } from "../organisms";
+import { LoadingSpinner, MiniMap } from "../atoms";
 
 const CARD_HEIGHT = 300;
 const CARD_WIDTH = 400;
