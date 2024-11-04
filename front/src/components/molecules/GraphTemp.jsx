@@ -11,8 +11,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { getMidnightTicks, tickFormatter } from "../utils-graphs";
-import CustomTooltip from "./CustomTooltip";
+import { getMidnightTicks, tickFormatter } from "../utils/utils-graphs";
+import CustomTooltip from "../utils/CustomTooltip";
 
 /*
     El prop "data" debe tener la forma:
@@ -24,26 +24,20 @@ import CustomTooltip from "./CustomTooltip";
 */
 
 export default function GraphTemp({ data, syncId = 0 }) {
+  if (data.length === 0)
+    return <div>No se recibieron datos para el gráfico.</div>;
 
-  if(data.length === 0)
-    return (
-      <div>No se recibieron datos para el gráfico.</div>
-  )
-
-   // si las fechas no son un nro de ticks, se parsea
-   if(! Number.isInteger(data[0] && data[0].date)) {
+  // si las fechas no son un nro de ticks, se parsea
+  if (!Number.isInteger(data[0] && data[0].date)) {
     data.forEach((punto, i) => {
-      punto.date = (new Date(punto.date)).getTime()
-    })
+      punto.date = new Date(punto.date).getTime();
+    });
   }
 
-  let midnightTicks
+  let midnightTicks;
 
-  if(data?.length)
-    midnightTicks = getMidnightTicks(
-      data[0].date,
-      data[data.length - 1].date
-    );
+  if (data?.length)
+    midnightTicks = getMidnightTicks(data[0].date, data[data.length - 1].date);
 
   return (
     <ResponsiveContainer width="100%" height={200}>
@@ -95,7 +89,7 @@ export default function GraphTemp({ data, syncId = 0 }) {
           stroke="gray"
           strokeDasharray={8}
         ></ReferenceLine>
-        <Tooltip content={CustomTooltip}/>
+        <Tooltip content={CustomTooltip} />
       </LineChart>
     </ResponsiveContainer>
   );

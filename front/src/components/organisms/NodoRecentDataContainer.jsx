@@ -1,7 +1,7 @@
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { dateFormatter } from "../utils-graphs";
-import MaxLevelCard from "./MaxLevelCard";
-import { obtenerTimeAgoString } from "./utils/date";
+import { dateFormatter } from "../utils/utils-graphs";
+import { MaxLevelCard } from "../molecules";
+import { obtenerTimeAgoString } from "../utils/date";
 
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;

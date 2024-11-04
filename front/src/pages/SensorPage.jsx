@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import SensorHeader from "../components/SensorHeader";
-import SensorInfoPanel from "../components/SensorInfoPanel";
-import SensorDataVisualizer from "../components/SensorDataVisualizer";
-import LoadingSpinner from "../components/LoadingSpinner";
+import SensorHeader from "../components/molecules/SensorHeader";
+import SensorInfoPanel from "../components/molecules/SensorInfoPanel";
+import SensorDataVisualizer from "../components/molecules/SensorDataVisualizer";
+import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import useFetchSensorData from "../hooks/useFetchSensorData";
+import { Container, Header } from "../components/atoms";
 
-const SensorView = () => {
+const SensorPage = () => {
   const { id } = useParams();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -22,8 +23,9 @@ const SensorView = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="container mt-5">
-      <div id="main" className="card mb-4 shadow">
+    <Container>
+      <Header title={"Nodo"} />
+      <div id="main">
         <div className="card-body">
           <SensorHeader sensor={data.sensor} loading={loading} />
           <SensorInfoPanel data={data} loading={loading} />
@@ -34,8 +36,8 @@ const SensorView = () => {
         loading={loading}
         onFilterChange={handleFilterChange}
       />
-    </div>
+    </Container>
   );
 };
 
-export default SensorView;
+export default SensorPage;

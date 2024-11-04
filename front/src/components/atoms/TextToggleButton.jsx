@@ -1,6 +1,6 @@
 import React from "react";
 
-const ViewSelector = ({ currentView, onViewChange }) => {
+const TextToggleButton = ({ currentView, onViewChange }) => {
   return (
     <div
       className="btn-group mb-4 me-3"
@@ -35,4 +35,4 @@ const ViewSelector = ({ currentView, onViewChange }) => {
   );
 };
 
-export default ViewSelector;
+export default TextToggleButton;

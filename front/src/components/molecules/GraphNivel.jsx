@@ -15,8 +15,8 @@ import {
   dateFormatter,
   getMidnightTicks,
   tickFormatter,
-} from "../utils-graphs";
-import CustomTooltip from "./CustomTooltip";
+} from "../utils/utils-graphs";
+import CustomTooltip from "../utils/CustomTooltip";
 
 /*
     El prop "data" debe tener la forma:
@@ -35,16 +35,16 @@ export default function GraphNivel({ data, syncId, noBrush }) {
     data[data.length - 1].date
   );
 
-  if(data.length === 0)
+  if (data.length === 0)
     return (
       <div>No se recibieron datos para el gráfico de nivel hidrométrico.</div>
-  )
+    );
 
-   // si las fechas no son un nro de ticks, se parsea
-   if(! Number.isInteger(data[0] && data[0].date)) {
+  // si las fechas no son un nro de ticks, se parsea
+  if (!Number.isInteger(data[0] && data[0].date)) {
     data.forEach((punto, i) => {
-      punto.date = (new Date(punto.date)).getTime()
-    })
+      punto.date = new Date(punto.date).getTime();
+    });
   }
 
   return (
@@ -80,7 +80,7 @@ export default function GraphNivel({ data, syncId, noBrush }) {
             </ReferenceLine>
           );
         })}
-        <Tooltip content={CustomTooltip}/>
+        <Tooltip content={CustomTooltip} />
         <Area
           type="linear"
           dataKey="nivel_hidrometrico"

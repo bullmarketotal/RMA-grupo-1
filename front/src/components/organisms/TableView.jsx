@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import TablaDatos from "../components/TablaDatos";
-import Paginacion from "../components/Paginacion";
-import LoadingSpinner from "../components/LoadingSpinner";
-import "../components/styles.css";
+import { LoadingSpinner } from "../atoms";
+import { Paginacion, TablaDatos } from "../molecules";
 
 const TableView = ({ data, loading }) => {
-  const itemsPerPage = 15;
+  const itemsPerPage = 25;
   const totalItems = data.paquetes.length;
   const identificador = data.sensor.identificador;
 
@@ -45,4 +43,4 @@ const TableView = ({ data, loading }) => {
   );
 };
 
-export default React.memo(TableView); // Evita renderizados innecesarios
+export default TableView; // Evita renderizados innecesarios

@@ -1,13 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useDebugValue, useEffect, useState } from "react";
-import "../assets/font-awesome/css/font-awesome.min.css";
+import "../../assets/font-awesome/css/font-awesome.min.css";
 import {
   obtenerStringTiempoDesdeUltimoDato,
   randomDataForDoubleChart,
-} from "../utils-graphs";
-import GraphNivel from "./GraphNivel";
-import GraphTemp from "./GraphTemp";
-import LoadingSpinner from "./LoadingSpinner";
+} from "../utils/utils-graphs";
+import { GraphNivel, GraphTemp } from "../molecules";
+import { LoadingSpinner } from "../atoms";
 
 const SensorCard = ({ sensor }) => {
   const [data, setData] = useState([]);
@@ -49,20 +48,18 @@ const SensorCard = ({ sensor }) => {
               <br />
               <span className="fs-5">
                 <i className="fa fa-tint" aria-hidden="true"></i>{" "}
-                {
-                data[data.length - 1] ?
-                  Math.round(data[data.length - 1]?.nivel_hidrometrico * 10) /
+                {data[data.length - 1]
+                  ? Math.round(data[data.length - 1]?.nivel_hidrometrico * 10) /
                     10
                   : "--"}
               </span>
               <br />
               <span className="fs-5">
                 <i className="fa fa-thermometer" aria-hidden="true"></i>{" "}
-                {
-                  data[data.length - 1] ?
-                  Math.round(data[data.length - 1]?.temperatura * 10) / 10 :
-                  "--"
-                }ºC
+                {data[data.length - 1]
+                  ? Math.round(data[data.length - 1]?.temperatura * 10) / 10
+                  : "--"}
+                ºC
               </span>
               <br />
               <span className="fw-lighter">
