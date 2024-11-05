@@ -1,18 +1,14 @@
 import React from "react";
-import logoUNPSJB from "../images/unpsjb.png"; // Importa la imagen
-import "./inicio.css";
+import logoRMA from '../../logo.png';
 
 const Inicio = () => {
   return (
-    <div className="inicio">
-      <div className="header">
-        <h1>
-          Demo de aplicacion web para Red de monitoreo de la Cuenca Inferior del
-          Río Chubut.
+    <div className="container mx-auto max-w-7xl pb-8 mt-4 px-4 sm:px-6 lg:px-8 transition-colors duration-300 bg-gray-100 dark:bg-gray-900">
+      <div className="header p-3 flex justify-center">
+        <img src={logoRMA} alt="Imagen 2" className="h-20 animate-spin-slow" />
+        <h1 className="text-center align-middle ml-10 h-24 text-4xl antialiased font-bold dark:text-slate-50 uppercase">
+          Red de Monitoreo de la Cuenca <br></br>Inferior del Río Chubut
         </h1>
-        <div className="images">
-          <img src={logoUNPSJB} alt="Imagen 2" />
-        </div>
       </div>
     </div>
   );
