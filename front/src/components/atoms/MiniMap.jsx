@@ -1,19 +1,18 @@
-import { useState } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIconUrl from "leaflet/dist/images/marker-icon.png";
 
-// Configuración del icono marcador
+// Configuración
+const ZOOM = 12;
+const MAX_ZOOM = 17;
+const MIN_ZOOM = 11;
 const markerIcon = new L.Icon({
   iconUrl: markerIconUrl,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
-// Configuración del zoom inicial
-const ZOOM = 12;
-const MAX_ZOOM = 17;
-const MIN_ZOOM = 11;
+
 function MiniMap({ lat, lng }) {
   const bounds = [
     [lat, lng],

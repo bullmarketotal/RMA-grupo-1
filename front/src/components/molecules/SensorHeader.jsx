@@ -12,8 +12,8 @@ const SensorHeader = ({ sensor, loading }) => {
 
   const handleEditClick = () => {
     if (isEditing) {
-      console.log("Sensor actualizado:", editableSensor);
-      // actualizar el sensor con la API
+      console.log("Nodo actualizado:", editableSensor);
+      //TODO implementar la modificación al nodo
     }
     setIsEditing(!isEditing);
   };
