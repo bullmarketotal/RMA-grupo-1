@@ -41,7 +41,7 @@ const LoadingSpinner = () => {
       >
         <circle style={styles.circle} />
       </svg>
-      <span className={styles.visuallyHidden}>Cargando...</span>
+      <span className={styles.visuallyHidden}></span>
     </div>
   );
 };
