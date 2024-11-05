@@ -2,10 +2,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import useFetchSensores from "../hooks/useFetchSensores";
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import { SensorCard } from "../components/organisms";
+import ErrorSimple from "../components/molecules/ErrorSimple";
 
 const SensorList = () => {
   const { data, loading, error } = useFetchSensores();
-  if (error) return <p>{error}</p>;
+  if (error) return <ErrorSimple title={"No se pudieron obtener los nodos"} description={"Error interno del servidor."}/>
 
   return (
     <Container>
