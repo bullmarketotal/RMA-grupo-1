@@ -1,10 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useDebugValue, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/font-awesome/css/font-awesome.min.css";
-import {
-  obtenerStringTiempoDesdeUltimoDato,
-  randomDataForDoubleChart,
-} from "../utils/utils-graphs";
+import { obtenerStringTiempoDesdeUltimoDato } from "../utils/utils-graphs";
 import { GraphNivel, GraphTemp } from "../molecules";
 import { LoadingSpinner } from "../atoms";
 

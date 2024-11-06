@@ -16,28 +16,28 @@ export default function FiltroDatos({ onFilterChange }) {
   };
 
   return (
-    <div className="flex items-center space-x-4 transition-colors duration-300 bg-zinc-50 dark:bg-gray-700">
+    <div className="flex items-center space-x-4 my-2 normal-bg">
       {/* Fecha Desde */}
-      <div className="flex items-center space-x-2">
-        <FaCalendarAlt className="text-gray-500 dark:text-gray-300" />
+      <div className="flex items-center normal-text space-x-2">
+        <FaCalendarAlt className="mr-2" />
+        Desde
         <input
           type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
           className="btn-inactive w-36 p-2 rounded-md"
-          placeholder="Fecha de inicio"
         />
       </div>
 
       {/* Fecha Hasta */}
-      <div className="flex items-center space-x-2">
-        <FaCalendarAlt className="text-gray-500 dark:text-gray-300" />
+      <div className="flex items-center normal-text space-x-2">
+        <FaCalendarAlt className="mr-2" />
+        Hasta
         <input
           type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
           className="btn-inactive w-36 p-2 rounded-md"
-          placeholder="Fecha de fin"
         />
       </div>
 
