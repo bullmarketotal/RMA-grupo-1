@@ -11,9 +11,9 @@ const Inicio = () => {
           <img
             src={logoRMA}
             alt="Imagen 2"
-            className="h-20 animate-spin-slow "
+            className="size-8 sm:size-12 md:size-20 animate-spin-slow "
           />
-          <h1 className="ml-10 h-24 text-4xl antialiased roboto-bold dark:text-slate-50 uppercase">
+          <h1 className="ml-10 h-24 antialiased roboto-bold dark:text-slate-50 uppercase sm:text-3xl md:text-5x1">
             Red de Monitoreo de la Cuenca <br />
             Inferior del Río Chubut
           </h1>
