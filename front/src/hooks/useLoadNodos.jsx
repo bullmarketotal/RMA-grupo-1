@@ -7,8 +7,6 @@ import config from "../config.json"
 const BASE_CLASSES_FOR_MARKERS = " roboto-light text-black p-2 border border-gray-800 shadow-md rounded-3xl font-serif text-sm hover:text-m w-32 hover:-translate-y-1 text-center text-center transition-all duration-300"
 
 export const useLoadNodos = (map, data, API_URL) => {
-    console.log("useLoadNodos", data)
-
     useEffect(() => {
         if(!map || data?.length === 0)
           return;
