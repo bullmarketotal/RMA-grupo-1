@@ -137,20 +137,13 @@ export const getMidnightTicks = (firstTick, lastTick) => {
   return midnightTicks;
 };
 
-export const backgroundColorBasedInAlarm = (nivel) => {
+export const backgroundColorBasedInAlarm = (nivel, alerts) => {
 
-  // Niveles de alerta
-  const ALERT_THRESHOLDS_IN_M = {
-    YELLOW: 0.5,
-    ORANGE: 1,
-    RED: 2
-  }
-
-  if(nivel < ALERT_THRESHOLDS_IN_M.YELLOW)
+  if(nivel < alerts.Yellow)
     return "from-blue-400 to-blue-600"
-  if(nivel < ALERT_THRESHOLDS_IN_M.ORANGE)
+  if(nivel < alerts.Orange)
     return "from-yellow-400 to-yellow-600"
-  if(nivel < ALERT_THRESHOLDS_IN_M.RED)
+  if(nivel < alerts.Red)
     return "from-orange-400 to-orange-600"
   
   return "from-red-400 to-red-600"
