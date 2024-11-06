@@ -1,18 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Container,
-  Header,
-  LoadingDots,
-  LoadingSpinner,
-} from "../components/atoms";
-import { SensorHeader } from "../components/molecules";
-import {
-  NodoDataVisualizer,
-  SensorInfoPanel,
-  NodoInfo,
-} from "../components/organisms";
+import { Container, Header, LoadingSpinner } from "../components/atoms";
+import { NodoDataVisualizer, NodoInfo } from "../components/organisms";
 import { useFetchSensorData } from "../hooks";
 
 const NodoPage = () => {
