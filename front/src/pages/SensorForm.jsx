@@ -50,7 +50,7 @@ const SensorForm = () => {
       if (response.ok) {
         const newSensor = await response.json();
         console.log("-------------------------", newSensor);
-        showNotification("Sensor creado exitosamente!", "success");
+        showNotification("¡Nodo creado exitosamente!", "success");
         navigate(`/sensor/${newSensor.id}`);
       } else {
         showNotification("Error al crear el sensor.", "error");
