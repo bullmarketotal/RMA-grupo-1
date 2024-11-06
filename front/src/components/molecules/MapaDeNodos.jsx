@@ -3,9 +3,13 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import useFetchSensores from "../../hooks/useFetchSensores";
 import { obtenerStringTiempoDesdeUltimoDato } from "../utils/date";
+import { backgroundColorBasedInAlarm } from "../utils/utils-graphs";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const BASE_CLASSES_FOR_MARKERS = " font-mono text-black p-2 border border-gray-800 shadow-md rounded-3xl font-serif text-sm hover:text-lg w-32 hover:w-36 text-center text-center transition-all duration-300"
+const BASE_CLASSES_FOR_MARKERS = " roboto-light text-black p-2 border border-gray-800 shadow-md rounded-3xl font-serif text-sm hover:text-m w-32 hover:-translate-y-1 text-center text-center transition-all duration-300"
+
+
+
 
 
 export const MapaDeNodos = () => {
@@ -57,10 +61,10 @@ export const MapaDeNodos = () => {
 
           customIcon = L.divIcon({
             className: '',
-            html: `<div class="${BASE_CLASSES_FOR_MARKERS} bg-gradient-to-tr from-blue-400 to-blue-600">
+            html: `<div class="${BASE_CLASSES_FOR_MARKERS} bg-gradient-to-tr ${backgroundColorBasedInAlarm(lastData.nivel_hidrometrico)}">
               <span class="text-xs text-nowrap text-ellipsis">${nodo.identificador}</span>
               <br/>
-              <span class="font-bold text-base">${lastData .nivel_hidrometrico.toFixed(1)}m</span>
+              <i className="fa fa-tint mr-2" /> <span class="roboto-bold text-base">${lastData.nivel_hidrometrico.toFixed(1)}m</span>
               <br/>
               <span class="text-[0.6rem] bold ">${stringUltimoDato}</span>
             </div>`
