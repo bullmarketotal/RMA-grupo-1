@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
-
+//TODO adaptar a TailWind
 function Form() {
   return (
     <div className="container mt-5">

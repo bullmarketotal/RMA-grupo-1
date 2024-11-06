@@ -95,7 +95,7 @@ export default function NavBar() {
                     <span className="absolute -inset-1.5" />
                     <img
                       alt=""
-                      src="images/cooperativa.logo.png"
+                      src="Imagen de usuario" //TODO Cargar la imagen de la base de datos
                       className="h-8 w-8 rounded-full"
                     />
                   </MenuButton>

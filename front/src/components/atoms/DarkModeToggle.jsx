@@ -24,7 +24,7 @@ const DarkModeToggle = () => {
       />
       <span
         className={
-          "absolute w-8 h-8 rounded-full border-solid border-1 border-gray-300 dark:border-gray-500 shadow-md transition-transform duration-300 transform translate-x-0 bg-gray-50 dark:translate-x-8 dark:bg-gray-900"
+          "absolute w-8 h-8 rounded-full border-solid border-1 border-gray-300 dark:border-gray-500 shadow-md transition-transform duration-300 transform translate-x-[1px] bg-gray-50 dark:translate-x-8 dark:bg-gray-900"
         }
       />
     </button>

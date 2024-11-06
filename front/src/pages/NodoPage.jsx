@@ -1,14 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import SensorHeader from "../components/molecules/SensorHeader";
-import SensorInfoPanel from "../components/molecules/SensorInfoPanel";
-import SensorDataVisualizer from "../components/molecules/SensorDataVisualizer";
-import LoadingSpinner from "../components/atoms/LoadingSpinner";
-import useFetchSensorData from "../hooks/useFetchSensorData";
-import { Container, Header } from "../components/atoms";
+import { Container, Header, LoadingSpinner } from "../components/atoms";
+import { NodoDataVisualizer, NodoInfo } from "../components/organisms";
+import { useFetchSensorData } from "../hooks";
 
-const SensorPage = () => {
+const NodoPage = () => {
   const { id } = useParams();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -27,11 +24,12 @@ const SensorPage = () => {
       <Header title={"Nodo"} />
       <div id="main">
         <div className="card-body">
-          <SensorHeader sensor={data.sensor} loading={loading} />
-          <SensorInfoPanel data={data} loading={loading} />
+          <NodoInfo data={data} loading={loading} />
+          {/* <SensorHeader sensor={data.sensor} loading={loading} />
+          <SensorInfoPanel data={data} loading={loading} /> */}
         </div>
       </div>
-      <SensorDataVisualizer
+      <NodoDataVisualizer
         data={data}
         loading={loading}
         onFilterChange={handleFilterChange}
@@ -40,4 +38,4 @@ const SensorPage = () => {
   );
 };
 
-export default SensorPage;
+export default NodoPage;
