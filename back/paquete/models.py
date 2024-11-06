@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import DateTime, Float, ForeignKey, Integer
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from back.models import ModeloBase
@@ -23,3 +23,13 @@ class Paquete(ModeloBase):
     # Relación con Sensor
     sensor = relationship("Sensor", back_populates="paquetes")
     # sensor: Mapped[Sensor] = relationship("Sensor", back_populates="paquetes")
+
+class PaqueteRechazado(ModeloBase):
+    __tablename__ = "paquetes_rechazados"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    sensor_id: Mapped[int] = mapped_column(ForeignKey("sensores.id"))
+    temperatura: Mapped[Optional[float]] = mapped_column(Float, index=True)
+    nivel_hidrometrico: Mapped[Optional[float]] = mapped_column( Float, index=True, nullable=True )
+    date: Mapped[datetime] = mapped_column(DateTime, index=True)
+    motivo: Mapped[str] = mapped_column(String, index=True)
