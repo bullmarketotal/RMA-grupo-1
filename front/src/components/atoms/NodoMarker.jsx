@@ -14,7 +14,7 @@ const NodoMarker = ({ nodo, dataNodo }) => {
           {nodo.identificador}
         </span>
         <br />
-        <span className="font-bold">S/D</span>
+        <i className="fa fa-exclamation-triangle mr-2" /> <span className="italic text-xs">Offline</span>
       </div>
     );
 
@@ -32,7 +32,7 @@ const NodoMarker = ({ nodo, dataNodo }) => {
         {lastData.nivel_hidrometrico.toFixed(1)}m
       </span>
       <br />
-      <span className="text-[0.6rem] bold ">${stringUltimoDato}</span>
+      <span className="text-[0.6rem] bold ">{stringUltimoDato}</span>
     </div>
   );
 };
