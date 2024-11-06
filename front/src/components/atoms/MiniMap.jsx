@@ -22,7 +22,6 @@ function MiniMap({ lat, lng }) {
   return (
     <div
       style={{
-        cursor: "pointer",
         width: "100%",
         height: "100%",
       }}
