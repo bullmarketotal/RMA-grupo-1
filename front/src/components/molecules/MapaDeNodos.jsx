@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import useFetchSensores from "../../hooks/useFetchSensores";
 import { obtenerStringTiempoDesdeUltimoDato } from "../utils/date";
 import { backgroundColorBasedInAlarm } from "../utils/utils-graphs";
+import config from "../../config.json"
 
 const API_URL = import.meta.env.VITE_API_URL;
 const BASE_CLASSES_FOR_MARKERS = " roboto-light text-black p-2 border border-gray-800 shadow-md rounded-3xl font-serif text-sm hover:text-m w-32 hover:-translate-y-1 text-center text-center transition-all duration-300"
@@ -61,7 +62,7 @@ export const MapaDeNodos = () => {
 
           customIcon = L.divIcon({
             className: '',
-            html: `<div class="${BASE_CLASSES_FOR_MARKERS} bg-gradient-to-tr ${backgroundColorBasedInAlarm(lastData.nivel_hidrometrico)}">
+            html: `<div class="${BASE_CLASSES_FOR_MARKERS} bg-gradient-to-tr ${backgroundColorBasedInAlarm(lastData.nivel_hidrometrico, config.Alerts)}">
               <span class="text-xs text-nowrap text-ellipsis">${nodo.identificador}</span>
               <br/>
               <i className="fa fa-tint mr-2" /> <span class="roboto-bold text-base">${lastData.nivel_hidrometrico.toFixed(1)}m</span>
