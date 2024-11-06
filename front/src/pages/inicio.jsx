@@ -6,8 +6,8 @@ import { Container } from "../components/atoms";
 const Inicio = () => {
   return (
     <Container>
-      <div className=" dark:bg-gray-900 dark:text-slate-50 text-center">
-        <div className="header px-11 py-3 flex justify-center">
+      <div className=" dark:bg-gray-900 dark:text-slate-50 ">
+        <div className="header px-11 py-3 flex">
           <img
             src={logoRMA}
             alt="Imagen 2"
@@ -24,10 +24,10 @@ const Inicio = () => {
             En el mapa se visualiza el <b>último dato</b> obtenido para cada nodo de la
             red.
           </p>
-          <p className="my-3 text-lg">
-          Si no hubo datos hoy, estará en gris.
+          <p className="my-3">
+          Si no hubo datos hoy, estará en gris. Si los hubo, el color representará niveles de alerta (azul, amarillo, naranja y rojo)
           </p>
-          <p className="mb-3 text-lg">
+          <p className="mb-3">
             <b>Clickea el nodo</b> para acceder a una vista detallada de su información
             y datos.
           </p>
