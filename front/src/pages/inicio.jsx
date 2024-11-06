@@ -1,20 +1,44 @@
 import React from "react";
-import logoUNPSJB from "../images/unpsjb.png"; // Importa la imagen
-import "./inicio.css";
+import logoRMA from "../../logo.png";
+import { MapaDeNodos } from "../components/molecules/MapaDeNodos";
+import { Container } from "../components/atoms";
 
 const Inicio = () => {
   return (
-    <div className="inicio">
-      <div className="header">
-        <h1>
-          Demo de aplicacion web para Red de monitoreo de la Cuenca Inferior del
-          Río Chubut.
-        </h1>
-        <div className="images">
-          <img src={logoUNPSJB} alt="Imagen 2" />
+    <Container>
+      <div className=" dark:bg-gray-900 dark:text-slate-50 ">
+        <div className="header px-11 py-3 flex">
+          <img
+            src={logoRMA}
+            alt="Imagen 2"
+            className="size-8 sm:size-12 md:size-20 animate-spin-slow "
+          />
+          <h1 className="ml-10 h-24 antialiased roboto-bold dark:text-slate-50 uppercase sm:text-3xl md:text-5x1">
+            Red de Monitoreo de la Cuenca <br />
+            Inferior del Río Chubut
+          </h1>
+        </div>
+        <div className="px-11 text-xl roboto-light">
+          <hr className="mb-4"/>
+          <p className="mb-3">
+            En el mapa se visualiza el <b>último dato</b> obtenido para cada nodo de la
+            red.
+          </p>
+          <p className="my-3">
+          Si no hubo datos hoy, estará en gris. Si los hubo, el color representará niveles de alerta (azul, amarillo, naranja y rojo)
+          </p>
+          <p className="mb-3">
+            <b>Clickea el nodo</b> para acceder a una vista detallada de su información
+            y datos.
+          </p>
+          
+          <div className="mt-10 border-1 border-slate-400 drop-shadow-xl">
+            <MapaDeNodos />
+          </div>
+
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

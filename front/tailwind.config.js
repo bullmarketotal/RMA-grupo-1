@@ -10,6 +10,9 @@ export default {
       fontFamily: {
         sans: ["Helvetica Neue", "Arial", "sans-serif"],
       },
+      animation: {
+        'spin-slow': 'spin 32s linear infinite', 
+      }
     },
   },
   darkMode: "class",

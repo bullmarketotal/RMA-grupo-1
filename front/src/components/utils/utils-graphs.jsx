@@ -136,3 +136,15 @@ export const getMidnightTicks = (firstTick, lastTick) => {
   }
   return midnightTicks;
 };
+
+export const backgroundColorBasedInAlarm = (nivel, alerts) => {
+
+  if(nivel < alerts.Yellow)
+    return "from-blue-400 to-blue-600"
+  if(nivel < alerts.Orange)
+    return "from-yellow-400 to-yellow-600"
+  if(nivel < alerts.Red)
+    return "from-orange-400 to-orange-600"
+  
+  return "from-red-400 to-red-600"
+}
