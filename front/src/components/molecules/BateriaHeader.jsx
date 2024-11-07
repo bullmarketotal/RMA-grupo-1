@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LoadingSpinner } from "../atoms";
 import { useNavigate } from "react-router-dom";
 
-const SensorHeader = ({ sensor, loading }) => {
+const BateriaHeader = ({ sensor, loading }) => {
   const { identificador, latitud, longitud } = sensor;
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
@@ -58,7 +58,7 @@ const SensorHeader = ({ sensor, loading }) => {
                 editableSensor.identificador
               )}
             </h2>
-            <p>Una breve descripción del nodo irá aquí.</p>
+            <p>ACA ESTAMOS VIENDO LA BATERIA.</p>
             <span>
               <i className="fa fa-map-marker me-2" aria-hidden="true" />{" "}
               <span>
@@ -91,24 +91,10 @@ const SensorHeader = ({ sensor, loading }) => {
               </span>
             </span>
           </div>
-          <button
-            id="btn-modificar"
-            className="btn btn-secondary align-self-start"
-            onClick={handleEditClick}
-          >
-            {isEditing ? "Guardar" : "Modificar Nodo"}
-          </button>
-          <button
-            id="btn-ver-bateria"
-            className="btn btn-primary align-self-start"
-            onClick={monitorearBateria}
-          >
-            Monitorear Bateria
-          </button>
         </>
       )}
     </div>
   );
 };
 
-export default SensorHeader;
+export default BateriaHeader;

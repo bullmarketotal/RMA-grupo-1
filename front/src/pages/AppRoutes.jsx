@@ -9,6 +9,7 @@ import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
 import SensorView from "./SensorPage";
 import Example from "./TestPage";
+import BateriaPage from "./BateriaPage";
 
 const AppRoutes = () => {
   return (
@@ -26,6 +27,7 @@ const AppRoutes = () => {
           }
         />
         <Route path="sensor/:id" element={<SensorView />} />
+        <Route path="bateria-page" element={<BateriaPage/>} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="testpage" element={<Example />} />
