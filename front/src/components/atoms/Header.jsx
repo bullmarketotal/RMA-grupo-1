@@ -3,8 +3,7 @@ import React from "react";
 const Header = ({ title }) => {
   return (
     <div>
-      <h1 className="text-4xl text-sky-900 dark:text-sky-100">{title}</h1>
-      <div className="my-2 h-px bg-sky-900/30 dark:bg-sky-100/30" />
+      <h1 className="pb-4 text-3xl text-sky-800 dark:text-sky-100">{title}</h1>
     </div>
   );
 };

@@ -1,12 +1,12 @@
 import React from "react";
 import logoRMA from "../../logo.png";
-import { MapaDeNodos } from "../components/molecules/MapaDeNodos";
+import { MapaDeNodos } from "../components/molecules";
 import { Container } from "../components/atoms";
 
 const Inicio = () => {
   return (
     <Container>
-      <div className=" dark:bg-gray-900 dark:text-slate-50 ">
+      <div className=" normal-bg normal-text">
         <div className="header px-11 py-3 flex">
           <img
             src={logoRMA}
@@ -19,23 +19,23 @@ const Inicio = () => {
           </h1>
         </div>
         <div className="px-11 text-xl roboto-light">
-          <hr className="mb-4"/>
+          <hr className="mb-4" />
           <p className="mb-3">
-            En el mapa se visualiza el <b>último dato</b> obtenido para cada nodo de la
-            red.
+            En el mapa se visualiza el <b>último dato</b> obtenido para cada
+            nodo de la red.
           </p>
           <p className="my-3">
-          Si no hubo datos hoy, estará en gris. Si los hubo, el color representará niveles de alerta (azul, amarillo, naranja y rojo)
+            Si no hubo datos hoy, estará en gris. Si los hubo, el color
+            representará niveles de alerta (azul, amarillo, naranja y rojo)
           </p>
           <p className="mb-3">
-            <b>Clickea el nodo</b> para acceder a una vista detallada de su información
-            y datos.
+            <b>Clickea el nodo</b> para acceder a una vista detallada de su
+            información y datos.
           </p>
-          
-          <div className="mt-10 border-1 border-slate-400 drop-shadow-xl">
+
+          <div className="mt-10 rounded-lg overflow-hidden border-1 border-slate-400 drop-shadow-xl">
             <MapaDeNodos />
           </div>
-
         </div>
       </div>
     </Container>

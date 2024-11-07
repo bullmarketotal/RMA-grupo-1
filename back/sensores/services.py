@@ -10,9 +10,8 @@ from back.sensores import schemas
 from back.sensores.models import Sensor
 from back.sensores.schemas import SensorData, SensorUpdate
 
+
 # operaciones CRUD para Sensores
-
-
 def crear_sensor(db: Session, sensor: schemas.SensorCreate) -> Sensor:
     return Sensor.create(db, sensor)
 
@@ -47,6 +46,7 @@ def sensor_con_datos(nodo_id: int, db: Session) -> SensorData:
             "latitud": nodo.latitud,
             "longitud": nodo.longitud,
             "id": nodo.id,
+            "descripcion": nodo.descripcion,
         },
         "data": data,
     }
@@ -66,6 +66,7 @@ def get_sensor(nodo_id: int, db: Session) -> Sensor:
         "latitud": nodo.latitud,
         "longitud": nodo.longitud,
         "id": nodo.id,
+        "descripcion": nodo.descripcion,
     }
 
 

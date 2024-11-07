@@ -35,12 +35,7 @@ export default function NavBar() {
   const { isDarkMode, toggleDarkMode } = useTheme();
   return (
     <>
-      <Disclosure
-        as="nav"
-        className={
-          "bg-slate-200 text-black dark:bg-gray-800 shadow-xl dark:text-white transition-colors duration-300"
-        }
-      >
+      <Disclosure as="nav" className={"normal-bg"}>
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             {/* Botones de navegación */}
@@ -82,6 +77,7 @@ export default function NavBar() {
 
               {/* Campana de notificaciones */}
               <NotificationButton />
+
               {/* Menu de usuario */}
               <Menu as="div" className="relative">
                 <div>
@@ -95,7 +91,7 @@ export default function NavBar() {
                     <span className="absolute -inset-1.5" />
                     <img
                       alt=""
-                      src="Imagen de usuario" //TODO Cargar la imagen de la base de datos
+                      src="Imagen de usuario" //TODO Cargar la imagen desde la base de datos
                       className="h-8 w-8 rounded-full"
                     />
                   </MenuButton>
@@ -173,11 +169,7 @@ export default function NavBar() {
           </div>
         </DisclosurePanel>
       </Disclosure>
-      <div
-        className={`${
-          isDarkMode ? "bg-gray-900" : "bg-gray-100"
-        } transition-colors duration-300 overflow-auto h-[calc(100vh-64px)] scrollbar-custom overflow-y-scroll`}
-      >
+      <div className="dark-bg transition-colors duration-300 overflow-auto h-[calc(100vh-64px)] scrollbar-custom overflow-y-scroll">
         <Outlet />
       </div>
     </>
