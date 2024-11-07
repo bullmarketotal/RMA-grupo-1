@@ -10,6 +10,7 @@ class SensorBase(BaseModel):
     porcentajeBateria: int
     latitud: Optional[float]
     longitud: Optional[float]
+    descripcion: Optional[str]
 
 
 class SensorCreate(SensorBase):
@@ -28,6 +29,7 @@ class Sensor(SensorBase):
 
 
 # Información del sensor junto a sus datos observados
+
 
 class SensorData(BaseModel):
     sensor: Sensor
