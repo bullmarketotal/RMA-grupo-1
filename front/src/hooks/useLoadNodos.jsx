@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import ReactDOMServer from 'react-dom/server';
+import ReactDOMServer from "react-dom/server";
 import L from "leaflet";
 
 import NodoMarker from "../components/atoms/NodoMarker";
 
-export const useLoadNodos = (map, data, API_URL) => {
+const useLoadNodos = (map, data, API_URL) => {
   useEffect(() => {
     if (!map || data?.length === 0) return;
 
@@ -24,7 +24,9 @@ export const useLoadNodos = (map, data, API_URL) => {
 
           customIcon = L.divIcon({
             className: "",
-            html: ReactDOMServer.renderToString(<NodoMarker nodo={nodo} dataNodo={dataNodo} />),
+            html: ReactDOMServer.renderToString(
+              <NodoMarker nodo={nodo} dataNodo={dataNodo} />
+            ),
           });
 
           const nodoMarker = L.marker([nodo.latitud, nodo.longitud], {
@@ -39,3 +41,4 @@ export const useLoadNodos = (map, data, API_URL) => {
     });
   }, [data]);
 };
+export default useLoadNodos;

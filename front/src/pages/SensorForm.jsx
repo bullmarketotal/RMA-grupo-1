@@ -1,9 +1,8 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapaComponent } from "../components/molecules";
 import { useNotification } from "../context/NotificationContext";
 import { Container, Header } from "../components/atoms";
+import { MapaComponent } from "../components/molecules";
 
 const SensorForm = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +10,9 @@ const SensorForm = () => {
     porcentajeBateria: "",
     latitud: "",
     longitud: "",
+    descripcion: "",
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
@@ -49,7 +50,6 @@ const SensorForm = () => {
 
       if (response.ok) {
         const newSensor = await response.json();
-        console.log("-------------------------", newSensor);
         showNotification("¡Nodo creado exitosamente!", "success");
         navigate(`/sensor/${newSensor.id}`);
       } else {
@@ -62,92 +62,148 @@ const SensorForm = () => {
       setIsSubmitting(false);
     }
   };
+
   return (
     <Container>
-      <Header title={"Crear Nodo"} />
-      <div className="card-body">
-        <form onSubmit={handleSubmit}>
-          <div className="row mb-3">
-            <div className="col">
-              <label htmlFor="identificador" className="form-label">
-                Identificador
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="identificador"
-                name="identificador"
-                value={formData.identificador}
-                onChange={handleChange}
-                required
-              />
+      <Header title="Crear Nodo" />
+      <div className="normal-bg normal-text flex w-full justify-center items-center">
+        <div className="px-2 py-3 w-full max-w-5xl">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
+              <div>
+                <label
+                  htmlFor="identificador"
+                  className="block text-sm font-medium"
+                >
+                  Identificador:
+                </label>
+                <input
+                  type="text"
+                  className="input-text h-full w-full"
+                  id="identificador"
+                  name="identificador"
+                  value={formData.identificador}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="porcentajeBateria"
+                  className="block text-sm font-medium"
+                >
+                  Porcentaje de Batería:
+                </label>
+                <input
+                  type="number"
+                  className="input-text h-full w-full"
+                  id="porcentajeBateria"
+                  name="porcentajeBateria"
+                  value={formData.porcentajeBateria}
+                  onChange={handleChange}
+                  min={0}
+                  max={100}
+                  required
+                />
+              </div>
             </div>
-            <div className="col">
-              <label htmlFor="porcentajeBateria" className="form-label">
-                Porcentaje de Batería
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="porcentajeBateria"
-                name="porcentajeBateria"
-                value={formData.porcentajeBateria}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          {/* Fila para Latitud y Longitud */}
-          <div className="row mb-3">
-            <div className="col">
-              <label htmlFor="latitud" className="form-label">
-                Latitud
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="latitud"
-                name="latitud"
-                value={formData.latitud}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="col">
-              <label htmlFor="longitud" className="form-label">
-                Longitud
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="longitud"
-                name="longitud"
-                value={formData.longitud}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <MapaComponent setFormData={setFormData} />
 
-          <div className="d-flex justify-content-center mt-4">
-            <button
-              type="submit"
-              className="btn btn-primary px-4 py-2"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-              ) : (
-                "Crear Nodo"
-              )}
-            </button>
-          </div>
-        </form>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
+              {/* Latitud */}
+              <div>
+                <label htmlFor="latitud" className="block text-sm font-medium">
+                  Latitud:
+                </label>
+                <input
+                  type="number"
+                  className="input-text h-full w-full"
+                  id="latitud"
+                  name="latitud"
+                  value={formData.latitud}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              {/* Longitud */}
+              <div>
+                <label htmlFor="longitud" className="block text-sm font-medium">
+                  Longitud:
+                </label>
+                <input
+                  type="number"
+                  className="input-text h-full w-full"
+                  id="longitud"
+                  name="longitud"
+                  value={formData.longitud}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Descripción */}
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-10 mb-8">
+              <div>
+                <label
+                  htmlFor="descripcion"
+                  className="block text-sm font-medium"
+                >
+                  Descripción:
+                </label>
+                <textarea
+                  className="input-text h-full w-full"
+                  id="descripcion"
+                  name="descripcion"
+                  value={formData.descripcion}
+                  onChange={handleChange}
+                  maxLength={256}
+                  rows={4}
+                />
+                <div className="text-right text-xs text-gray-500 mt-1">
+                  {256 - formData.descripcion.length} caracteres restantes
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 rounded-md overflow-hidden shadow">
+              <MapaComponent setFormData={setFormData} />
+            </div>
+
+            {/* Botón de envío */}
+            <div className="flex justify-center mt-6">
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    ></path>
+                  </svg>
+                ) : (
+                  "Crear Nodo"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </Container>
   );
