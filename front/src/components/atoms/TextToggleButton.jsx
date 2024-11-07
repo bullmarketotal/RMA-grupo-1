@@ -1,37 +1,21 @@
 import React from "react";
 
-const TextToggleButton = ({ currentView, onViewChange }) => {
+const TextToggleButton = ({ textLeft, textRight, isToggled, onToggled }) => {
   return (
-    <div
-      className="btn-group mb-4 me-3"
-      role="group"
-      aria-label="Basic radio toggle button group"
+    <button
+      onClick={onToggled}
+      className="relative inline-flex items-center h-10 w-40 rounded-lg border-2 border-sky-500 shadow-sm normal-bg"
     >
-      <input
-        type="radio"
-        className="btn-check"
-        name="btnradio"
-        id="graph"
-        autoComplete="off"
-        defaultChecked={currentView === "graph"}
-        onChange={onViewChange}
+      <span
+        className={`absolute h-10 w-20 bg-sky-500 border-2 border-sky-500 dark:border-gray-500 transition-transform duration-300 transform ${
+          isToggled
+            ? "translate-x-full rounded-r-lg"
+            : "-translate-x-[2px] rounded-l-lg"
+        }`}
       />
-      <label className="btn btn-outline-primary w-100" htmlFor="graph">
-        Gráfico
-      </label>
-      <input
-        type="radio"
-        className="btn-check"
-        name="btnradio"
-        id="table"
-        autoComplete="off"
-        defaultChecked={currentView === "table"}
-        onChange={onViewChange}
-      />
-      <label className="btn btn-outline-primary w-100" htmlFor="table">
-        Tabla
-      </label>
-    </div>
+      <span className="normal-text absolute left-4">{textLeft}</span>
+      <span className="normal-text absolute right-4">{textRight}</span>
+    </button>
   );
 };
 

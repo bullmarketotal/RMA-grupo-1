@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from back import exceptions
 from back.paquete import schemas
-from back.paquete.models import Paquete
+from back.paquete.models import Paquete, PaqueteRechazado
 
 
 def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:
@@ -43,3 +43,7 @@ def listar_paquetes(
 
     # Aplica el límite y el offset
     return query.offset(offset).limit(limit).all()
+
+
+def crear_paquete_rechazado(db: Session, paquete: schemas.PaqueteRechazado):
+    return PaqueteRechazado.create(db, paquete)

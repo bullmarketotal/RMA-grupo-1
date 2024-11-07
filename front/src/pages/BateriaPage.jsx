@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BateriaHeader from "../components/molecules/BateriaHeader";
 import BateriaInfoPanel from "../components/molecules/BateriaInfoPanel";
-import SensorDataVisualizer from "../components/molecules/SensorDataVisualizer";
+import BateriaDataVisualizer from "../components/organisms/BateriaDataVisualizer";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import useFetchSensorData from "../hooks/useFetchSensorData";
 import { Container, Header } from "../components/atoms";
@@ -49,7 +49,7 @@ const BateriaPage = () => {
           <BateriaInfoPanel data={data} loading={loading} />
         </div>
       </div>
-      <SensorDataVisualizer
+      <BateriaDataVisualizer
         data={data}
         loading={loading}
         onFilterChange={handleFilterChange}

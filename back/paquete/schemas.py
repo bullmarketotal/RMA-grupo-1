@@ -37,3 +37,11 @@ class Paquete(PaqueteBase):
     # from_atributes=True permite que Pydantic trabaje con modelos SQLAlchemy
     # más info.: https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.from_attributes
     model_config = {"from_attributes": True}
+
+class PaqueteRechazado(BaseModel):
+    # TODO: Cuando refactoricemos Paquete, esto puede usar una jerarquia
+    nodo_id: int
+    date: datetime
+    data: float
+    type: int
+    motivo: str

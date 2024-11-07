@@ -1,5 +1,5 @@
 import React from "react";
-import BateriaRecentDataContainer  from "../organisms/BateriaRecentDataContainer";
+import BateriaRecentDataContainer  from "./BateriaRecentDataContainer";
 import { LoadingSpinner} from "../atoms";
 
 const CARD_HEIGHT = 300;

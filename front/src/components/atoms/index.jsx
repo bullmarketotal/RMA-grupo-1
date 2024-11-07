@@ -1,4 +1,5 @@
 export { default as Card } from "./Card";
+export { default as CardData } from "./CardData";
 export { default as Container } from "./Container";
 export { default as DarkModeToggle } from "./DarkModeToggle";
 export { default as Header } from "./Header";
