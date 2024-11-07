@@ -1,0 +1,14 @@
+{
+    "type": {
+        "temperatura": 1,
+        "precipitacion": 14,
+        "tension": 16,
+        "nivel_hidrometrico": 25
+    },
+    "umbral": {
+        "temperatura": [-30, 60],
+        "nivel_hidrometrico": [0, 10],
+        "tension": [0, 20],
+        "lluvia": [0, 300]
+    }
+}

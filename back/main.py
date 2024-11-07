@@ -18,6 +18,19 @@ from back.depends.config import config
 from back.depends.paquetes import mi_callback
 from back.depends.sub import Subscriptor
 
+import json
+
+# Cargar configuración global
+CONFIG = {}
+
+def cargar_configuracion():
+    global CONFIG
+    ruta = os.path.join(os.path.dirname(__file__), 'config.json')
+    with open(ruta, 'r') as archivo:
+        CONFIG = json.load(archivo)
+
+cargar_configuracion()
+
 # importamos los routers desde nuestros modulos
 # from router import router
 load_dotenv()

@@ -9,7 +9,7 @@ from back.paquete.services import crear_paquete
 from back.database import get_db
 from back.paquete.schemas import PaqueteBase
 from back.paquete.services import crear_paquete
-
+from back.depends.validaciones import es_valido             
 
 def guardar_paquete_en_db(paquete: PaqueteBase) -> None:
     crear_paquete(next(get_db()), paquete)
@@ -35,5 +35,6 @@ def procesar_mensaje(mensaje) -> Optional[PaqueteBase]:
 def mi_callback(mensaje: str) -> None:
     print(f"he recibido: {mensaje}")
     paquete = procesar_mensaje(mensaje)
-    if paquete is not None:
+
+    if paquete is not None: #  and es_valido(paquete)
         guardar_paquete_en_db(paquete)
