@@ -73,7 +73,7 @@ const GraphTension = () => {
             tickFormatter={dateFormatter}
             ticks={getMidnightTicks(batteryData)}
           >
-            <Label value="Fecha" offset={20} position="Bottom" />
+            <Label value="Fecha" offset={40} position="bottom" />
           </XAxis>
 
           <YAxis>

@@ -30,7 +30,7 @@ const BateriaDataVisualizer = ({ data, loading, onFilterChange }) => {
       {view === "graph" ? (
         <GraphTension data={data.paquetes} loading={loading} />
       ) : (
-        <TableView data={data} loading={loading} />
+        <TableView  />
       )}
     </Card>
   );
