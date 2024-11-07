@@ -25,7 +25,8 @@ CONFIG = {}
 
 def cargar_configuracion():
     global CONFIG
-    with open('config.json', 'r') as archivo:
+    ruta = os.path.join(os.path.dirname(__file__), 'config.json')
+    with open(ruta, 'r') as archivo:
         CONFIG = json.load(archivo)
 
 cargar_configuracion()
