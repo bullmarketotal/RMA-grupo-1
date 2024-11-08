@@ -94,9 +94,3 @@ export default function GraphTemp({ data }) {
   );
 }
 
-/*
-<Tooltip
-          labelFormatter={() => ""}
-          formatter={(value) => value + "°C"}
-        />
-*/
