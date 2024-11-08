@@ -9,11 +9,11 @@
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
-  background: #f0f0f0; /* Fondo de la pista */
+  background: rgb(23 23 23); /* Fondo de la pista */
 }
 
 .scrollbar-custom::-webkit-scrollbar-thumb {
-  background-color: #a0aec0; /* Color del thumb */
+  background-color: rgb(64 64 64); /* Color del thumb */
   border-radius: 4px; /* Bordes redondeados */
 }
 
