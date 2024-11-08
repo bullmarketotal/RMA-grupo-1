@@ -5,7 +5,7 @@ import { MaxLevelCard, NodoRecentDataCard, NodoHeader } from "../molecules";
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
-const NodoInfo = ({ data, loading }) => {
+const NodoInfo = ({ data }) => {
   const { latitud, longitud } = data.sensor;
   return (
     <Card>
