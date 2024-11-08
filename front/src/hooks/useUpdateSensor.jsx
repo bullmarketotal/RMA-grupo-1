@@ -1,16 +1,16 @@
 import { useState } from "react";
 const api = import.meta.env.VITE_API_URL;
 
-const useUpdateSensor = () => {
+const useUpdateSensor = (sensorId, sensorData) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateSensor = async (nodo_id, sensorData) => {
+  const updateSensor = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`${api}/sensor/${nodo_id}`, {
+      const response = await fetch(`${api}/sensor/${sensorId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
