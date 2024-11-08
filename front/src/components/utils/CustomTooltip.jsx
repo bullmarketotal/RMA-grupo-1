@@ -7,14 +7,8 @@ export default function CustomTooltip({ payload }) {
   if (dato?.name === "nivel_hidrometrico") unidad = "m";
 
   return (
-    <div style={{
-        backgroundColor: "white",
-        width: "fit-content",
-        border: "solid 1px black",
-        borderRadius: "1rem",
-        padding: "0.5rem 0.7rem",
-    }}>
-      <div className="text-sm text-slate-600">
+    <div className="bg-slate-100 dark:bg-slate-800 dark:text-white drop-shadow shadow-md px-3 py-2 rounded-md">
+      <div className="text-sm text-slate-600 dark:text-slate-400">
         {dateFormatter(dato?.payload.date)}
       </div>
       <div className="flex text-center">
