@@ -8,8 +8,8 @@ const NodoHeader = ({ sensor, loading }) => {
   const [editableSensor, setEditableSensor] = useState({
     identificador: sensor.identificador,
     porcentajeBateria: sensor.porcentajeBateria || 0,
-    latitud: sensor.latitud,
-    longitud: sensor.longitud,
+    latitud: sensor.latitud || 0,
+    longitud: sensor.longitud || 0,
     descripcion: sensor.descripcion,
   });
 
@@ -30,7 +30,10 @@ const NodoHeader = ({ sensor, loading }) => {
     const { name, value } = e.target;
     setEditableSensor({
       ...editableSensor,
-      [name]: value,
+      [name]:
+        name === "latitud" || name === "longitud"
+          ? parseFloat(value) || 0
+          : value,
     });
   };
 

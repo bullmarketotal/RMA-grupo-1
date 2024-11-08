@@ -52,13 +52,13 @@ export default function NavBar() {
                           location.pathname === item.link
                             ? `${
                                 isDarkMode
-                                  ? "bg-gray-900 text-white"
-                                  : "bg-gray-100 text-gray-800"
+                                  ? "bg-neutral-900 text-white"
+                                  : "bg-neutral-100 text-neutral-800"
                               }`
                             : `${
                                 isDarkMode
-                                  ? "text-gray-300 hover:bg-gray-700 hover:text-white"
-                                  : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
+                                  ? "text-neutral-300 hover:bg-neutral-700 hover:text-white"
+                                  : "text-neutral-800 hover:bg-neutral-100 hover:text-neutral-900"
                               }`,
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
@@ -84,9 +84,9 @@ export default function NavBar() {
                   <MenuButton
                     className={`${
                       isDarkMode
-                        ? "bg-gray-800 text-white"
-                        : "bg-white text-gray-800"
-                    } relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800`}
+                        ? "bg-neutral-800 text-white"
+                        : "bg-white text-neutral-800"
+                    } relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-800`}
                   >
                     <span className="absolute -inset-1.5" />
                     <img
@@ -99,7 +99,7 @@ export default function NavBar() {
                 <MenuItems
                   transition
                   className={`${
-                    isDarkMode ? "bg-gray-800" : "bg-white"
+                    isDarkMode ? "bg-neutral-800" : "bg-white"
                   } absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in`}
                 >
                   {menuItems.map((item) => (
@@ -108,8 +108,8 @@ export default function NavBar() {
                         to={item.link}
                         className={`${
                           isDarkMode
-                            ? "text-gray-200 hover:bg-gray-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                            ? "text-neutral-200 hover:bg-neutral-700"
+                            : "text-neutral-700 hover:bg-neutral-100"
                         } block px-4 py-2 text-sm data-[focus]:outline-none`}
                       >
                         {item.name}
@@ -123,7 +123,7 @@ export default function NavBar() {
             {/* Menu pantallas pequeñas*/}
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
               <DisclosureButton
-                className={`text-gray-400 hover:bg-gray-700 dark:text-gray-900 dark:hover:bg-gray-200" group relative inline-flex items-center justify-center rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white`}
+                className={`text-neutral-400 hover:bg-neutral-700 dark:text-neutral-900 dark:hover:bg-neutral-200" group relative inline-flex items-center justify-center rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white`}
               >
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Abrir menu principal</span>
@@ -152,13 +152,13 @@ export default function NavBar() {
                   location.pathname === item.link
                     ? `${
                         isDarkMode
-                          ? "bg-gray-900 text-white"
-                          : "bg-gray-200 text-gray-800"
+                          ? "bg-neutral-900 text-white"
+                          : "bg-neutral-200 text-neutral-800"
                       }`
                     : `${
                         isDarkMode
-                          ? "text-gray-300 hover:bg-gray-700 hover:text-white"
-                          : "text-gray-800 hover:bg-gray-200 hover:text-gray-900"
+                          ? "text-neutral-300 hover:bg-neutral-700 hover:text-white"
+                          : "text-neutral-800 hover:bg-neutral-200 hover:text-neutral-900"
                       }`,
                   "block rounded-md px-3 py-2 text-base font-medium"
                 )}

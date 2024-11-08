@@ -1,14 +1,15 @@
+export { default as ErrorSimple } from "./ErrorSimple";
 export { default as FiltroDatos } from "./FiltroDatos";
 export { default as Form } from "./Form";
 export { default as GraphNivel } from "./GraphNivel";
 export { default as GraphTemp } from "../molecules/GraphTemp";
 export { default as LoginForm } from "./LoginForm";
 export { default as MapaComponent } from "./MapaComponent";
+export { default as MapaDeNodos } from "./MapaDeNodos";
 export { default as MaxLevelCard } from "./MaxLevelCard";
+export { default as NodoHeader } from "./NodoHeader";
 export { default as NodoRecentDataCard } from "./NodoRecentDataCard";
 export { default as Paginacion } from "./Paginacion";
 export { default as RegisterForm } from "./RegisterForm";
-export { default as NodoHeader } from "./NodoHeader";
 export { default as TablaDatos } from "./TablaDatos";
 export { default as TablaNodos } from "./TablaNodos";
-export { default as MapaDeNodos } from "./MapaDeNodos";
