@@ -1,5 +1,7 @@
+import signal
 import sys
 import threading
+import time
 from dataclasses import dataclass
 from typing import Callable, Optional
 
@@ -8,20 +10,26 @@ import paho.mqtt.client as paho
 from back.depends.config import config
 
 
-@dataclass
 class Subscriptor:
-    client: paho.Client
-    message_counter: int = 0
-    logger_enabled: bool = True
-    on_message_callback: Optional[Callable[str, None]] = None
+    def __init__(
+        self,
+        client: paho.Client,
+        on_message_callback: Optional[Callable[[str], None]] = None,
+    ) -> None:
+        self.client = client
+        self.message_counter = 0
+        self.on_message_callback = on_message_callback
+        self.should_exit = False  # flag para manejar la interrupción
+        self.thread = None
+        self.subscribed = False  # flag para que no haya multiples subscripciones
 
-    def __post_init__(self) -> None:
         self.set_event_handlers()
 
     def set_event_handlers(self) -> None:
-
         def on_subscribe(_, userdata, mid, granted_qos) -> None:
-            print(f"suscrito a {config.topic}!")
+            if not self.subscribed:
+                print(f"suscrito a {config.topic}!")
+                self.subscribed = True
 
         def on_message(_, userdata, msg) -> None:
             message = msg.payload.decode()
@@ -34,13 +42,13 @@ class Subscriptor:
         def on_connect(_, obj, flags, reason_code) -> None:
             if self.client.is_connected():
                 print("Suscriptor conectado!")
-                self.subscribe(config.topic, 1)
+                if not self.subscribed:
+                    self.subscribe(config.topic, 1)
 
         def on_disconnect(_, userdata, rc) -> None:
             print(f"total messages received: {self.message_counter}")
             print("disconnected!")
-            # print(f"{userdata=} - {rc=}")
-            sys.exit(1)
+            self.should_exit = True
 
         self.client.max_queued_messages_set(0)
         self.client.enable_logger()
@@ -58,30 +66,20 @@ class Subscriptor:
             print("Ha ocurrido un problema al conectar con el broker MQTT")
             sys.exit(1)
 
+        print("Presione CTRL+C para salir...")
+
+        self.thread = threading.Thread(target=self.run_loop, daemon=True)
+        self.thread.start()
+
+    def run_loop(self) -> None:
         try:
-            print("Presione CTRL+C para salir... no va")
-            self.client.loop_forever()
-        except Exception as e:
-            print("Algo malió sal...")
-            print(e)
+            while not self.should_exit:  # Continuar hasta que el flag cambie
+                self.client.loop()
+        except KeyboardInterrupt:
+            print("Interrupción de teclado detectada (CTRL+C).")
         finally:
             print("Desconectando del broker MQTT")
             self.disconnect()
 
     def disconnect(self):
         self.client.disconnect()
-
-
-def custom_callback(msj: str) -> None:
-    print(f"[Callback]: {msj}")
-
-
-if __name__ == "__main__":
-    sub = Subscriptor(client=paho.Client(), on_message_callback=custom_callback)
-
-    thread = threading.Thread(
-        target=sub.connect,
-        args=(config.host, config.port, config.keepalive),
-    )
-    thread.start()
-    # sub.connect(config.host, config.port, config.keepalive)
