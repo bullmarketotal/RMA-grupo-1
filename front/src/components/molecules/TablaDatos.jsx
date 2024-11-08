@@ -48,8 +48,6 @@ const TablaDatos = ({ items }) => {
     });
   };
 
-  console.log(rows)
-
   return (
     <Card>
       <table
