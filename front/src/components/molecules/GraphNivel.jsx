@@ -27,7 +27,7 @@ import CustomTooltip from "../utils/CustomTooltip";
     }
 */
 
-export default function GraphNivel({ data, syncId, noBrush }) {
+export default function GraphNivel({ data, noBrush }) {
   if (!data || data.length === 0) return <div>No hay datos disponibles</div>;
 
   const midnightTicks = getMidnightTicks(
@@ -53,7 +53,6 @@ export default function GraphNivel({ data, syncId, noBrush }) {
         width={500}
         height={200}
         data={data}
-        syncId={syncId}
         margin={{
           top: 10,
           right: 30,

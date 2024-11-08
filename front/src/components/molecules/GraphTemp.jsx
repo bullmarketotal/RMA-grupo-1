@@ -23,7 +23,7 @@ import CustomTooltip from "../utils/CustomTooltip";
     }
 */
 
-export default function GraphTemp({ data, syncId = 0 }) {
+export default function GraphTemp({ data }) {
   if (data.length === 0)
     return <div>No se recibieron datos para el gráfico.</div>;
 
@@ -45,7 +45,6 @@ export default function GraphTemp({ data, syncId = 0 }) {
         width={500}
         height={200}
         data={data}
-        syncId={syncId}
         margin={{
           top: 10,
           right: 30,

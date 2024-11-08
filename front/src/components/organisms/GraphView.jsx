@@ -22,9 +22,9 @@ const GraphView = ({ data, loading }) => {
   return (
     <div style={{ width: "100%" }}>
       <h4>Nivel hidrométrico</h4>
-      <GraphNivel data={data} syncId={0} />
+      <GraphNivel data={data} />
       <h4>Temperatura</h4>
-      <GraphTemp data={data} syncId={0} />
+      <GraphTemp data={data} />
     </div>
   );
 };
