@@ -66,7 +66,7 @@ export default function GraphNivel({ data, noBrush }) {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="date"
-          tickCount={7}
+          tickCount={10}
           type="number"
           domain={["dataMin", "dataMax"]}
           tick={true}

@@ -56,6 +56,7 @@ export default function GraphTemp({ data }) {
         <XAxis
           dataKey="date"
           type="number"
+          tickCount={10}
           domain={["dataMin", "dataMax"]}
           tick={true}
           tickFormatter={tickFormatter}
