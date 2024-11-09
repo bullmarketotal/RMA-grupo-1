@@ -10,11 +10,9 @@ function App() {
     <AuthProvider>
       <NotificationProvider>
         <ThemeProvider>
-          <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-          </div>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
         </ThemeProvider>
       </NotificationProvider>
     </AuthProvider>

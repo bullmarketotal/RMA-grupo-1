@@ -1,6 +1,7 @@
 import React from "react";
 import { useTable } from "react-table";
 import { Card } from "../atoms";
+import { dateFormatter } from "../utils/utils-graphs";
 
 const TablaDatos = ({ items }) => {
   const data = React.useMemo(() => items, [items]);
@@ -87,7 +88,10 @@ const TablaDatos = ({ items }) => {
                   const { key, ...cellProps } = cell.getCellProps();
                   return (
                     <td key={key} {...cellProps} className="table-row-cell">
-                      {cell.render("Cell")}
+                      {cell.column.Header === 'ID Sensor' && cell.render("Cell")}
+                      { cell.column.Header  === 'Temperatura' && Number(cell.value).toFixed(1) + "°C" }
+                      { cell.column.Header === 'Nivel Hidrométrico' && Number(cell.value).toFixed(1) + "cm" }
+                      { cell.column.Header === 'Fecha y Hora' && dateFormatter(cell.value) }
                     </td>
                   );
                 })}

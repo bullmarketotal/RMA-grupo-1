@@ -1,21 +1,34 @@
 import React, { useState } from "react";
+import { LoadingSpinner, SubmitButton } from "../atoms";
+import { MdOutlineSettingsInputAntenna } from "react-icons/md";
+import { useUpdateSensor } from "../../hooks";
 import { LoadingSpinner } from "../atoms";
 import { useNavigate } from "react-router-dom";
 
 const NodoHeader = ({ sensor, loading }) => {
-  const { identificador, latitud, longitud } = sensor;
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
+    identificador: sensor.identificador,
+    porcentajeBateria: sensor.porcentajeBateria || 0,
+    latitud: sensor.latitud,
+    longitud: sensor.longitud,
+    descripcion: sensor.descripcion,
+  });
+
+  const {
+    updateSensor,
+    loading: loadingSensor,
+    error,
+  } = useUpdateSensor(sensor.id, editableSensor);
     identificador: identificador,
     latitud: latitud,
     longitud: longitud,
   });
   const navigate = useNavigate();
 
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     if (isEditing) {
-      console.log("Nodo actualizado:", editableSensor);
-      //TODO implementar la modificación al nodo
+      await updateSensor();
     }
     setIsEditing(!isEditing);
   };
@@ -33,33 +46,55 @@ const NodoHeader = ({ sensor, loading }) => {
   };
 
   return (
-    <div id="header" className="flex justify-between pb-1">
+    <div id="header" className="flex items-center justify-between">
       {loading ? (
         <LoadingSpinner />
       ) : (
         <>
           <div id="info-sensor">
-            <h2 className="flex items-center text-lg font-semibold">
-              <i className="fa fa-rss mr-2" aria-hidden="true" />
+            {/* identificador */}
+            <h1 className="flex text-xl items-center normal-text font-semibold">
+              <MdOutlineSettingsInputAntenna className="mr-2" />
               {isEditing ? (
                 <input
                   type="text"
                   name="identificador"
                   value={editableSensor.identificador}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded px-2 py-1 mr-2"
+                  className="normal text input-text border border-gray-300 rounded px-2 py-1 mr-2"
                 />
               ) : (
                 editableSensor.identificador
               )}
-            </h2>
-            <p className="text-sm text-gray-600">
-              Una breve descripción del nodo irá aquí.
+            </h1>
+            {/* descripción */}
+
+            <p className="normal-text text-sm py-2">
+              {isEditing ? (
+                <>
+                  <textarea
+                    className="input-text h-full w-full"
+                    id="descripcion"
+                    name="descripcion"
+                    value={editableSensor.descripcion}
+                    onChange={handleChange}
+                    maxLength={256}
+                    rows={4}
+                  />
+                  <div className="text-input text-right text-sm text-gray-500 mt-1">
+                    {256 - editableSensor.descripcion.length} caracteres
+                    restantes
+                  </div>
+                </>
+              ) : (
+                editableSensor.descripcion
+              )}
             </p>
-            <span className="text-gray-800">
+
+            <span className="normal-text">
               <i className="fa fa-map-marker mr-2" aria-hidden="true" />
-              <span>
-                <b>Latitud:</b>{" "}
+              <span className="space-x-4">
+                <b>Latitud:</b>
                 {isEditing ? (
                   <input
                     type="number"
@@ -67,12 +102,13 @@ const NodoHeader = ({ sensor, loading }) => {
                     name="latitud"
                     value={editableSensor.latitud}
                     onChange={handleChange}
-                    className="border border-gray-300 rounded px-2 py-1 w-24 ml-1"
+                    className="input-text border border-gray-300 rounded px-2 py-1 w-24 ml-1"
                   />
                 ) : (
                   editableSensor.latitud?.toFixed(5)
-                )}{" "}
-                <b>Longitud:</b>{" "}
+                )}
+
+                <b>Longitud:</b>
                 {isEditing ? (
                   <input
                     type="number"
@@ -80,7 +116,7 @@ const NodoHeader = ({ sensor, loading }) => {
                     name="longitud"
                     value={editableSensor.longitud}
                     onChange={handleChange}
-                    className="border border-gray-300 rounded px-2 py-1 w-24 ml-1"
+                    className="input-text border border-gray-300 rounded px-2 py-1 w-24 ml-1"
                   />
                 ) : (
                   editableSensor.longitud?.toFixed(5)
@@ -90,7 +126,7 @@ const NodoHeader = ({ sensor, loading }) => {
           </div>
           <button
             id="btn-modificar"
-            className="btn bg-gray-500 hover:bg-gray-600 text-white py-1 px-4 rounded mt-1"
+            className="h-16 w-32 btn-action btn-active"
             onClick={handleEditClick}
           >
             {isEditing ? "Guardar" : "Modificar Nodo"}

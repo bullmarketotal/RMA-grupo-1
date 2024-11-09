@@ -22,6 +22,7 @@ const NodoPage = () => {
   return (
     <Container>
       <Header title={"Nodo"} />
+
       
       <div id="main">
         <div className="card-body">

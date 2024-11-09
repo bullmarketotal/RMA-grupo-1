@@ -4,10 +4,10 @@ import NavBar from "../components/NavBar";
 import DatosPage from "./DatosPage";
 import Inicio from "./inicio";
 import LoginPage from "./LoginPage";
+import NodoPage from "./NodoPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
 import SensorList from "./SensorList";
-import NodoPage from "./NodoPage";
 import Example from "./TestPage";
 import BateriaPage from "./BateriaPage";
 

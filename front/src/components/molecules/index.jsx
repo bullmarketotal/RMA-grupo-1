@@ -11,3 +11,4 @@ export { default as RegisterForm } from "./RegisterForm";
 export { default as NodoHeader } from "./NodoHeader";
 export { default as TablaDatos } from "./TablaDatos";
 export { default as TablaNodos } from "./TablaNodos";
+export { default as MapaDeNodos } from "./MapaDeNodos";
