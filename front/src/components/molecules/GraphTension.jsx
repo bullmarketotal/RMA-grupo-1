@@ -82,7 +82,7 @@ const GraphTension = () => {
 
           <Tooltip content={<CustomTooltip />} />
           
-          <ReferenceLine y={3.5} label="Advertencia" stroke="red" strokeDasharray="3 3" />
+          <ReferenceLine y={3.5} label="Nivel normal de bateria" stroke="red" strokeDasharray="3 3" />
           <Area
             type="monotone"
             dataKey="voltage"

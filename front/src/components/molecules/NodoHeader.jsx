@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { LoadingSpinner, SubmitButton } from "../atoms";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import { useUpdateSensor } from "../../hooks";
-import { LoadingSpinner } from "../atoms";
 import { useNavigate } from "react-router-dom";
 
 const NodoHeader = ({ sensor, loading }) => {
@@ -20,10 +19,7 @@ const NodoHeader = ({ sensor, loading }) => {
     loading: loadingSensor,
     error,
   } = useUpdateSensor(sensor.id, editableSensor);
-    identificador: identificador,
-    latitud: latitud,
-    longitud: longitud,
-  });
+
   const navigate = useNavigate();
 
   const handleEditClick = async () => {
@@ -33,10 +29,6 @@ const NodoHeader = ({ sensor, loading }) => {
     setIsEditing(!isEditing);
   };
 
-  function monitorearBateria(){
-    navigate("/bateria-page");
-  }
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditableSensor({
@@ -45,8 +37,12 @@ const NodoHeader = ({ sensor, loading }) => {
     });
   };
 
+  function monitorearBateria(){
+    navigate("/bateria-page");
+  }
+
   return (
-    <div id="header" className="flex items-center justify-between">
+    <div id="header" className="flex items-center justify-between" >
       {loading ? (
         <LoadingSpinner />
       ) : (
@@ -139,6 +135,7 @@ const NodoHeader = ({ sensor, loading }) => {
             Monitorear Bateria
           </button>
         </>
+        
       )}
     </div>
   );
