@@ -12,3 +12,4 @@ export { default as NodoHeader } from "./NodoHeader";
 export { default as TablaDatos } from "./TablaDatos";
 export { default as TablaNodos } from "./TablaNodos";
 export { default as MapaDeNodos } from "./MapaDeNodos";
+export { default as PDFNodo } from "./PDFNodo";
