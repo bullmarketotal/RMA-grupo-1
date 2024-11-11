@@ -32,7 +32,6 @@ export default function GraphNivel({ data, noBrush }) {
   if (!data || data.length === 0) return <div>No hay datos disponibles</div>;
   const {isDarkMode} = useTheme()
 
-  console.log(isDarkMode)
   const midnightTicks = getMidnightTicks(
     data[0].date,
     data[data.length - 1].date
