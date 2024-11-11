@@ -1,4 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import "../../assets/font-awesome/css/font-awesome.min.css";
 import { obtenerStringTiempoDesdeUltimoDato } from "../utils/utils-graphs";
@@ -28,20 +28,22 @@ const SensorCard = ({ sensor }) => {
   }, []);
 
   return (
-    <div className="card">
-      <div className="card-body">
-        <div className="d-flex">
+      <div className="border-2 rounded p-4 dark:border-neutral-800 dark:text-neutral-50">
+        <div className="flex">
           <div className="col-md-4 mb-3">
-            <h4 className="card-title">
-              <i className="fa fa-rss" aria-hidden="true"></i>{" "}
+            <h4 className="card-title flex items-center text-2xl text-neutral-600 dark:text-neutral-400 font-semibold">
+              <MdOutlineSettingsInputAntenna className="mr-2"/>{" "}
               {sensor.identificador}
             </h4>
-            <p className="card-text">
-              <i className="fa fa-map-marker me-2" aria-hidden="true"></i>
-              {sensor.latitud}, {sensor.longitud}
+            <p className="normal-text text-sm py-2 mb-1">
+              {sensor.descripcion}
             </p>
-            <p className="card-text">
-              <span className="fw-bold">Último dato:</span>
+            <p className="mb-3">
+              <i className="fa fa-map-marker me-2" aria-hidden="true"></i>
+              {sensor.latitud.toFixed(5)}, {sensor.longitud.toFixed(5)}
+            </p>
+            <p className="flex flex-col">
+              <div className="fw-bold">Último dato:</div>
               <br />
               <span className="fs-5">
                 <i className="fa fa-tint" aria-hidden="true"></i>{" "}
@@ -112,7 +114,6 @@ const SensorCard = ({ sensor }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
