@@ -1,3 +1,4 @@
+import React from "react";
 import { FaTint } from "react-icons/fa";
 import { CardData } from "../atoms";
 import { filterDataByTime, getMaxValue } from "../utils/sensorUtils";
@@ -5,7 +6,7 @@ import { filterDataByTime, getMaxValue } from "../utils/sensorUtils";
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
-function MaxLevelCard({ data, timeFrame }) {
+const MaxLevelCard = React.memo(({ data, timeFrame }) => {
   const filteredData = filterDataByTime(data, timeFrame);
   const maxNivel = getMaxValue(filteredData, "nivel_hidrometrico");
 
@@ -24,5 +25,5 @@ function MaxLevelCard({ data, timeFrame }) {
       </div>
     </CardData>
   );
-}
+});
 export default MaxLevelCard;

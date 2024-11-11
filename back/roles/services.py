@@ -1,16 +1,17 @@
+from datetime import datetime, timedelta
 from typing import List
 
-from sqlalchemy.orm import Session
+from fastapi import HTTPException
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from back import exceptions
 from back.roles import schemas
-from back.roles.models import Rol
+from back.roles.models import Role
 from back.roles.schemas import RolBase
-from datetime import datetime, timedelta
-from fastapi import HTTPException
 
 # operaciones CRUD para roles
 
+
 def listar_roles(db: Session) -> List[RolBase]:
-    return Rol.get_all(db)
+    return Role.get_all(db)
