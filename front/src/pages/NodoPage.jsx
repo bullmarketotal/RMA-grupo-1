@@ -39,7 +39,6 @@ const NodoPage = () => {
 
   return (
     <Container>
-      <Header title={"Nodo"} />
       <Card>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-80 pb-4">
           <div className="col-span-2">

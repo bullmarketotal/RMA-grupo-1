@@ -8,10 +8,8 @@ import { LoadingSpinner } from "../atoms";
 const SensorCard = ({ sensor }) => {
   const [data, setData] = useState([]);
   const [loadingGraphs, setLoadingGraphs] = useState(true);
-
   const API_URL = import.meta.env.VITE_API_URL;
   const dateOf24hoursBefore = new Date(Date.now() - 1000 * 60 * 60 * 24);
-
   const stringOfDateOf24hoursBefore = dateOf24hoursBefore.toISOString();
 
   useEffect(() => {
