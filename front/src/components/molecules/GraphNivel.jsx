@@ -17,6 +17,7 @@ import {
   tickFormatter,
 } from "../utils/utils-graphs";
 import CustomTooltip from "../utils/CustomTooltip";
+import { useTheme } from "../../context/ThemeContext";
 
 /*
     El prop "data" debe tener la forma:
@@ -27,9 +28,11 @@ import CustomTooltip from "../utils/CustomTooltip";
     }
 */
 
-export default function GraphNivel({ data, syncId, noBrush }) {
+export default function GraphNivel({ data, noBrush }) {
   if (!data || data.length === 0) return <div>No hay datos disponibles</div>;
+  const {isDarkMode} = useTheme()
 
+  console.log(isDarkMode)
   const midnightTicks = getMidnightTicks(
     data[0].date,
     data[data.length - 1].date
@@ -53,7 +56,6 @@ export default function GraphNivel({ data, syncId, noBrush }) {
         width={500}
         height={200}
         data={data}
-        syncId={syncId}
         margin={{
           top: 10,
           right: 30,
@@ -64,7 +66,7 @@ export default function GraphNivel({ data, syncId, noBrush }) {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="date"
-          tickCount={7}
+          tickCount={10}
           type="number"
           domain={["dataMin", "dataMax"]}
           tick={true}
@@ -89,7 +91,8 @@ export default function GraphNivel({ data, syncId, noBrush }) {
         />
         {!noBrush ? (
           <Brush
-            height={30}
+            height={25}
+            fill={isDarkMode ? '#333' : "#e5e5e5"}
             stroke="#8884d8"
             travellerWidth={10}
             tickFormatter={(val) => dateFormatter(data[val].date)}

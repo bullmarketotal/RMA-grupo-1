@@ -4,8 +4,10 @@
 
 /* Estilos generales de la scrollbar */
 .scrollbar-custom::-webkit-scrollbar {
-  width: 8px; /* Ancho de la scrollbar */
-  height: 8px; /* Alto de la scrollbar */
+  width: 8px;
+  /* Ancho de la scrollbar */
+  height: 8px;
+  /* Alto de la scrollbar */
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
@@ -36,9 +38,11 @@
 .normal-bg {
   @apply transition-colors duration-300 bg-neutral-50 dark:bg-neutral-700;
 }
+
 .dark-bg {
   @apply transition-colors duration-300 bg-neutral-200 dark:bg-neutral-900;
 }
+
 .normal-text {
   @apply text-neutral-600 dark:text-neutral-300;
 }
@@ -74,18 +78,23 @@
 .table-container {
   @apply min-w-full divide-y divide-neutral-200 bg-white dark:bg-neutral-800 shadow-md rounded-lg;
 }
+
 .table-definir {
   @apply bg-neutral-200 dark:bg-neutral-700;
 }
+
 .table-header {
   @apply px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider dark:text-neutral-300;
 }
+
 .separador-header {
   @apply divide-y divide-neutral-200/60 dark:divide-neutral-500/60;
 }
+
 .table-row {
   @apply hover:bg-neutral-300 dark:hover:bg-neutral-600 cursor-pointer transition-colors duration-200;
 }
+
 .table-row-cell {
   @apply px-6 py-3 whitespace-nowrap text-sm text-neutral-900 dark:text-neutral-100;
 }
@@ -162,4 +171,15 @@
   font-family: "Roboto", sans-serif;
   font-weight: 900;
   font-style: italic;
+}
+
+.dark .leaflet-layer,
+.dark .leaflet-control-zoom-in,
+.dark .leaflet-control-zoom-out,
+.dark .leaflet-control-attribution {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.dark .leaflet-container {
+  background: #000;
 }

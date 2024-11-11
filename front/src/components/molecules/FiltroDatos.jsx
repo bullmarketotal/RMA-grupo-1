@@ -16,6 +16,7 @@ export default function FiltroDatos({ onFilterChange }) {
   };
 
   return (
+
     <div className="flex items-center space-x-4 my-2 normal-bg">
       {/* Fecha Desde */}
       <div className="flex items-center normal-text space-x-2">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { LoadingSpinner, SubmitButton } from "../atoms";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import { useUpdateSensor } from "../../hooks";
+import { useNavigate } from "react-router-dom";
 
 const NodoHeader = ({ sensor, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -18,6 +19,8 @@ const NodoHeader = ({ sensor, loading }) => {
     loading: loadingSensor,
     error,
   } = useUpdateSensor(sensor.id, editableSensor);
+
+  const navigate = useNavigate();
 
   const handleEditClick = async () => {
     if (isEditing) {
@@ -37,8 +40,12 @@ const NodoHeader = ({ sensor, loading }) => {
     });
   };
 
+  function monitorearBateria(){
+    navigate("/bateria-page");
+  }
+
   return (
-    <div id="header" className="flex items-center justify-between">
+    <div id="header" className="flex items-center justify-between" >
       {loading ? (
         <LoadingSpinner />
       ) : (
@@ -123,7 +130,15 @@ const NodoHeader = ({ sensor, loading }) => {
           >
             {isEditing ? "Guardar" : "Modificar Nodo"}
           </button>
+          <button
+            id="btn-ver-bateria"
+            className="btn btn-primary align-self-start"
+            onClick={monitorearBateria}
+          >
+            Monitorear Bateria
+          </button>
         </>
+        
       )}
     </div>
   );

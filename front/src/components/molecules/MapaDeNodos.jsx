@@ -22,7 +22,7 @@ const MapaDeNodos = () => {
   return (
     <section>
       {loading && <LoadingDots />}
-      <div id="map" className="m-auto h-[600px] w-full"></div>
+      <div id="map" className="m-auto h-[600px] w-full dark:dark-map"></div>
     </section>
   );
 };
