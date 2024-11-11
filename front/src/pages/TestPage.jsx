@@ -121,7 +121,7 @@ export default function Example() {
           <button onClick={handleButtonClick}>Mostrar Formulario</button>
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
-              <div className="bg-white p-6 rounded-lg">
+              <div className="normal-bg p-6 rounded-lg">
                 <div className="normal-bg">
                   <Header title="Crear Nodo" />
                   <div className="normal-bg normal-text flex w-full justify-center items-center">

@@ -9,7 +9,7 @@ const DarkModeToggle = () => {
     <button
       onClick={toggleDarkMode}
       className={
-        "shadow-lg sm:mr-2 relative inline-flex items-center justify-between h-8 w-16 rounded-full transition-colors duration-300 bg-gray-300 dark:bg-gray-400"
+        "shadow-lg sm:mr-2 relative inline-flex items-center justify-between h-8 w-16 rounded-full transition-colors duration-300 bg-neutral-300 dark:bg-neutral-400"
       }
     >
       <FaSun
@@ -18,13 +18,13 @@ const DarkModeToggle = () => {
         }`}
       />
       <FaMoon
-        className={`absolute left-2 w-4 h-4 text-gray-700 transition-opacity duration-300 ${
+        className={`absolute left-2 w-4 h-4 text-neutral-700 transition-opacity duration-300 ${
           isDarkMode ? "opacity-100" : "opacity-0"
         }`}
       />
       <span
         className={
-          "absolute w-8 h-8 rounded-full border-solid border-1 border-gray-300 dark:border-gray-500 shadow-md transition-transform duration-300 transform translate-x-[1px] bg-gray-50 dark:translate-x-8 dark:bg-gray-900"
+          "absolute w-8 h-8 rounded-full border-solid border-1 border-neutral-300 dark:border-neutral-500 shadow-md transition-transform duration-300 transform translate-x-[1px] bg-neutral-50 dark:translate-x-8 dark:bg-neutral-900"
         }
       />
     </button>

@@ -1,7 +1,8 @@
+import React from "react";
 import { obtenerTimeAgoString } from "../utils/date";
 import { CardData } from "../atoms";
 
-function NodoRecentDataCard({ data }) {
+const NodoRecentDataCard = React.memo(({ data }) => {
   if (!data || data.length === 0) {
     return <p className="text-center">No hay datos disponibles.</p>;
   }
@@ -30,6 +31,6 @@ function NodoRecentDataCard({ data }) {
       </div>
     </CardData>
   );
-}
+});
 
 export default NodoRecentDataCard;
