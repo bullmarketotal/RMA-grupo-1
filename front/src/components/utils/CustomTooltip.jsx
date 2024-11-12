@@ -11,9 +11,9 @@ export default function CustomTooltip({ payload }) {
       <div className="text-sm text-slate-600 dark:text-slate-400">
         {dateFormatter(dato?.payload.date)}
       </div>
-      <div className="flex text-center">
-        <svg height="12" width="12" style={{ margin: "0.35rem" }}>
-          <circle cx="6" cy="6" r="6" fill={payload[0]?.color || "black"} />
+      <div className="flex text-center text-xl">
+        <svg height="16" width="16" style={{ margin: "0.35rem" }}>
+          <circle cx="6" cy="9" r="6" fill={payload[0]?.color || "black"} />
         </svg>
         {dato?.value.toFixed(1)} {unidad}
       </div>
