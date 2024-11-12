@@ -29,19 +29,13 @@ import { useTheme } from "../../context/ThemeContext";
 */
 
 export default function GraphNivel({ data, noBrush }) {
-  if (!data || data.length === 0) return <div>No hay datos disponibles</div>;
+  if (!data || data.length === 0) return <div className="flex items-center justify-center h-full text-xs">No se recibieron datos de nivel hidrométrico.</div>;
   const {isDarkMode} = useTheme()
 
-  console.log(isDarkMode)
   const midnightTicks = getMidnightTicks(
     data[0].date,
     data[data.length - 1].date
   );
-
-  if (data.length === 0)
-    return (
-      <div>No se recibieron datos para el gráfico de nivel hidrométrico.</div>
-    );
 
   // si las fechas no son un nro de ticks, se parsea
   if (!Number.isInteger(data[0] && data[0].date)) {
