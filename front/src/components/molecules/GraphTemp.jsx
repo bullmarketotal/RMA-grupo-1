@@ -25,7 +25,7 @@ import CustomTooltip from "../utils/CustomTooltip";
 
 export default function GraphTemp({ data }) {
   if (data.length === 0)
-    return <div>No se recibieron datos para el gráfico.</div>;
+    return <div className="flex items-center justify-center h-full text-xs">No se recibieron datos de temperatura.</div>;
 
   // si las fechas no son un nro de ticks, se parsea
   if (!Number.isInteger(data[0] && data[0].date)) {
