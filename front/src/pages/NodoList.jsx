@@ -4,7 +4,7 @@ import { Container, Header, LoadingSpinner } from "../components/atoms";
 import NodoCard from "../components/organisms/NodoCard";
 import ErrorSimple from "../components/molecules/ErrorSimple";
 
-const SensorList = () => {
+const NodoList = () => {
   const { data, loading, error } = useFetchSensores();
   if (error) return <ErrorSimple title={"No se pudieron obtener los nodos"} description={"Error interno del servidor."}/>
 
@@ -26,4 +26,4 @@ const SensorList = () => {
   );
 };
 
-export default SensorList;
+export default NodoList;
