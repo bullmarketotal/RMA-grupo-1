@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useRef } from "react";
-
 import { useParams } from "react-router-dom";
 import {
   Card,
@@ -45,11 +44,10 @@ const NodoPage = () => {
   };
 
   const handleExportComplete = () => {
-    setIsExporting(false); // Cambiar isExporting a false cuando la exportación termina
+    setIsExporting(false);
     console.log("---------Exportación completada, isExporting:", false);
   };
 
-  // Mostrar el LoadingSpinner si los datos están cargando o si la exportación está en progreso
   if (loading) return <LoadingSpinner />;
   if (error) return <p>{error}</p>;
 
@@ -79,16 +77,12 @@ const NodoPage = () => {
               </div>
             </div>
           </div>
+        </div>
+      </Card>
 
-      {/* Mostrar el spinner durante la exportación */}
       {isExporting && <LoadingSpinner />}
 
-      <div id="main">
-        <div className="card-body">
-          <NodoInfo data={data} loading={loading} />
-        </div>
-      </div>
-
+    
       <div ref={chartRef}>
         <NodoDataVisualizer
           data={data}
