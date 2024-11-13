@@ -50,12 +50,12 @@ const NodoCard = ({ sensor }) => {
               {/* Temperatura */}
               <span className="flex items-center">
                 <i className="fa fa-tint text-sky-500 mx-2" />
-                {data[data.length - 1].nivel_hidrometrico.toFixed(2)} m
+                {data.length !== 0 ? data[data.length - 1].nivel_hidrometrico.toFixed(2) : '--'} m
               </span>
               {/* Nivel Hidrometrico */}
               <span className="flex items-center">
                 <i className="fa fa-thermometer text-rose-500 mx-2" />
-                {data[data.length - 1].temperatura.toFixed(1)} ºC
+                {data.length !== 0 ? data[data.length - 1].temperatura.toFixed(1) : '--'} ºC
               </span>
               <span className="flex items-center mx-2">
                 <BsFillLightningChargeFill/>
