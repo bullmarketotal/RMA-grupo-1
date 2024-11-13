@@ -11,10 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  dateFormatter,
-  getMidnightTicks,
-} from "../utils/utils-graphs";
+import { dateFormatter, getMidnightTicks } from "../utils/utils-graphs";
 import CustomTooltip from "../utils/CustomTooltip";
 
 // Datos de ejemplo
@@ -40,15 +37,12 @@ const batteryData = [
   { date: "2024-10-28", voltage: 3.4 },
   { date: "2024-10-29", voltage: 2.5 },
   { date: "2024-10-30", voltage: 2.3 },
-  { date: "2024-10-30", voltage: 1.2 },
   { date: "2024-10-1", voltage: 3.4 },
   { date: "2024-10-1", voltage: 3.4 },
   { date: "2024-10-1", voltage: 2.5 },
   { date: "2024-10-1", voltage: 2.3 },
   { date: "2024-10-2", voltage: 1.2 },
   { date: "2024-10-3", voltage: 2.51 },
-
-  // Añade más datos según sea necesario
 ];
 
 const GraphTension = () => {
@@ -80,18 +74,20 @@ const GraphTension = () => {
             <Label value="Tensión (V)" angle={-90} position="insideLeft" />
           </YAxis>
 
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />} animationDuration={0} />
           
-          <ReferenceLine y={3.5} label="Nivel normal de bateria" stroke="red" strokeDasharray="3 3" />
+          <ReferenceLine y={3.5} label="Nivel normal de batería" stroke="red" strokeDasharray="3 3" />
+          
           <Area
             type="monotone"
             dataKey="voltage"
             stroke="#82ca9d"
             fillOpacity={1}
             fill="url(#colorVoltage)"
+            isAnimationActive={false} // Desactivar animación en el gráfico
           />
 
-          <Brush dataKey="date" height={30} stroke="#82ca9d " />
+          <Brush dataKey="date" height={30} stroke="#82ca9d" />
         </AreaChart>
       </ResponsiveContainer>
     </div>
