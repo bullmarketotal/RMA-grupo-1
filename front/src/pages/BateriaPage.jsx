@@ -32,7 +32,20 @@ const BateriaPage = () => {
   return (
 
     <Container>
- 
+      
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Header title={"Bateria"} />
+        <div style={{ marginLeft: 'auto' }}>
+          <button
+            id="btn-volver-atras"
+            className="btn btn-primary"
+            onClick={volverAlSensor}
+          >
+            Volver al Nodo
+          </button>
+        </div>
+      </div>
+
       <div id="main">
         <div className="card-body">
           <BateriaHeader sensor={data.sensor} loading={loading} />
@@ -44,27 +57,6 @@ const BateriaPage = () => {
         loading={loading}
         onFilterChange={handleFilterChange}
       />
-
-<div className="card-body d-flex justify-content-between">
-  <div className="col-lg-12 col-sm-12">
-    <div className="card mb-30">
-      <div className="card-body">
-        <div className="col-sm text-center">
-          {/* Este es el nuevo diseño con la estructura y clases de Bootstrap del segundo botón */}
-          <button
-            id="btn-volver-atras"
-            className="btn btn-primary"
-            onClick={volverAlSensor}
-          >
-           
-            Volver al Nodo
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
     </Container>
   );
 };
