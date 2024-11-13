@@ -129,10 +129,10 @@ const NodoHeader = ({ sensor, loading }) => {
           </button>
           <button
             id="btn-ver-bateria"
-            className="btn btn-primary align-self-start"
+            className="btn btn-primary me-1 align-self-start"
             onClick={monitorearBateria}
           >
-            Monitorear Bateria
+            Ver Bateria
           </button>
         </>
         

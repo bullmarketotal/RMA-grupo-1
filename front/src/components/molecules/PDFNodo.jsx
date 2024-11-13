@@ -2,51 +2,77 @@ import React, { useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-const PDFNodo = ({ data, chartRef, startDate, endDate, onExport, onExportComplete, isExporting }) => {
+const PDFNodo = ({ data, chartRef, bateriaChartRef, startDate, endDate, onExport, onExportComplete, isExporting }) => {
   useEffect(() => {
     const capturePDF = async () => {
-      const filtroElement = document.getElementById("filtro-datos");
-      if (filtroElement) {
-        filtroElement.style.display = "none";
-      }
+      const doc = new jsPDF("p", "mm", "a4");
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const marginX = 10;
+      const lineHeight = 6;
 
-      const doc = new jsPDF();
+      const splitText = (text, maxWidth) => {
+        return doc.splitTextToSize(text, maxWidth);
+      };
 
-      doc.setFontSize(16);
-      doc.text("Información de Nodo", 10, 10);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.text(`Informe de Nodo: ${data.sensor.identificador}`, marginX, 15);
 
       doc.setFontSize(12);
-      doc.text(`Rango de fechas: ${startDate || "No especificado"} a ${endDate || "No especificado"}`, 10, 20);
+      doc.setFont("helvetica", "normal");
+      const descripcionLines = splitText(data.sensor.descripcion, pageWidth - marginX * 2);
+      doc.text(descripcionLines, marginX, 25);
 
-      doc.text(`Latitud: ${data.sensor.latitud}`, 10, 30);
-      doc.text(`Longitud: ${data.sensor.longitud}`, 10, 40);
+      doc.setDrawColor(200, 200, 200); 
+      doc.line(marginX, 32 + descripcionLines.length * lineHeight, pageWidth - marginX, 32 + descripcionLines.length * lineHeight);
+      let currentY = 40 + descripcionLines.length * lineHeight;
+      
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("Detalles del Nodo:", marginX, currentY);
+
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "normal");
+      currentY += 10;
+      if (startDate && endDate) {
+        doc.text(`Rango de fechas: ${startDate} - ${endDate}`, marginX, currentY);
+      }
+      currentY += 10;
+      doc.text("Posición del Nodo:", marginX, currentY);
+      doc.text(`Latitud: ${data.sensor.latitud}`, marginX + 10, currentY + 10);
+      doc.text(`Longitud: ${data.sensor.longitud}`, marginX + 90, currentY + 10);
+      currentY += 20;
 
       if (chartRef.current) {
         const canvas = await html2canvas(chartRef.current);
         const chartImage = canvas.toDataURL("image/png");
-
-        doc.addImage(chartImage, "PNG", 10, 50, 180, 100); 
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("Gráfico de Datos:", marginX, currentY);
+        doc.addImage(chartImage, "PNG", marginX, currentY + 10, pageWidth - marginX * 2, 80);
+        currentY += 100;
       }
 
-      doc.save("nodo_data.pdf");
-
-      if (filtroElement) {
-        filtroElement.style.display = "";
+      if (bateriaChartRef.current) {
+        const canvas = await html2canvas(bateriaChartRef.current, { scale: 2 });
+        const batteryChartImage = canvas.toDataURL("image/png");
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("Gráfico de Batería:", marginX, currentY);
+        doc.addImage(batteryChartImage, "PNG", marginX, currentY + 10, pageWidth - marginX * 2, 80);
       }
+
+      doc.save(`nodo_${data.sensor.identificador}_data.pdf`);
       onExportComplete();
     };
 
     if (isExporting) {
       capturePDF();
     }
-  }, [isExporting, chartRef, data, startDate, endDate, onExportComplete]);
-
-  const handleExportClick = () => {
-    onExport(); 
-  };
+  }, [isExporting, chartRef, bateriaChartRef, data, startDate, endDate, onExportComplete]);
 
   return (
-    <button onClick={handleExportClick} className="btn btn-primary mt-4">
+    <button onClick={onExport} className="btn btn-primary mt-4">
       Exportar a PDF
     </button>
   );
