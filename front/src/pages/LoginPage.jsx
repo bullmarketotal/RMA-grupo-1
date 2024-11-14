@@ -1,16 +1,23 @@
-import React, { useState } from "react";
-import useLogin from "../hooks/useLogin";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../hooks";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { loading, error, login } = useLogin();
+  const { loginUser, loading, error, isAuthenticated } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(username, password);
+    await loginUser(username, password);
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/inicio");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center dark-bg">

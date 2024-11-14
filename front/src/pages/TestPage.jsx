@@ -1,10 +1,11 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../components/BreadCrumb";
 import { Container, Header, SubmitButton } from "../components/atoms";
 import { MapaComponent } from "../components/molecules";
 import { useNotification } from "../context/NotificationContext";
 import { useTheme } from "../context/ThemeContext";
+
 const options = [{ name: "Grafico" }, { name: "Tabla" }];
 
 export default function Example() {

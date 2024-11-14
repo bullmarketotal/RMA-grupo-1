@@ -1,10 +1,11 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-// Interceptor agrega el token a las cabeceras
+// Interceptor access_token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token");
@@ -16,30 +17,32 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor expiración del access token
+// Interceptor refresh_token
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response.status === 401) {
-      const refreshToken = localStorage.getItem("refresh_token");
-      if (refreshToken) {
-        try {
-          const res = await api.post("/refresh_token", {
-            refresh_token: refreshToken,
-          });
-          const { access_token, refresh_token } = res.data;
-          localStorage.setItem("access_token", access_token);
-          localStorage.setItem("refresh_token", refresh_token);
+    const navigate = useNavigate();
+    const refreshToken = localStorage.getItem("refresh_token");
 
-          error.config.headers["Authorization"] = `Bearer ${access_token}`;
-          return api(error.config);
-        } catch (err) {
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-          window.location.href = "/login";
-        }
+    if (error.response?.status === 401 && refreshToken) {
+      try {
+        const res = await api.post("/refresh_token", {
+          refresh_token: refreshToken,
+        });
+        const { access_token, refresh_token: newRefreshToken } = res.data;
+
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("refresh_token", newRefreshToken);
+
+        error.config.headers["Authorization"] = `Bearer ${access_token}`;
+        return api(error.config);
+      } catch (err) {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        navigate("/login");
       }
     }
+
     return Promise.reject(error);
   }
 );

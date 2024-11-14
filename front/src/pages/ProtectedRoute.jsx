@@ -4,14 +4,9 @@ import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
+  const accessToken = localStorage.getItem("access_token");
 
-  // Si no está autenticado, redirigir al login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-
-  // Si está autenticado, renderizar
-  return children;
+  return isAuthenticated && accessToken ? children : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;
