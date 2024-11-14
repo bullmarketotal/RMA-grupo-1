@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useLogin from "../hooks/useLogin";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { loading, error, login } = useLogin();
@@ -53,9 +54,9 @@ const Login = () => {
         </form>
         <p className="mt-4 text-center text-sm">
           No tienes una cuenta?{" "}
-          <a href="/register" className="text-sky-500 hover:text-sky-600">
+          <Link to="/register" className="text-sky-500 hover:text-sky-600">
             Registrate
-          </a>
+          </Link>
         </p>
       </div>
     </div>

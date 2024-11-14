@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useRegister from "../hooks/useRegister";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const { loading, error, register } = useRegister();
@@ -53,9 +54,9 @@ const Register = () => {
         </form>
         <p className="mt-4 text-center text-sm">
           Tienes una cuenta?{" "}
-          <a href="/login" className="text-blue-500 hover:text-blue-600">
+          <Link to="/login" className="text-sky-500 hover:text-sky-600">
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>
