@@ -1,12 +1,6 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Card,
-  Container,
-  Header,
-  LoadingSpinner,
-  MiniMap,
-} from "../components/atoms";
+import { Card, Container, LoadingSpinner, MiniMap } from "../components/atoms";
 import {
   MaxLevelCard,
   NodoHeader,
@@ -62,7 +56,6 @@ const NodoPage = () => {
           </div>
         </div>
       </Card>
-
       <NodoDataVisualizer
         data={data}
         loading={loading}

@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import useLogin from "../hooks/useLogin";
+import useRegister from "../hooks/useRegister";
 
-const Login = () => {
-  const { loading, error, login } = useLogin();
+const Register = () => {
+  const { loading, error, register } = useRegister();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(username, password);
+    await register(username, password);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center dark-bg">
-      <div className="max-w-md w-full normal-text normal-bg p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center">Login</h2>
+      <div className="max-w-md w-full p-8 rounded-lg shadow-lg normal-text normal-bg">
+        <h2 className="text-2xl font-bold text-center">Register</h2>
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         <form onSubmit={handleSubmit} className="mt-6">
           <div>
@@ -24,7 +24,7 @@ const Login = () => {
             <input
               type="text"
               id="username"
-              className="input-text mt-1 block w-full p-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="input-text mt-1 block w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -37,7 +37,7 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              className="input-text mt-1 block w-full p-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="input-text mt-1 block w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -46,15 +46,15 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 w-full btn-action btn-active text-white py-2 disabled:btn-disabled"
+            className="mt-6 w-full btn-action btn-active text-white py-2 disabled:bg-blue-300"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
         <p className="mt-4 text-center text-sm">
-          No tienes una cuenta?{" "}
-          <a href="/register" className="text-sky-500 hover:text-sky-600">
-            Registrate
+          Tienes una cuenta?{" "}
+          <a href="/login" className="text-blue-500 hover:text-blue-600">
+            Login
           </a>
         </p>
       </div>
@@ -62,4 +62,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
