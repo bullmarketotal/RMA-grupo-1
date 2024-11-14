@@ -47,7 +47,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 w-full btn-action btn-active text-white py-2 disabled:btn-disabled"
+            className="mt-6 w-full btn-action btn-active py-2 disabled:btn-disabled"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

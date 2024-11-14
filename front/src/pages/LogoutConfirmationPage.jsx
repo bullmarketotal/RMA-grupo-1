@@ -18,20 +18,22 @@ const LogoutConfirmationPage = () => {
   return (
     <div className="flex items-center justify-center min-h-screen dark-bg normal-text">
       <div className="normal-bg p-6 rounded-lg shadow-md text-center">
-        <h2 className="text-lg font-semibold mb-4">¿Deseas cerrar sesión?</h2>
-        <p className="mb-6">
+        <h2 className="normal-text text-lg font-semibold mb-4">
+          ¿Deseas cerrar sesión?
+        </h2>
+        <p className="normal-text mb-6">
           Tu sesión se cerrará y volverás a la página de inicio de sesión.
         </p>
         <div className="flex justify-center space-x-4">
           <button
             onClick={handleConfirmLogout}
-            className="px-4 py-2 btn-action btn-active text-white rounded-lg"
+            className="px-4 py-2 btn-action btn-active rounded-lg"
           >
             Confirmar
           </button>
           <button
             onClick={handleCancel}
-            className="px-4 py-2 bg-neutral-300 dark:bg-neutral-500 rounded-lg hover:bg-gray-400"
+            className="normal-text px-4 py-2 bg-neutral-300 dark:bg-neutral-500 rounded-lg hover:bg-gray-400"
           >
             Cancelar
           </button>
