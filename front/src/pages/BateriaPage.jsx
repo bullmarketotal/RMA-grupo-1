@@ -9,9 +9,8 @@ import useFetchSensorData from "../hooks/useFetchSensorData";
 import { Container, Header } from "../components/atoms";
 import { useNavigate } from "react-router-dom";
 
-
 const BateriaPage = () => {
-  const id  = 1
+  const id = 1;
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
@@ -25,27 +24,23 @@ const BateriaPage = () => {
   if (loading) return <LoadingSpinner />;
   if (error) return <p>{error}</p>;
 
-  function volverAlSensor(){
+  function volverAlSensor() {
     navigate("/sensor/1");
   }
 
   return (
-
     <Container>
-      
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="card-body d-flex justify-content-between">
         <Header title={"Bateria"} />
-        <div style={{ marginLeft: 'auto' }}>
-          <button
-            id="btn-volver-atras"
-            className="btn btn-primary"
-            onClick={volverAlSensor}
-          >
-            Volver al Nodo
-          </button>
-        </div>
+        <button
+          id="btn-volver-atras"
+          className="btn btn-primary"
+          onClick={volverAlSensor}
+        >
+          <i className="fa fa-undo m-2" aria-hidden="true"></i>
+          Volver al Nodo
+        </button>
       </div>
-
       <div id="main">
         <div className="card-body">
           <BateriaHeader sensor={data.sensor} loading={loading} />

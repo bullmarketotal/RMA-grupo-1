@@ -21,7 +21,7 @@ const navigationItems = [
 const menuItems = [
   { name: "Perfil", link: "#" },
   { name: "Configuración", link: "#" },
-  { name: "Sing Out", link: "#" },
+  { name: "Sing Out", link: "/confirm-logout" },
   { name: "Test", link: "/testpage" },
 ];
 

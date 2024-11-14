@@ -1,8 +1,8 @@
 from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from back.models import ModeloBase
-from ..users.models import User
+from ..models import ModeloBase
+from ..usuarios.models import Usuario
 
 
 class Role(ModeloBase):
@@ -12,16 +12,19 @@ class Role(ModeloBase):
     name: Mapped[str] = mapped_column(String(50), unique=True)
     description: Mapped[str] = mapped_column(String)
 
-    users: Mapped[list["User"]] = relationship(
-        "User", secondary="user_roles", back_populates="roles"
+    usuarios: Mapped[list["Usuario"]] = relationship(
+        "Usuario", secondary="usuario_roles", back_populates="roles"
+    )
+    permisos: Mapped[list["Permiso"]] = relationship(
+        "Permiso", secondary="role_permisos", back_populates="roles"
     )
 
 
-class UserRole(ModeloBase):
-    __tablename__ = "user_roles"
+class UsuarioRole(ModeloBase):
+    __tablename__ = "usuario_roles"
 
-    user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    usuario_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("usuarios.id", ondelete="CASCADE"), primary_key=True
     )
     role_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True

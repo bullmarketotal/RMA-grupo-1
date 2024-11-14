@@ -1,3 +1,4 @@
+export { default as useAuth } from "./useAuth";
 export { default as useFetchSensorData } from "./useFetchSensorData";
 export { default as useFetchSensores } from "./useFetchSensores";
 export { default as useLoadNodos } from "./useLoadNodos";

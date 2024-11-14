@@ -40,7 +40,7 @@ const NodoHeader = ({ sensor, loading }) => {
     });
   };
 
-  function monitorearBateria(){
+  function monitorearBateria() {
     navigate("/bateria-page");
   }
 
@@ -52,7 +52,7 @@ const NodoHeader = ({ sensor, loading }) => {
         <>
           <div id="info-sensor">
             {/* identificador */}
-            <h1 className="flex text-xl items-center normal-text font-semibold">
+            <h1 className="flex text-3xl items-center normal-text font-semibold">
               <MdOutlineSettingsInputAntenna className="mr-2" />
               {isEditing ? (
                 <input
@@ -67,7 +67,8 @@ const NodoHeader = ({ sensor, loading }) => {
               )}
             </h1>
             {/* descripción */}
-            <p className="normal-text text-sm py-2">
+
+            <div className="normal-text text-sm py-2">
               {isEditing ? (
                 <>
                   <textarea
@@ -80,14 +81,15 @@ const NodoHeader = ({ sensor, loading }) => {
                     rows={4}
                   />
                   <div className="text-input text-right text-sm text-gray-500 mt-1">
-                    {256 - editableSensor.descripcion.length} caracteres restantes
+                    {256 - editableSensor.descripcion.length} caracteres
+                    restantes
                   </div>
                 </>
               ) : (
                 editableSensor.descripcion
               )}
-            </p>
-  
+            </div>
+
             <span className="normal-text">
               <i className="fa fa-map-marker mr-2" aria-hidden="true" />
               <span className="space-x-2">
@@ -104,7 +106,7 @@ const NodoHeader = ({ sensor, loading }) => {
                 ) : (
                   editableSensor.latitud?.toFixed(5)
                 )}
-  
+
                 <b>Longitud:</b>
                 {isEditing ? (
                   <input
@@ -121,23 +123,21 @@ const NodoHeader = ({ sensor, loading }) => {
               </span>
             </span>
           </div>
-          {/* Contenedor de los botones */}
-          <div className="flex space-x-4">
-            <button
-              id="btn-modificar"
-              className="h-16 w-32 btn-action btn-active font-bold"
-              onClick={handleEditClick}
-            >
-              {isEditing ? "Guardar" : "Modificar Nodo"}
-            </button>
-            <button
-              id="btn-ver-bateria"
-              className="h-16 w-32 btn-action btn-active font-bold"
-              onClick={monitorearBateria}
-            >
-              Monitorear Bateria
-            </button>
-          </div>
+
+          <button
+            id="btn-modificar"
+            className="h-16 w-32 btn-action btn-active"
+            onClick={handleEditClick}
+          >
+            {isEditing ? "Guardar" : "Modificar Nodo"}
+          </button>
+          <button
+            id="btn-ver-bateria"
+            className="h-16 w-32 btn-action btn-active"
+            onClick={monitorearBateria}
+          >
+            Monitorear Bateria
+          </button>
         </>
       )}
     </div>

@@ -29,8 +29,13 @@ import { useTheme } from "../../context/ThemeContext";
 */
 
 export default function GraphNivel({ data, noBrush }) {
-  if (!data || data.length === 0) return <div className="flex items-center justify-center h-full text-xs">No se recibieron datos de nivel hidrométrico.</div>;
-  const {isDarkMode} = useTheme()
+  if (!data || data.length === 0)
+    return (
+      <div className="flex items-center justify-center h-full text-xs">
+        No se recibieron datos de nivel hidrométrico.
+      </div>
+    );
+  const { isDarkMode } = useTheme();
 
   const midnightTicks = getMidnightTicks(
     data[0].date,
@@ -86,7 +91,7 @@ export default function GraphNivel({ data, noBrush }) {
         {!noBrush ? (
           <Brush
             height={25}
-            fill={isDarkMode ? '#333' : "#e5e5e5"}
+            fill={isDarkMode ? "#333" : "#e5e5e5"}
             stroke="#8884d8"
             travellerWidth={10}
             tickFormatter={(val) => dateFormatter(data[val].date)}

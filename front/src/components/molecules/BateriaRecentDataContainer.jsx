@@ -18,20 +18,23 @@ function BateriaRecentDataContainer({ data, CARD_HEIGHT }) {
 
   return (
     <CardData title={"Último Dato"}>
-    <div className="flex flex-col items-center">
-      <div className="flex items-center normal-text text-xl font-medium">
-        {/* Voltaje*/}
-        <span className="flex items-center">
-        <i class="fa fa-bolt text-yellow-500 mx-2" aria-hidden="true"></i>
-          {lastData.nivel_hidrometrico.toFixed(2)} V
-        </span>
+      <div className="flex flex-col items-center">
+        <div className="flex items-center normal-text text-xl font-medium">
+          {/* Voltaje*/}
+          <span className="flex items-center">
+            <i
+              className="fa fa-bolt text-yellow-500 mx-2"
+              aria-hidden="true"
+            ></i>
+            {lastData.nivel_hidrometrico.toFixed(2)} V
+          </span>
+        </div>
+        {/* Tiempo desde la ultima medición */}
+        <h6 className="text-gray-500 text-base text-center mb-3">
+          {timeAgoString}
+        </h6>
       </div>
-      {/* Tiempo desde la ultima medición */}
-      <h6 className="text-gray-500 text-base text-center mb-3">
-        {timeAgoString}
-      </h6>
-    </div>
-  </CardData> 
+    </CardData>
   );
 }
 

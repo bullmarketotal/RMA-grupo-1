@@ -4,9 +4,8 @@ from typing import Optional
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from back import exceptions
-from back.paquete import schemas
-from back.paquete.models import Paquete, PaqueteRechazado
+from ..paquete import schemas
+from ..paquete.models import Paquete, PaqueteRechazado
 
 
 def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:
