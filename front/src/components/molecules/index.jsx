@@ -13,3 +13,4 @@ export { default as Paginacion } from "./Paginacion";
 export { default as RegisterForm } from "./RegisterForm";
 export { default as TablaDatos } from "./TablaDatos";
 export { default as TablaNodos } from "./TablaNodos";
+export { default as PDFNodo } from "./PDFNodo";

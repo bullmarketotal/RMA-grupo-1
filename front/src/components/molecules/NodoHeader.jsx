@@ -46,6 +46,7 @@ const NodoHeader = ({ sensor, loading }) => {
 
   return (
     <div id="header" className="flex items-center justify-between">
+    <div id="header" className="flex items-center justify-between">
       {loading ? (
         <LoadingSpinner />
       ) : (
@@ -81,8 +82,7 @@ const NodoHeader = ({ sensor, loading }) => {
                     rows={4}
                   />
                   <div className="text-input text-right text-sm text-gray-500 mt-1">
-                    {256 - editableSensor.descripcion.length} caracteres
-                    restantes
+                    {256 - editableSensor.descripcion.length} caracteres restantes
                   </div>
                 </>
               ) : (
@@ -92,7 +92,7 @@ const NodoHeader = ({ sensor, loading }) => {
 
             <span className="normal-text">
               <i className="fa fa-map-marker mr-2" aria-hidden="true" />
-              <span className="space-x-4">
+              <span className="space-x-2">
                 <b>Latitud:</b>
                 {isEditing ? (
                   <input
@@ -106,7 +106,7 @@ const NodoHeader = ({ sensor, loading }) => {
                 ) : (
                   editableSensor.latitud?.toFixed(5)
                 )}
-
+  
                 <b>Longitud:</b>
                 {isEditing ? (
                   <input

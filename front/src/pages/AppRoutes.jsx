@@ -7,7 +7,7 @@ import LoginPage from "./LoginPage";
 import NodoPage from "./NodoPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
-import SensorList from "./SensorList";
+import NodoList from "./NodoList";
 import Example from "./TestPage";
 import BateriaPage from "./BateriaPage";
 import LogoutConfirmationPage from "./LogoutConfirmationPage";
@@ -18,7 +18,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<NavBar />}>
         <Route index element={<Inicio />} />
-        <Route path="list-sensor" element={<SensorList />} />
+        <Route path="list-sensor" element={<NodoList />} />
         <Route path="datos-view" element={<DatosPage />} />
         <Route
           path="create-sensor"

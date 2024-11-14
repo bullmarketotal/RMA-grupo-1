@@ -39,7 +39,7 @@ const BateriaHeader = ({ sensor, loading }) => {
       ) : (
         <>
           <div id="info-sensor">
-            <h2 className="d-flex align-items-center">
+            <h2 className="d-flex align-items-center normal-text font-semibold">
               <i className="fa fa-rss me-2" aria-hidden="true" />
               {isEditing ? (
                 <input
@@ -58,38 +58,7 @@ const BateriaHeader = ({ sensor, loading }) => {
                 editableSensor.identificador
               )}
             </h2>
-            <p>ACA ESTAMOS VIENDO LA BATERIA.</p>
-            <span>
-              <i className="fa fa-map-marker me-2" aria-hidden="true" />{" "}
-              <span>
-                <b>Latitud:</b>{" "}
-                {isEditing ? (
-                  <input
-                    type="number"
-                    step="0.00001"
-                    name="latitud"
-                    value={editableSensor.latitud}
-                    onChange={handleChange}
-                    style={{ width: "100px", marginLeft: "5px" }}
-                  />
-                ) : (
-                  editableSensor.latitud?.toFixed(5)
-                )}{" "}
-                <b>Longitud:</b>{" "}
-                {isEditing ? (
-                  <input
-                    type="number"
-                    step="0.00001"
-                    name="longitud"
-                    value={editableSensor.longitud}
-                    onChange={handleChange}
-                    style={{ width: "100px", marginLeft: "5px" }}
-                  />
-                ) : (
-                  editableSensor.longitud?.toFixed(5)
-                )}
-              </span>
-            </span>
+            <p className="normal-text font-semibold">ACA ESTAMOS VIENDO LA BATERIA.</p>
           </div>
         </>
       )}

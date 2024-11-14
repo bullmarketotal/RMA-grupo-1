@@ -17,21 +17,13 @@ const BateriaDataVisualizer = ({ data, loading, onFilterChange }) => {
   };
   return (
     <Card>
-      <div className="d-flex items-center space-x-2 mb-2 justify-content-start">
-        <TextToggleButton
-          textLeft={"Grafico"}
-          textRight={"Tabla"}
-          isToggled={isToggled}
-          onToggled={handleToggle}
-        />
+      
         <FiltroDatos onFilterChange={onFilterChange} />
-      </div>
+      
 
-      {view === "graph" ? (
+      
         <GraphTension data={data.paquetes} loading={loading} />
-      ) : (
-        <TableView  />
-      )}
+      
     </Card>
   );
 };

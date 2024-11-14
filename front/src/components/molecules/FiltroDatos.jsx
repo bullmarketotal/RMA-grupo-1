@@ -1,7 +1,9 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 
-export default function FiltroDatos({ onFilterChange }) {
+export default function FiltroDatos({ onFilterChange, isExporting }) {
+  console.log("isExporting en FiltroDatos:", isExporting); 
+
   const [startDate, setStartDate] = useState(
     new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
       .toISOString()
@@ -10,15 +12,16 @@ export default function FiltroDatos({ onFilterChange }) {
   const [endDate, setEndDate] = useState(
     new Date().toISOString().substring(0, 10)
   );
-  //aqui ocurre la magia
+
   const applyFilter = () => {
     onFilterChange(startDate, endDate);
   };
 
   return (
-
-    <div className="flex items-center space-x-4 my-2 normal-bg">
-      {/* Fecha Desde */}
+    <div
+      className="flex items-center space-x-4 my-2 normal-bg"
+      style={isExporting ? { display: 'none' } : {}} 
+    >
       <div className="flex items-center normal-text space-x-2">
         <FaCalendarAlt className="mr-2" />
         Desde
@@ -30,7 +33,6 @@ export default function FiltroDatos({ onFilterChange }) {
         />
       </div>
 
-      {/* Fecha Hasta */}
       <div className="flex items-center normal-text space-x-2">
         <FaCalendarAlt className="mr-2" />
         Hasta
@@ -42,7 +44,6 @@ export default function FiltroDatos({ onFilterChange }) {
         />
       </div>
 
-      {/* Aplicar filtro */}
       <button
         className={`btn-action ${
           startDate && endDate ? "btn-active" : "btn-disabled"
