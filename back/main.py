@@ -1,24 +1,26 @@
+import json
+import os
+import signal
 import sys
 import threading
-import os
-import json
-import signal
 from contextlib import asynccontextmanager
-from typing import Optional, Callable
+
 import paho.mqtt.client as paho
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from back.database import engine
-from back.models import ModeloBase
-from back.paquete.router import router as paquetes_router
-from back.sensores.router import router as sensores_router
-from back.usuarios.router import router as usuarios_router
-from back.roles.router import router as roles_router
-from back.depends.config import config
-from back.depends.paquetes import mi_callback
-from back.depends.sub import Subscriptor
 
+from .database import engine
+from .depends.config import config
+from .depends.paquetes import mi_callback
+from .depends.sub import Subscriptor
+from .models import ModeloBase
+from .paquete.router import router as paquetes_router
+from .permisos.router import router as permisos_router
+from .sensores.router import router as sensores_router
+from .usuarios.router import router as usuarios_router
+from .roles.router import router as roles_router
+from .auth.router import router as auth_router
 
 # Cargar configuración global
 CONFIG = {}
@@ -88,6 +90,7 @@ app = FastAPI(root_path=ROOT_PATH, lifespan=lifespan)
 
 origins = ["http://localhost:5173", "http://127.0.0.1:5173", "localhost"]
 
+# Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -96,7 +99,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+app.include_router(permisos_router)
 app.include_router(sensores_router)
 app.include_router(paquetes_router)
 app.include_router(usuarios_router)
 app.include_router(roles_router)
+app.include_router(auth_router)

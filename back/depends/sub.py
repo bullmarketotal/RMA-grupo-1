@@ -7,7 +7,7 @@ from typing import Callable, Optional
 
 import paho.mqtt.client as paho
 
-from back.depends.config import config
+from ..depends.config import config
 
 
 class Subscriptor:

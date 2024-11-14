@@ -1,21 +1,22 @@
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 
-from passlib.context import CryptContext
-from sqlalchemy import DateTime, Integer, String
-from sqlalchemy.orm import Mapped, Session, mapped_column
+from sqlalchemy import Boolean, DateTime, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from back.models import ModeloBase
-from back.usuarios.schemas import UsuarioBase
+from ..models import ModeloBase
 
 
 class Usuario(ModeloBase):
     __tablename__ = "usuarios"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    user: Mapped[str] = mapped_column(String, unique=True, index=True)
-    password: Mapped[str] = mapped_column(String, index=True)
-    date: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=lambda: datetime.now(timezone.utc),
-        index=True,
+    username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
+    hashed_password: Mapped[str] = mapped_column(String(255))
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    date_created: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), index=True
+    )
+
+    roles: Mapped[list["Role"]] = relationship(
+        "Role", secondary="usuario_roles", back_populates="usuarios"
     )
