@@ -18,32 +18,6 @@ try {
 }
 
 export default function Example() {
-  const [isPermisoFormOpen, setIsPermisoFormOpen] = useState(false);
-  const [isRoleFormOpen, setIsRoleFormOpen] = useState(false);
-  const [selectedPermiso, setSelectedPermiso] = useState(null);
-  const [selectedRole, setSelectedRole] = useState(null);
-
-  const handleCreatePermiso = (data) => {
-    // Lógica para crear un permiso
-    console.log("Crear Permiso", data);
-    setIsPermisoFormOpen(false);
-  };
-
-  const handleEditPermiso = (permiso) => {
-    setSelectedPermiso(permiso);
-    setIsPermisoFormOpen(true);
-  };
-
-  const handleDeletePermiso = (id) => {
-    console.log("Eliminar Permiso", id);
-  };
-
-  const handleCreateRole = (data) => {
-    // Lógica para crear un rol
-    console.log("Crear Rol", data);
-    setIsRoleFormOpen(false);
-  };
-
   const handleEditRole = (role) => {
     setSelectedRole(role);
     setIsRoleFormOpen(true);

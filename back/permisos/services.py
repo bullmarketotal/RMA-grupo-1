@@ -18,7 +18,7 @@ def create_permiso(db: Session, permiso: PermisoCreate) -> Permiso:
 def get_permiso(db: Session, permiso_id: int) -> Permiso | None:
     permiso = Permiso.get(db, permiso_id)
     if not permiso:
-        raise HTTPException(status_code=404, detail="Permisso no encontrado")
+        raise HTTPException(status_code=404, detail="Permiso no encontrado")
     return PermisoSchema.model_validate(permiso)
 
 

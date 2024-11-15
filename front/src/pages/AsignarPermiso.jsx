@@ -12,7 +12,6 @@ const AsignarPermiso = () => {
         role_id: parseInt(roleId),
         permiso_id: parseInt(permisoId),
       });
-      alert("Permiso asignado con éxito");
     } catch (err) {
       console.error("Error asignando permiso:", err);
     }

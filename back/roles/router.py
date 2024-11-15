@@ -18,9 +18,9 @@ def read_protected_data(current_user: Usuario = Depends(get_current_user)):
 
 @router.get("/roles_seguros")
 async def obtener_roles_seguros(
-    permisos: bool = Depends(permiso_requerido("string")),
+    permisos: bool = Depends(permiso_requerido("Admin")),
 ):
-    return {"roles": ["Admin", "Usuario"]}
+    return {"roles": ["El usuario tiene permiso Admin"]}
 
 
 ##############################################
