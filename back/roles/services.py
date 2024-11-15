@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from .schemas import RoleCreate, RoleUpdate, UsuarioRole as UsuarioRoleSchema
 from .schemas import Role as RoleSchema
 from .models import Role, UsuarioRole
+from ..usuarios.models import Usuario
+from ..permisos.models import Permiso
 
 
 def get_role(db: Session, role_id: int) -> Role | None:
@@ -57,7 +59,7 @@ def assign_role_to_usuario(
             status_code=404, detail="El rol ya está asignado al usuario"
         )
     usuario_role = UsuarioRole.create(db, usuario_role_data)
-    return UsuarioRoleSchema.model_validate(usuario_role)
+    return UsuarioRoleSchema.model_validate(usuario_role).model_dump()
 
 
 def revoke_role_from_usuario(db: Session, usuario_role_data: UsuarioRoleSchema):
@@ -74,3 +76,18 @@ def revoke_role_from_usuario(db: Session, usuario_role_data: UsuarioRoleSchema):
         )
     usuario_role_instance.delete(db)
     return {"detail": "Rol revocado del usuario"}
+
+
+def user_has_permission(
+    usuario_id: int, permiso_identificador: str, db: Session
+) -> bool:
+    usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not usuario:
+        return False
+
+    for rol in usuario.roles:
+        for permiso in rol.permisos:
+            print(f"Permiso encontrado: {permiso.identificador}")
+            if permiso.identificador == permiso_identificador:
+                return True
+    return False

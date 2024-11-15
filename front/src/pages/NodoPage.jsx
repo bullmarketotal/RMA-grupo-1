@@ -50,11 +50,11 @@ const NodoPage = () => {
   return (
     <Container>
       <Card>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-80 pb-4">
-          <div className="col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4">
+          <div className="col-span-2 flex flex-col">
             <NodoHeader sensor={sensorData} />
           </div>
-          <div className="row-span-2 shadow-sm rounded-lg overflow-hidden w-full h-full min-h-64">
+          <div className="row-span-2 shadow-sm rounded-lg overflow-hidden w-full max-h-80 min-h-64 flex justify-end">
             <MiniMap lat={latitud} lng={longitud} />
           </div>
           <div className="col-span-2 flex gap-4 items-center">

@@ -92,7 +92,7 @@
 }
 
 .table-row {
-  @apply hover:bg-neutral-300 dark:hover:bg-neutral-600 cursor-pointer transition-colors duration-200;
+  @apply hover:bg-neutral-300 dark:hover:bg-neutral-600 cursor-pointer transition-colors duration-0;
 }
 
 .table-row-cell {

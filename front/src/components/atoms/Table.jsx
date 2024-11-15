@@ -8,39 +8,42 @@ const Table = ({ columns, data, onRowClick }) => {
   return (
     <table className={"table-container"} {...getTableProps()}>
       <thead className={"table-definir"}>
-        {headerGroups.map((headerGroup) => (
-          <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th
-                key={column.id}
-                {...column.getHeaderProps()}
-                className={"table-header"}
-              >
-                {column.render("Header")}
-              </th>
-            ))}
-          </tr>
-        ))}
+        {headerGroups.map((headerGroup) => {
+          const { key, ...headerGroupProps } =
+            headerGroup.getHeaderGroupProps();
+          return (
+            <tr key={key} {...headerGroupProps}>
+              {headerGroup.headers.map((column) => {
+                const { key, ...columnProps } = column.getHeaderProps();
+                return (
+                  <th key={key} {...columnProps} className={"table-header"}>
+                    {column.render("Header")}
+                  </th>
+                );
+              })}
+            </tr>
+          );
+        })}
       </thead>
       <tbody {...getTableBodyProps()}>
         {rows.map((row) => {
           prepareRow(row);
+          const { key, ...rowProps } = row.getRowProps();
           return (
             <tr
-              key={row.id}
-              {...row.getRowProps()}
+              key={key}
+              {...rowProps}
               onClick={() => onRowClick && onRowClick(row)}
               className="table-row"
             >
-              {row.cells.map((cell) => (
-                <td
-                  key={cell.id}
-                  {...cell.getCellProps()}
-                  className={"table-row-cell"}
-                >
-                  {cell.render("Cell")}
-                </td>
-              ))}
+              {row.cells.map((cell) => {
+                const { key, ...cellProps } = cell.getCellProps();
+                return (
+                  <td key={key} {...cellProps} className="table-row-cell">
+                    {cell.render("Cell")}
+                  </td>
+                );
+              })}
             </tr>
           );
         })}

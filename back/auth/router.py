@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from .schemas import Token, TokenRefresh
-from . import services
+
 from ..database import get_db
 from ..usuarios.models import Usuario
-from back.usuarios.schemas import UsuarioCreate, UsuarioOut
-
+from ..usuarios.schemas import UsuarioCreate, UsuarioOut
+from . import services
+from .dependencies import oauth2_scheme
+from .schemas import Token, TokenRefresh
 
 router = APIRouter()
 
@@ -22,7 +23,6 @@ def login_for_access_token(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
     access_token = services.create_access_token(
         data={
             "id": user.id,
@@ -33,6 +33,7 @@ def login_for_access_token(
     refresh_token = services.create_refresh_token(
         data={"id": user.id, "username": user.username}
     )
+
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
@@ -44,24 +45,8 @@ def login_for_access_token(
 def refresh_access_token_view(
     refresh_token: TokenRefresh, db: Session = Depends(get_db)
 ):
-    new_access_token = services.refresh_access_token(db, refresh_token.refresh_token)
-    return {"access_token": new_access_token, "token_type": "bearer"}
-
-
-@router.post("/refresh_token", response_model=Token, tags=["Auth"])
-def refresh_access_token(refresh_token: str, db: Session = Depends(get_db)):
-    user_data = services.decode_refresh_token(refresh_token)
-    if not user_data:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid refresh token",
-        )
-
-    # Crear un nuevo access token
-    access_token = services.create_access_token(
-        data={"id": user_data["id"], "username": user_data["username"]}
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+    new_tokens = services.refresh_access_token(db, refresh_token.refresh_token)
+    return new_tokens
 
 
 @router.post("/register", response_model=UsuarioOut, tags=["Auth"])
@@ -75,3 +60,16 @@ def register(usuario: UsuarioCreate, db: Session = Depends(get_db)):
             detail="Username already registered",
         )
     return services.crear_usuario(db, usuario)
+
+
+@router.get("/verify_token", tags=["Auth"])
+def verify_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+
+    user = services.get_user_from_token(db, token)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token or user not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return {"message": "Token is valid", "user": user.username}

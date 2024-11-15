@@ -24,6 +24,8 @@ class RoleUpdate(RoleBase):
 
 class Role(RoleBase):
     id: int
+    name: str
+    description: str
     model_config = {"from_attributes": True}
 
 
@@ -41,4 +43,6 @@ class UsuarioRoleUpdate(UsuarioRoleBase):
 
 
 class UsuarioRole(UsuarioRoleBase):
+    usuario_id: int
+    role_id: int
     model_config = {"from_attributes": True}

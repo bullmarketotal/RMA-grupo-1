@@ -7,9 +7,7 @@ import { CardData } from "../atoms";
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
-function BateriaRecentDataContainer({ data, CARD_HEIGHT }) {
-  const CARD_WIDTH = "30%";
-  const MAIN_CARD_WIDTH = "350px";
+function BateriaRecentDataContainer({ data }) {
   if (!data || data.length === 0) {
     return <p>No hay datos disponibles.</p>;
   }

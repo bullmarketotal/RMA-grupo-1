@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
 
 // Función para generar el CSV
 const generateCSV = (data) => {
   if (!data || !Array.isArray(data) || data.length === 0) {
     console.log("No hay datos para generar el CSV.");
-    return ''; // Si los datos no son válidos o están vacíos, no hacemos nada
+    return ""; // Si los datos no son válidos o están vacíos, no hacemos nada
   }
 
   // Asegurémonos de que el primer elemento sea un objeto
-  if (typeof data[0] !== 'object' || data[0] === null) {
+  if (typeof data[0] !== "object" || data[0] === null) {
     console.log("El primer elemento no es un objeto válido:", data[0]);
-    return ''; // Si el primer elemento no es un objeto, no generamos el CSV
+    return ""; // Si el primer elemento no es un objeto, no generamos el CSV
   }
 
   const header = Object.keys(data[0]); // Obtener las claves del primer objeto
   console.log("Cabecera del CSV:", header); // Verificar la cabecera generada
 
-  const rows = data.map((row) =>
-    header.map((field) => `"${row[field]}"`).join(",") // Crear cada fila con los datos correspondientes
+  const rows = data.map(
+    (row) => header.map((field) => `${row[field]}`).join(",") // Crear cada fila con los datos correspondientes
   );
 
   // Verificar las filas generadas
@@ -28,7 +28,7 @@ const generateCSV = (data) => {
 
 // Función para descargar el archivo CSV
 const downloadCSV = (data) => {
-  console.log("Generando CSV con los datos:", data);  // Verificar qué datos se están pasando
+  console.log("Generando CSV con los datos:", data); // Verificar qué datos se están pasando
   const csv = generateCSV(data);
   console.log("CSV generado:", csv); // Verificar el contenido del CSV generado
 
@@ -49,7 +49,7 @@ const downloadCSV = (data) => {
 const DownloadCSVButton = ({ data, disabled }) => {
   const handleDownload = () => {
     console.log("Descargando CSV...");
-    
+
     // Acceder a la propiedad 'paquetes' si existe
     const paquetes = data?.paquetes || []; // Si no existe, pasamos un array vacío
     console.log("Datos para generar el CSV:", paquetes); // Verificar los datos que pasamos
@@ -61,7 +61,9 @@ const DownloadCSVButton = ({ data, disabled }) => {
     <button
       className="btn btn-primary"
       onClick={handleDownload}
-      disabled={disabled || !data || !data.paquetes || data.paquetes.length === 0}
+      disabled={
+        disabled || !data || !data.paquetes || data.paquetes.length === 0
+      }
     >
       Descargar CSV
     </button>
