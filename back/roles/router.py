@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from ..auth.dependencies import get_current_user
+from ..auth.dependencies import get_current_user, permiso_requerido
 from ..database import get_db
 from ..usuarios.models import Usuario
 from . import services
@@ -10,9 +10,20 @@ from .schemas import Role, RoleCreate, RoleUpdate, UsuarioRole
 router = APIRouter()
 
 
+# Test auth y roles
 @router.get("/protected")
 def read_protected_data(current_user: Usuario = Depends(get_current_user)):
     return {"message": f"Hello, {current_user.username}!"}
+
+
+@router.get("/roles_seguros")
+async def obtener_roles_seguros(
+    permisos: bool = Depends(permiso_requerido("string")),
+):
+    return {"roles": ["Admin", "Usuario"]}
+
+
+##############################################
 
 
 @router.post("/roles", response_model=Role, tags=["Roles"])

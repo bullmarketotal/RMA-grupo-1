@@ -7,6 +7,7 @@ from .schemas import PermisoCreate, PermisoUpdate
 from .schemas import RolePermiso as RolePermisoSchema
 from .models import Role, Permiso, RolePermiso
 from .schemas import RolePermisoCreate
+from .schemas import RolePermiso as RolePermisoSchema
 
 
 def create_permiso(db: Session, permiso: PermisoCreate) -> Permiso:
@@ -31,7 +32,6 @@ def get_permisos(db: Session) -> list[PermisoSchema]:
 def update_permiso(
     db: Session, permiso_id: int, permiso_data: PermisoUpdate
 ) -> Permiso:
-
     permiso = Permiso.get(db, permiso_id)
     if not permiso:
         raise HTTPException(status_code=404, detail="Permiso no encontrado")
@@ -74,8 +74,6 @@ def get_all_rolepermisos(db: Session) -> list[RolePermisoSchema]:
 #     role_permiso = RolePermiso.create(db, role_permiso_data)
 #     return RolePermisoSchema.model_validate(role_permiso).model_dump()
 
-from .schemas import RolePermiso as RolePermisoSchema
-
 
 def assign_permiso_to_role(
     db: Session, role_permiso_data: RolePermisoCreate
@@ -100,7 +98,7 @@ def assign_permiso_to_role(
             status_code=400, detail="El permiso ya está asignado al rol"
         )
     role_permiso = RolePermiso.create(db, role_permiso_data)
-    return RolePermisoSchema.model_validate(role_permiso).dict()
+    return RolePermisoSchema.model_validate(role_permiso).model_dump()
 
 
 def revoke_permiso_from_role(db: Session, role_permiso: RolePermiso) -> RolePermiso:

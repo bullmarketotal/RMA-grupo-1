@@ -83,6 +83,7 @@ def refresh_access_token(db: Session, refresh_token: str):
     )
 
     try:
+        # Decodificar el refresh_token
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: int = payload.get("id")
 
@@ -91,6 +92,8 @@ def refresh_access_token(db: Session, refresh_token: str):
         user = db.query(Usuario).filter(Usuario.id == user_id).first()
         if user is None:
             raise credentials_exception
+
+        # Verificar si el refresh_token expiró
         exp: int = payload.get("exp")
         if exp is None or datetime.fromtimestamp(exp, tz=timezone.utc) < datetime.now(
             timezone.utc
@@ -102,12 +105,21 @@ def refresh_access_token(db: Session, refresh_token: str):
             )
 
         new_access_token = create_access_token(
-            data={"id": user.id, "username": user.username}
+            data={
+                "id": user.id,
+                "username": user.username,
+                "roles": [role.name for role in user.roles],
+            }
         )
         new_refresh_token = create_refresh_token(
             data={"id": user.id, "username": user.username}
         )
-        return {"access_token": new_access_token, "refresh_token": new_refresh_token}
+
+        return {
+            "access_token": new_access_token,
+            "refresh_token": new_refresh_token,
+            "token_type": "bearer",
+        }
 
     except JWTError as e:
         raise credentials_exception from e

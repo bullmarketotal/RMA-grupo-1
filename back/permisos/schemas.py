@@ -16,6 +16,8 @@ class PermisoUpdate(PermisoBase):
 
 class Permiso(PermisoBase):
     id: int
+    identificador: str
+    descripcion: str
     model_config = {"from_attributes": True}
 
 
