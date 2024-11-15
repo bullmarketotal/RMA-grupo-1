@@ -8,10 +8,10 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { DarkModeToggle, NotificationButton } from "./atoms";
 import { React } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { DarkModeToggle, NotificationButton } from "./atoms";
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -19,6 +19,7 @@ const navigationItems = [
   { name: "Nodos", link: "/list-sensor" },
   { name: "Datos", link: "/datos-view" },
 ];
+
 const menuItems = [
   { name: "Perfil", link: "#" },
   { name: "Configuración", link: "#" },
@@ -28,6 +29,7 @@ const menuItems = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
 const logo = "/logo.png";
 
 export default function NavBar() {

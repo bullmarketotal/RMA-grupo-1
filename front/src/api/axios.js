@@ -21,9 +21,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const navigate = useNavigate();
     const refreshToken = localStorage.getItem("refresh_token");
-
     if (error.response?.status === 401 && refreshToken) {
       try {
         const res = await api.post("/refresh_token", {
@@ -39,10 +37,8 @@ api.interceptors.response.use(
       } catch (err) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        navigate("/login");
       }
     }
-
     return Promise.reject(error);
   }
 );

@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
     if (accessToken) {
       api
-        .get("/verify-token", {
+        .get("/verify_token", {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then(() => {
