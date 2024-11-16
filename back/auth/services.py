@@ -1,15 +1,17 @@
 import os
 from datetime import datetime, timedelta, timezone
 
+import jwt
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
-from jose import JWTError, jwt
+from jose import JWTError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from .schemas import TokenData
 from ..usuarios.models import Usuario
-from ..usuarios.schemas import UsuarioCreate, Usuario as UsuarioSchema
+from ..usuarios.schemas import Usuario as UsuarioSchema
+from ..usuarios.schemas import UsuarioCreate
+from .schemas import TokenData
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -44,7 +46,7 @@ def get_user_from_token(db: Session, token: str) -> Usuario:
         if user is None:
             raise credentials_exception
         return user
-    except JWTError as e:
+    except jwt.InvalidTokenError as e:
         raise credentials_exception from e
 
 
@@ -83,7 +85,7 @@ def refresh_access_token(db: Session, refresh_token: str):
     )
 
     try:
-        # Decodificar el refresh_token
+        # Decodificar refresh_token
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: int = payload.get("id")
 
@@ -121,8 +123,19 @@ def refresh_access_token(db: Session, refresh_token: str):
             "token_type": "bearer",
         }
 
-    except JWTError as e:
+    except jwt.InvalidTokenError as e:
         raise credentials_exception from e
+
+
+def crear_usuario(db: Session, usuario: UsuarioCreate) -> Usuario:
+    hashed_password = hash_password(usuario.password)
+    usuario_dict = usuario.model_dump()
+    usuario_dict["hashed_password"] = hashed_password
+    del usuario_dict["password"]
+    usuario_creado = Usuario(**usuario_dict)
+
+    usuario_creado = usuario_creado.save(db)
+    return UsuarioSchema.model_validate(usuario_creado)
 
 
 # def crear_usuario(db: Session, usuario: UsuarioCreate) -> UsuarioSchema:
@@ -139,18 +152,6 @@ def refresh_access_token(db: Session, refresh_token: str):
 #         db, Usuario(username=usuario.username, hashed_password=hashed_password)
 #     )
 #     return UsuarioSchema.model_validate(new_usuario)
-
-
-def crear_usuario(db: Session, usuario: UsuarioCreate) -> Usuario:
-    hashed_password = hash_password(usuario.password)
-    usuario_dict = usuario.model_dump()
-    usuario_dict["hashed_password"] = hashed_password
-    del usuario_dict["password"]
-    usuario_creado = Usuario(**usuario_dict)
-
-    usuario_creado = usuario_creado.save(db)
-
-    return UsuarioSchema.model_validate(usuario_creado)
 
 
 # def crear_usuario(db: Session, usuario: UsuarioCreate) -> Usuario:

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "../api/axios";
 
 // C
@@ -23,12 +23,14 @@ const useCreateRole = () => {
   return { loading, error, createRole };
 };
 
+//R
+
 const useRoles = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [roles, setRoles] = useState([]);
 
-  const getRoles = useCallback(async () => {
+  const getRoles = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -40,6 +42,10 @@ const useRoles = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    getRoles();
   }, []);
 
   return { roles, loading, error, getRoles };
@@ -89,4 +95,29 @@ const useDeleteRole = () => {
   return { loading, error, deleteRole };
 };
 
-export { useCreateRole, useRoles, useUpdateRole, useDeleteRole };
+const useRoleAssign = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const assignRole = async (roleUserData) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const response = await axios.post("/rolesassign", roleUserData);
+      setSuccess(true);
+      return response.data;
+    } catch (err) {
+      setError(err.response?.data || "Error al asignar el Rol");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { assignRole, loading, error, success };
+};
+
+export { useCreateRole, useRoles, useUpdateRole, useDeleteRole, useRoleAssign };

@@ -3,8 +3,7 @@ import { useFetchSensorData, useFetchSensores } from "../hooks";
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import { FiltroDatos } from "../components/molecules";
 import { TableView } from "../components/organisms";
-import  DownloadCSVButton  from "../components/atoms/DownloadCSVButton";
-
+import DownloadCSVButton from "../components/atoms/DownloadCSVButton";
 
 const DatosPage = () => {
   const [id, setId] = useState(1);
@@ -49,14 +48,14 @@ const DatosPage = () => {
             </select>
           </div>
         )}
+        <div className="flex items-center">
+          <FiltroDatos onFilterChange={handleFilterChange} className="px-2" />
 
-        <FiltroDatos onFilterChange={handleFilterChange} className="mb-3" />
-      
-        {/* Botón para descargar CSV */}
-        <div className="mb-3">
-          <DownloadCSVButton data={data || []} disabled={loading} />
+          {/* Botón para descargar CSV */}
+          <div className="px-2">
+            <DownloadCSVButton data={data || []} disabled={loading} />
+          </div>
         </div>
-
         {loading ? (
           <LoadingSpinner />
         ) : (

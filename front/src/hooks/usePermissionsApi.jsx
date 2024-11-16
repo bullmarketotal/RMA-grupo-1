@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "../api/axios";
 
 const useAssignPermiso = () => {
@@ -44,6 +44,10 @@ const usePermissions = () => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    getPermissions();
+  }, [getPermissions]);
 
   return { permissions, loading, error, getPermissions };
 };

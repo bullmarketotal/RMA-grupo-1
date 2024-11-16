@@ -3,9 +3,9 @@ import api from "../api/axios";
 import { Container } from "../components/atoms";
 import RoleList from "./RoleList";
 import AsignarPermiso from "./AsignarPermiso";
+import AsignarRol from "./AsignarUsuario";
 
 const accessToken = localStorage.getItem("access_token");
-
 try {
   const response = await api.get("/roles_seguros", {
     headers: {
@@ -42,6 +42,7 @@ export default function Example() {
       </div>
 
       <AsignarPermiso />
+      <AsignarRol />
     </Container>
   );
 }

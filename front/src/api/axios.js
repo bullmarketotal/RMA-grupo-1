@@ -1,11 +1,9 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-// Interceptor access_token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token");
@@ -17,12 +15,11 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor refresh_token
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const refreshToken = localStorage.getItem("refresh_token");
-    if (error.response?.status === 401 && refreshToken) {
+    if (error.responseh.status === 401 && refreshToken) {
       try {
         const res = await api.post("/refresh_token", {
           refresh_token: refreshToken,

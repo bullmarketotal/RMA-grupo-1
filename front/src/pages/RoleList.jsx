@@ -28,11 +28,6 @@ const RoleList = () => {
     error: assignError,
   } = useAssignPermiso();
 
-  useEffect(() => {
-    getRoles();
-    getPermissions();
-  }, []);
-
   const openPermissionsModal = (role) => {
     setSelectedRole(role);
     setIsPermissionsModalOpen(true);
@@ -125,7 +120,7 @@ const RoleList = () => {
                       setEditingRow(row.id);
                       setEditedRole(row.original);
                     }}
-                    className="bg-amber-500 text-white px-3 py-1 rounded-md text-base"
+                    className="bg-emerald-500 text-white px-3 py-1 rounded-md text-base"
                   >
                     <FiEdit2 />
                   </button>
@@ -184,13 +179,13 @@ const RoleList = () => {
     loading || creating || updating || deleting || assigningPermissions;
 
   if (isLoading) return <div>Cargando...</div>;
-  if (error || createError || updateError || deleteError || assignError)
-    return (
-      <div>
-        Error:{" "}
-        {error || createError || updateError || deleteError || assignError}
-      </div>
-    );
+  // if (error || createError || updateError || deleteError || assignError)
+  //   return (
+  //     <div>
+  //       Error:{" "}
+  //       {error || createError || updateError || deleteError || assignError}
+  //     </div>
+  //   );
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -237,7 +232,6 @@ const RoleList = () => {
         </tbody>
       </table>
 
-      {/* Modal permisos */}
       <AssignPermissionsModal
         isOpen={isPermissionsModalOpen}
         onClose={closePermissionsModal}

@@ -20,7 +20,7 @@ def read_protected_data(current_user: Usuario = Depends(get_current_user)):
 async def obtener_roles_seguros(
     permisos: bool = Depends(permiso_requerido("Admin")),
 ):
-    return {"roles": ["El usuario tiene permiso Admin"]}
+    return {"roles": ["El usuario tiene permiso Admin y la clave del sistema es 123"]}
 
 
 ##############################################
