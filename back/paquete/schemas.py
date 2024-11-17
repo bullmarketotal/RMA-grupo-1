@@ -1,47 +1,38 @@
+from pydantic import BaseModel
 from datetime import datetime
-from typing import List, Optional
-
-from pydantic import BaseModel, EmailStr, field_validator
+from typing import List
 
 
-##ESQUEMAS DE Paquetes
 class PaqueteBase(BaseModel):
-    sensor_id: int
-
-
-## ESQUEMAS DE PAQUETES
-
-
-# Necesitaba un schema donde no se incluya el ID del sensor. Es medio raro pero no quería modificar el PaqueteBase. -gonzalo
-class PaqueteSend(BaseModel):
-    temperatura: float
-    nivel_hidrometrico: float
+    id: int
+    nodo_id: int
+    data: float
     date: datetime
+    type: int
+
+    model_config = {"from_attributes": True}
 
 
-class PaqueteBase(PaqueteSend):
-    sensor_id: int
+class Paquete(PaqueteBase):
+    pass
 
 
 class PaqueteCreate(PaqueteBase):
     pass
 
 
-class PaqueteUpdate(PaqueteBase):
-    pass
+class PaginationInfo(BaseModel):
+    total_items: int
+    total_pages: int
+    current_page: int
+    limit: int
+    offset: int
 
 
-class Paquete(PaqueteBase):
-    id: int
+class PaqueteResponse(BaseModel):
+    info: PaginationInfo
+    items: List[Paquete]
 
-    # from_atributes=True permite que Pydantic trabaje con modelos SQLAlchemy
-    # más info.: https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.from_attributes
-    model_config = {"from_attributes": True}
 
-class PaqueteRechazado(BaseModel):
-    # TODO: Cuando refactoricemos Paquete, esto puede usar una jerarquia
-    nodo_id: int
-    date: datetime
-    data: float
-    type: int
+class PaqueteRechazado(PaqueteBase):
     motivo: str
