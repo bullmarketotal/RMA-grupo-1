@@ -43,6 +43,8 @@ parser = argparse.ArgumentParser(description='Enviar datos de temperatura y nive
 parser.add_argument('--count', type=int, default=DEFAULT_ENTRY_COUNT, help='Número de entradas a generar')
 parser.add_argument('--nodo', type=int, default=DEFAULT_NODO, help="Nodo de sensor a utilizar")
 parser.add_argument('--type', type=int, default=DEFAULT_TYPE, help="Tipo de dato a enviar")
+parser.add_argument('--data', type=int, default=DEFAULT_TYPE, help="Dato para enviar manualmente")
+
 args = parser.parse_args()
 
 ENTRY_COUNT = args.count
@@ -122,7 +124,7 @@ for i in range(ENTRY_COUNT):
     mensaje = {
         "id": args.nodo,
         "type": TYPE_TO_SEND,
-        "data": data,
+        "data": args.data if args.data is not None else data,
         "time": int(fecha_hora.timestamp())
     }
 
@@ -134,5 +136,7 @@ for i in range(ENTRY_COUNT):
 
     # Imprimir el mensaje para verificar
     print(f"Mensaje enviado: {mensaje_json}")
+    if args.data is not None:
+        exit(0)
     time.sleep(TIME_BETWEEN_MESSAGES)
 
