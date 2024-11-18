@@ -29,50 +29,9 @@ def get_permisos(db: Session) -> list[PermisoSchema]:
     return [PermisoSchema.model_validate(permiso) for permiso in permisos]
 
 
-def update_permiso(
-    db: Session, permiso_id: int, permiso_data: PermisoUpdate
-) -> PermisoSchema:
-    permiso = Permiso.get(db, permiso_id)
-    if not permiso:
-        raise HTTPException(status_code=404, detail="Permiso no encontrado")
-    permiso.update(db, permiso_data)
-    return PermisoSchema.model_validate(permiso)
-
-
-def delete_permiso(db: Session, permiso_id: int):
-    permiso = Permiso.get(db, permiso_id)
-    if not permiso:
-        raise HTTPException(status_code=404, detail="Permiso no encontrado")
-    permiso.delete(db)
-
-    return {"detail": "Permiso eliminado correctamente"}
-
-
 def get_all_rolepermisos(db: Session) -> list[RolePermisoSchema]:
     role_permisos = RolePermiso.get_all(db)
     return [RolePermisoSchema.model_validate(rp) for rp in role_permisos]
-
-
-#      if RolePermiso.filter(db, role_id=role_id, permiso_id=permiso_id).first():
-#         raise HTTPException(
-#             status_code=404, detail="El permiso ya está asignado al rol"
-#         )
-#     role_permiso = RolePermiso.create(db, role_permiso_data)
-#     return RolePermisoSchema.model_validate(role_permiso)
-
-
-#     role_permiso = (
-#         db.query(RolePermiso)
-#         .filter(RolePermiso.role_id == role_id, RolePermiso.permiso_id == permiso_id)
-#         .first()
-#     )
-
-#     if role_permiso:
-#         raise HTTPException(
-#             status_code=400, detail="El permiso ya está asignado al rol"
-#         )
-#     role_permiso = RolePermiso.create(db, role_permiso_data)
-#     return RolePermisoSchema.model_validate(role_permiso).model_dump()
 
 
 def assign_permiso_to_role(db: Session, role_permiso_data: RolePermisoCreate):
@@ -117,3 +76,22 @@ def revoke_permiso_from_role(db: Session, role_permiso: RolePermiso):
 
     role_permiso_instance.delete(db)
     return {"detail": "Permiso revocado del rol"}
+
+
+# def update_permiso(
+#     db: Session, permiso_id: int, permiso_data: PermisoUpdate
+# ) -> PermisoSchema:
+#     permiso = Permiso.get(db, permiso_id)
+#     if not permiso:
+#         raise HTTPException(status_code=404, detail="Permiso no encontrado")
+#     permiso.update(db, permiso_data)
+#     return PermisoSchema.model_validate(permiso)
+
+
+# def delete_permiso(db: Session, permiso_id: int):
+#     permiso = Permiso.get(db, permiso_id)
+#     if not permiso:
+#         raise HTTPException(status_code=404, detail="Permiso no encontrado")
+#     permiso.delete(db)
+
+#     return {"detail": "Permiso eliminado correctamente"}

@@ -11,7 +11,7 @@ router = APIRouter()
 
 @router.get("/paquetes", response_model=schemas.PaqueteResponse)
 def read_paquetes(
-    limit: int = Query(10, ge=1),
+    limit: int = Query(None, ge=1),
     offset: int = Query(0, ge=0),
     nodo_id: Optional[int] = None,
     start_date: Optional[datetime] = None,

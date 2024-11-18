@@ -19,10 +19,6 @@ class ModeloBase(Base):
 
     __abstract__ = True
 
-    def __init_subclass__(cls, **kwargs):
-        super().__init_subclass__(**kwargs)
-        cls.__tablename__ = cls.__name__.lower()
-
     def save(self, db: Session):
         db.add(self)
         db.commit()

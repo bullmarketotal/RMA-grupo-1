@@ -5,14 +5,14 @@ from typing import Optional
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from ..paquete import schemas
-from ..paquete.models import Paquete, PaqueteRechazado
+from . import schemas
+from .models import Paquete, PaqueteRechazado
 
 
 def listar_paquetes(
     db: Session,
-    limit: int,
-    offset: int,
+    limit: Optional[int] = None,
+    offset: int = 0,
     nodo_id: Optional[int] = None,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
@@ -22,10 +22,7 @@ def listar_paquetes(
     order: str = "asc",
     type: Optional[int] = None,
 ):
-
     query = db.query(Paquete)
-
-    # Aplicar el filtros
     if type is not None:
         query = query.filter(Paquete.type == type)
     if nodo_id is not None:
@@ -48,22 +45,36 @@ def listar_paquetes(
         else:
             query = query.order_by(getattr(Paquete, order_by))
 
-    # Generar info de paginación
-    total_items = query.count()
-    items = query.offset(offset).limit(limit).all()
-    total_pages = ceil(total_items / limit) if limit > 0 else 1
-    current_page = (offset // limit) + 1 if limit > 0 else 1
+    if limit is not None:
+        total_items = query.count()
+        items = query.offset(offset).limit(limit).all()
+        total_pages = ceil(total_items / limit) if limit > 0 else 1
+        current_page = (offset // limit) + 1 if limit > 0 else 1
 
-    return {
-        "info": {
-            "total_items": total_items,
-            "total_pages": total_pages,
-            "current_page": current_page,
-            "limit": limit,
-            "offset": offset,
-        },
-        "items": items,
-    }
+        return {
+            "info": {
+                "total_items": total_items,
+                "total_pages": total_pages,
+                "current_page": current_page,
+                "limit": limit,
+                "offset": offset,
+            },
+            "items": items,
+        }
+    else:
+        items = query.all()
+        total_items = len(items)
+
+        return {
+            "info": {
+                "total_items": total_items,
+                "total_pages": 1,
+                "current_page": 1,
+                "limit": total_items,
+                "offset": 0,
+            },
+            "items": items,
+        }
 
 
 def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:

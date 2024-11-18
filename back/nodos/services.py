@@ -21,8 +21,8 @@ def listar_nodos(db: Session) -> List[Nodo]:
     return Nodo.get_all(db)
 
 
-def get_nodo(nodo_id: int, db: Session) -> NodoSchema:
-    nodo = db.query(Nodo).filter(Nodo.id == nodo_id).first()
+def get_nodo(db: Session, nodo_id: int) -> NodoSchema | None:
+    nodo = Nodo.get(db, nodo_id)
     if not nodo:
         raise HTTPException(status_code=404, detail="Nodo no encontrado")
     return NodoSchema.model_validate(nodo)
@@ -50,8 +50,8 @@ def archivar_y_eliminar_nodo(db: Session, nodo_id: int):
         )
         db.add(paquete_archivo)
         db.delete(paquete)
-
     # Eliminar el nodo
+
     nodo = db.query(Nodo).filter(Nodo.id == nodo_id).first()
     if nodo:
         db.delete(nodo)

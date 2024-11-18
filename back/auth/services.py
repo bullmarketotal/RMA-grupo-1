@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, timezone
 import jwt
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
-from jose import JWTError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
@@ -77,7 +76,7 @@ def create_access_token(
     return encoded_jwt
 
 
-def refresh_access_token(db: Session, refresh_token: str):
+def refresh_access_token(db: Session, refresh_token: str) -> TokenData:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -85,7 +84,6 @@ def refresh_access_token(db: Session, refresh_token: str):
     )
 
     try:
-        # Decodificar refresh_token
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: int = payload.get("id")
 
@@ -95,7 +93,6 @@ def refresh_access_token(db: Session, refresh_token: str):
         if user is None:
             raise credentials_exception
 
-        # Verificar si el refresh_token expiró
         exp: int = payload.get("exp")
         if exp is None or datetime.fromtimestamp(exp, tz=timezone.utc) < datetime.now(
             timezone.utc
@@ -123,6 +120,12 @@ def refresh_access_token(db: Session, refresh_token: str):
             "token_type": "bearer",
         }
 
+    except jwt.ExpiredSignatureError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token has expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        ) from e
     except jwt.InvalidTokenError as e:
         raise credentials_exception from e
 

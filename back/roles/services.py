@@ -1,18 +1,21 @@
+from typing import List
+
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from .schemas import RoleCreate, RoleUpdate, UsuarioRole as UsuarioRoleSchema
-from .schemas import Role as RoleSchema
-from .models import Role, UsuarioRole
-from ..usuarios.models import Usuario
 from ..permisos.models import Permiso
+from ..usuarios.models import Usuario
+from .models import Role, UsuarioRole
+from .schemas import Role as RoleSchema
+from .schemas import RoleConPermisos, RoleCreate, RoleUpdate
+from .schemas import UsuarioRole as UsuarioRoleSchema
 
 
-def get_role(db: Session, role_id: int) -> Role | None:
+def get_role(db: Session, role_id: int) -> RoleConPermisos:
     role = Role.get(db, role_id)
     if not role:
         raise HTTPException(status_code=404, detail="Rol no encontrado")
-    return RoleSchema.model_validate(role)
+    return RoleConPermisos.model_validate(role)
 
 
 def get_roles(db: Session) -> list[RoleSchema]:
@@ -27,7 +30,7 @@ def create_role(db: Session, role_data: RoleCreate) -> RoleSchema:
     return RoleSchema.model_validate(role)
 
 
-def update_role(db: Session, role_id: int, role_data: RoleUpdate) -> Role:
+def update_role(db: Session, role_id: int, role_data: RoleUpdate) -> RoleSchema:
     role = Role.get(db, role_id)
     if not role:
         raise HTTPException(status_code=404, detail="Rol no encontrado")
@@ -41,6 +44,21 @@ def delete_role(db: Session, role_id: int):
         raise HTTPException(status_code=404, detail="Rol no encontrado")
     role.delete(db)
     return {"detail": "Rol eliminado correctamente"}
+
+
+def user_has_permission(
+    usuario_id: int, permiso_identificador: str, db: Session
+) -> bool:
+    usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not usuario:
+        return False
+
+    for rol in usuario.roles:
+        for permiso in rol.permisos:
+            print(f"Permiso encontrado: {permiso.identificador}")
+            if permiso.identificador == permiso_identificador:
+                return True
+    return False
 
 
 def assign_role_to_usuario(
@@ -78,16 +96,19 @@ def revoke_role_from_usuario(db: Session, usuario_role_data: UsuarioRoleSchema):
     return {"detail": "Rol revocado del usuario"}
 
 
-def user_has_permission(
-    usuario_id: int, permiso_identificador: str, db: Session
-) -> bool:
-    usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
-    if not usuario:
-        return False
-
-    for rol in usuario.roles:
-        for permiso in rol.permisos:
-            print(f"Permiso encontrado: {permiso.identificador}")
-            if permiso.identificador == permiso_identificador:
-                return True
-    return False
+def get_user_roles(db: Session) -> List[UsuarioRoleSchema]:
+    results = (
+        db.query(Usuario, Role)
+        .join(UsuarioRole, Usuario.id == UsuarioRole.usuario_id)
+        .join(Role, Role.id == UsuarioRole.role_id)
+        .all()
+    )
+    usuarios_con_roles = [
+        {
+            "usuario_id": usuario.id,
+            "username": usuario.username,
+            "roles": [role for role in roles],
+        }
+        for usuario, roles in results
+    ]
+    return usuarios_con_roles
