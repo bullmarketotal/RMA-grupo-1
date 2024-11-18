@@ -81,5 +81,5 @@ def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:
     return Paquete.create(db, paquete)
 
 
-def crear_paquete_rechazado(db: Session, paquete: schemas.PaqueteRechazado):
+def crear_paquete_rechazado(db: Session, paquete: schemas.PaqueteRechazado) -> PaqueteRechazado:
     return PaqueteRechazado.create(db, paquete)

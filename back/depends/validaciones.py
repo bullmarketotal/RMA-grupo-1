@@ -1,6 +1,7 @@
 
 from back.paquete.schemas import PaqueteBase, PaqueteRechazado
-
+from back.paquete.services import crear_paquete_rechazado
+from ..database import get_db
 
 def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
     motivo = None
@@ -18,10 +19,11 @@ def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
             "nodo_id": paquete.nodo_id,
             "date": paquete.date,
             "data": paquete.data,
-            "type": paquete.type_id,
+            "type_id": paquete.type_id,
             "motivo": motivo
         })
-        paquete_rechazado.save()
+        print("rechazando paquete : ", paquete_rechazado)
+        crear_paquete_rechazado(next(get_db()), paquete_rechazado)
         return False
 
 def es_valido(paquete: PaqueteBase) -> bool:

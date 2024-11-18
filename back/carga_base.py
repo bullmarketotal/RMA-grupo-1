@@ -43,7 +43,7 @@ parser = argparse.ArgumentParser(description='Enviar datos de temperatura y nive
 parser.add_argument('--count', type=int, default=DEFAULT_ENTRY_COUNT, help='Número de entradas a generar')
 parser.add_argument('--nodo', type=int, default=DEFAULT_NODO, help="Nodo de sensor a utilizar")
 parser.add_argument('--type', type=int, default=DEFAULT_TYPE, help="Tipo de dato a enviar")
-parser.add_argument('--data', type=int, default=DEFAULT_TYPE, help="Dato para enviar manualmente")
+parser.add_argument('--data', type=int, default=None, help="Dato para enviar manualmente")
 
 args = parser.parse_args()
 
@@ -76,15 +76,25 @@ def getValidType(type):
 
 TYPE_TO_SEND = getValidType(args.type)
 
+
 def getLimitsFromType(type):
+
+    ruta = os.path.join(os.path.dirname(__file__), "config.json")
+    if os.path.exists(ruta):
+        with open(ruta, "r") as archivo:
+            config = json.load(archivo)
+    else:
+        print("Error: config.json no encontrado.")
+        exit(-1)
+
     if type == 1:
-        return [MIN_TEMP, MAX_TEMP]
+        return config["umbral"]["temperatura"]
     if type == 14:
-        return [0, 10]
+        return config["umbral"]["precipitacion"]
     if type == 16:
-        return [0.1, 3.5]
+        return config["umbral"]["tension"]
     if type == 25:
-        return [0, 200]
+        return config["umbral"]["nivel_hidrometrico"]
     raise Exception("Tipo incorrecto")
 
 # Limites de datos segun el tipo
@@ -136,6 +146,7 @@ for i in range(ENTRY_COUNT):
 
     # Imprimir el mensaje para verificar
     print(f"Mensaje enviado: {mensaje_json}")
+    print(args.data)
     if args.data is not None:
         exit(0)
     time.sleep(TIME_BETWEEN_MESSAGES)
