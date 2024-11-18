@@ -10,15 +10,15 @@ def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
     if(paquete.data > umbral[1]):
         motivo = f"Valor de {name}: {paquete.data} mayor a {umbral[1]}"
 
-    if paquete.motivo is None:
+    if motivo is None:
         return True
     else:
         # archivar paquete invalido
         paquete_rechazado = PaqueteRechazado(**{
-            "nodo_id": paquete.sensor_id,
+            "nodo_id": paquete.nodo_id,
             "date": paquete.date,
             "data": paquete.data,
-            "type": paquete.type,
+            "type": paquete.type_id,
             "motivo": motivo
         })
         paquete_rechazado.save()
@@ -26,15 +26,16 @@ def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
 
 def es_valido(paquete: PaqueteBase) -> bool:
     from back.main import CONFIG
-    if paquete.type == CONFIG.type.temperatura: 
-        return validar_o_archivar(paquete, CONFIG.umbral.temperatura, name="temperatura")
-    if paquete.type == CONFIG.type.tension:
-        return validar_o_archivar(paquete, CONFIG.umbral.tension, name="tensión")
-    if paquete.type == CONFIG.type.nivel_hidrometrico:
-        return validar_o_archivar(paquete, CONFIG.umbral.nivel_hidrometrico, name="nivel hidrométrico")
-    if paquete.type == CONFIG.type.precipitacion:
-        return validar_o_archivar(paquete, CONFIG.umbral.precipitacion, name="precipitación")
+    if paquete.type_id == CONFIG["type"]["temperatura"]:
+        return validar_o_archivar(paquete, CONFIG["umbral"]["temperatura"], name="temperatura")
+    if paquete.type_id == CONFIG["type"]["tension"]:
+        return validar_o_archivar(paquete, CONFIG["umbral"]["tension"], name="tensión")
+    if paquete.type_id == CONFIG["type"]["nivel_hidrometrico"]:
+        return validar_o_archivar(paquete, CONFIG["umbral"]["nivel_hidrometrico"], name="nivel hidrométrico")
+    if paquete.type_id == CONFIG["type"]["precipitacion"]:
+        return validar_o_archivar(paquete, CONFIG["umbral"]["precipitacion"], name="precipitación")
+
     
-    print(f"Tipo de dato {paquete.type} invalido")
+    print(f"Tipo de dato {paquete.type_id} invalido")
     return False
     
