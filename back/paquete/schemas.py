@@ -33,5 +33,4 @@ class PaqueteResponse(BaseModel):
 
 
 class PaqueteRechazado(PaqueteBase):
-    id: int
     motivo: str
