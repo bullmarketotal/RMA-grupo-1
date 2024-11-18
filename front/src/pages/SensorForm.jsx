@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useNotification } from "../context/NotificationContext";
 import { Container, Header, SubmitButton } from "../components/atoms";
 import { MapaComponent } from "../components/molecules";
+import { useNodos } from "../hooks/useNodos";
 
 const SensorForm = () => {
   const [formData, setFormData] = useState({
@@ -14,9 +15,9 @@ const SensorForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const navigate = useNavigate();
   const { showNotification } = useNotification();
+  const { addNodo } = useNodos(); // Obtén la función addNodo de tu hook
 
   const handleChange = (e) => {
     setFormData({
@@ -40,24 +41,12 @@ const SensorForm = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/sensores", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      if (response.ok) {
-        const newSensor = await response.json();
-        showNotification("¡Nodo creado exitosamente!", "success");
-        navigate(`/sensor/${newSensor.id}`);
-      } else {
-        showNotification("Error al crear el sensor.", "error");
-      }
+      await addNodo(dataToSend); // Usa la función addNodo del hook
+      showNotification("¡Nodo creado exitosamente!", "success");
+      // navigate("/sensores"); // O navega a la ruta correspondiente
     } catch (error) {
-      showNotification("Error al enviar la solicitud.", "error");
-      console.error("Error al enviar la solicitud:", error);
+      showNotification("Error al crear el sensor.", "error");
+      console.error("Error al crear el sensor:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -109,7 +98,6 @@ const SensorForm = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
-              {/* Latitud */}
               <div>
                 <label htmlFor="latitud" className="block text-sm font-medium">
                   Latitud:
@@ -124,8 +112,6 @@ const SensorForm = () => {
                   required
                 />
               </div>
-
-              {/* Longitud */}
               <div>
                 <label htmlFor="longitud" className="block text-sm font-medium">
                   Longitud:
@@ -142,7 +128,6 @@ const SensorForm = () => {
               </div>
             </div>
 
-            {/* Descripción */}
             <div className="grid grid-cols-1 md:grid-cols-1 gap-10 mb-8">
               <div>
                 <label
@@ -170,7 +155,6 @@ const SensorForm = () => {
               <MapaComponent setFormData={setFormData} />
             </div>
 
-            {/* Botón de envío */}
             <div className="flex justify-center mt-6">
               <SubmitButton isSubmitting={isSubmitting} name={"Crear Nodo"} />
             </div>

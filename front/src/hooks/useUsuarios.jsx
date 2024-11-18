@@ -1,27 +1,32 @@
-import { useState, useEffect } from "react";
-import axios from "../api/axios";
+import useSWR from "swr";
+import { useAxios } from "../context/AxiosProvider";
 
 export const useUsuarios = () => {
-  const [usuarios, setUsuarios] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const axios = useAxios();
 
-  const fetchUsuarios = async () => {
-    setLoading(true);
-    setError(null);
+  const fetcher = async (url) => {
     try {
-      const response = await axios.get("/usuarios");
-      setUsuarios(response.data);
+      const response = await axios.get(url);
+      return response.data;
     } catch (err) {
-      setError(err?.response?.data?.detail || "Error al obtener los usuarios");
-    } finally {
-      setLoading(false);
+      if (err.response?.status === 403) {
+        const error = new Error("Forbidden");
+        error.status = 403;
+        throw error;
+      } else {
+        throw err;
+      }
     }
   };
 
-  useEffect(() => {
-    fetchUsuarios();
-  }, []);
+  const { data, error, isValidating, mutate } = useSWR("/usuarios", fetcher);
+  const isForbidden = error?.status === 403;
 
-  return { usuarios, loading, error, fetchUsuarios };
+  return {
+    usuarios: data,
+    loading: isValidating,
+    error: error && !isForbidden ? error.message : null,
+    isForbidden,
+    refreshUsuarios: mutate,
+  };
 };
