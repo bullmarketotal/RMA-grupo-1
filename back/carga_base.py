@@ -83,9 +83,9 @@ for i in range(ENTRY_COUNT):
      # Crear el mensaje JSON
     mensaje = {
         "id": args.nodo,
-        "temperatura": temp,
-        "nivel_hidrometrico": nivel,
-        "time": fecha_hora.strftime("%Y-%m-%d %H:%M:%S.%f")
+        "type": 1,
+        "data": temp,
+        "time": int(fecha_hora.timestamp())
     }
 
     # Convertir el mensaje a formato JSON
