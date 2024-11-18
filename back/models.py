@@ -45,7 +45,9 @@ class ModeloBase(Base):
 
     @classmethod
     def create(cls, db: Session, schema: Schema):
+        
         instance = cls(**schema.model_dump())
+        print("creando paquete: ", instance)
         return instance.save(db)
 
     @classmethod
