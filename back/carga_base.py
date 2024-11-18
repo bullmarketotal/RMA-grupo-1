@@ -1,7 +1,7 @@
 """
     EL SCRIPT SE EJECUTA EN EL MISMO ENTORNO (VENV) QUE USAMOS PARA EJECUTAR FASTAPI
 
-    python carga_base.py --count N1 --nodo N2
+    python carga_base.py --count N1 --nodo N2 --type
 
     con "count" definimos cuantos datos queremos que genere. Por default va a generar 100 entradas.
  """
@@ -24,8 +24,7 @@ MIN_TEMP = -10
 TIME_BETWEEN_MESSAGES = 0.1 # segundos
 
 # Valores iniciales
-data = 15  
-nivel = 2  
+data = 15
 
 
 import random
@@ -66,28 +65,58 @@ def getValidType(type):
     if type in [1, 14, 16, 25]:
         return type
     else:
-        print("Enviando tipo de dato predeterminado - type: ", DEFAULT_TYPE)
-        return DEFAULT_TYPE
+        if type is None:
+            print("Enviando tipo de dato predeterminado - type: ", DEFAULT_TYPE)
+            return DEFAULT_TYPE
+        else:
+            print("type incorrecto.\n -> 1: temp | 14: precipitacion | 16: tension | 25: nivel hidrométrico")
+            exit(0)
 
 TYPE_TO_SEND = getValidType(args.type)
+
+def getLimitsFromType(type):
+    if type == 1:
+        return [MIN_TEMP, MAX_TEMP]
+    if type == 14:
+        return [0, 10]
+    if type == 16:
+        return [0.1, 3.5]
+    if type == 25:
+        return [0, 200]
+    raise Exception("Tipo incorrecto")
+
+# Limites de datos segun el tipo
+[ MIN, MAX ] = getLimitsFromType(TYPE_TO_SEND)
+data = (MIN + MAX) / 2 # la serie inicia en el medio
 
 # Generación de datos
 for i in range(ENTRY_COUNT):
     fecha_hora = start_date + timedelta(minutes=i * MINUTES_BETWEEN_ENTRIES)
 
     # Simulación de la temperatura
-    data += (random.random() - 0.5) * 4  # Variación de +-2 grados
-    if 8 <= fecha_hora.hour < 16:
-        data += 1  # Subida durante el día
-    elif fecha_hora.hour >= 16:
-        data -= 1  # Bajada hacia la noche
+    if TYPE_TO_SEND == 1:
+        data += (random.random() - 0.5) * 4
+        if 8 <= fecha_hora.hour < 16:
+            data += 1  # Subida durante el día
+        elif fecha_hora.hour >= 16:
+            data -= 1  # Bajada hacia la noche
+    # Simulación del nivel
+    elif TYPE_TO_SEND == 25:
+        data += (random.random() - 0.5) * 20
+    # Simulación de la tension
+    elif TYPE_TO_SEND == 16:
+        data += (random.random() - 0.5)
+    # Simulación de la precipitacion
+    elif TYPE_TO_SEND == 14:
+        random_number = random.random() - 0.5
+        if random_number > 0.3:
+            data = 0
+        else:
+            data = random_number * 3
 
-    # Limitar la temperatura
-    data = max(MIN_TEMP, min(MAX_TEMP, data))
+    # Limitar el dato
+    data = max(MIN, min(MAX, data))
 
-    # Simulación del nivel hidrométrico
-    nivel += (random.random() - 0.53) * 0.5  # Variación ligera del nivel
-    nivel = max(0, min(5, nivel))  # Limitar el nivel entre 0 y 5
 
      # Crear el mensaje JSON
     mensaje = {
