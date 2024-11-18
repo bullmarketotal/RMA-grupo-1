@@ -1,25 +1,23 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 
 class PaqueteBase(BaseModel):
-    id: int
     nodo_id: int
     data: float
     date: datetime
-    type: int
+    type_id: int
 
     model_config = {"from_attributes": True}
 
 
 class Paquete(PaqueteBase):
-    pass
+    id: int
 
 
 class PaqueteCreate(PaqueteBase):
     pass
-
 
 class PaginationInfo(BaseModel):
     total_items: int
@@ -35,4 +33,5 @@ class PaqueteResponse(BaseModel):
 
 
 class PaqueteRechazado(PaqueteBase):
+    id: int
     motivo: str
