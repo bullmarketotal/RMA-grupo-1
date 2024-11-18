@@ -17,7 +17,7 @@ from .depends.sub import Subscriptor
 from .models import ModeloBase
 from .paquete.router import router as paquetes_router
 from .permisos.router import router as permisos_router
-from .sensores.router import router as sensores_router
+from .nodos.router import router as sensores_router
 from .usuarios.router import router as usuarios_router
 from .roles.router import router as roles_router
 from .auth.router import router as auth_router

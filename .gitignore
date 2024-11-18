@@ -371,3 +371,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/node,linux,python,react
 
 back/entornoHector
+front/eslint.config.js

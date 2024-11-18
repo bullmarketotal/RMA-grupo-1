@@ -1,28 +1,31 @@
 from datetime import datetime
-from typing import Optional
 
-from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ..models import ModeloBase
+from back.models import ModeloBase
 
-# from back.sensores.models import Sensor
+from ..models import ModeloBase
+from ..nodos.models import Nodo
+
+
+class Tipo(ModeloBase):
+    __tablename__ = "tipos"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    nombre: Mapped[str] = mapped_column(String(50), unique=True, index=True)
 
 
 class Paquete(ModeloBase):
     __tablename__ = "paquetes"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    sensor_id: Mapped[int] = mapped_column(ForeignKey("sensores.id"))
-    temperatura: Mapped[float] = mapped_column(Float, index=True)
-    nivel_hidrometrico: Mapped[Optional[float]] = mapped_column(
-        Float, index=True, nullable=True
-    )
+    nodo_id: Mapped[int] = mapped_column(ForeignKey("nodos.id"))
+    data: Mapped[float] = mapped_column(Float, index=True)
+    type_id: Mapped[int] = mapped_column(ForeignKey("tipos.id"))
     date: Mapped[datetime] = mapped_column(DateTime, index=True)
 
-    # Relación con Sensor
-    sensor = relationship("Sensor", back_populates="paquetes")
-    # sensor: Mapped[Sensor] = relationship("Sensor", back_populates="paquetes")
+    type: Mapped[Tipo] = relationship(Tipo)
+    nodo: Mapped[Nodo] = relationship(Nodo, back_populates="paquetes")
 
 
 class PaqueteRechazado(ModeloBase):
@@ -33,3 +36,13 @@ class PaqueteRechazado(ModeloBase):
     data: Mapped[float] = mapped_column(Integer)
     type: Mapped[int] = mapped_column(Integer, index=True)
     motivo: Mapped[str] = mapped_column(String, index=True)
+
+
+class PaqueteArchivo(ModeloBase):
+    __tablename__ = "paquetes_archivo"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    data: Mapped[Float] = mapped_column(Float, index=True)
+    type: Mapped[int] = mapped_column(ForeignKey("tipos.id"))
+    date: Mapped[datetime] = mapped_column(DateTime, index=True)
+    nodo_id: Mapped[int] = mapped_column(Integer, index=True)

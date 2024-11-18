@@ -34,7 +34,7 @@ const BateriaPage = () => {
         <Header title={"Bateria"} />
         <button
           id="btn-volver-atras"
-          className="btn btn-primary"
+          className="btn btn-action btn-active"
           onClick={volverAlSensor}
         >
           <i className="fa fa-undo m-2" aria-hidden="true"></i>

@@ -12,7 +12,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     id: int
     username: str
-    roles: list[str]  # Lista de roles asociados
+    roles: list[str]
 
 
 class OAuth2PasswordRequestForm(BaseModel):

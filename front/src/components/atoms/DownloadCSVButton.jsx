@@ -59,7 +59,7 @@ const DownloadCSVButton = ({ data, disabled }) => {
 
   return (
     <button
-      className="btn btn-primary"
+      className="btn btn-action btn-active"
       onClick={handleDownload}
       disabled={
         disabled || !data || !data.paquetes || data.paquetes.length === 0

@@ -13,9 +13,6 @@ from back.usuarios.models import Usuario
 
 from passlib.context import CryptContext
 
-# contexto de encriptación
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 def listar_usuarios(db: Session) -> List[Usuario]:
     return Usuario.get_all(db)

@@ -33,7 +33,6 @@ const useCustomHook = (param1, param2) => {
         setLoading(false);
       }
     };
-
     fetchData();
     //Dependencias que activan el useEffect
   }, [param1, param2]);
@@ -46,5 +45,4 @@ const useCustomHook = (param1, param2) => {
   // como lo utilizaría el componente:
   //const { data, loading, error } = useTemplate('param1', 'param2');
 };
-
 export default useCustomHook;
