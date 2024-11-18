@@ -1,17 +1,13 @@
-import React, { useState, useEffect, ChangeEvent, MouseEvent } from 'react';
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import React, { useState, useEffect, ChangeEvent, MouseEvent } from "react";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { useNodos } from "../hooks/useNodos";
 
-type Nodo = {
-  id: number;
-  identificador: string;
-  porcentajeBateria: number;
-  latitud: number | null;
-  longitud: number | null;
-  descripcion: string;
-};
-
-const columnHelper = createColumnHelper<Nodo>();
+const columnHelper = createColumnHelper();
 
 const TableCell = ({ getValue, row, column, table }) => {
   const initialValue = getValue();
@@ -27,7 +23,7 @@ const TableCell = ({ getValue, row, column, table }) => {
     tableMeta?.updateData(row.index, column.id, value);
   };
 
-  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const onSelectChange = (e) => {
     setValue(e.target.value);
     tableMeta?.updateData(row.index, column.id, e.target.value);
   };
@@ -35,8 +31,10 @@ const TableCell = ({ getValue, row, column, table }) => {
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select onChange={onSelectChange} value={value}>
-        {columnMeta?.options?.map((option: { label: string; value: string }) => (
-          <option key={option.value} value={option.value}>{option.label}</option>
+        {columnMeta?.options?.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
         ))}
       </select>
     ) : (
@@ -54,9 +52,9 @@ const TableCell = ({ getValue, row, column, table }) => {
 
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
-  const setEditedRows = (e: MouseEvent<HTMLButtonElement>) => {
+  const setEditedRows = (e) => {
     const elName = e.currentTarget.name;
-    meta?.setEditedRows((old: {}) => ({
+    meta?.setEditedRows((old) => ({
       ...old,
       [row.id]: !old[row.id],
     }));
@@ -69,11 +67,17 @@ const EditCell = ({ row, table }) => {
     <div className="edit-cell-container">
       {meta?.editedRows[row.id] ? (
         <div className="edit-cell">
-          <button onClick={setEditedRows} name="cancel">X</button>
-          <button onClick={setEditedRows} name="done">✔</button>
+          <button onClick={setEditedRows} name="cancel">
+            X
+          </button>
+          <button onClick={setEditedRows} name="done">
+            ✔
+          </button>
         </div>
       ) : (
-        <button onClick={setEditedRows} name="edit">✐</button>
+        <button onClick={setEditedRows} name="edit">
+          ✐
+        </button>
       )}
     </div>
   );
@@ -113,9 +117,9 @@ const columns = [
 
 const NodoTable = () => {
   const { nodos, loading, error, updateNodo, deleteNodo } = useNodos();
-  const [data, setData] = useState<Nodo[]>(() => [...nodos]);
-  const [originalData, setOriginalData] = useState<Nodo[]>(() => [...nodos]);
-  const [editedRows, setEditedRows] = useState<{ [key: string]: boolean }>({});
+  const [data, setData] = useState(() => [...nodos]);
+  const [originalData, setOriginalData] = useState(() => [...nodos]);
+  const [editedRows, setEditedRows] = useState({});
 
   useEffect(() => {
     setData([...nodos]);
@@ -129,7 +133,7 @@ const NodoTable = () => {
     meta: {
       editedRows,
       setEditedRows,
-      revertData: (rowIndex: number, revert: boolean) => {
+      revertData: (rowIndex, revert) => {
         if (revert) {
           setData((old) =>
             old.map((row, index) =>
@@ -142,7 +146,7 @@ const NodoTable = () => {
           );
         }
       },
-      updateData: (rowIndex: number, columnId: string, value: string) => {
+      updateData: (rowIndex, columnId, value) => {
         setData((old) =>
           old.map((row, index) => {
             if (index === rowIndex) {
@@ -162,22 +166,25 @@ const NodoTable = () => {
       {error && <p>Error: {error.message}</p>}
       <table>
         <thead>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
+              {headerGroup.headers.map((header) => (
                 <th key={header.id}>
                   {header.isPlaceholder
                     ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                 </th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => (
+          {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
