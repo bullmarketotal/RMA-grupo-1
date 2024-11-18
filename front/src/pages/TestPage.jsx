@@ -1,137 +1,193 @@
-import React, { useState } from "react";
-import { useTableInstance } from "@tanstack/react-table";
-import { useNodos } from "../hooks/useNodos"; // Ajusta la ruta según sea necesario
+import React, { useState, useEffect, ChangeEvent, MouseEvent } from 'react';
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useNodos } from "../hooks/useNodos";
 
-const NodoTable = () => {
-  const { nodos, loading, error, updateNodo, deleteNodo } = useNodos();
-  const [editingNodo, setEditingNodo] = useState(null);
+type Nodo = {
+  id: number;
+  identificador: string;
+  porcentajeBateria: number;
+  latitud: number | null;
+  longitud: number | null;
+  descripcion: string;
+};
 
-  const columns = React.useMemo(
-    () => [
-      { accessor: "identificador", Header: "Identificador" },
-      { accessor: "porcentajeBateria", Header: "Porcentaje Batería" },
-      { accessor: "latitud", Header: "Latitud" },
-      { accessor: "longitud", Header: "Longitud" },
-      { accessor: "descripcion", Header: "Descripción" },
-      {
-        id: "actions",
-        Header: "Actions",
-        Cell: ({ row }) => (
-          <div>
-            <button onClick={() => setEditingNodo(row.original)}>Edit</button>
-            <button onClick={() => deleteNodo(row.original.id)}>Delete</button>
-          </div>
-        ),
-      },
-    ],
-    []
-  );
+const columnHelper = createColumnHelper<Nodo>();
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTableInstance({ columns, data: nodos });
+const TableCell = ({ getValue, row, column, table }) => {
+  const initialValue = getValue();
+  const columnMeta = column.columnDef.meta;
+  const tableMeta = table.options.meta;
+  const [value, setValue] = useState(initialValue);
 
-  const handleUpdate = (updatedNodo) => {
-    updateNodo(updatedNodo.id, updatedNodo);
-    setEditingNodo(null);
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  const onBlur = () => {
+    tableMeta?.updateData(row.index, column.id, value);
+  };
+
+  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setValue(e.target.value);
+    tableMeta?.updateData(row.index, column.id, e.target.value);
+  };
+
+  if (tableMeta?.editedRows[row.id]) {
+    return columnMeta?.type === "select" ? (
+      <select onChange={onSelectChange} value={value}>
+        {columnMeta?.options?.map((option: { label: string; value: string }) => (
+          <option key={option.value} value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    ) : (
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={onBlur}
+        type={columnMeta?.type || "text"}
+      />
+    );
+  }
+
+  return <span>{value}</span>;
+};
+
+const EditCell = ({ row, table }) => {
+  const meta = table.options.meta;
+  const setEditedRows = (e: MouseEvent<HTMLButtonElement>) => {
+    const elName = e.currentTarget.name;
+    meta?.setEditedRows((old: {}) => ({
+      ...old,
+      [row.id]: !old[row.id],
+    }));
+    if (elName !== "edit") {
+      meta?.revertData(row.index, elName === "cancel");
+    }
   };
 
   return (
-    <div>
-      <h1>Nodos Table</h1>
-      {loading && <p>Loading...</p>}
+    <div className="edit-cell-container">
+      {meta?.editedRows[row.id] ? (
+        <div className="edit-cell">
+          <button onClick={setEditedRows} name="cancel">X</button>
+          <button onClick={setEditedRows} name="done">✔</button>
+        </div>
+      ) : (
+        <button onClick={setEditedRows} name="edit">✐</button>
+      )}
+    </div>
+  );
+};
+
+const columns = [
+  columnHelper.accessor("identificador", {
+    header: "Identificador",
+    cell: TableCell,
+    meta: { type: "text" },
+  }),
+  columnHelper.accessor("porcentajeBateria", {
+    header: "Porcentaje Batería",
+    cell: TableCell,
+    meta: { type: "number" },
+  }),
+  columnHelper.accessor("latitud", {
+    header: "Latitud",
+    cell: TableCell,
+    meta: { type: "number" },
+  }),
+  columnHelper.accessor("longitud", {
+    header: "Longitud",
+    cell: TableCell,
+    meta: { type: "number" },
+  }),
+  columnHelper.accessor("descripcion", {
+    header: "Descripción",
+    cell: TableCell,
+    meta: { type: "text" },
+  }),
+  columnHelper.display({
+    id: "edit",
+    cell: EditCell,
+  }),
+];
+
+const NodoTable = () => {
+  const { nodos, loading, error, updateNodo, deleteNodo } = useNodos();
+  const [data, setData] = useState<Nodo[]>(() => [...nodos]);
+  const [originalData, setOriginalData] = useState<Nodo[]>(() => [...nodos]);
+  const [editedRows, setEditedRows] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    setData([...nodos]);
+    setOriginalData([...nodos]);
+  }, [nodos]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    meta: {
+      editedRows,
+      setEditedRows,
+      revertData: (rowIndex: number, revert: boolean) => {
+        if (revert) {
+          setData((old) =>
+            old.map((row, index) =>
+              index === rowIndex ? originalData[rowIndex] : row
+            )
+          );
+        } else {
+          setOriginalData((old) =>
+            old.map((row, index) => (index === rowIndex ? data[rowIndex] : row))
+          );
+        }
+      },
+      updateData: (rowIndex: number, columnId: string, value: string) => {
+        setData((old) =>
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return { ...old[rowIndex], [columnId]: value };
+            }
+            return row;
+          })
+        );
+      },
+    },
+  });
+
+  return (
+    <>
+      <h1>Gestión de Nodos</h1>
+      {loading && <p>Cargando...</p>}
       {error && <p>Error: {error.message}</p>}
-      <table {...getTableProps()}>
+      <table>
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => (
+                <th key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
               ))}
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                ))}
-              </tr>
-            );
-          })}
+        <tbody>
+          {table.getRowModel().rows.map(row => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map(cell => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
-      {editingNodo && (
-        <div>
-          <h2>Edit Nodo</h2>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleUpdate(editingNodo);
-            }}
-          >
-            <input
-              type="text"
-              value={editingNodo.identificador}
-              onChange={(e) =>
-                setEditingNodo({
-                  ...editingNodo,
-                  identificador: e.target.value,
-                })
-              }
-              placeholder="Identificador"
-            />
-            <input
-              type="number"
-              value={editingNodo.porcentajeBateria}
-              onChange={(e) =>
-                setEditingNodo({
-                  ...editingNodo,
-                  porcentajeBateria: Number(e.target.value),
-                })
-              }
-              placeholder="Porcentaje Batería"
-            />
-            <input
-              type="number"
-              value={editingNodo.latitud ?? ""}
-              onChange={(e) =>
-                setEditingNodo({
-                  ...editingNodo,
-                  latitud:
-                    e.target.value !== "" ? Number(e.target.value) : null,
-                })
-              }
-              placeholder="Latitud"
-            />
-            <input
-              type="number"
-              value={editingNodo.longitud ?? ""}
-              onChange={(e) =>
-                setEditingNodo({
-                  ...editingNodo,
-                  longitud:
-                    e.target.value !== "" ? Number(e.target.value) : null,
-                })
-              }
-              placeholder="Longitud"
-            />
-            <input
-              type="text"
-              value={editingNodo.descripcion}
-              onChange={(e) =>
-                setEditingNodo({ ...editingNodo, descripcion: e.target.value })
-              }
-              placeholder="Descripción"
-            />
-            <button type="submit">Save</button>
-            <button onClick={() => setEditingNodo(null)}>Cancel</button>
-          </form>
-        </div>
-      )}
-    </div>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </>
   );
 };
 
