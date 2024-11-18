@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useNodos } from "../hooks/useNodos";
+import { useNodos } from "../hooks/useNodos"; // Ajusta la ruta según sea necesario
 
 const columnHelper = createColumnHelper();
 
@@ -113,13 +113,28 @@ const columns = [
     id: "edit",
     cell: EditCell,
   }),
+  columnHelper.display({
+    id: "delete",
+    cell: ({ row, table }) => (
+      <button onClick={() => table.options.meta.deleteRow(row.original.id)}>
+        Eliminar
+      </button>
+    ),
+  }),
 ];
 
 const NodoTable = () => {
-  const { nodos, loading, error, updateNodo, deleteNodo } = useNodos();
+  const { nodos, loading, error, addNodo, updateNodo, deleteNodo } = useNodos();
   const [data, setData] = useState(() => [...nodos]);
   const [originalData, setOriginalData] = useState(() => [...nodos]);
   const [editedRows, setEditedRows] = useState({});
+  const [newNodo, setNewNodo] = useState({
+    identificador: "",
+    porcentajeBateria: 0,
+    latitud: null,
+    longitud: null,
+    descripcion: "",
+  });
 
   useEffect(() => {
     setData([...nodos]);
@@ -133,6 +148,10 @@ const NodoTable = () => {
     meta: {
       editedRows,
       setEditedRows,
+      deleteRow: async (nodoId) => {
+        await deleteNodo(nodoId);
+        setData((old) => old.filter((nodo) => nodo.id !== nodoId));
+      },
       revertData: (rowIndex, revert) => {
         if (revert) {
           setData((old) =>
@@ -155,6 +174,18 @@ const NodoTable = () => {
             return row;
           })
         );
+      },
+      addRow: async () => {
+        if (newNodo.identificador && newNodo.porcentajeBateria) {
+          await addNodo(newNodo);
+          setNewNodo({
+            identificador: "",
+            porcentajeBateria: 0,
+            latitud: null,
+            longitud: null,
+            descripcion: "",
+          });
+        }
       },
     },
   });
@@ -191,6 +222,70 @@ const NodoTable = () => {
               ))}
             </tr>
           ))}
+          <tr>
+            <td>
+              <input
+                value={newNodo.identificador}
+                onChange={(e) =>
+                  setNewNodo({ ...newNodo, identificador: e.target.value })
+                }
+                placeholder="Identificador"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                value={newNodo.porcentajeBateria}
+                onChange={(e) =>
+                  setNewNodo({
+                    ...newNodo,
+                    porcentajeBateria: Number(e.target.value),
+                  })
+                }
+                placeholder="Porcentaje Batería"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                value={newNodo.latitud ?? ""}
+                onChange={(e) =>
+                  setNewNodo({
+                    ...newNodo,
+                    latitud:
+                      e.target.value !== "" ? Number(e.target.value) : null,
+                  })
+                }
+                placeholder="Latitud"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                value={newNodo.longitud ?? ""}
+                onChange={(e) =>
+                  setNewNodo({
+                    ...newNodo,
+                    longitud:
+                      e.target.value !== "" ? Number(e.target.value) : null,
+                  })
+                }
+                placeholder="Longitud"
+              />
+            </td>
+            <td>
+              <input
+                value={newNodo.descripcion}
+                onChange={(e) =>
+                  setNewNodo({ ...newNodo, descripcion: e.target.value })
+                }
+                placeholder="Descripción"
+              />
+            </td>
+            <td>
+              <button onClick={table.options.meta.addRow}>Añadir</button>
+            </td>
+          </tr>
         </tbody>
       </table>
       <pre>{JSON.stringify(data, null, 2)}</pre>
