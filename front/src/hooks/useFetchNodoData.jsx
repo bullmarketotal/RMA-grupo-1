@@ -26,34 +26,38 @@ const useFetchNodoData = ({
   filterEndDate,
   dataMin,
   dataMax,
+  type,
 }) => {
   const axios = useAxios();
 
-  const query = useMemo(
-    () =>
-      new URLSearchParams({
-        offset,
-        limit,
-        nodo_id: nodo_id || "",
-        order_by: orderBy || "",
-        order: order || "",
-        start_date: filterStartDate || "",
-        end_date: filterEndDate || "",
-        data_min: dataMin || "",
-        data_max: dataMax || "",
-      }).toString(),
-    [
-      offset,
-      limit,
-      nodo_id,
-      orderBy,
-      order,
-      filterStartDate,
-      filterEndDate,
-      dataMin,
-      dataMax,
-    ]
-  );
+  const query = useMemo(() => {
+    const params = new URLSearchParams();
+  
+    if (offset !== undefined) params.append("offset", offset);
+    if (limit !== undefined) params.append("limit", limit);
+    if (nodo_id) params.append("nodo_id", nodo_id);
+    if (orderBy) params.append("order_by", orderBy);
+    if (order) params.append("order", order);
+    if (filterStartDate) params.append("start_date", filterStartDate);
+    if (filterEndDate) params.append("end_date", filterEndDate);
+    if (dataMin) params.append("data_min", dataMin);
+    if (dataMax) params.append("data_max", dataMax);
+    if (type) params.append("type", type);
+  
+    return params.toString();
+  }, [
+    offset,
+    limit,
+    nodo_id,
+    orderBy,
+    order,
+    filterStartDate,
+    filterEndDate,
+    dataMin,
+    dataMax,
+    type
+  ]);
+  
 
   const { data, error, isValidating, mutate } = useSWR(
     `/paquetes?${query}`,
@@ -63,11 +67,14 @@ const useFetchNodoData = ({
       errorRetryCount: 3,
       errorRetryInterval: 10000,
       dedupingInterval: 60000,
-    }
+    },
+    
+    
   );
 
   const isForbidden = error?.status === 403;
-
+  console.log("ENTRE://paquetes?", query);
+ 
   return {
     data: data ?? [],
     loading: isValidating,

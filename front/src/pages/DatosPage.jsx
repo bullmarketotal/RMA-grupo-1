@@ -9,7 +9,7 @@ const DatosPage = () => {
   const [id, setId] = useState(1);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
+  const { data, loading, error } = useFetchNodoData(id, startDate, endDate);
   const {
     data: sensores,
     loading: loadingSensores,
