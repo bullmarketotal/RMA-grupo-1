@@ -19,7 +19,17 @@ const NodoPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isExporting, setIsExporting] = useState(false);
-  const { data, loading, error } = useFetchNodoData(id, startDate, endDate);
+  const { data, loading, error } = useFetchNodoData({
+    offset: 1,
+    limit: 10, 
+    nodo_id: id, 
+    filterStartDate: startDate || "",
+    filterEndDate: endDate || "",
+    orden: "asc",
+    type: 16,
+  });
+  
+  console.log("DATAAA:",data);
 
   const chartRef = useRef(null);
   const bateriaChartRef = useRef(null);
