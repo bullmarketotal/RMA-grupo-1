@@ -8,7 +8,6 @@ class PaqueteBase(BaseModel):
     data: float
     date: datetime
     type_id: int
-
     model_config = {"from_attributes": True}
 
 
@@ -18,6 +17,7 @@ class Paquete(PaqueteBase):
 
 class PaqueteCreate(PaqueteBase):
     pass
+
 
 class PaginationInfo(BaseModel):
     total_items: int
