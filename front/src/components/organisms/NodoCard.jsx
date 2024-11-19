@@ -1,12 +1,13 @@
-import React, { useMemo } from "react";
+import React, { useMemo} from "react";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import "../../assets/font-awesome/css/font-awesome.min.css";
 import { LoadingSpinner } from "../atoms";
 import { GraphNivel, GraphTemp } from "../molecules";
 import { useFetchNodoData } from "../../hooks";
+import { useEffect, useState } from "react";
 
-const NodoCard = ({ sensor }) => {
+const NodoCard = ({ nodo}) => {
   const [dataTemp, setDataTemp] = useState([]);
   const [dataNivel, setDataNivel] = useState([]);
   const [dataTension, setDataTension] = useState([]);
@@ -19,7 +20,7 @@ const NodoCard = ({ sensor }) => {
 
   const fetchData = async (type) => {
     const response = await fetch(
-      `${API_URL}/paquetes?nodo_id=${sensor.id}&type=${type}&limit=200` //aca hay que agregar la parte de datesOf24hoursBefore
+      `${API_URL}/paquetes?nodo_id=${nodo.id}&type=${type}&limit=200` //aca hay que agregar la parte de datesOf24hoursBefore
     );
     return response.json();
   };
@@ -87,7 +88,7 @@ const NodoCard = ({ sensor }) => {
 
           <div className="">
             <a
-              href={"/sensor/" + nodo.id}
+              href={"/nodo/" + nodo.id}
               className="roboto-medium mt-16 bg-gray-300 hover:bg-gray-400 dark:hover:bg-slate-900 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-all duration-100 dark:bg-slate-800 dark:text-slate-200"
             >
               VER DATOS
@@ -97,13 +98,13 @@ const NodoCard = ({ sensor }) => {
         {!loading ? (
           <div className="sm:flex sm:flex-col md:flex-row justify-end w-full hidden">
             <div className="md:h-full md:w-1/2 w-full">
-              <GraphTemp data={dataTemp.items} syncId={sensor.id}/>
+              <GraphTemp data={dataTemp.items} syncId={nodo.id}/>
             </div>
             <div className="md:h-full md:w-1/2 w-full">
               <GraphNivel
                 data={dataNivel.items}
                 noBrush={true}
-                syncId={sensor.id}
+                syncId={nodo.id}
               ></GraphNivel>
             </div>
           </div>
@@ -113,7 +114,7 @@ const NodoCard = ({ sensor }) => {
           </div>
         )}
       </div>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </div>
   );
 };
