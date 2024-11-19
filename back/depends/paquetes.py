@@ -22,20 +22,20 @@ def procesar_mensaje(mensaje) -> Optional[PaqueteBase]:
     mensaje_json = json.loads(mensaje)
     try:
         mensaje_paquete = {
-            "sensor_id": mensaje_json["id"],
-            "temperatura": float(mensaje_json["temperatura"]),
-            "nivel_hidrometrico": float(mensaje_json["nivel_hidrometrico"]),
-            "date": datetime.strptime(mensaje_json["time"], "%Y-%m-%d %H:%M:%S.%f"),
+            "nodo_id": mensaje_json["id"],
+            "type_id": int(mensaje_json["type"]),
+            "data": float(mensaje_json["data"]),
+            "date": datetime.fromtimestamp(mensaje_json["time"]),
         }
         paquete = PaqueteBase(**mensaje_paquete)
+        return paquete
     except Exception as e:
         print(f"Error de validación: {e}")
-    return paquete
 
 
 def mi_callback(mensaje: str) -> None:
     print(f"he recibido: {mensaje}")
     paquete = procesar_mensaje(mensaje)
 
-    if paquete is not None:  #  and es_valido(paquete)
+    if paquete is not None and es_valido(paquete):
         guardar_paquete_en_db(paquete)

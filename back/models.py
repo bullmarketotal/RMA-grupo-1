@@ -45,6 +45,7 @@ class ModeloBase(Base):
 
     @classmethod
     def create(cls, db: Session, schema: Schema):
+        
         instance = cls(**schema.model_dump())
         return instance.save(db)
 
