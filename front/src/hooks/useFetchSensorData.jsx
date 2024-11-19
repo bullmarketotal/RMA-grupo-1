@@ -1,53 +1,57 @@
-import useSWR from "swr";
-import { api } from "../api";
+import { useEffect, useState } from "react";
+import { convertFieldToTimestamp } from "../components/utils/date";
+import api from "../api/axios";
 
-const fetcher = async (url) => {
-  try {
-    const response = await api.get(url);
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.status === 403) {
-      const err = new Error("Forbidden");
-      err.status = 403;
-      throw err;
-    }
-    throw error;
-  }
-};
-
-const useFetchSensorData = ({
-  offset,
-  limit,
-  nodo_id,
-  orderBy,
-  order,
-  filterStartDate,
-  filterEndDate,
-  dataMin,
-  dataMax,
-  type,
-}) => {
-  const query = new URLSearchParams({
-    offset,
-    limit,
-    nodo_id: nodo_id || "",
-    order_by: orderBy || "",
-    order: order || "",
-    start_date: filterStartDate || "",
-    end_date: filterEndDate || "",
-    data_min: dataMin || "",
-    data_max: dataMax || "",
-    type: type || "",
-  }).toString();
-
-  const { data, error, isValidating } = useSWR(`/paquetes?${query}`, fetcher, {
-    revalidateOnFocus: true,
-    refreshInterval: 60000,
+const useFetchSensorData = (id, startDate, endDate) => {
+  const [data, setData] = useState({
+    sensor: null,
+    paquetes: [],
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const isForbidden = error?.status === 403;
+  useEffect(() => {
+    const fetchSensorData = async () => {
+      setLoading(true);
+      try {
+        const sensorUrl = `/nodo/${id}`;
+        const sensorRes = await api.get(sensorUrl);
 
-  return { data: data ?? [], isValidating, error, isForbidden };
+        const sensorResult = sensorRes.data;
+
+        let paquetesUrl = `/paquetes?nodo_id=${sensorResult.id}`;
+        if (startDate)
+          paquetesUrl += `&start_date=${encodeURIComponent(startDate)}`;
+        if (endDate) paquetesUrl += `&end_date=${encodeURIComponent(endDate)}`;
+
+        const paquetesRes = await api.get(paquetesUrl);
+        const paquetesResult = paquetesRes.data;
+
+        const formattedPaquetes = convertFieldToTimestamp(
+          paquetesResult,
+          "date"
+        );
+
+        setData({
+          sensor: sensorResult,
+          paquetes: formattedPaquetes,
+        });
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError("Error en la carga de datos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSensorData();
+  }, [id, startDate, endDate]); // Cada vez que cambien los valores de id, startDate o endDate se ejecuta el useEffect.
+
+  return {
+    data,
+    loading,
+    error,
+  };
 };
 
 export default useFetchSensorData;

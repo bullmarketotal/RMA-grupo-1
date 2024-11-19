@@ -37,5 +37,5 @@ def mi_callback(mensaje: str) -> None:
     print(f"he recibido: {mensaje}")
     paquete = procesar_mensaje(mensaje)
 
-    if paquete is not None:  #  and es_valido(paquete)
+    if paquete is not None and es_valido(paquete):
         guardar_paquete_en_db(paquete)

@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import useFetchSensores from "../hooks/useFetchSensores";
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import NodoCard from "../components/organisms/NodoCard";
 import ErrorSimple from "../components/molecules/ErrorSimple";
+import { useNodos } from "../hooks/useNodos";
 
 const NodoList = () => {
   const { data, loading, error } = useFetchSensores();
@@ -16,9 +16,9 @@ const NodoList = () => {
         {loading ? (
           <LoadingSpinner />
         ) : (
-          data.map((sensor) => (
-            <div className="mb-3" key={sensor.id}>
-              <NodoCard sensor={sensor} />
+          nodos.map((nodo) => (
+            <div className="mb-3" key={nodo.id}>
+              <NodoCard nodo={nodo} />
             </div>
           ))
         )}

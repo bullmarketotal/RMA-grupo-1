@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useFetchSensorData, useFetchSensores } from "../hooks";
+import { useFetchNodoData, useNodos } from "../hooks";
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import { FiltroDatos } from "../components/molecules";
 import { TableView } from "../components/organisms";
@@ -16,7 +16,7 @@ const DatosPage = () => {
     error: errorSensores,
   } = useFetchSensores();
 
-  if (error) return <p>{error}</p>;
+  if (error) return null;
   const handleFilterChange = (newStartDate, newEndDate) => {
     setStartDate(newStartDate);
     setEndDate(newEndDate);
