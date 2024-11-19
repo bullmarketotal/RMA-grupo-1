@@ -6,14 +6,8 @@ import { useNodos } from "../hooks/useNodos";
 
 const NodoList = () => {
   const { nodos, loading, error } = useNodos();
-
-  if (error)
-    return (
-      <ErrorSimple
-        title={"No se pudieron obtener los nodos"}
-        description={"Error interno del servidor."}
-      />
-    );
+  
+  if (error) return <ErrorSimple title={"No se pudieron obtener los nodos"} description={"Error interno del servidor."}/>
 
   return (
     <Container>
