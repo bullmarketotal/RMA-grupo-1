@@ -17,7 +17,7 @@ const SensorForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
-  const { addNodo } = useNodos(); // Obtén la función addNodo de tu hook
+  const { addNodo } = useNodos({ enableAdd: true });
 
   const handleChange = (e) => {
     setFormData({
@@ -30,27 +30,32 @@ const SensorForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    if (typeof addNodo !== "function") {
+        console.error("addNodo no está definido.");
+        setIsSubmitting(false);
+        return;
+    }
     const dataToSend = {
-      ...formData,
-      latitud: isNaN(parseFloat(formData.latitud))
-        ? null
-        : parseFloat(formData.latitud),
-      longitud: isNaN(parseFloat(formData.longitud))
-        ? null
-        : parseFloat(formData.longitud),
+        ...formData,
+        latitud: isNaN(parseFloat(formData.latitud))
+            ? null
+            : parseFloat(formData.latitud),
+        longitud: isNaN(parseFloat(formData.longitud))
+            ? null
+            : parseFloat(formData.longitud),
     };
 
     try {
-      await addNodo(dataToSend); // Usa la función addNodo del hook
-      showNotification("¡Nodo creado exitosamente!", "success");
-      // navigate("/sensores"); // O navega a la ruta correspondiente
+        await addNodo(dataToSend);
+        showNotification("¡Nodo creado exitosamente!", "success");
+        // navigate("/sensores"); 
     } catch (error) {
-      showNotification("Error al crear el sensor.", "error");
-      console.error("Error al crear el sensor:", error);
+        showNotification("Error al crear el sensor.", "error");
+        console.error("Error al crear el sensor:", error);
     } finally {
-      setIsSubmitting(false);
+        setIsSubmitting(false);
     }
-  };
+};
 
   return (
     <Container>
