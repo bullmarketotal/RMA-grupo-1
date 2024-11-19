@@ -13,14 +13,15 @@ const useLoadNodos = (map, data, API_URL) => {
         .toISOString()
         .substring(0, 10);
 
-      const FETCH_URL =
-        API_URL +
-        `/paquetes?sensor_id=${nodo.id}&start_date=${TODAY}&end_date=${TODAY}`;
-
+        const FETCH_URL =
+        API_URL + `/paquetes?nodo_id=${nodo.id}`;
+      
+      console.log(nodo)
       fetch(FETCH_URL)
         .then((res) => res.json())
         .then((dataNodo) => {
           let customIcon;
+          console.log(dataNodo)
 
           customIcon = L.divIcon({
             className: "",
@@ -35,7 +36,7 @@ const useLoadNodos = (map, data, API_URL) => {
           }).addTo(map);
 
           nodoMarker.on("click", () => {
-            window.open(`/sensor/${nodo.id}`, "_blank");
+            window.open(`/nodo/${nodo.id}`, "_blank");
           });
         });
     });
