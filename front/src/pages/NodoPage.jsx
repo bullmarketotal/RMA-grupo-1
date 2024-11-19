@@ -20,6 +20,7 @@ const NodoPage = () => {
   const [endDate, setEndDate] = useState("");
   const [isExporting, setIsExporting] = useState(false);
   const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
+  console.log("DATA::",data);
 
   const chartRef = useRef(null);
   const bateriaChartRef = useRef(null);

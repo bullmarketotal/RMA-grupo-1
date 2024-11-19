@@ -11,7 +11,7 @@ function useFetchSensores() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${api}/sensores`);
+        const response = await fetch(`${api}/nodos`);
         const result = await response.json();
         setData(result);
       } catch (error) {

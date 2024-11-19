@@ -7,7 +7,9 @@ import { BsFillLightningChargeFill } from "react-icons/bs";
 
 
 const NodoCard = ({ sensor }) => {
-  const [data, setData] = useState([]);
+  const [dataTemp, setDataTemp] = useState([]);
+  const [dataNivel, setDataNivel] = useState([]);
+  const [dataTension, setDataTension] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -15,19 +17,31 @@ const NodoCard = ({ sensor }) => {
 
   const stringOfDateOf24hoursBefore = dateOf24hoursBefore.toISOString();
 
+  const fetchData = async (type) => {
+    const response = await fetch(
+      `${API_URL}/paquetes?nodo_id=${sensor.id}&type=${type}&limit=200` //aca hay que agregar la parte de datesOf24hoursBefore
+    );
+    return response.json();
+  };
+
   useEffect(() => {
-    fetch(
-      `${API_URL}/paquetes?start_date=${stringOfDateOf24hoursBefore}&end_date=${new Date().toISOString()}&sensor_id=${
-        sensor.id
-      }&limit=200`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res);
+    setLoading(true);
+    Promise.all([fetchData(1), fetchData(25), fetchData(16)]) // Temp, Nivel, Tensión
+      .then(([temp, nivel, tension]) => {
+        console.log("temp:",temp);
+        console.log("nivel:",nivel);
+        setDataTemp(temp);
+        setDataNivel(nivel);
+        setDataTension(tension);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
         setLoading(false);
       });
   }, []);
-
+   
+  
   return (
     <div className="roboto border-2 rounded-2xl p-3 dark:border-neutral-800 dark:text-neutral-50">
       <div className="flex">
@@ -50,16 +64,23 @@ const NodoCard = ({ sensor }) => {
               {/* Temperatura */}
               <span className="flex items-center">
                 <i className="fa fa-tint text-sky-500 mx-2" />
-                {data.length !== 0 ? data[data.length - 1].nivel_hidrometrico.toFixed(2) : '--'} m
+                {dataTemp && dataTemp.items && dataTemp.items.length > 0 && dataTemp.info.total_items !== 0 
+                ? dataTemp.items[dataTemp.info.total_items - 1].data.toFixed(2) 
+                : '--'} m
               </span>
               {/* Nivel Hidrometrico */}
               <span className="flex items-center">
                 <i className="fa fa-thermometer text-rose-500 mx-2" />
-                {data.length !== 0 ? data[data.length - 1].temperatura.toFixed(1) : '--'} ºC
+                {dataNivel && dataNivel.items && dataNivel.items.length > 0 && dataNivel.info.total_items !== 0 
+                ? dataNivel.items[dataNivel.info.total_items - 1].data.toFixed(2) 
+                : '--'} ºC
               </span>
+              
               <span className="flex items-center mx-2">
                 <BsFillLightningChargeFill/>
-                {2.2} V
+                {dataTension && dataTension.items && dataTension.items.length > 0 && dataTension.info.total_items !== 0 
+                ? dataTension.items[dataTension.info.total_items - 1].data.toFixed(2) 
+                : '--'} V
               </span>
             </div>
           )}
@@ -75,11 +96,11 @@ const NodoCard = ({ sensor }) => {
         {!loading ? (
           <div className="sm:flex sm:flex-col md:flex-row justify-end w-full hidden">
             <div className="md:h-full md:w-1/2 w-full">
-              <GraphTemp data={data} syncId={sensor.id}/>
+              <GraphTemp data={dataTemp.items} syncId={sensor.id}/>
             </div>
             <div className="md:h-full md:w-1/2 w-full">
               <GraphNivel
-                data={data}
+                data={dataNivel.items}
                 noBrush={true}
                 syncId={sensor.id}
               ></GraphNivel>

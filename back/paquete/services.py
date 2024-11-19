@@ -24,7 +24,7 @@ def listar_paquetes(
 ):
     query = db.query(Paquete)
     if type is not None:
-        query = query.filter(Paquete.type == type)
+        query = query.filter(Paquete.type_id == type)
     if nodo_id is not None:
         query = query.filter(Paquete.nodo_id == nodo_id)
     if start_date and end_date:

@@ -25,6 +25,7 @@ const useFetchSensorData = ({
   filterEndDate,
   dataMin,
   dataMax,
+  type,
 }) => {
   const query = new URLSearchParams({
     offset,
@@ -36,6 +37,7 @@ const useFetchSensorData = ({
     end_date: filterEndDate || "",
     data_min: dataMin || "",
     data_max: dataMax || "",
+    type: type || "",
   }).toString();
 
   const { data, error, isValidating } = useSWR(`/paquetes?${query}`, fetcher, {
