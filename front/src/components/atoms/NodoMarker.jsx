@@ -18,18 +18,18 @@ const NodoMarker = ({ nodo, dataNodo }) => {
       </div>
     );
 
-   const lastData = dataNodo.items[dataNodo.items.length - 1];
-   const stringUltimoDato = obtenerStringTiempoDesdeUltimoDato(dataNodo.items);
+   const lastData = dataNodo[dataNodo.length - 1];
+   const stringUltimoDato = obtenerStringTiempoDesdeUltimoDato(dataNodo);
 
   return (
-    <div className={`${BASE_CLASSES_FOR_MARKERS} bg-gradient-to-tr ${backgroundColorBasedInAlarm(lastData.data, config.Alerts)}`}>
+    <div className={`${BASE_CLASSES_FOR_MARKERS} bg-gradient-to-tr ${backgroundColorBasedInAlarm(lastData.nivel_hidrometrico, config.Alerts)}`}>
       <span className="text-xs text-nowrap text-ellipsis">
         {nodo.identificador}
       </span>
       <br />
       <i className="fa fa-tint mr-2" />{" "}
       <span className="roboto-bold text-base">
-        {lastData.data.toFixed(1)}m
+        {lastData.nivel_hidrometrico.toFixed(1)}m
       </span>
       <br />
       <span className="text-[0.6rem] bold ">{stringUltimoDato}</span>
