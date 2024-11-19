@@ -65,15 +65,15 @@ const NodoCard = ({ nodo}) => {
             <div className="flex items-center normal-text text-xl font-medium my-4 -ml-2">
               <span className="flex items-center">
                 <i className="fa fa-tint text-sky-500 mx-2" />
-                {dataTemp && dataTemp.items && dataTemp.items.length > 0 && dataTemp.info.total_items !== 0 
-                ? dataTemp.items[dataTemp.info.total_items - 1].data.toFixed(2) 
+                {dataNivel && dataNivel.items && dataNivel.items.length > 0 && dataNivel.info.total_items !== 0 
+                ? dataNivel.items[dataNivel.info.total_items - 1].data.toFixed(2) 
                 : '--'} m
               </span>
 
               <span className="flex items-center">
                 <i className="fa fa-thermometer text-rose-500 mx-2" />
-                {dataNivel && dataNivel.items && dataNivel.items.length > 0 && dataNivel.info.total_items !== 0 
-                ? dataNivel.items[dataNivel.info.total_items - 1].data.toFixed(2) 
+                {dataTemp && dataTemp.items && dataTemp.items.length > 0 && dataTemp.info.total_items !== 0 
+                ? dataTemp.items[dataTemp.info.total_items - 1].data.toFixed(2) 
                 : '--'} ºC
               </span>
               
