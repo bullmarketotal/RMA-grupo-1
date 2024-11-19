@@ -37,9 +37,8 @@ def modificar_nodo(db: Session, nodo_id: int, nodo_actualizado: NodoUpdate) -> N
     return nodo.update(db, nodo_actualizado)
 
 
-def archivar_y_eliminar_nodo(db: Session, nodo_id: int):
+def archivar_y_eliminar_nodo(db: Session, nodo_id: int) -> dict:
     paquetes = db.query(Paquete).filter(Paquete.nodo_id == nodo_id).all()
-
     for paquete in paquetes:
         paquete_archivo = PaqueteArchivo(
             id=paquete.id,
@@ -50,10 +49,8 @@ def archivar_y_eliminar_nodo(db: Session, nodo_id: int):
         )
         db.add(paquete_archivo)
         db.delete(paquete)
-    # Eliminar el nodo
-
     nodo = db.query(Nodo).filter(Nodo.id == nodo_id).first()
     if nodo:
         db.delete(nodo)
-
     db.commit()
+    return {"detail": "Nodo eliminado correctamente"}

@@ -34,7 +34,7 @@ class PaqueteRechazado(ModeloBase):
     nodo_id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     date: Mapped[datetime] = mapped_column(DateTime, primary_key=True, index=True)
     data: Mapped[float] = mapped_column(Integer)
-    type: Mapped[int] = mapped_column(Integer, index=True)
+    type_id: Mapped[int] = mapped_column(Integer, index=True)
     motivo: Mapped[str] = mapped_column(String, index=True)
 
 

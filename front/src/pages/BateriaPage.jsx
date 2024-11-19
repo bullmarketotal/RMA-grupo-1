@@ -5,28 +5,28 @@ import BateriaHeader from "../components/molecules/BateriaHeader";
 import BateriaInfoPanel from "../components/molecules/BateriaInfoPanel";
 import BateriaDataVisualizer from "../components/organisms/BateriaDataVisualizer";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
-import useFetchSensorData from "../hooks/useFetchSensorData";
+import { useFetchNodoData } from "../hooks";
 import { Container, Header } from "../components/atoms";
 import { useNavigate } from "react-router-dom";
 
 const BateriaPage = () => {
-  const id = 1;
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
-  const navigate = useNavigate();
+  // const id = 1;
+  // const [startDate, setStartDate] = useState("");
+  // const [endDate, setEndDate] = useState("");
+  // const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
+  // const navigate = useNavigate();
 
-  const handleFilterChange = (newStartDate, newEndDate) => {
-    setStartDate(newStartDate);
-    setEndDate(newEndDate);
-  };
+  // const handleFilterChange = (newStartDate, newEndDate) => {
+  //   setStartDate(newStartDate);
+  //   setEndDate(newEndDate);
+  // };
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <p>{error}</p>;
+  // if (loading) return <LoadingSpinner />;
+  // if (error) return <p>{error}</p>;
 
-  function volverAlSensor() {
-    navigate("/sensor/1");
-  }
+  // function volverAlSensor() {
+  //   navigate("/sensor/1");
+  // }
 
   return (
     <Container>

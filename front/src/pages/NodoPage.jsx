@@ -7,7 +7,7 @@ import {
   NodoRecentDataCard,
 } from "../components/molecules";
 import { NodoDataVisualizer } from "../components/organisms";
-import { useFetchSensorData } from "../hooks";
+import { useFetchNodoData } from "../hooks";
 import PDFNodo from "../components/molecules/PDFNodo";
 import BateriaDataVisualizer from "../components/organisms/BateriaDataVisualizer";
 
@@ -19,7 +19,7 @@ const NodoPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isExporting, setIsExporting] = useState(false);
-  const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
+  const { data, loading, error } = useFetchNodoData(id, startDate, endDate);
 
   const chartRef = useRef(null);
   const bateriaChartRef = useRef(null);

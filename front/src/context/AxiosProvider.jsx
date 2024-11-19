@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from "react";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 const AxiosContext = createContext();
 
@@ -8,6 +9,17 @@ export const AxiosProvider = ({ children }) => {
     baseURL: import.meta.env.VITE_API_URL,
     headers: {
       "Content-Type": "application/json",
+    },
+  });
+
+  axiosRetry(api, {
+    retries: 3,
+    retryCondition: (error) => {
+      return error.response?.status >= 500 || error.code === "ECONNABORTED";
+    },
+    retryDelay: (retryCount) => {
+      // Retrasar exponencialmente
+      return retryCount * 1000;
     },
   });
 
@@ -21,6 +33,7 @@ export const AxiosProvider = ({ children }) => {
     },
     (error) => Promise.reject(error)
   );
+
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -31,6 +44,7 @@ export const AxiosProvider = ({ children }) => {
       return Promise.reject(error);
     }
   );
+
   console.log("Axios instance in context.jsx:", api);
 
   return <AxiosContext.Provider value={api}>{children}</AxiosContext.Provider>;

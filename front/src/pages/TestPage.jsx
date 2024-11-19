@@ -5,37 +5,34 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useNodos } from "../hooks/useNodos"; // Ajusta la ruta según sea necesario
-
+import { useNodos } from "../hooks/useNodos";
+import { Container } from "../components/atoms";
 const columnHelper = createColumnHelper();
-
 const TableCell = ({ getValue, row, column, table }) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
   const [value, setValue] = useState(initialValue);
-
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
-
   const onBlur = () => {
     tableMeta?.updateData(row.index, column.id, value);
   };
-
   const onSelectChange = (e) => {
     setValue(e.target.value);
     tableMeta?.updateData(row.index, column.id, e.target.value);
   };
-
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select onChange={onSelectChange} value={value}>
+        {" "}
         {columnMeta?.options?.map((option) => (
           <option key={option.value} value={option.value}>
-            {option.label}
+            {" "}
+            {option.label}{" "}
           </option>
-        ))}
+        ))}{" "}
       </select>
     ) : (
       <input
@@ -46,43 +43,46 @@ const TableCell = ({ getValue, row, column, table }) => {
       />
     );
   }
-
   return <span>{value}</span>;
 };
-
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
-  const setEditedRows = (e) => {
+  const setEditedRows = async (e) => {
     const elName = e.currentTarget.name;
-    meta?.setEditedRows((old) => ({
-      ...old,
-      [row.id]: !old[row.id],
-    }));
+    const rowIndex = row.index;
+    if (elName === "done") {
+      const updatedNodo = table.options.data[rowIndex];
+      await meta.updateRow(updatedNodo.id, updatedNodo);
+    }
+    meta?.setEditedRows((old) => ({ ...old, [row.id]: !old[row.id] }));
     if (elName !== "edit") {
-      meta?.revertData(row.index, elName === "cancel");
+      meta?.revertData(rowIndex, elName === "cancel");
     }
   };
-
   return (
     <div className="edit-cell-container">
+      {" "}
       {meta?.editedRows[row.id] ? (
         <div className="edit-cell">
+          {" "}
           <button onClick={setEditedRows} name="cancel">
-            X
-          </button>
+            {" "}
+            X{" "}
+          </button>{" "}
           <button onClick={setEditedRows} name="done">
-            ✔
-          </button>
+            {" "}
+            ✔{" "}
+          </button>{" "}
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          ✐
+          {" "}
+          ✐{" "}
         </button>
-      )}
+      )}{" "}
     </div>
   );
 };
-
 const columns = [
   columnHelper.accessor("identificador", {
     header: "Identificador",
@@ -109,22 +109,23 @@ const columns = [
     cell: TableCell,
     meta: { type: "text" },
   }),
-  columnHelper.display({
-    id: "edit",
-    cell: EditCell,
-  }),
+  columnHelper.display({ id: "edit", cell: EditCell }),
   columnHelper.display({
     id: "delete",
     cell: ({ row, table }) => (
       <button onClick={() => table.options.meta.deleteRow(row.original.id)}>
-        Eliminar
+        {" "}
+        Eliminar{" "}
       </button>
     ),
   }),
 ];
-
 const NodoTable = () => {
-  const { nodos, loading, error, addNodo, updateNodo, deleteNodo } = useNodos();
+  const { nodos, loading, error, addNodo, updateNodo, deleteNodo } = useNodos({
+    enableAdd: true,
+    enableUpdate: true,
+    enableDelete: true,
+  });
   const [data, setData] = useState(() => [...nodos]);
   const [originalData, setOriginalData] = useState(() => [...nodos]);
   const [editedRows, setEditedRows] = useState({});
@@ -135,12 +136,10 @@ const NodoTable = () => {
     longitud: null,
     descripcion: "",
   });
-
   useEffect(() => {
     setData([...nodos]);
     setOriginalData([...nodos]);
   }, [nodos]);
-
   const table = useReactTable({
     data,
     columns,
@@ -148,6 +147,9 @@ const NodoTable = () => {
     meta: {
       editedRows,
       setEditedRows,
+      updateRow: async (nodoId, updatedNodo) => {
+        await updateNodo(nodoId, updatedNodo);
+      },
       deleteRow: async (nodoId) => {
         await deleteNodo(nodoId);
         setData((old) => old.filter((nodo) => nodo.id !== nodoId));
@@ -191,7 +193,7 @@ const NodoTable = () => {
   });
 
   return (
-    <>
+    <Container>
       <h1>Gestión de Nodos</h1>
       {loading && <p>Cargando...</p>}
       {error && <p>Error: {error.message}</p>}
@@ -288,8 +290,8 @@ const NodoTable = () => {
           </tr>
         </tbody>
       </table>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+    </Container>
   );
 };
 
