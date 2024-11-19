@@ -9,12 +9,37 @@ const DatosPage = () => {
   const [id, setId] = useState(1);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const { data, loading, error } = useFetchNodoData(id, startDate, endDate);
+  
+  const { data, loading, error } = useFetchNodoData({
+    offset: 0,
+    limit: 5, 
+    nodo_id: id || "", 
+    filterStartDate: startDate || "",
+    filterEndDate: endDate || "",
+    orden: "asc",
+    type: 25,
+  });
+
+  console.log(data);
+  
+  const nodos = [
+    { id: 1, nombre: "Elemento A", tipo: "tipo1" },
+    { id: 2, nombre: "Elemento B", tipo: "tipo2" },
+    { id: 3, nombre: "Elemento C", tipo: "tipo3" },
+    { id: 4, nombre: "Elemento D", tipo: "tipo1" },
+    { id: 5, nombre: "Elemento E", tipo: "tipo2" },
+  ];
+
   const {
-    data: sensores,
     loading: loadingSensores,
     error: errorSensores,
-  } = useFetchSensores();
+  } = useNodos({
+    enableAdd: true,
+    enableUpdate: true,
+    enableDelete: true,
+  });
+
+  console.log(nodos);
 
   if (error) return null;
   const handleFilterChange = (newStartDate, newEndDate) => {
@@ -40,9 +65,9 @@ const DatosPage = () => {
               value={id}
               onChange={(e) => setId(e.target.value)}
             >
-              {sensores.map((sensor) => (
-                <option key={sensor.id} value={sensor.id}>
-                  {`${sensor.id} - ${sensor.identificador}`}
+              {nodos.map((nodo) => (
+                <option key={nodo.id} value={nodo.id}>
+                  {`${nodo.id} - ${nodo.identificador}`}
                 </option>
               ))}
             </select>
