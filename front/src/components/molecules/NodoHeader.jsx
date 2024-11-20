@@ -5,6 +5,7 @@ import { useUpdateSensor } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 const NodoHeader = ({ sensor, loading }) => {
+  console.log("SENSO:", sensor);
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
     identificador: sensor.identificador,

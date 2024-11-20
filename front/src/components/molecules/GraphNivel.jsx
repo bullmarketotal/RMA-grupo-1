@@ -84,7 +84,7 @@ export default function GraphNivel({ data, noBrush }) {
         <Tooltip content={CustomTooltip} />
         <Area
           type="linear"
-          dataKey="nivel_hidrometrico"
+          dataKey="data"
           stroke="#8884d8"
           fill="#8884d8"
         />

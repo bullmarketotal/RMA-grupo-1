@@ -24,6 +24,7 @@ import CustomTooltip from "../utils/CustomTooltip";
 */
 
 export default function GraphTemp({ data }) {
+  console.log("TEMPPPP:",data);
   if (data.length === 0)
     return <div className="flex items-center justify-center h-full text-xs">No se recibieron datos de temperatura.</div>;
 
@@ -69,7 +70,7 @@ export default function GraphTemp({ data }) {
         />
         <Line
           type="monotone"
-          dataKey="temperatura"
+          dataKey="data"
           stroke="#ff5733"
           strokeWidth={3}
           dot={false}

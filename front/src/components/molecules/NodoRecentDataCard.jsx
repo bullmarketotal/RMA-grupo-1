@@ -2,12 +2,14 @@ import React from "react";
 import { obtenerTimeAgoString } from "../utils/date";
 import { CardData } from "../atoms";
 
-const NodoRecentDataCard = React.memo(({ data }) => {
-  if (!data || data.length === 0) {
+const NodoRecentDataCard = React.memo(({ dataTemp, dataNivel }) => {
+  console.log("DATATEMPP:",dataTemp);
+  if (!dataTemp || dataTemp.length === 0 || !dataNivel || dataNivel.length === 0) {
     return <p className="text-center">No hay datos disponibles.</p>;
   }
-  const lastData = data[data.length - 1];
-  const timeAgoString = obtenerTimeAgoString(lastData);
+  const lastDataNivel = dataNivel[dataNivel.length - 1];
+  const lastDataTemp = dataTemp[dataTemp.length - 1];
+  const timeAgoString = obtenerTimeAgoString(lastDataTemp);
 
   return (
     <CardData title={"Últimos Datos"}>
@@ -16,12 +18,12 @@ const NodoRecentDataCard = React.memo(({ data }) => {
           {/* Temperatura */}
           <span className="flex items-center">
             <i className="fa fa-tint text-sky-500 mx-2" />
-            {lastData.nivel_hidrometrico.toFixed(2)} m
+            {lastDataNivel.data.toFixed(2)} m
           </span>
           {/* Nivel Hidrometrico */}
           <span className="flex items-center">
             <i className="fa fa-thermometer text-rose-500 mx-2" />
-            {lastData.temperatura.toFixed(1)} ºC
+            {lastDataTemp.data.toFixed(1)} ºC
           </span>
         </div>
         {/* Tiempo desde la ultima medición */}
