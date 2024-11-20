@@ -7,6 +7,9 @@ import {
 } from "@tanstack/react-table";
 import { useNodos } from "../hooks/useNodos";
 import { Container } from "../components/atoms";
+import TestComponent from "./TestComponent";
+import TestFetchNodoData from "./TestFetchNodoData";
+
 const columnHelper = createColumnHelper();
 const TableCell = ({ getValue, row, column, table }) => {
   const initialValue = getValue();
@@ -26,13 +29,15 @@ const TableCell = ({ getValue, row, column, table }) => {
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select onChange={onSelectChange} value={value}>
-        {" "}
+        {"  "}
         {columnMeta?.options?.map((option) => (
           <option key={option.value} value={option.value}>
-            {" "}
-            {option.label}{" "}
+            {"  "}
+            {option.label}
+            {"  "}
           </option>
-        ))}{" "}
+        ))}
+        {"  "}
       </select>
     ) : (
       <input
@@ -290,7 +295,8 @@ const NodoTable = () => {
           </tr>
         </tbody>
       </table>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      <TestComponent />
+      <TestFetchNodoData />
     </Container>
   );
 };
