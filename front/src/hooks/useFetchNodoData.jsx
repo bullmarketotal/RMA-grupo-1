@@ -69,11 +69,10 @@ const useFetchNodoData = ({
       dedupingInterval: 60000,
     },
     
-    
   );
+  
 
   const isForbidden = error?.status === 403;
-  console.log("ENTRE://paquetes?", query);
  
   return {
     data: data ?? [],

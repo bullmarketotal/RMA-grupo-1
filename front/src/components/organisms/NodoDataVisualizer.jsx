@@ -3,7 +3,7 @@ import { FiltroDatos } from "../molecules";
 import { GraphView, TableView } from ".";
 import { Card, TextToggleButton } from "../atoms";
 
-const NodoDataVisualizer = ({ data, loading, onFilterChange, isExporting }) => {
+const NodoDataVisualizer = ({ dataTemp,dataNivel, loading, onFilterChange, isExporting }) => {
   const [isToggled, setIsToggled] = useState(false);
 
   const handleToggle = () => {
@@ -27,7 +27,7 @@ const NodoDataVisualizer = ({ data, loading, onFilterChange, isExporting }) => {
       </div>
 
       {!isToggled ? (
-        <GraphView data={data.paquetes} loading={loading} />
+        <GraphView dataTemp={dataTemp} loading={loading} dataNivel={dataNivel}/>
       ) : (
         <TableView data={data} loading={loading} />
       )}
