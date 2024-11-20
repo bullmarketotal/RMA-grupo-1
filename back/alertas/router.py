@@ -24,10 +24,11 @@ def subscribe_user(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user),
     ):
-    # Aquí guardarías la suscripción en una base de datos
-    # para luego usarla para enviar notificaciones
+
+    return {"nombre": "test", "titulo_notificacion": "titulo"}
+
     try:
-        services.suscribir_usuario_a_alerta(db, subscription, current_user)
+        #services.suscribir_usuario_a_alerta(db, subscription, current_user)
         return {"message": "Suscripción exitosa"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
