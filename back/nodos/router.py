@@ -15,7 +15,12 @@ router = APIRouter()
 # Rutas para nodos
 
 
-@router.get("/nodos", response_model=list[schemas.Nodo], tags=["Nodos"])
+@router.get(
+    "/nodos",
+    response_model=list[schemas.Nodo],
+    tags=["Nodos"],
+    dependencies=[Depends(permiso_requerido("read_nodos"))],
+)
 def read_nodos(db: Session = Depends(get_db)):
     return services.listar_nodos(db)
 

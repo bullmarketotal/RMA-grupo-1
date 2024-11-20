@@ -144,6 +144,7 @@ def crear_usuario(db: Session, usuario: UsuarioCreate) -> UsuarioSchema:
 def decode_token(token: str) -> dict:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print(f"Payload: {payload}")  # TODO borrar
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(
