@@ -10,6 +10,7 @@ import { NodoDataVisualizer } from "../components/organisms";
 import { useFetchNodoData } from "../hooks";
 import PDFNodo from "../components/molecules/PDFNodo";
 import BateriaDataVisualizer from "../components/organisms/BateriaDataVisualizer";
+import TestComponent from "./TestComponent";
 
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
@@ -21,15 +22,15 @@ const NodoPage = () => {
   const [isExporting, setIsExporting] = useState(false);
   const { data, loading, error } = useFetchNodoData({
     offset: 1,
-    limit: 10, 
-    nodo_id: id, 
+    limit: 10,
+    nodo_id: id,
     filterStartDate: startDate || "",
     filterEndDate: endDate || "",
     orden: "asc",
     type: 16,
   });
-  
-  console.log("DATAAA:",data);
+
+  console.log("DATAAA:", data);
 
   const chartRef = useRef(null);
   const bateriaChartRef = useRef(null);

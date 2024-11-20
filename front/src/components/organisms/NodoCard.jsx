@@ -1,4 +1,4 @@
-import React, { useMemo} from "react";
+import React, { useMemo } from "react";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import "../../assets/font-awesome/css/font-awesome.min.css";
@@ -7,7 +7,7 @@ import { GraphNivel, GraphTemp } from "../molecules";
 import { useFetchNodoData } from "../../hooks";
 import { useEffect, useState } from "react";
 
-const NodoCard = ({ nodo}) => {
+const NodoCard = ({ nodo }) => {
   const [dataTemp, setDataTemp] = useState([]);
   const [dataNivel, setDataNivel] = useState([]);
   const [dataTension, setDataTension] = useState([]);
@@ -20,17 +20,17 @@ const NodoCard = ({ nodo}) => {
 
   const fetchData = async (type) => {
     const response = await fetch(
-      `${API_URL}/paquetes?nodo_id=${nodo.id}&type=${type}&limit=200` //aca hay que agregar la parte de datesOf24hoursBefore
+      `${API_URL}/paquetes?nodo_id=${nodo.id}&type=${type}&limit=200`
     );
     return response.json();
   };
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([fetchData(1), fetchData(25), fetchData(16)]) // Temp, Nivel, Tensión
+    Promise.all([fetchData(1), fetchData(25), fetchData(16)])
       .then(([temp, nivel, tension]) => {
-        console.log("temp:",temp);
-        console.log("nivel:",nivel);
+        console.log("temp:", temp);
+        console.log("nivel:", nivel);
         setDataTemp(temp);
         setDataNivel(nivel);
         setDataTension(tension);
@@ -41,8 +41,7 @@ const NodoCard = ({ nodo}) => {
         setLoading(false);
       });
   }, []);
-   
-  
+
   return (
     <div className="roboto border-2 rounded-2xl p-3 dark:border-neutral-800 dark:text-neutral-50">
       <div className="flex">
@@ -65,30 +64,48 @@ const NodoCard = ({ nodo}) => {
             <div className="flex items-center normal-text text-xl font-medium my-4 -ml-2">
               <span className="flex items-center">
                 <i className="fa fa-tint text-sky-500 mx-2" />
-                {dataNivel && dataNivel.items && dataNivel.items.length > 0 && dataNivel.info.total_items !== 0 
-                ? dataNivel.items[dataNivel.info.total_items - 1].data.toFixed(2) 
-                : '--'} m
+                {dataNivel &&
+                dataNivel.items &&
+                dataNivel.items.length > 0 &&
+                dataNivel.info.total_items !== 0
+                  ? dataNivel.items[
+                      dataNivel.info.total_items - 1
+                    ].data.toFixed(2)
+                  : "--"}{" "}
+                m
               </span>
 
               <span className="flex items-center">
                 <i className="fa fa-thermometer text-rose-500 mx-2" />
-                {dataTemp && dataTemp.items && dataTemp.items.length > 0 && dataTemp.info.total_items !== 0 
-                ? dataTemp.items[dataTemp.info.total_items - 1].data.toFixed(2) 
-                : '--'} ºC
+                {dataTemp &&
+                dataTemp.items &&
+                dataTemp.items.length > 0 &&
+                dataTemp.info.total_items !== 0
+                  ? dataTemp.items[dataTemp.info.total_items - 1].data.toFixed(
+                      2
+                    )
+                  : "--"}{" "}
+                ºC
               </span>
-              
+
               <span className="flex items-center mx-2">
-                <BsFillLightningChargeFill/>
-                {dataTension && dataTension.items && dataTension.items.length > 0 && dataTension.info.total_items !== 0 
-                ? dataTension.items[dataTension.info.total_items - 1].data.toFixed(2) 
-                : '--'} V
+                <BsFillLightningChargeFill />
+                {dataTension &&
+                dataTension.items &&
+                dataTension.items.length > 0 &&
+                dataTension.info.total_items !== 0
+                  ? dataTension.items[
+                      dataTension.info.total_items - 1
+                    ].data.toFixed(2)
+                  : "--"}{" "}
+                V
               </span>
             </div>
           )}
 
           <div className="">
             <a
-              href={"/sensor/1" }
+              href={"/sensor/1"}
               className="roboto-medium mt-16 bg-gray-300 hover:bg-gray-400 dark:hover:bg-slate-900 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-all duration-100 dark:bg-slate-800 dark:text-slate-200"
             >
               VER DATOS
@@ -98,7 +115,7 @@ const NodoCard = ({ nodo}) => {
         {!loading ? (
           <div className="sm:flex sm:flex-col md:flex-row justify-end w-full hidden">
             <div className="md:h-full md:w-1/2 w-full">
-              <GraphTemp data={dataTemp.items} syncId={nodo.id}/>
+              <GraphTemp data={dataTemp.items} syncId={nodo.id} />
             </div>
             <div className="md:h-full md:w-1/2 w-full">
               <GraphNivel
@@ -114,7 +131,6 @@ const NodoCard = ({ nodo}) => {
           </div>
         )}
       </div>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </div>
   );
 };

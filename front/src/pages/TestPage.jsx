@@ -7,6 +7,8 @@ import {
 } from "@tanstack/react-table";
 import { useNodos } from "../hooks/useNodos";
 import { Container } from "../components/atoms";
+import TestComponent from "./TestComponent";
+
 const columnHelper = createColumnHelper();
 const TableCell = ({ getValue, row, column, table }) => {
   const initialValue = getValue();
@@ -291,6 +293,7 @@ const NodoTable = () => {
         </tbody>
       </table>
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      <TestComponent />
     </Container>
   );
 };

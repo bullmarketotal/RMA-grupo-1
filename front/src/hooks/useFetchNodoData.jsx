@@ -32,7 +32,6 @@ const useFetchNodoData = ({
 
   const query = useMemo(() => {
     const params = new URLSearchParams();
-  
     if (offset !== undefined) params.append("offset", offset);
     if (limit !== undefined) params.append("limit", limit);
     if (nodo_id) params.append("nodo_id", nodo_id);
@@ -43,7 +42,7 @@ const useFetchNodoData = ({
     if (dataMin) params.append("data_min", dataMin);
     if (dataMax) params.append("data_max", dataMax);
     if (type) params.append("type", type);
-  
+
     return params.toString();
   }, [
     offset,
@@ -55,9 +54,8 @@ const useFetchNodoData = ({
     filterEndDate,
     dataMin,
     dataMax,
-    type
+    type,
   ]);
-  
 
   const { data, error, isValidating, mutate } = useSWR(
     `/paquetes?${query}`,
@@ -67,14 +65,11 @@ const useFetchNodoData = ({
       errorRetryCount: 3,
       errorRetryInterval: 10000,
       dedupingInterval: 60000,
-    },
-    
-    
+    }
   );
 
   const isForbidden = error?.status === 403;
-  console.log("ENTRE://paquetes?", query);
- 
+
   return {
     data: data ?? [],
     loading: isValidating,
