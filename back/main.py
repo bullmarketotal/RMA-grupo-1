@@ -21,6 +21,7 @@ from .nodos.router import router as sensores_router
 from .usuarios.router import router as usuarios_router
 from .roles.router import router as roles_router
 from .auth.router import router as auth_router
+from .alertas.router import router as alertas_router
 
 # Cargar configuración global
 CONFIG = {}
@@ -106,3 +107,4 @@ app.include_router(paquetes_router)
 app.include_router(usuarios_router)
 app.include_router(roles_router)
 app.include_router(auth_router)
+app.include_router(alertas_router)
