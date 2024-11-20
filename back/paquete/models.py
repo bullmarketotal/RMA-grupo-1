@@ -23,7 +23,7 @@ class Paquete(ModeloBase):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     nodo_id: Mapped[int] = mapped_column(ForeignKey("nodos.id"))
     data: Mapped[float] = mapped_column(Float, index=True)
-    type_id: Mapped[int] = mapped_column(ForeignKey("tipos.id"))
+    type_id: Mapped[int] = mapped_column(ForeignKey("tipos.data_type"))
     date: Mapped[datetime] = mapped_column(DateTime, index=True)
 
     type: Mapped[Tipo] = relationship(Tipo)
@@ -35,7 +35,7 @@ class PaqueteRechazado(ModeloBase):
 
     nodo_id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     date: Mapped[datetime] = mapped_column(DateTime, primary_key=True, index=True)
-    data: Mapped[float] = mapped_column(Integer)
+    data: Mapped[float] = mapped_column(Integer, index=True)
     type_id: Mapped[int] = mapped_column(Integer, index=True)
     motivo: Mapped[str] = mapped_column(String, index=True)
 
@@ -44,7 +44,17 @@ class PaqueteArchivo(ModeloBase):
     __tablename__ = "paquetes_archivo"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    data: Mapped[Float] = mapped_column(Float, index=True)
-    type: Mapped[int] = mapped_column(ForeignKey("tipos.id"))
+    data: Mapped[float] = mapped_column(Float, index=True)
+    type_id: Mapped[int] = mapped_column(ForeignKey("tipos.data_type"))
     date: Mapped[datetime] = mapped_column(DateTime, index=True)
     nodo_id: Mapped[int] = mapped_column(Integer, index=True)
+    type: Mapped[Tipo] = relationship(Tipo)
+
+    @classmethod
+    def from_paquete(cls, paquete: Paquete):
+        return cls(
+            data=paquete.data,
+            type_id=paquete.type_id,
+            date=paquete.date,
+            nodo_id=paquete.nodo_id,
+        )

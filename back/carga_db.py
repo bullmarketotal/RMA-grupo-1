@@ -19,6 +19,27 @@ from .usuarios.schemas import UsuarioCreate
 from .roles.services import assign_role_to_usuario
 from .usuarios.services import get_user_by_username
 from .roles.schemas import UsuarioRole
+from .paquete.schemas import TipoCreate
+from .paquete.services import crear_tipo
+
+
+def init_tipos():
+    db: Session = next(get_db())
+    tipos_data = [
+        TipoCreate(data_type=1, data_symbol="°C", nombre="Temperatura"),
+        TipoCreate(data_type=14, data_symbol="mm", nombre="Precipitación"),
+        TipoCreate(data_type=16, data_symbol="V", nombre="Tension"),
+        TipoCreate(data_type=25, data_symbol="cm", nombre="Nivel Hidormetrico"),
+    ]
+    for tipo_data in tipos_data:
+        try:
+            crear_tipo(db, tipo_data)
+        except IntegrityError:
+            db.rollback()
+            print(f"El tipo '{tipo_data.data_type}' ya existe.")
+    db.commit()
+    db.close()
+    print("Tipos creados exitosamente")
 
 
 def init_permisos():
@@ -186,6 +207,7 @@ def init_db():
     init_roles()
     init_nodos()
     init_user()
+    init_tipos()
 
 
 if __name__ == "__main__":
