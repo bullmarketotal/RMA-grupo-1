@@ -76,22 +76,3 @@ def revoke_permiso_from_role(db: Session, role_permiso: RolePermiso):
 
     role_permiso_instance.delete(db)
     return {"detail": "Permiso revocado del rol"}
-
-
-# def update_permiso(
-#     db: Session, permiso_id: int, permiso_data: PermisoUpdate
-# ) -> PermisoSchema:
-#     permiso = Permiso.get(db, permiso_id)
-#     if not permiso:
-#         raise HTTPException(status_code=404, detail="Permiso no encontrado")
-#     permiso.update(db, permiso_data)
-#     return PermisoSchema.model_validate(permiso)
-
-
-# def delete_permiso(db: Session, permiso_id: int):
-#     permiso = Permiso.get(db, permiso_id)
-#     if not permiso:
-#         raise HTTPException(status_code=404, detail="Permiso no encontrado")
-#     permiso.delete(db)
-
-#     return {"detail": "Permiso eliminado correctamente"}

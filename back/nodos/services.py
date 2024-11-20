@@ -33,7 +33,6 @@ def modificar_nodo(db: Session, nodo_id: int, nodo_actualizado: NodoUpdate) -> N
     nodo = Nodo.get(db, nodo_id)
     if not nodo:
         raise HTTPException(status_code=404, detail="Nodo no encontrado")
-
     return nodo.update(db, nodo_actualizado)
 
 

@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta, timezone
-
+from typing import Optional
 import jwt
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
@@ -12,21 +12,22 @@ from ..usuarios.schemas import Usuario as UsuarioSchema
 from ..usuarios.schemas import UsuarioCreate
 from .schemas import TokenData
 
+
 load_dotenv()
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-TOKEN_EXPIRE_MINUTES = int(os.getenv("TOKEN_EXPIRE_MINUTES"))
-REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS"))
+SECRET_KEY = str(os.getenv("SECRET_KEY"))
+ALGORITHM = str(os.getenv("ALGORITHM"))
+TOKEN_EXPIRE_MINUTES = int(os.getenv("TOKEN_EXPIRE_MINUTES") or "30")
+REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS") or "7")
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def hash_password(password: str):
+def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def verify_password(plain_password: str, hashed_password: str):
+def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
@@ -49,16 +50,16 @@ def get_user_from_token(db: Session, token: str) -> Usuario:
         raise credentials_exception from e
 
 
-def authenticate_user(db: Session, username: str, password: str):
+def authenticate_user(db: Session, username: str, password: str) -> Optional[Usuario]:
     user = db.query(Usuario).filter(Usuario.username == username).first()
-    if not user or not verify_password(password, user.hashed_password):
-        return False
+    if user is None or not verify_password(password, user.hashed_password):
+        return None
     return user
 
 
 def create_refresh_token(
     data: dict, expires_delta: timedelta = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
-):
+) -> str:
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + expires_delta
     to_encode.update({"exp": expire})
@@ -68,7 +69,7 @@ def create_refresh_token(
 
 def create_access_token(
     data: dict, expires_delta: timedelta = timedelta(minutes=TOKEN_EXPIRE_MINUTES)
-):
+) -> str:
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + expires_delta
     to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc)})
@@ -114,57 +115,45 @@ def refresh_access_token(db: Session, refresh_token: str) -> TokenData:
             data={"id": user.id, "username": user.username}
         )
 
-        return {
-            "access_token": new_access_token,
-            "refresh_token": new_refresh_token,
-            "token_type": "bearer",
-        }
+        return TokenData(
+            access_token=new_access_token,
+            refresh_token=new_refresh_token,
+            token_type="bearer",
+        )
 
-    except jwt.ExpiredSignatureError as e:
+    except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Refresh token has expired",
             headers={"WWW-Authenticate": "Bearer"},
-        ) from e
-    except jwt.InvalidTokenError as e:
-        raise credentials_exception from e
+        )
+    except jwt.InvalidTokenError:
+        raise credentials_exception
 
 
-def crear_usuario(db: Session, usuario: UsuarioCreate) -> Usuario:
+def crear_usuario(db: Session, usuario: UsuarioCreate) -> UsuarioSchema:
     hashed_password = hash_password(usuario.password)
     usuario_dict = usuario.model_dump()
     usuario_dict["hashed_password"] = hashed_password
     del usuario_dict["password"]
     usuario_creado = Usuario(**usuario_dict)
-
-    usuario_creado = usuario_creado.save(db)
+    usuario_creado.save(db)
     return UsuarioSchema.model_validate(usuario_creado)
 
 
-# def crear_usuario(db: Session, usuario: UsuarioCreate) -> UsuarioSchema:
-#     hashed_password = hash_password(usuario.password)
-#     new_usuario = Usuario.create(
-#         db, UsuarioCreate(username=usuario.username, password=hashed_password)
-#     )
-#     return UsuarioSchema.model_validate(new_usuario)
-
-
-# def crear_usuario(db: Session, usuario: UsuarioCreate) -> UsuarioSchema:
-#     hashed_password = hash_password(usuario.password)
-#     new_usuario = Usuario.create(
-#         db, Usuario(username=usuario.username, hashed_password=hashed_password)
-#     )
-#     return UsuarioSchema.model_validate(new_usuario)
-
-
-# def crear_usuario(db: Session, usuario: UsuarioCreate) -> Usuario:
-#     hashed_password = hash_password(usuario.password)
-#     new_usuario = UsuarioSchema()
-
-
-# def crear_usuario(db: Session, usuario: schemas.UsuarioCreate) -> Usuario:
-#     new_usuario = schemas.UsuarioCreate(
-#         user=usuario.user,
-#         password=pwd_context.hash(usuario.password),
-#     )
-#     return Usuario.create(db, new_usuario)
+def decode_token(token: str) -> dict:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except jwt.InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )

@@ -8,6 +8,13 @@ from sqlalchemy.orm import Session
 from . import schemas
 from .models import Paquete, PaqueteRechazado
 
+# operaciones CRUD para Tipos
+from sqlalchemy.orm import Session
+from typing import List
+from fastapi import HTTPException
+from .models import Tipo
+from .schemas import TipoCreate, TipoUpdate, TipoSchema
+
 
 def listar_paquetes(
     db: Session,
@@ -81,3 +88,32 @@ def crear_paquete_rechazado(
     db: Session, paquete: schemas.PaqueteRechazado
 ) -> PaqueteRechazado:
     return PaqueteRechazado.create(db, paquete)
+
+
+def crear_tipo(db: Session, tipo: TipoCreate) -> Tipo:
+    return Tipo.create(db, tipo)
+
+
+def listar_tipos(db: Session) -> List[Tipo]:
+    return Tipo.get_all(db)
+
+
+def get_tipo(db: Session, tipo_id: int) -> TipoSchema | None:
+    tipo = Tipo.get(db, tipo_id)
+    if not tipo:
+        raise HTTPException(status_code=404, detail="Tipo no encontrado")
+    return TipoSchema.model_validate(tipo)
+
+
+def modificar_tipo(db: Session, tipo_id: int, tipo_actualizado: TipoUpdate) -> Tipo:
+    tipo = Tipo.get(db, tipo_id)
+    if not tipo:
+        raise HTTPException(status_code=404, detail="Tipo no encontrado")
+    return tipo.update(db, tipo_actualizado)
+
+
+def eliminar_tipo(db: Session, tipo_id: int):
+    tipo = Tipo.get(db, tipo_id)
+    if not tipo:
+        raise HTTPException(status_code=404, detail="Tipo no encontrado")
+    return tipo.delete(db)
