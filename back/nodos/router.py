@@ -6,13 +6,11 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..nodos import schemas, services
-
 from ..paquete.services import listar_paquetes
 from ..auth.dependencies import permiso_requerido
 
-router = APIRouter()
 
-# Rutas para nodos
+router = APIRouter()
 
 
 @router.get(
