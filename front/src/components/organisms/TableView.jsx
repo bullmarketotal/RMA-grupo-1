@@ -4,10 +4,10 @@ import { Paginacion, TablaDatos } from "../molecules";
 
 const TableView = ({ data, loading }) => {
   const itemsPerPage = 25;
-  const totalItems = data.paquetes.length;
-  const identificador = data.sensor.identificador;
+  const totalItems = data.items.length;
+  const identificador = data.items.sensor_id;
 
-  const newData = data.paquetes.map((item) => ({
+  const newData = data.items.map((item) => ({
     ...item,
     identificador,
   }));
