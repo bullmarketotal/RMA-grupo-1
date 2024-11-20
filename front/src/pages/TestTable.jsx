@@ -48,7 +48,7 @@ function Filter({ column, table }) {
   );
 }
 
-function MyTable({ data, columns, loading, error }) {
+function TestTable({ data, columns, loading, error }) {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
@@ -71,49 +71,55 @@ function MyTable({ data, columns, loading, error }) {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  const pageCount = table.getPageCount();
+
   return (
     <div className="p-2">
       <div className="h-2" />
-      <table>
-        <thead>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <th key={header.id} colSpan={header.colSpan}>
-                    <div
-                      {...{
-                        className: header.column.getCanSort()
-                          ? "cursor-pointer select-none"
-                          : "",
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{
-                        asc: " 🔼",
-                        desc: " 🔽",
-                      }[header.column.getIsSorted()] ?? null}
-                      {header.column.getCanFilter() ? (
-                        <div>
-                          <Filter column={header.column} table={table} />
-                        </div>
-                      ) : null}
-                    </div>
-                  </th>
-                );
-              })}
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  <div
+                    {...{
+                      className: header.column.getCanSort()
+                        ? "cursor-pointer select-none"
+                        : "",
+                      onClick: header.column.getToggleSortingHandler(),
+                    }}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {{
+                      asc: " 🔼",
+                      desc: " 🔽",
+                    }[header.column.getIsSorted()] ?? null}
+                    {header.column.getCanFilter() ? (
+                      <div>
+                        <Filter column={header.column} table={table} />
+                      </div>
+                    ) : null}
+                  </div>
+                </th>
+              ))}
             </tr>
           ))}
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
+                <td
+                  key={cell.id}
+                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -124,28 +130,41 @@ function MyTable({ data, columns, loading, error }) {
       <div className="h-2" />
       <div className="flex items-center gap-2">
         <button
-          className="border rounded p-1"
+          className="border rounded p-1 btn-inactive"
           onClick={() => table.firstPage()}
           disabled={!table.getCanPreviousPage()}
         >
           {"<<"}
         </button>
         <button
-          className="border rounded p-1"
+          className="border rounded p-1 btn-inactive"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
           {"<"}
         </button>
+        <div className="flex gap-1">
+          {Array.from({ length: pageCount }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => table.setPageIndex(index)}
+              className={`px-3 py-1 border rounded ${
+                pagination.pageIndex === index ? "btn-active" : "btn-inactive"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
         <button
-          className="border rounded p-1"
+          className="border rounded p-1 btn-inactive"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
           {">"}
         </button>
         <button
-          className="border rounded p-1"
+          className="border rounded p-1 btn-inactive"
           onClick={() => table.lastPage()}
           disabled={!table.getCanNextPage()}
         >
@@ -155,7 +174,7 @@ function MyTable({ data, columns, loading, error }) {
           <div>Page</div>
           <strong>
             {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount().toLocaleString()}
+            {pageCount.toLocaleString()}
           </strong>
         </span>
         <span className="flex items-center gap-1">
@@ -163,7 +182,7 @@ function MyTable({ data, columns, loading, error }) {
           <input
             type="number"
             min="1"
-            max={table.getPageCount()}
+            max={pageCount}
             defaultValue={table.getState().pagination.pageIndex + 1}
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
@@ -194,4 +213,4 @@ function MyTable({ data, columns, loading, error }) {
   );
 }
 
-export default MyTable;
+export default TestTable;

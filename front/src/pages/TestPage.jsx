@@ -8,6 +8,7 @@ import {
 import { useNodos } from "../hooks/useNodos";
 import { Container } from "../components/atoms";
 import TestComponent from "./TestComponent";
+import TestFetchNodoData from "./TestFetchNodoData";
 
 const columnHelper = createColumnHelper();
 const TableCell = ({ getValue, row, column, table }) => {
@@ -295,6 +296,7 @@ const NodoTable = () => {
         </tbody>
       </table>
       <TestComponent />
+      <TestFetchNodoData />
     </Container>
   );
 };
