@@ -3,7 +3,7 @@ const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmE
 export async function subscribeUser() {
     if ('serviceWorker' in navigator) {
         // Se inyecta el service worker al navegador del usuario
-        const registration = await navigator.serviceWorker.register('/static/service-worker.js');
+        const registration = await navigator.serviceWorker.register('/service-worker.js');
 
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
