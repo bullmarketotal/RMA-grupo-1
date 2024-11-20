@@ -1,4 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender,
+} from "@tanstack/react-table";
 import useFetchNodoData from "../hooks/useFetchNodoData";
 
 const TestFetchNodoData = () => {
@@ -18,11 +24,34 @@ const TestFetchNodoData = () => {
   const { data, loading, error, isForbidden, mutate } =
     useFetchNodoData(params);
 
+  const [sorting, setSorting] = useState([]);
+
+  useEffect(() => {
+    if (sorting.length > 0) {
+      const [sort] = sorting;
+      setParams((prevParams) => ({
+        ...prevParams,
+        orderBy: sort.id,
+        order: sort.desc ? "desc" : "asc",
+        offset: 0,
+      }));
+    }
+  }, [sorting]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setParams((prevParams) => ({
       ...prevParams,
-      [name]: value,
+      [name]:
+        name === "offset" ||
+        name === "limit" ||
+        name === "dataMin" ||
+        name === "dataMax" ||
+        name === "nodo_id" ||
+        name === "type"
+          ? Number(value)
+          : value,
+      offset: 0,
     }));
   };
 
@@ -40,9 +69,41 @@ const TestFetchNodoData = () => {
     }));
   };
 
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: "nodo_id",
+        header: () => "Nodo ID",
+      },
+      {
+        accessorKey: "data",
+        header: () => "Data",
+      },
+      {
+        accessorKey: "date",
+        header: () => "Date",
+      },
+      {
+        accessorKey: "type_id",
+        header: () => "Type ID",
+      },
+    ],
+    []
+  );
+
+  const table = useReactTable({
+    data: data.items || [],
+    columns,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    manualSorting: true,
+  });
+
   return (
     <div>
-      <h1>Test FetchNodoData</h1>
+      <h1>Test Fetch Nodo Data</h1>
       <div>
         {/* Inputs */}
         <label>
@@ -137,27 +198,63 @@ const TestFetchNodoData = () => {
             onChange={handleInputChange}
           />
         </label>
-        <button onClick={handleRefresh}>Refresh</button>
+        <button onClick={handleRefresh}>Mutate</button>
       </div>
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
-      {isForbidden && <p>Acá poner que hacer cuando no está permitido algo</p>}
+      {isForbidden && <p>Forbidden Access</p>}
 
       {data.items && (
-        <div>
-          <ul>
-            {data.items.map((item, index) => (
-              <li key={index}>{JSON.stringify(item)}</li>
+        <table>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {{
+                      asc: " 🔼",
+                      desc: " 🔽",
+                    }[header.column.getIsSorted()] ?? null}
+                  </th>
+                ))}
+              </tr>
             ))}
-          </ul>
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {data.info && (
+        <div>
           <button
             onClick={() => handlePageChange("prev")}
             disabled={params.offset === 0}
           >
-            Previous
+            ⬅️
           </button>
-          <button onClick={() => handlePageChange("next")}>Next</button>
+          <button onClick={() => handlePageChange("next")}> ➡️</button>
+          <div>
+            Page {params.offset / params.limit + 1} of{" "}
+            {Math.ceil(data.info.total_items / params.limit)}
+          </div>
         </div>
       )}
     </div>

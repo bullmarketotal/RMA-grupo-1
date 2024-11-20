@@ -28,13 +28,15 @@ const TableCell = ({ getValue, row, column, table }) => {
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select onChange={onSelectChange} value={value}>
-        {" "}
+        {"  "}
         {columnMeta?.options?.map((option) => (
           <option key={option.value} value={option.value}>
-            {" "}
-            {option.label}{" "}
+            {"  "}
+            {option.label}
+            {"  "}
           </option>
-        ))}{" "}
+        ))}
+        {"  "}
       </select>
     ) : (
       <input
@@ -292,7 +294,6 @@ const NodoTable = () => {
           </tr>
         </tbody>
       </table>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <TestComponent />
     </Container>
   );
