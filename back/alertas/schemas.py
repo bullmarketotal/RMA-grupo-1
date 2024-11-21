@@ -15,6 +15,9 @@ class AlertaUsuario(BaseModel):
     alarma_id: int
     usuario_id: int
 
+class Alerta(AlertaBase):
+    id: int
+
 # Schema para recibir la suscripción desde el frontend
 class PushEndpointReceive(BaseModel):
     endpoint: str

@@ -78,3 +78,12 @@ def notificar_a_endpoints(endpoints, notification_data):
 
 def crear_alerta(db: Session, alerta: AlertaCreate):
     return Alerta.create(db, alerta)
+
+def get_all_alertas(db: Session):
+    return Alerta.get_all(db)
+
+def get_alerta(db: Session, alerta_id: int):
+    alerta = Alerta.get(db, alerta_id)
+    if not alerta:
+        raise HTTPException(status_code = 404, detail="Alerta no encontrada")
+    return alerta

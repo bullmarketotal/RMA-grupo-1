@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from ..auth.dependencies import get_current_user
-from .services import agregar_endpoint, vincular_alerta, obtener_suscriptores_de_alerta, notificar_a_endpoints, crear_alerta
+from . import services
 from .schemas import (
-    AlertaBase,
+    Alerta,
     AlertaCreate,
     AlertaUpdate,
     AlertaUsuario,
@@ -11,7 +11,7 @@ from .schemas import (
     SubscribeUser,
     PushEndpointResponse
 )
-
+from typing import List
 from ..usuarios.schemas import Usuario
 
 from ..database import get_db
@@ -28,9 +28,9 @@ async def subscribe_user(
     current_user: Usuario = Depends(get_current_user),
     ):
     print("ID ALERTA:", body.alerta_id)
-    push_endpoint_id = agregar_endpoint(db, body.subscription)
+    push_endpoint_id = services.agregar_endpoint(db, body.subscription)
     print("ID ENDPOINT:", push_endpoint_id)
-    #vincular_alerta(db, push_endpoint_id, body.alerta_id, current_user.id)
+    #services.vincular_alerta(db, push_endpoint_id, body.alerta_id, current_user.id)
 
     return {"message": "Suscripción exitosa", "username": current_user.username}
 
@@ -43,13 +43,29 @@ def send_push_notification(message: str, db: Session = Depends(get_db)):
     }
 
     # Aquí recuperas las suscripciones almacenadas (por ejemplo, desde la base de datos)
-    endpoints = obtener_suscriptores_de_alerta(db)
+    endpoints = services.obtener_suscriptores_de_alerta(db)
     # Iterar sobre todas las suscripciones y enviar la notificación
-    notificar_a_endpoints(endpoints, notification_data)
+    services.notificar_a_endpoints(endpoints, notification_data)
     
     return {"message": "Notificaciones enviadas exitosamente"}
 
 
-@router.post('/alerta', tags=["Alertas"])
+#CRUD Alerta
+
+@router.get('/alertas/{alerta_id}', response_model=Alerta, tags=["Alertas"])
+def get_alertas(alerta_id: int, db: Session = Depends(get_db)):
+    return services.get_alerta(db, alerta_id)
+
+@router.get('/alertas', response_model=List[Alerta], tags=["Alertas"])
+def get_all_alertas(db: Session = Depends(get_db)):
+    return services.get_all_alertas(db)
+
+
+@router.post('/alertas', tags=["Alertas"])
 def post_alerta(alerta: AlertaCreate, db: Session = Depends(get_db)):
-    return crear_alerta(db, alerta)
+    return services.crear_alerta(db, alerta)
+
+""" 
+@router.delete('/alertas/{alerta_id}', response_model=Alerta, tags=["Alertas"])
+def delete_alerta(alerta_id: int, db: Session = Depends(get_db)):
+    return services.delete_alerta(db, alerta_id) """
