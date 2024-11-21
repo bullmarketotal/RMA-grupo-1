@@ -20,20 +20,26 @@ const NodoPage = () => {
   const [endDate, setEndDate] = useState("");
   const [isExporting, setIsExporting] = useState(false);
   const [dataTemp, setDataTemp] = useState([]);
-  const [dataNivel, setDataNivel] = useState([]);
+  const [dataNivel, setDataNivel] = useState([]);   
   const [dataTension, setDataTension] = useState([]);
 
-
+ 
 
      const { data, loading, error } = useFetchNodoData({
       offset: 1,
-      limit:80,
       nodo_id: id, 
       filterStartDate: startDate || "",
       filterEndDate: endDate || "",
-      orden: "asc",
+      order: "asc",
+      orderBy: "date",
     });
     
+    const sensorData =useNodos({
+      nodo_id: id,
+      enableAdd: true,
+      enableUpdate: true,
+      enableDelete: true,
+    });
    
     
     useEffect(() => {
@@ -48,22 +54,20 @@ const NodoPage = () => {
       } else {
         console.warn("Datos inesperados:", data);
       }
-    }, [data]);
+    },[data]);
 
-
-  
- 
-  
+    //Convertir .data de nivel hidrometrico de cm a m y redondear a 2 decimales
+    const processedDataNivel = dataNivel.map((punto) => ({
+      ...punto,
+      data: parseFloat((punto.data / 100).toFixed(2)),
+    }));
 
   const chartRef = useRef(null);
   const bateriaChartRef = useRef(null);
 
-  const sensorData =useNodos({
-    nodo_id: id,
-    enableAdd: true,
-    enableUpdate: true,
-    enableDelete: true,
-  });
+ 
+ 
+
  
 
   const paquetesData = useMemo(() => data?.items, [data?.items]);
@@ -99,18 +103,22 @@ const NodoPage = () => {
             <NodoHeader sensor={sensorData.nodos} />
           </div>
           <div className="row-span-2 shadow-sm rounded-lg overflow-hidden w-full max-h-80 min-h-64 flex justify-end">
-            <MiniMap lat={latitud} lng={longitud} />
+            {latitud !== undefined && longitud !== undefined ? (
+             <MiniMap lat={latitud} lng={longitud} />
+             ) : (
+              <LoadingSpinner/>
+             )}
           </div>
           <div className="col-span-2 flex gap-4 items-center">
             <div className="w-1/2">
-              <NodoRecentDataCard dataTemp={dataTemp} dataNivel={dataNivel}/>
+              <NodoRecentDataCard dataTemp={dataTemp} dataNivel={processedDataNivel}/>
             </div>
             <div className="w-1/2 flex gap-4">
               <div className="w-1/2">
-                <MaxLevelCard data={dataNivel} timeFrame={TIMEFRAME_7D} />
+                <MaxLevelCard data={processedDataNivel} timeFrame={TIMEFRAME_7D} />
               </div>
               <div className="w-1/2">
-                <MaxLevelCard data={dataNivel} timeFrame={TIMEFRAME_24H} />
+                <MaxLevelCard data={processedDataNivel} timeFrame={TIMEFRAME_24H} />
               </div>
             </div>
           </div>

@@ -24,7 +24,7 @@ function BateriaRecentDataContainer({ data }) {
               className="fa fa-bolt text-yellow-500 mx-2"
               aria-hidden="true"
             ></i>
-            {lastData.nivel_hidrometrico.toFixed(2)} V
+            {lastData.data.toFixed(2)} V
           </span>
         </div>
         {/* Tiempo desde la ultima medición */}

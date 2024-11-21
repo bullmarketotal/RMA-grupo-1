@@ -29,7 +29,7 @@ const AppRoutes = () => {
           }
         />
         <Route path="sensor/:id" element={<NodoPage />} />
-        <Route path="bateria-page" element={<BateriaPage />} />
+        <Route path="sensor/:id/bateria-page" element={<BateriaPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="testpage" element={<Example />} />
