@@ -1,20 +1,29 @@
-from sqlalchemy import Boolean, DateTime, Integer, String
+from sqlalchemy import Boolean, DateTime, Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..models import ModeloBase
 
-# Tabla intermedia para la relación muchos-a-muchos entre usuarios y alertas
-user_alert_table = Table(
-    'usuario_alerta',
-    Base.metadata,
-    Column('usuario_id', Integer, ForeignKey('usuarios.id'), primary_key=True),
-    Column('alerta_id', Integer, ForeignKey('alertas.id'), primary_key=True)
-)
-
 class Alerta(ModeloBase):
     __tablename__ = "alertas"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=true, index=true)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     nombre: Mapped[str] = mapped_column(String(50))
     titulo_notificacion: Mapped[str] = mapped_column(String(50))
-    users = relationship("Usuario", secondary = user_alert_table, back_populates = "usuarios")
+
+class PushEndpoint(ModeloBase):
+    __tablename__ = "push_endpoint"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    endpoint: Mapped[str] = mapped_column(String(250))
+    expiration_time: Mapped[int | None] = mapped_column(Integer, nullable=True, default=None)
+    keys_auth: Mapped[str] = mapped_column(String(50)) # TODO: Encriptar?
+    keys_p256dh: Mapped[str] = mapped_column(String(50)) # TODO: Encriptar?
+
+# Relaciona a usuarios con sus endpoints (navegadores, dispositivos)
+class Suscripcion(ModeloBase):
+    __tablename__ = 'suscripcion'
+
+    alerta_id: Mapped[int] = mapped_column(Integer, ForeignKey('alertas.id'), primary_key=True)
+    push_endpoint_id: Mapped[int] = mapped_column(Integer, ForeignKey('push_endpoint.id'), primary_key=True)
+    usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios.id'))
+    keys_p256dh: Mapped[str] = mapped_column(String(120))

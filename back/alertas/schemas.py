@@ -16,7 +16,7 @@ class AlertaUsuario(BaseModel):
     usuario_id: int
 
 # Schema para recibir la suscripción desde el frontend
-class PushSubscription(BaseModel):
+class PushEndpointReceive(BaseModel):
     endpoint: str
     expirationTime: Optional[int] = None
     keys: dict
