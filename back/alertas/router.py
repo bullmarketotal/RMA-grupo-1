@@ -21,7 +21,7 @@ router = APIRouter()
 
 
 # Endpoint para recibir la suscripción y almacenarla
-@router.post('/subscribe', response_model = PushEndpointResponse)
+@router.post('/subscribe', response_model = PushEndpointResponse, tags=["Alertas"])
 async def subscribe_user(
     body: SubscribeUser,
     db: Session = Depends(get_db),
@@ -34,7 +34,7 @@ async def subscribe_user(
 
     return {"message": "Suscripción exitosa", "username": current_user.username}
 
-@router.post('/test-notification')
+@router.post('/test-notification', tags=["Alertas"])
 def send_push_notification(message: str, db: Session = Depends(get_db)):
 
     notification_data = {
