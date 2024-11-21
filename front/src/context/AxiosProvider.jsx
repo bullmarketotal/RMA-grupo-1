@@ -44,9 +44,6 @@ export const AxiosProvider = ({ children }) => {
       return Promise.reject(error);
     }
   );
-
-  console.log("Axios instance in context.jsx:", api);
-
   return <AxiosContext.Provider value={api}>{children}</AxiosContext.Provider>;
 };
 

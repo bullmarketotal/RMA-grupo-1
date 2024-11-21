@@ -29,15 +29,11 @@ const TableCell = ({ getValue, row, column, table }) => {
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select onChange={onSelectChange} value={value}>
-        {"  "}
         {columnMeta?.options?.map((option) => (
           <option key={option.value} value={option.value}>
-            {"  "}
             {option.label}
-            {"  "}
           </option>
         ))}
-        {"  "}
       </select>
     ) : (
       <input
@@ -66,25 +62,20 @@ const EditCell = ({ row, table }) => {
   };
   return (
     <div className="edit-cell-container">
-      {" "}
       {meta?.editedRows[row.id] ? (
         <div className="edit-cell">
-          {" "}
           <button onClick={setEditedRows} name="cancel">
-            {" "}
-            X{" "}
-          </button>{" "}
+            X
+          </button>
           <button onClick={setEditedRows} name="done">
-            {" "}
-            ✔{" "}
-          </button>{" "}
+            ✔
+          </button>
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          {" "}
-          ✐{" "}
+          ✐
         </button>
-      )}{" "}
+      )}
     </div>
   );
 };
@@ -119,8 +110,7 @@ const columns = [
     id: "delete",
     cell: ({ row, table }) => (
       <button onClick={() => table.options.meta.deleteRow(row.original.id)}>
-        {" "}
-        Eliminar{" "}
+        Eliminar
       </button>
     ),
   }),

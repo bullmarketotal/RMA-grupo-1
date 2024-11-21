@@ -60,7 +60,6 @@ def iniciar_thread() -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
     ModeloBase.metadata.create_all(bind=engine)
     init_db()
     thread_sub = threading.Thread(target=iniciar_thread, daemon=True)
@@ -71,7 +70,6 @@ async def lifespan(app: FastAPI):
         print("Recibida señal de interrupción en (Ctrl+C). Deteniendo el suscriptor...")
         if hasattr(Subscriptor, "should_exit"):
             Subscriptor.should_exit = True
-        # FIXME desde acá no va como tendría que ir pero al menos cierra con Ctrl+C
         if thread_sub.is_alive():
             print("Esperando que el hilo del suscriptor termine...")
             thread_sub.join()
@@ -79,12 +77,10 @@ async def lifespan(app: FastAPI):
 
     signal.signal(signal.SIGINT, signal_handler)
     yield
-    # FIXME
     print("Finalizando la aplicación...")
     if thread_sub.is_alive():
         print("Esperando que el hilo del suscriptor termine...")
         thread_sub.join()
-
     print("Aplicación FastAPI cerrada.")
 
 
@@ -100,7 +96,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 app.include_router(permisos_router)
 app.include_router(sensores_router)
