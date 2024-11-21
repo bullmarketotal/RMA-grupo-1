@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
-from .schemas import PushEndpointReceive
+from .schemas import PushEndpointReceive, AlertaCreate
 from ..usuarios.schemas import Usuario
 from .models import Alerta, PushEndpoint, Suscripcion
 from pywebpush import webpush, WebPushException
@@ -74,3 +74,7 @@ def notificar_a_endpoints(endpoints, notification_data):
             )
         except WebPushException as ex:
             print(f"Error enviando notificación: {str(ex)}")
+
+
+def crear_alerta(db: Session, alerta: AlertaCreate):
+    return Alerta.create(db, alerta)

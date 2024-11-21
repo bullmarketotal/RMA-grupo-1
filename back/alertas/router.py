@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from ..auth.dependencies import get_current_user
-from .services import agregar_endpoint, vincular_alerta, obtener_suscriptores_de_alerta, notificar_a_endpoints
+from .services import agregar_endpoint, vincular_alerta, obtener_suscriptores_de_alerta, notificar_a_endpoints, crear_alerta
 from .schemas import (
     AlertaBase,
     AlertaCreate,
@@ -50,4 +50,6 @@ def send_push_notification(message: str, db: Session = Depends(get_db)):
     return {"message": "Notificaciones enviadas exitosamente"}
 
 
-
+@router.post('/alerta', tags=["Alertas"])
+def post_alerta(alerta: AlertaCreate, db: Session = Depends(get_db)):
+    return crear_alerta(db, alerta)
