@@ -1,8 +1,6 @@
-import signal
 import sys
 import threading
 import time
-from dataclasses import dataclass
 from typing import Callable, Optional
 
 import paho.mqtt.client as paho
@@ -19,16 +17,16 @@ class Subscriptor:
         self.client = client
         self.message_counter = 0
         self.on_message_callback = on_message_callback
-        self.should_exit = False  # flag para manejar la interrupción
+        self.should_exit = False
         self.thread = None
-        self.subscribed = False  # flag para que no haya multiples subscripciones
+        self.subscribed = False
 
         self.set_event_handlers()
 
     def set_event_handlers(self) -> None:
         def on_subscribe(_, userdata, mid, granted_qos) -> None:
             if not self.subscribed:
-                print(f"suscrito a {config.topic}!")
+                print(f"Suscrito a {config.topic}!")
                 self.subscribed = True
 
         def on_message(_, userdata, msg) -> None:
@@ -37,7 +35,7 @@ class Subscriptor:
             if self.on_message_callback:
                 self.on_message_callback(message)
             else:
-                self.client.logger.warning(message)
+                print(f"Mensaje recibido: {message}")
 
         def on_connect(_, obj, flags, reason_code) -> None:
             if self.client.is_connected():
@@ -46,12 +44,10 @@ class Subscriptor:
                     self.subscribe(config.topic, 1)
 
         def on_disconnect(_, userdata, rc) -> None:
-            print(f"total messages received: {self.message_counter}")
-            print("disconnected!")
+            print(f"Total messages received: {self.message_counter}")
+            print("Desconectado!")
             self.should_exit = True
 
-        self.client.max_queued_messages_set(0)
-        self.client.enable_logger()
         self.client.on_connect = on_connect
         self.client.on_subscribe = on_subscribe
         self.client.on_message = on_message
@@ -61,28 +57,24 @@ class Subscriptor:
         self.client.subscribe(topic=topic, qos=qos)
 
     def connect(self, host: str, port: int, keepalive: int) -> None:
-
-        if self.client.connect(host, port, keepalive) != 0:
-            print("Ha ocurrido un problema al conectar con el broker MQTT")
+        try:
+            self.client.connect(host, port, keepalive)
+            print("Presione CTRL+C para salir...")
+            self.thread = threading.Thread(target=self.run_loop, daemon=True)
+            self.thread.start()
+        except Exception as e:
+            print(f"Error al conectar con el broker MQTT: {e}")
             sys.exit(1)
 
-        print("Presione CTRL+C para salir...")
-
-        self.thread = threading.Thread(target=self.run_loop, daemon=True)
-        self.thread.start()
-
     def run_loop(self) -> None:
-        try:
-            while not self.should_exit:  # Continuar hasta que el flag cambie
-                self.client.loop()
-        except KeyboardInterrupt:
-            print("Interrupción de teclado detectada (CTRL+C).")
-        finally:
-            print("Desconectando del broker MQTT")
-            self.disconnect()
+        while not self.should_exit:
+            self.client.loop()
 
     def disconnect(self):
         self.client.disconnect()
+        self.should_exit = True
+        if self.thread and self.thread.is_alive():
+            self.thread.join()
 
     def set_should_exit(self, value: bool) -> None:
         self.should_exit = value

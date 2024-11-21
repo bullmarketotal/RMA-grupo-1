@@ -38,7 +38,6 @@ const NodoPage = () => {
       const temp = data.items.filter((item) => item.type_id === 1); // Tipo 1: Temperatura
       const nivel = data.items.filter((item) => item.type_id === 25); // Tipo 25: Nivel
       const tension = data.items.filter((item) => item.type_id === 16); // Tipo 16: Tensión
-
       setDataTemp(temp);
       setDataNivel(nivel);
       setDataTension(tension);

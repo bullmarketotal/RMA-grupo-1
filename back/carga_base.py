@@ -117,11 +117,11 @@ def getLimitsFromType(type):
 # Limites de datos segun el tipo
 [MIN, MAX] = getLimitsFromType(TYPE_TO_SEND)
 data = (MIN + MAX) / 2  # la serie inicia en el medio
-
+valid_types = [1, 14, 16, 25]
 # Generación de datos
 for i in range(ENTRY_COUNT):
     fecha_hora = start_date + timedelta(minutes=i * MINUTES_BETWEEN_ENTRIES)
-
+    TYPE_TO_SEND = random.choice(valid_types)
     # Simulación de la temperatura
     if TYPE_TO_SEND == 1:
         data += (random.random() - 0.5) * 4
