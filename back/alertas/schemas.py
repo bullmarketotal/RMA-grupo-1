@@ -20,3 +20,7 @@ class PushEndpointReceive(BaseModel):
     endpoint: str
     expirationTime: Optional[int] = None
     keys: dict
+
+class PushEndpointResponse(BaseModel):
+    message: str
+    username: Optional[str] = None

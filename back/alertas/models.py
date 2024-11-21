@@ -14,7 +14,7 @@ class PushEndpoint(ModeloBase):
     __tablename__ = "push_endpoint"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    endpoint: Mapped[str] = mapped_column(String(250))
+    endpoint: Mapped[str] = mapped_column(String(250), unique=True)
     expiration_time: Mapped[int | None] = mapped_column(Integer, nullable=True, default=None)
     keys_auth: Mapped[str] = mapped_column(String(50)) # TODO: Encriptar?
     keys_p256dh: Mapped[str] = mapped_column(String(50)) # TODO: Encriptar?
