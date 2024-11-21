@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from pywebpush import webpush, WebPushException
 from ..auth.dependencies import get_current_user
-from .services import suscribir_usuario_a_alerta
+from .services import agregar_endpoint
 from .schemas import (
     AlertaBase,
     AlertaCreate,
@@ -26,7 +26,10 @@ def subscribe_user(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user),
     ):
-    
-    suscribir_usuario_a_alerta(db, subscription, current_user.id)
+
+    agregar_endpoint(db, subscription)
     return {"message": "Suscripción exitosa", "username": current_user.username}
+
+
+
 

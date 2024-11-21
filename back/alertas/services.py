@@ -1,11 +1,12 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 from .schemas import PushEndpointReceive
 from ..usuarios.schemas import Usuario
 from .models import Alerta, PushEndpoint, Suscripcion
-from sqlalchemy.exc import IntegrityError
 
-def suscribir_usuario_a_alerta(db: Session, subscription: PushEndpointReceive, current_user: Usuario):
+
+def agregar_endpoint(db: Session, subscription: PushEndpointReceive):
     
     push_endpoint = PushEndpoint(
         endpoint = subscription.endpoint,
@@ -18,7 +19,6 @@ def suscribir_usuario_a_alerta(db: Session, subscription: PushEndpointReceive, c
     except IntegrityError as e:
         print("Endpoint ya está registrado:", e)
         db.rollback()
-        raise HTTPException(status_code=400, detail="El endpoint ya está registrado.")
     except Exception as e:
         print("Otro error ocurrió:", e)
         db.rollback()
