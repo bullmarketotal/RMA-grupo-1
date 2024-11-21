@@ -1,26 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useBreadcrumbs } from "../context/BreadcrumbsContext";
 
-const Breadcrumb = ({ items }) => {
+const Breadcrumbs = () => {
+  const { breadcrumbs } = useBreadcrumbs();
+
   return (
-    <nav className="flex items-center space-x-2 text-sm text-gray-700">
-      {items.map((item, index) => (
-        <div key={item.name} className="flex items-center">
-          {index > 0 && <span className="mx-2">/</span>}
-          {item.link ? (
-            <Link
-              to={item.link}
-              className="text-sm font-medium hover:text-blue-500"
-            >
-              {item.name}
+    <nav className="bg-gray-100 p-2 rounded-md shadow-md">
+      <ol className="list-reset flex">
+        {breadcrumbs.map((breadcrumb, index) => (
+          <li key={index}>
+            {index > 0 && <span className="mx-2">/</span>}
+            <Link to={breadcrumb.path} className="text-blue-500">
+              {breadcrumb.label}
             </Link>
-          ) : (
-            <span className="font-medium">{item.name}</span> // Texto sin enlace para el elemento actual
-          )}
-        </div>
-      ))}
+          </li>
+        ))}
+      </ol>
     </nav>
   );
 };
 
-export default Breadcrumb;
+export default Breadcrumbs;

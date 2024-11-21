@@ -12,6 +12,7 @@ import { React } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { DarkModeToggle, NotificationButton } from "./atoms";
+import Breadcrumbs from "./BreadCrumb";
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -151,6 +152,7 @@ export default function NavBar() {
           </div>
         </DisclosurePanel>
       </Disclosure>
+      <Breadcrumbs />
       <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-64px)] scrollbar-custom overflow-y-scroll">
         <Outlet />
       </div>

@@ -5,6 +5,7 @@ import { NotificationProvider } from "./context/NotificationContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import AppRoutes from "./pages/AppRoutes";
 import { AxiosProvider } from "./context/AxiosProvider";
+import { BreadcrumbProvider } from "./context/BreadcrumbsContext";
 
 function App() {
   return (
@@ -13,7 +14,9 @@ function App() {
         <AuthProvider>
           <NotificationProvider>
             <ThemeProvider>
-              <AppRoutes />
+              <BreadcrumbProvider>
+                <AppRoutes />
+              </BreadcrumbProvider>
             </ThemeProvider>
           </NotificationProvider>
         </AuthProvider>

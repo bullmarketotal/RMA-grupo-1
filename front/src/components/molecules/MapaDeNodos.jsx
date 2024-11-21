@@ -2,10 +2,10 @@ import "leaflet/dist/leaflet.css";
 import React from "react";
 import { useFetchSensores, useLoadNodos, useMapInstance } from "../../hooks";
 import { LoadingDots } from "../atoms";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useNodos } from "../../hooks";
 
 const MapaDeNodos = () => {
+  const { nodos, loading, error } = useNodos();
   const limites = [
     [-42.342, -62.145], // suroeste
     [-45.594, -71.54], // noreste
@@ -14,10 +14,9 @@ const MapaDeNodos = () => {
   const posicionInicial = [-43.5042843, -65.7791978];
   const zoomInicial = 10;
 
-  const { data, loading, error } = useFetchSensores();
   const map = useMapInstance(posicionInicial, zoomInicial, limites);
 
-  useLoadNodos(map, data, API_URL);
+  useLoadNodos(map, nodos, API_URL);
 
   return (
     <section>
