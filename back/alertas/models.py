@@ -26,4 +26,3 @@ class Suscripcion(ModeloBase):
     alerta_id: Mapped[int] = mapped_column(Integer, ForeignKey('alertas.id'), primary_key=True)
     push_endpoint_id: Mapped[int] = mapped_column(Integer, ForeignKey('push_endpoint.id'), primary_key=True)
     usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios.id'))
-    keys_p256dh: Mapped[str] = mapped_column(String(120))

@@ -21,6 +21,10 @@ class PushEndpointReceive(BaseModel):
     expirationTime: Optional[int] = None
     keys: dict
 
+class SubscribeUser(BaseModel):
+    subscription: PushEndpointReceive
+    alerta_id: int
+
 class PushEndpointResponse(BaseModel):
     message: str
     username: Optional[str] = None
