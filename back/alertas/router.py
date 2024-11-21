@@ -24,7 +24,7 @@ def subscribe_user(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user),
     ):
-    print(current_user)
+    print("USUARIO SUSCRIPTO!!! ", current_user)
     return {"nombre": "test", "titulo_notificacion": "titulo"}
 
     try:

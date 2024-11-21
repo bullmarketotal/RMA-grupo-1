@@ -7,14 +7,13 @@ import {
 } from "@tanstack/react-table";
 import { useNodos } from "../hooks/useNodos";
 import { Container } from "../components/atoms";
-import { askNotificationPermission, subscribeUser } from "../components/utils/notifications";
 import TestComponent from "./TestComponent";
 import TestFetchNodoData from "./TestFetchNodoData";
 
 const columnHelper = createColumnHelper();
 const TableCell = ({ getValue, row, column, table }) => {
 
-  askNotificationPermission();
+  
 
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
@@ -203,8 +202,7 @@ const NodoTable = () => {
 
   return (
     <Container>
-      <h1>Test suscripcion</h1>
-      <button onClick={subscribeUser}>Suscribirse</button>
+      
       <h1>Gestión de Nodos</h1>
       {loading && <p>Cargando...</p>}
       {error && <p>Error: {error.message}</p>}
