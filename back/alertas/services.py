@@ -4,7 +4,13 @@ from fastapi import HTTPException
 from .schemas import PushEndpointReceive
 from ..usuarios.schemas import Usuario
 from .models import Alerta, PushEndpoint, Suscripcion
+from pywebpush import webpush, WebPushException
+import os
+import json
 
+VAPID_PUBLIC_KEY = os.getenv("PUBLIC_KEY")
+VAPID_PRIVATE_KEY = os.getenv("PRIVATE_KEY")
+VAPID_EMAIL = "mailto:gonzalo.ag88@gmail.com"
 
 def agregar_endpoint(db: Session, subscription: PushEndpointReceive) -> int:
     
@@ -42,3 +48,29 @@ def vincular_alerta(db: Session, endpoint_id: int, alerta_id: int, user_id: int)
         print("Otro error ocurrió:", e)
         db.rollback()
         raise HTTPException(status_code=500, detail="Ocurrió un error inesperado.")
+    
+
+def obtener_suscriptores_de_alerta(db: Session):
+    return PushEndpoint.get_all(db)
+
+def notificar_a_endpoints(endpoints, notification_data):
+    print(endpoints)
+    for endpoint in endpoints:
+        try:
+            webpush(
+                subscription_info={
+                    "endpoint": endpoint.endpoint,
+                    "keys": {
+                        "auth": endpoint.keys_auth,
+                        "p256dh": endpoint.keys_p256dh
+                    }
+                },
+                data=json.dumps(notification_data),
+                vapid_private_key=VAPID_PRIVATE_KEY,
+                vapid_claims={
+                    "sub": VAPID_EMAIL,
+                    "aud": "https://fcm.googleapis.com"
+                }
+            )
+        except WebPushException as ex:
+            print(f"Error enviando notificación: {str(ex)}")
