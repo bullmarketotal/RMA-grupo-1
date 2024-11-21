@@ -83,3 +83,6 @@ class Subscriptor:
 
     def disconnect(self):
         self.client.disconnect()
+
+    def set_should_exit(self, value: bool) -> None:
+        self.should_exit = value

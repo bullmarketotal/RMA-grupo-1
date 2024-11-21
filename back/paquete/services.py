@@ -8,6 +8,13 @@ from sqlalchemy.orm import Session
 from . import schemas
 from .models import Paquete, PaqueteRechazado
 
+# operaciones CRUD para Tipos
+from sqlalchemy.orm import Session
+from typing import List
+from fastapi import HTTPException
+from .models import Tipo
+from .schemas import TipoCreate, TipoUpdate, TipoSchema
+
 
 def listar_paquetes(
     db: Session,
@@ -21,8 +28,11 @@ def listar_paquetes(
     order_by: Optional[str] = None,
     order: str = "asc",
     type: Optional[int] = None,
-):
+) -> schemas.PaqueteResponse:
+
     query = db.query(Paquete)
+
+    # Aplicar Filtros
     if type is not None:
         query = query.filter(Paquete.type_id == type)
     if nodo_id is not None:
@@ -38,48 +48,72 @@ def listar_paquetes(
     if data_max is not None:
         query = query.filter(Paquete.data <= data_max)
 
-    # Aplicar orden de datos
+    # Aplicar Orden de datos
     if order_by:
         if order.lower() == "desc":
             query = query.order_by(getattr(Paquete, order_by).desc())
         else:
             query = query.order_by(getattr(Paquete, order_by))
 
+    total_items = query.count()
+
     if limit is not None:
-        total_items = query.count()
         items = query.offset(offset).limit(limit).all()
         total_pages = ceil(total_items / limit) if limit > 0 else 1
         current_page = (offset // limit) + 1 if limit > 0 else 1
-
-        return {
-            "info": {
-                "total_items": total_items,
-                "total_pages": total_pages,
-                "current_page": current_page,
-                "limit": limit,
-                "offset": offset,
-            },
-            "items": items,
-        }
     else:
         items = query.all()
-        total_items = len(items)
+        total_pages = 1
+        current_page = 1
+        limit = total_items
+        offset = 0
 
-        return {
-            "info": {
-                "total_items": total_items,
-                "total_pages": 1,
-                "current_page": 1,
-                "limit": total_items,
-                "offset": 0,
-            },
-            "items": items,
-        }
+    return schemas.PaqueteResponse(
+        info=schemas.PaginationInfo(
+            total_items=total_items,
+            total_pages=total_pages,
+            current_page=current_page,
+            limit=limit,
+            offset=offset,
+        ),
+        items=[schemas.Paquete.model_validate(rp) for rp in items],
+    )
 
 
 def crear_paquete(db: Session, paquete: schemas.PaqueteCreate) -> Paquete:
     return Paquete.create(db, paquete)
 
 
-def crear_paquete_rechazado(db: Session, paquete: schemas.PaqueteRechazado) -> PaqueteRechazado:
+def crear_paquete_rechazado(
+    db: Session, paquete: schemas.PaqueteRechazado
+) -> PaqueteRechazado:
     return PaqueteRechazado.create(db, paquete)
+
+
+def crear_tipo(db: Session, tipo: TipoCreate) -> Tipo:
+    return Tipo.create(db, tipo)
+
+
+def listar_tipos(db: Session) -> List[Tipo]:
+    return Tipo.get_all(db)
+
+
+def get_tipo(db: Session, tipo_id: int) -> TipoSchema | None:
+    tipo = Tipo.get(db, tipo_id)
+    if not tipo:
+        raise HTTPException(status_code=404, detail="Tipo no encontrado")
+    return TipoSchema.model_validate(tipo)
+
+
+def modificar_tipo(db: Session, tipo_id: int, tipo_actualizado: TipoUpdate) -> Tipo:
+    tipo = Tipo.get(db, tipo_id)
+    if not tipo:
+        raise HTTPException(status_code=404, detail="Tipo no encontrado")
+    return tipo.update(db, tipo_actualizado)
+
+
+def eliminar_tipo(db: Session, tipo_id: int):
+    tipo = Tipo.get(db, tipo_id)
+    if not tipo:
+        raise HTTPException(status_code=404, detail="Tipo no encontrado")
+    return tipo.delete(db)

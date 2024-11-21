@@ -45,7 +45,7 @@ class ModeloBase(Base):
 
     @classmethod
     def create(cls, db: Session, schema: Schema):
-        
+
         instance = cls(**schema.model_dump())
         return instance.save(db)
 
@@ -64,6 +64,14 @@ class ModeloBase(Base):
             if hasattr(cls, key):
                 query = query.filter(getattr(cls, key) == value)
         return query.all()
+
+    @classmethod
+    def find_first(cls, db: Session, **kwargs):
+        query = db.query(cls)
+        for key, value in kwargs.items():
+            if hasattr(cls, key):
+                query = query.filter(getattr(cls, key) == value)
+        return query.first()
 
     def __repr__(self):
         # Define un formato de representacion como cadena para el modelo base.

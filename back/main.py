@@ -22,6 +22,7 @@ from .usuarios.router import router as usuarios_router
 from .roles.router import router as roles_router
 from .auth.router import router as auth_router
 from .alertas.router import router as alertas_router
+from .carga_db import init_db
 
 # Cargar configuración global
 CONFIG = {}
@@ -62,6 +63,7 @@ def iniciar_thread() -> None:
 async def lifespan(app: FastAPI):
 
     ModeloBase.metadata.create_all(bind=engine)
+    init_db()
     thread_sub = threading.Thread(target=iniciar_thread, daemon=True)
     thread_sub.start()
     print("El suscriptor se está ejecutando.")

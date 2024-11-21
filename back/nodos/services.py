@@ -4,7 +4,7 @@ from typing import List
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
+from sqlalchemy import select, delete
 from ..nodos import schemas
 from ..paquete.models import Paquete, PaqueteArchivo
 from .models import Nodo
@@ -12,13 +12,12 @@ from .schemas import Nodo as NodoSchema
 from .schemas import NodoUpdate
 
 
-# operaciones CRUD para Nodos
 def crear_nodo(db: Session, nodo: schemas.NodoCreate) -> Nodo:
     return Nodo.create(db, nodo)
 
 
 def listar_nodos(db: Session) -> List[Nodo]:
-    return Nodo.get_all(db)
+    return Nodo.filter(db, is_active=True)
 
 
 def get_nodo(db: Session, nodo_id: int) -> NodoSchema | None:
@@ -29,28 +28,22 @@ def get_nodo(db: Session, nodo_id: int) -> NodoSchema | None:
 
 
 def modificar_nodo(db: Session, nodo_id: int, nodo_actualizado: NodoUpdate) -> Nodo:
-
     nodo = Nodo.get(db, nodo_id)
     if not nodo:
         raise HTTPException(status_code=404, detail="Nodo no encontrado")
-
     return nodo.update(db, nodo_actualizado)
 
 
 def archivar_y_eliminar_nodo(db: Session, nodo_id: int) -> dict:
-    paquetes = db.query(Paquete).filter(Paquete.nodo_id == nodo_id).all()
-    for paquete in paquetes:
-        paquete_archivo = PaqueteArchivo(
-            id=paquete.id,
-            data=paquete.data,
-            type=paquete.type,
-            date=paquete.date,
-            nodo_id=paquete.nodo_id,
-        )
-        db.add(paquete_archivo)
-        db.delete(paquete)
-    nodo = db.query(Nodo).filter(Nodo.id == nodo_id).first()
+    paquetes = Paquete.filter(db, nodo_id=nodo_id)
+    paquetes_archivo = [PaqueteArchivo.from_paquete(paquete) for paquete in paquetes]
+    db.bulk_save_objects(paquetes_archivo)
+    subquery = select(Paquete.id).filter(Paquete.nodo_id == nodo_id)
+    db.execute(delete(Paquete).where(Paquete.id.in_(subquery)))
+    nodo = Nodo.get(db, nodo_id)
     if nodo:
-        db.delete(nodo)
+        # Soft delete
+        nodo.is_active = False
+        nodo.save(db)
     db.commit()
-    return {"detail": "Nodo eliminado correctamente"}
+    return {"detail": "Nodo archivado y marcado como inactivo correctamente"}

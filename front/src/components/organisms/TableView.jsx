@@ -5,11 +5,9 @@ import { Paginacion, TablaDatos } from "../molecules";
 const TableView = ({ data, loading }) => {
   const itemsPerPage = 25;
   const totalItems = data.items.length;
-  const identificador = data.items.sensor_id;
 
   const newData = data.items.map((item) => ({
-    ...item,
-    identificador,
+    ...item
   }));
 
   const [currentPage, setCurrentPage] = useState(1);
