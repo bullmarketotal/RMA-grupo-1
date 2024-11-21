@@ -3,21 +3,17 @@ from datetime import datetime
 from typing import Optional
 
 from ..database import get_db
-from ..paquete.schemas import PaqueteBase
-from ..paquete.services import crear_paquete
-
-from ..database import get_db
-from ..paquete.schemas import PaqueteBase
-from ..paquete.services import crear_paquete
 from ..depends.validaciones import es_valido
+from ..paquete.schemas import PaqueteCreate
+from ..paquete.services import crear_paquete
 
 
-def guardar_paquete_en_db(paquete: PaqueteBase) -> None:
+def guardar_paquete_en_db(paquete: PaqueteCreate) -> None:
     crear_paquete(next(get_db()), paquete)
     print(f"Guardado: {paquete}")
 
 
-def procesar_mensaje(mensaje) -> Optional[PaqueteBase]:
+def procesar_mensaje(mensaje) -> Optional[PaqueteCreate]:
     mensaje = mensaje.replace("'", '"')
     mensaje_json = json.loads(mensaje)
     try:
@@ -27,7 +23,7 @@ def procesar_mensaje(mensaje) -> Optional[PaqueteBase]:
             "data": float(mensaje_json["data"]),
             "date": datetime.fromtimestamp(mensaje_json["time"]),
         }
-        paquete = PaqueteBase(**mensaje_paquete)
+        paquete = PaqueteCreate(**mensaje_paquete)
         return paquete
     except Exception as e:
         print(f"Error de validación: {e}")

@@ -6,15 +6,19 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..nodos import schemas, services
-
 from ..paquete.services import listar_paquetes
+from ..auth.dependencies import permiso_requerido
+
 
 router = APIRouter()
 
-# Rutas para nodos
 
-
-@router.get("/nodos", response_model=list[schemas.Nodo], tags=["Nodos"])
+@router.get(
+    "/nodos",
+    response_model=list[schemas.Nodo],
+    tags=["Nodos"],
+    dependencies=[Depends(permiso_requerido("read_nodos"))],
+)
 def read_nodos(db: Session = Depends(get_db)):
     return services.listar_nodos(db)
 
@@ -35,14 +39,19 @@ def update_nodo(nodo_id: int, nodo: schemas.NodoUpdate, db: Session = Depends(ge
 
 
 @router.delete(
-    "/nodos/{nodo_id}", response_model=schemas.DeleteResponseSchema, tags=["Nodos"]
+    "/nodos/{nodo_id}",
+    response_model=schemas.DeleteResponseSchema,
+    tags=["Nodos"],
+    dependencies=[Depends(permiso_requerido("delete_nodo"))],
 )
 def delete_nodo(nodo_id: int, db: Session = Depends(get_db)):
     return services.archivar_y_eliminar_nodo(db=db, nodo_id=nodo_id)
 
 
 @router.get(
-    "/nodos/{nodo_id}/paquetes", response_model=schemas.NodoConPaquetes, tags=["Nodos"]
+    "/nodos/{nodo_id}/paquetes",
+    response_model=schemas.NodoConPaquetes,
+    dependencies=[Depends(permiso_requerido("required_permission"))],
 )
 def get_nodo_con_paquetes(
     nodo_id: int,

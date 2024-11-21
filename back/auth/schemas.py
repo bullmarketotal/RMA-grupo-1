@@ -10,9 +10,9 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    id: int
-    username: str
-    roles: list[str]
+    access_token: str
+    refresh_token: str
+    token_type: str
 
 
 class OAuth2PasswordRequestForm(BaseModel):

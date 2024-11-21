@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { api } from "../api";
 import { useNavigate } from "react-router-dom";
+import { useAxios } from "../context/AxiosProvider";
 
 const useRegister = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const api = useAxios();
 
   const register = async (username, password) => {
     setLoading(true);

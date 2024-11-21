@@ -14,10 +14,6 @@ class UsuarioOut(UsuarioBase):
     model_config = {"from_attributes": True}
 
 
-class UsuarioBase(BaseModel):
-    username: str
-
-
 class UsuarioCreate(BaseModel):
     username: str
     password: str

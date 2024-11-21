@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 # CONFIGURACION
 
-DEFAULT_ENTRY_COUNT = 500 # abarca 7 dias
+DEFAULT_ENTRY_COUNT = 500  # abarca 7 dias
 # Cada cuantos minutos llegan los datos
 MINUTES_BETWEEN_ENTRIES = 20
 DEFAULT_NODO = 1
@@ -21,7 +21,7 @@ MAX_TEMP = 40
 MIN_TEMP = -10
 
 # Delay entre mensajes
-TIME_BETWEEN_MESSAGES = 0.1 # segundos
+TIME_BETWEEN_MESSAGES = 0.001  # segundos
 
 # Valores iniciales
 data = 15
@@ -39,11 +39,24 @@ load_dotenv()
 import argparse
 
 # Configuración de argparse para manejar argumentos de línea de comandos
-parser = argparse.ArgumentParser(description='Enviar datos de temperatura y nivel hidrométrico a través de MQTT.')
-parser.add_argument('--count', type=int, default=DEFAULT_ENTRY_COUNT, help='Número de entradas a generar')
-parser.add_argument('--nodo', type=int, default=DEFAULT_NODO, help="Nodo de sensor a utilizar")
-parser.add_argument('--type', type=int, default=DEFAULT_TYPE, help="Tipo de dato a enviar")
-parser.add_argument('--data', type=int, default=None, help="Dato para enviar manualmente")
+parser = argparse.ArgumentParser(
+    description="Enviar datos de temperatura y nivel hidrométrico a través de MQTT."
+)
+parser.add_argument(
+    "--count",
+    type=int,
+    default=DEFAULT_ENTRY_COUNT,
+    help="Número de entradas a generar",
+)
+parser.add_argument(
+    "--nodo", type=int, default=DEFAULT_NODO, help="Nodo de sensor a utilizar"
+)
+parser.add_argument(
+    "--type", type=int, default=DEFAULT_TYPE, help="Tipo de dato a enviar"
+)
+parser.add_argument(
+    "--data", type=int, default=None, help="Dato para enviar manualmente"
+)
 
 args = parser.parse_args()
 
@@ -71,8 +84,11 @@ def getValidType(type):
             print("Enviando tipo de dato predeterminado - type: ", DEFAULT_TYPE)
             return DEFAULT_TYPE
         else:
-            print("type incorrecto.\n -> 1: temp | 14: precipitacion | 16: tension | 25: nivel hidrométrico")
+            print(
+                "type incorrecto.\n -> 1: temp | 14: precipitacion | 16: tension | 25: nivel hidrométrico"
+            )
             exit(0)
+
 
 TYPE_TO_SEND = getValidType(args.type)
 
@@ -97,14 +113,15 @@ def getLimitsFromType(type):
         return config["umbral"]["nivel_hidrometrico"]
     raise Exception("Tipo incorrecto")
 
-# Limites de datos segun el tipo
-[ MIN, MAX ] = getLimitsFromType(TYPE_TO_SEND)
-data = (MIN + MAX) / 2 # la serie inicia en el medio
 
+# Limites de datos segun el tipo
+[MIN, MAX] = getLimitsFromType(TYPE_TO_SEND)
+data = (MIN + MAX) / 2  # la serie inicia en el medio
+valid_types = [1, 14, 16, 25]
 # Generación de datos
 for i in range(ENTRY_COUNT):
     fecha_hora = start_date + timedelta(minutes=i * MINUTES_BETWEEN_ENTRIES)
-
+    TYPE_TO_SEND = random.choice(valid_types)
     # Simulación de la temperatura
     if TYPE_TO_SEND == 1:
         data += (random.random() - 0.5) * 4
@@ -117,7 +134,7 @@ for i in range(ENTRY_COUNT):
         data += (random.random() - 0.5) * 20
     # Simulación de la tension
     elif TYPE_TO_SEND == 16:
-        data += (random.random() - 0.5)
+        data += random.random() - 0.5
     # Simulación de la precipitacion
     elif TYPE_TO_SEND == 14:
         random_number = random.random() - 0.5
@@ -129,13 +146,12 @@ for i in range(ENTRY_COUNT):
     # Limitar el dato
     data = max(MIN, min(MAX, data))
 
-
-     # Crear el mensaje JSON
+    # Crear el mensaje JSON
     mensaje = {
         "id": args.nodo,
         "type": TYPE_TO_SEND,
         "data": args.data if args.data is not None else data,
-        "time": int(fecha_hora.timestamp())
+        "time": int(fecha_hora.timestamp()),
     }
 
     # Convertir el mensaje a formato JSON
@@ -150,4 +166,3 @@ for i in range(ENTRY_COUNT):
     if args.data is not None:
         exit(0)
     time.sleep(TIME_BETWEEN_MESSAGES)
-

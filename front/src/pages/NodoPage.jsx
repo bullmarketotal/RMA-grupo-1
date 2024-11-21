@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef,useEffect } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Container, LoadingSpinner, MiniMap } from "../components/atoms";
 import {
@@ -10,6 +10,7 @@ import { NodoDataVisualizer } from "../components/organisms";
 import { useFetchNodoData, useNodos } from "../hooks";
 import PDFNodo from "../components/molecules/PDFNodo";
 import BateriaDataVisualizer from "../components/organisms/BateriaDataVisualizer";
+import TestComponent from "./TestComponent";
 
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
@@ -71,7 +72,6 @@ const NodoPage = () => {
  
 
   const paquetesData = useMemo(() => data?.items, [data?.items]);
-  
 
   const handleFilterChange = (newStartDate, newEndDate) => {
     setStartDate(newStartDate);
@@ -92,8 +92,6 @@ const NodoPage = () => {
   if (error) return <p>{error}</p>;
 
   const { latitud, longitud } = sensorData.nodos;
-  
-  
 
   return (
     <Container>

@@ -8,16 +8,17 @@ const TablaDatos = ({ items }) => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "ID Sensor",
-        accessor: "identificador",
+        Header: "Nodo", // Cambiado a "Nombre Nodo"
+        accessor: "nodo_id", // Ahora el acceso es a "nodo" que contiene el nombre
       },
       {
-        Header: "Temperatura",
-        accessor: "temperatura",
+        Header: "Tipo de Dato", // Cambiado a "Tipo de Dato"
+        accessor: "type.nombre", // Aquí accedemos al nombre del tipo de dato
       },
       {
-        Header: "Nivel Hidrométrico",
-        accessor: "nivel_hidrometrico",
+        Header: "Dato", // Columna para el dato
+        accessor: "data", // Accedemos directamente a `data` que es el valor a mostrar
+        Cell: ({ value }) => value.toFixed(1), // Aseguramos que se muestre un solo decimal
       },
       {
         Header: "Fecha y Hora",
@@ -88,9 +89,9 @@ const TablaDatos = ({ items }) => {
                   const { key, ...cellProps } = cell.getCellProps();
                   return (
                     <td key={key} {...cellProps} className="table-row-cell">
-                      {cell.column.Header === 'ID Sensor' && cell.render("Cell")}
-                      { cell.column.Header  === 'Temperatura' && Number(cell.value).toFixed(1) + "°C" }
-                      { cell.column.Header === 'Nivel Hidrométrico' && Number(cell.value).toFixed(1) + "cm" }
+                      {cell.column.Header === "ID Nodo" && cell.render("Cell")}
+                      {cell.column.Header === "Tipo de Dato" && cell.render("Cell")}
+                      {cell.column.Header === "Dato" && `${Number(cell.value).toFixed(1)} °C`} {/* Agregamos unidad en Dato */}
                       { cell.column.Header === 'Fecha y Hora' && dateFormatter(cell.value) }
                     </td>
                   );
