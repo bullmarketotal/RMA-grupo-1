@@ -1,30 +1,28 @@
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
-from fastapi import HTTPException
-from pathlib import Path
 import json
+from pathlib import Path
 
+from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from .alertas.schemas import AlertaCreate
+from .alertas.services import crear_alerta
+from .auth.services import crear_usuario
 from .database import get_db
 from .nodos.models import Nodo
 from .nodos.schemas import NodoCreate
-from .permisos.schemas import PermisoCreate, RolePermisoCreate
-from .permisos.services import create_permiso
-from .roles.models import Role
-from .roles.schemas import RoleCreate
-from .roles.services import create_role
-from .permisos.services import assign_permiso_to_role
+from .paquete.schemas import TipoCreate
+from .paquete.services import crear_tipo
 from .permisos.models import Permiso
-from .auth.services import crear_usuario
+from .permisos.schemas import PermisoCreate, RolePermisoCreate
+from .permisos.services import assign_permiso_to_role, create_permiso
+from .roles.models import Role
+from .roles.schemas import RoleCreate, UsuarioRole
+from .roles.services import assign_role_to_usuario, create_role
 from .usuarios.models import Usuario
 from .usuarios.schemas import Usuario as UsuarioSchema
 from .usuarios.schemas import UsuarioCreate
-from .roles.services import assign_role_to_usuario
 from .usuarios.services import get_user_by_username
-from .roles.schemas import UsuarioRole
-from .paquete.schemas import TipoCreate
-from .paquete.services import crear_tipo
-from .alertas.schemas import AlertaCreate
-from .alertas.services import crear_alerta
 
 
 def init_tipos():
@@ -205,22 +203,19 @@ def init_user():
     finally:
         db.close()
 
+
 def init_alertas():
     db: Session = next(get_db())
-    
-    alerta = AlertaCreate(
-        nombre="amarilla", titulo_notificacion="Alerta Amarilla"
-    )
+
+    alerta = AlertaCreate(nombre="amarilla", titulo_notificacion="Alerta Amarilla")
     try:
         crear_alerta(db, alerta)
         print(f"alerta creado exitosamente")
     except IntegrityError:
         db.rollback()
         print(f"Alerta amarilla ya existe.")
-    
-    alerta = AlertaCreate(
-        nombre="naranja", titulo_notificacion="Alerta Naranja"
-    )
+
+    alerta = AlertaCreate(nombre="naranja", titulo_notificacion="Alerta Naranja")
     try:
         crear_alerta(db, alerta)
         print(f"alerta creado exitosamente")
@@ -228,9 +223,7 @@ def init_alertas():
         db.rollback()
         print(f"Alerta naranja ya existe.")
 
-    alerta = AlertaCreate(
-        nombre="roja", titulo_notificacion="Alerta Roja"
-    )
+    alerta = AlertaCreate(nombre="roja", titulo_notificacion="Alerta Roja")
     try:
         crear_alerta(db, alerta)
         print(f"alerta creado exitosamente")
@@ -257,13 +250,12 @@ def init_alertas():
     except IntegrityError:
         db.rollback()
         print(f"Alerta de bateria ya existe.")
-    
+
     db.commit()
     db.close()
 
 
 def init_configjson():
-    
 
     # Ruta del archivo de configuración
     config_path = Path("config.json")
@@ -274,14 +266,14 @@ def init_configjson():
             "temperatura": 1,
             "precipitacion": 14,
             "tension": 16,
-            "nivel_hidrometrico": 25
+            "nivel_hidrometrico": 25,
         },
         "umbral": {
             "temperatura": [1, 99],
             "nivel_hidrometrico": [0, 100],
             "tension": [1, 100],
-            "precipitacion": [1, 100]
-        }
+            "precipitacion": [1, 100],
+        },
     }
 
     # Verifica si el archivo existe
