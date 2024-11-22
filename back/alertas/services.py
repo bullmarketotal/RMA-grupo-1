@@ -52,8 +52,6 @@ def vincular_alerta(db: Session, alerta_id: int, user_id: int):
     
 
 def obtener_suscriptores_de_alerta(db: Session, alerta_id: int):
-    # Obtener endpoints de usuarios suscriptos al alerta provisto
-
     query = db.query(PushEndpoint).join(Suscripcion, PushEndpoint.usuario_id == Suscripcion.usuario_id).filter(Suscripcion.alerta_id == alerta_id)
     result = query.all()
     return result
@@ -96,15 +94,12 @@ def get_notification_body(db: Session, alerta_id: int, message: str) -> AlertaCr
     alerta = get_alerta(db, alerta_id)
 
     return {
-        "title": alerta.titulo_notificacion,  # Título de la notificación
-        "body": message  # Mensaje que se enviará como cuerpo
+        "title": alerta.titulo_notificacion, 
+        "body": message
     }
 
 def trigger_notification( db: Session, message: str, alerta_id: int):
     notification_data = get_notification_body(db, alerta_id, message)
-    
-    # Aquí recuperas las suscripciones almacenadas (por ejemplo, desde la base de datos)
     endpoints = obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
-    # Iterar sobre todas las suscripciones y enviar la notificación
     notificar_a_endpoints(endpoints, notification_data)
     
