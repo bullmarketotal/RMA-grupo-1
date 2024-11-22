@@ -19,11 +19,12 @@ const navigationItems = [
   { name: "Crear Nodo", link: "/create-sensor" },
   { name: "Nodos", link: "/list-sensor" },
   { name: "Datos", link: "/datos-view" },
+  
 ];
 
 const menuItems = [
   { name: "Perfil", link: "#" },
-  { name: "Configuración", link: "#" },
+  { name: "Configuración", link: "/configuracion" },
   { name: "Cerrar sesión", link: "/confirm-logout" },
 ];
 
