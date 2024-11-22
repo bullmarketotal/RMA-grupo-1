@@ -17,7 +17,7 @@ import Breadcrumbs from "./BreadCrumb";
 const navigationItems = [
   { name: "Inicio", link: "/" },
   { name: "Crear Nodo", link: "/create-sensor" },
-  { name: "Nodos", link: "/list-sensor" },
+  { name: "Nodos", link: "/lista-nodos" },
   { name: "Datos", link: "/datos-view" },
   
 ];
@@ -153,8 +153,10 @@ export default function NavBar() {
           </div>
         </DisclosurePanel>
       </Disclosure>
-      <Breadcrumbs />
-      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-64px)] scrollbar-custom overflow-y-scroll">
+      <div className="flex h-4 justify-center bg-neutral-100 dark:bg-neutral-800 items-center">
+        <Breadcrumbs />
+      </div>
+      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-80px)] scrollbar-custom overflow-y-scroll">
         <Outlet />
       </div>
     </>

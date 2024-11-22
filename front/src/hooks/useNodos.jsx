@@ -6,12 +6,7 @@ const fetcher = async (url, axios) => {
   return response.data;
 };
 
-export const useNodos = ({
-  nodo_id,
-  enableAdd = false,
-  enableUpdate = false,
-  enableDelete = false,
-} = {}) => {
+export const useNodos = ({ nodo_id } = {}) => {
   const axios = useAxios();
 
   const endpoint = nodo_id ? `/nodos/${nodo_id}` : "/nodos";
@@ -26,26 +21,20 @@ export const useNodos = ({
     }
   );
 
-  const addNodo = enableAdd
-    ? async (nodo) => {
-        await axios.post("/nodos", nodo);
-        mutate();
-      }
-    : undefined;
+  const addNodo = async (nodo) => {
+    await axios.post("/nodos", nodo);
+    mutate();
+  };
 
-  const updateNodo = enableUpdate
-    ? async (nodoId, nodo) => {
-        await axios.put(`/nodos/${nodoId}`, nodo);
-        mutate();
-      }
-    : undefined;
+  const updateNodo = async (nodoId, nodo) => {
+    await axios.put(`/nodos/${nodoId}`, nodo);
+    mutate();
+  };
 
-  const deleteNodo = enableDelete
-    ? async (nodoId) => {
-        await axios.delete(`/nodos/${nodoId}`);
-        mutate();
-      }
-    : undefined;
+  const deleteNodo = async (nodoId) => {
+    await axios.delete(`/nodos/${nodoId}`);
+    mutate();
+  };
 
   return {
     nodos: data ?? [],
@@ -56,4 +45,5 @@ export const useNodos = ({
     deleteNodo,
   };
 };
+
 export default useNodos;

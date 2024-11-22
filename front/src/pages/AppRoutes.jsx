@@ -20,7 +20,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<NavBar />}>
         <Route index element={<Inicio />} />
-        <Route path="list-sensor" element={<NodoList />} />
+        <Route path="lista-nodos" element={<NodoList />} />
         <Route path="datos-view" element={<DatosPage />} />
         <Route
           path="create-sensor"

@@ -11,7 +11,7 @@ const NodoCard = ({ nodo }) => {
   const breadcrumbPath = [
     { label: "Home", path: "/" },
     { label: "Lista de Nodos", path: "/lista-nodos" },
-    { label: "Nodo", path: "/nodo/1" },
+    { label: `Nodo ${nodo.identificador}`, path: `/nodo/${nodo.id}` },
   ];
   const now = useMemo(() => new Date(), []);
 
@@ -30,6 +30,7 @@ const NodoCard = ({ nodo }) => {
     nodo_id: nodo.id,
     filterStartDate: past24Hours,
     filterEndDate: nowISOString,
+    orderBy: "date",
   });
 
   const { info, items = [] } = paqueteResponse || { info: {}, items: [] };
