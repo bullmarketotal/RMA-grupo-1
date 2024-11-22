@@ -5,28 +5,49 @@ import BateriaHeader from "../components/molecules/BateriaHeader";
 import BateriaInfoPanel from "../components/molecules/BateriaInfoPanel";
 import BateriaDataVisualizer from "../components/organisms/BateriaDataVisualizer";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
-import { useFetchNodoData } from "../hooks";
+import { useNodos, useFetchNodoData } from "../hooks";
 import { Container, Header } from "../components/atoms";
 import { useNavigate } from "react-router-dom";
 
 const BateriaPage = () => {
-  // const id = 1;
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
-  // const { data, loading, error } = useFetchSensorData(id, startDate, endDate);
-  // const navigate = useNavigate();
+  
+  const {id} = useParams();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const navigate = useNavigate();
+  
+  const nodo =useNodos({
+    nodo_id: id,
+    enableAdd: true,
+    enableUpdate: true,
+    enableDelete: true,
+  });
 
-  // const handleFilterChange = (newStartDate, newEndDate) => {
-  //   setStartDate(newStartDate);
-  //   setEndDate(newEndDate);
-  // };
+  const sensorData = nodo.nodos;
 
-  // if (loading) return <LoadingSpinner />;
-  // if (error) return <p>{error}</p>;
+  const { data, loading, error } = useFetchNodoData({
+    offset: 1,
+    nodo_id: id, 
+    filterStartDate: startDate || "",
+    filterEndDate: endDate || "",
+    order: "asc",
+    orderBy: "date",
+    type: 16,
+  });
+  
 
-  // function volverAlSensor() {
-  //   navigate("/sensor/1");
-  // }
+
+  const handleFilterChange = (newStartDate, newEndDate) => {
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+  };
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <p>{error}</p>;
+
+    function volverAlSensor() {
+      navigate(`/sensor/${id}`);
+    }
 
   return (
     <Container>
@@ -43,12 +64,12 @@ const BateriaPage = () => {
       </div>
       <div id="main">
         <div className="card-body">
-          <BateriaHeader sensor={data.sensor} loading={loading} />
-          <BateriaInfoPanel data={data} loading={loading} />
+          <BateriaHeader sensor={sensorData} />
+          <BateriaInfoPanel data={data.items} sensor={sensorData}  />
         </div>
       </div>
       <BateriaDataVisualizer
-        data={data}
+        data={data.items}
         loading={loading}
         onFilterChange={handleFilterChange}
       />

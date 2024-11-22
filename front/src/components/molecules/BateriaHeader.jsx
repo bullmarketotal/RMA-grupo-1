@@ -3,6 +3,7 @@ import { LoadingSpinner } from "../atoms";
 import { useNavigate } from "react-router-dom";
 
 const BateriaHeader = ({ sensor, loading }) => {
+  
   const { identificador, latitud, longitud } = sensor;
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
@@ -10,8 +11,6 @@ const BateriaHeader = ({ sensor, loading }) => {
     latitud: latitud,
     longitud: longitud,
   });
-  const navigate = useNavigate();
-
   const handleEditClick = () => {
     if (isEditing) {
       console.log("Sensor actualizado:", editableSensor);
@@ -20,9 +19,6 @@ const BateriaHeader = ({ sensor, loading }) => {
     setIsEditing(!isEditing);
   };
 
-  function monitorearBateria(){
-    navigate("/bateria-page");
-  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +41,7 @@ const BateriaHeader = ({ sensor, loading }) => {
                 <input
                   type="text"
                   name="identificador"
-                  value={editableSensor.identificador}
+                  value={identificador}
                   onChange={handleChange}
                   style={{
                     border: "1px solid #ccc",
@@ -55,7 +51,7 @@ const BateriaHeader = ({ sensor, loading }) => {
                   }}
                 />
               ) : (
-                editableSensor.identificador
+                identificador
               )}
             </h2>
             <p className="normal-text font-semibold">ACA ESTAMOS VIENDO LA BATERIA.</p>

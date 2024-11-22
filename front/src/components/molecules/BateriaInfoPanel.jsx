@@ -5,19 +5,21 @@ import { LoadingSpinner} from "../atoms";
 const CARD_HEIGHT = 300;
 const CARD_WIDTH = 400;
 
-const BateriaInfoPanel = ({ data, loading }) => {
-  const { latitud, longitud } = data.sensor;
+const BateriaInfoPanel = ({ sensor,data, loading }) => {
+  console.log("DATA: ", data);
+  console.log("Sesnor: ", sensor);
+  const { latitud, longitud } = sensor;
   return (
     <div
       id="content"
       className="d-flex justify-content-between align-items-start"
     >
       <div>
-        {loading || !data.paquetes.length ? (
+        {loading || !data.length ? (
           <LoadingSpinner />
         ) : (
           <BateriaRecentDataContainer
-            data={data.paquetes}
+            data={data}
             CARD_HEIGHT={CARD_HEIGHT}
           />
         )}
