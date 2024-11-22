@@ -1,9 +1,12 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
+from datetime import datetime
+
+from back.database import get_db
 from .schemas import PushEndpointReceive, AlertaCreate, NotificationData
 from ..usuarios.schemas import Usuario
-from .models import Alerta, PushEndpoint, Suscripcion
+from .models import Alerta, PushEndpoint, Suscripcion, Notificacion, UsuarioNotificacion
 from pywebpush import webpush, WebPushException
 import os
 import json
@@ -56,7 +59,7 @@ def obtener_suscriptores_de_alerta(db: Session, alerta_id: int):
     result = query.all()
     return result
 
-def notificar_a_endpoints(endpoints, notification_data: NotificationData):
+def notificar_a_endpoints(db: Session, endpoints, notification_data: NotificationData):
     for endpoint in endpoints:
         try:
             webpush(
@@ -76,6 +79,23 @@ def notificar_a_endpoints(endpoints, notification_data: NotificationData):
             )
         except WebPushException as ex:
             print(f"Error enviando notificación: {str(ex)}")
+
+def almacenar_notificacion(db: Session, endpoints: list[PushEndpoint], alerta_id: int, notification_data):
+    notificacion = Notificacion(
+        alerta_id = alerta_id,
+        fecha_hora = datetime.now(),
+        message = notification_data["body"],
+        titulo = notification_data["title"]
+    )
+
+    notificacion.save(db)
+
+    for endpoint in endpoints:
+        usua_noti = UsuarioNotificacion(
+            notificacion_id = notificacion.id,
+            usuario_id = endpoint.usuario_id
+        )
+        usua_noti.save(db)
 
 
 def crear_alerta(db: Session, alerta: AlertaCreate):
@@ -101,5 +121,6 @@ def get_notification_body(db: Session, alerta_id: int, message: str) -> AlertaCr
 def trigger_notification( db: Session, message: str, alerta_id: int):
     notification_data = get_notification_body(db, alerta_id, message)
     endpoints = obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
-    notificar_a_endpoints(endpoints, notification_data)
+    notificar_a_endpoints(db, endpoints, notification_data)
+    almacenar_notificacion(db, endpoints, alerta_id, notification_data)
     
