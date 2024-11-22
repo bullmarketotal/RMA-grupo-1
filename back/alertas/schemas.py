@@ -31,3 +31,7 @@ class SubscribeUser(BaseModel):
 class PushEndpointResponse(BaseModel):
     message: str
     username: Optional[str] = None
+
+class NotificationData(BaseModel):
+    message: str
+    body: str

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
-from .schemas import PushEndpointReceive, AlertaCreate
+from .schemas import PushEndpointReceive, AlertaCreate, NotificationData
 from ..usuarios.schemas import Usuario
 from .models import Alerta, PushEndpoint, Suscripcion
 from pywebpush import webpush, WebPushException
@@ -53,8 +53,7 @@ def vincular_alerta(db: Session, endpoint_id: int, alerta_id: int, user_id: int)
 def obtener_suscriptores_de_alerta(db: Session):
     return PushEndpoint.get_all(db)
 
-def notificar_a_endpoints(endpoints, notification_data):
-    print(endpoints)
+def notificar_a_endpoints(endpoints, notification_data: NotificationData):
     for endpoint in endpoints:
         try:
             webpush(
