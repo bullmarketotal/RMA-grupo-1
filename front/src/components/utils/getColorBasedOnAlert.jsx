@@ -9,7 +9,7 @@ const getColorBasedOnAlert = (alertLevel) => {
     case "critical":
       return "red-500";
     default:
-      return "gray-400";
+      return "sky-500";
   }
 };
 
