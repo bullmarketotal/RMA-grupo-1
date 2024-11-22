@@ -7,7 +7,7 @@ class Alerta(ModeloBase):
     __tablename__ = "alertas"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    nombre: Mapped[str] = mapped_column(String(50))
+    nombre: Mapped[str] = mapped_column(String(50), unique=True)
     titulo_notificacion: Mapped[str] = mapped_column(String(50))
 
 class PushEndpoint(ModeloBase):
