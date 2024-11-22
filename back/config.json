@@ -7,20 +7,20 @@
     },
     "umbral": {
         "temperatura": [
-            -30,
-            61
+            1,
+            99
         ],
         "nivel_hidrometrico": [
-            100,
-            400
+            -2,
+            100
         ],
         "tension": [
-            0,
-            20
+            1,
+            100
         ],
         "precipitacion": [
-            0,
-            300
+            1,
+            100
         ]
     }
 }

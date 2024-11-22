@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext"; 
 
-const TypeForm = ({ typeName, initialRange, onSubmit, currentConfig }) => {
+
+
+const TypeForm = ({ typeName, type, initialRange, onSubmit, currentConfig }) => {
   const [range, setRange] = useState(initialRange);
+  const { showNotification } = useNotification(); 
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,16 +17,17 @@ const TypeForm = ({ typeName, initialRange, onSubmit, currentConfig }) => {
         ...currentConfig,
         umbral: {
           ...currentConfig.umbral,
-          [typeName]: range,
+          [type]: range,
         },
       };
 
       await axios.put("http://localhost:8000/config/", updatedConfig);
-      onSubmit(typeName, range);
-      alert("Configuración actualizada");
+      onSubmit(type, range); 
+
     } catch (error) {
       console.error("Error al actualizar la configuración:", error);
-      alert("Error al actualizar la configuración");
+      showNotification("Error al actualizar la configuración", "error"); 
+
     }
   };
 

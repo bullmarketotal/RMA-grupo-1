@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import TypeForm from "../molecules/TypeForm";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext"; 
+
 
 const ConfigFormList = () => {
   const [config, setConfig] = useState(null);
+  const { showNotification } = useNotification(); 
+
 
   const formatearNombre = (typeName) => {
     const formattedName = typeName
@@ -27,6 +31,8 @@ const ConfigFormList = () => {
         setConfig(response.data);
       } catch (err) {
         console.error("Error al obtener la config:", err);
+        showNotification("Error al cargar la configuración", "error"); 
+
       }
     };
 
@@ -36,18 +42,20 @@ const ConfigFormList = () => {
   const handleUpdate = (type, newRange) => {
     const updatedConfig = { ...config, umbral: { ...config.umbral, [type]: newRange } };
     setConfig(updatedConfig);
+    showNotification("Valor actualizado correctamente", "success"); 
+
   };
 
   if (!config) return <div className="alert alert-info">Cargando...</div>;
 
   return (
     <div className="table-responsive">
-      <table className="table table-striped table-hover">
-        <thead className="">
+      <table className="table table-hover">
+        <thead>
           <tr>
-            <th scope="col">Tipo de Umbral</th>
-            <th scope="col">Valor Mínimo</th>
-            <th scope="col">Valor Máximo</th>
+            <th scope="col">Tipo</th>
+            <th scope="col"> Rango Mínimo</th>
+            <th scope="col"> Rango Máximo</th>
             <th scope="col">Acciones</th>
           </tr>
         </thead>
@@ -56,6 +64,7 @@ const ConfigFormList = () => {
             <TypeForm
               key={type}
               typeName={formatearNombre(type)} 
+              type={type} 
               initialRange={config.umbral[type]}
               currentConfig={config}
               onSubmit={handleUpdate}
