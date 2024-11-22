@@ -5,7 +5,7 @@ export { default as GraphNivel } from "./GraphNivel";
 export { default as GraphTemp } from "../molecules/GraphTemp";
 export { default as LoginForm } from "./LoginForm";
 export { default as MapaComponent } from "./MapaComponent";
-export { default as MapaDeNodos } from "./MapaDeNodos";
+export { default as MapaDeNodos } from "../organisms/MapaDeNodos";
 export { default as MaxLevelCard } from "./MaxLevelCard";
 export { default as NodoHeader } from "./NodoHeader";
 export { default as NodoRecentDataCard } from "./NodoRecentDataCard";
