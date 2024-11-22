@@ -5,7 +5,6 @@ import { useUpdateSensor } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 const NodoHeader = ({ sensor, loading }) => {
-  console.log("SENSO:", sensor);
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
     identificador: sensor.identificador,
@@ -40,9 +39,9 @@ const NodoHeader = ({ sensor, loading }) => {
           : value,
     });
   };
-
+  const idSensor = sensor.id;
   function monitorearBateria() {
-    navigate("/bateria-page");
+    navigate(`/sensor/${idSensor}/bateria-page`);
   }
 
   return (

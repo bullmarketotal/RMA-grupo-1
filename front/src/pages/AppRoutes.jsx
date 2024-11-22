@@ -13,6 +13,7 @@ import BateriaPage from "./BateriaPage";
 import LogoutConfirmationPage from "./LogoutConfirmationPage";
 import RegisterPage from "./RegisterPage";
 import { TestNotifications } from "./TestNotifications";
+import ConfigPage from "./ConfigPage";
 
 const AppRoutes = () => {
   return (
@@ -30,13 +31,15 @@ const AppRoutes = () => {
           }
         />
         <Route path="sensor/:id" element={<NodoPage />} />
-        <Route path="bateria-page" element={<BateriaPage />} />
+        <Route path="sensor/:id/bateria-page" element={<BateriaPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="testpage" element={<Example />} />
         <Route path="/confirm-logout" element={<LogoutConfirmationPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/notificaciones" element={<TestNotifications />} />
+        <Route path="/configuracion" element={<ConfigPage/>} />
+        
       </Route>
     </Routes>
   );
