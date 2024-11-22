@@ -13,16 +13,16 @@ class Alerta(ModeloBase):
 class PushEndpoint(ModeloBase):
     __tablename__ = "push_endpoint"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
+    usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey("usuarios.id"))
     endpoint: Mapped[str] = mapped_column(String(250), unique=True)
     expiration_time: Mapped[int | None] = mapped_column(Integer, nullable=True, default=None)
     keys_auth: Mapped[str] = mapped_column(String(50)) # TODO: Encriptar?
     keys_p256dh: Mapped[str] = mapped_column(String(50)) # TODO: Encriptar?
 
-# Relaciona a usuarios con sus endpoints (navegadores, dispositivos)
+# Relaciona a usuarios con sus endpoints (navegadores, dispositivos) y un alerta
 class Suscripcion(ModeloBase):
     __tablename__ = 'suscripcion'
 
     alerta_id: Mapped[int] = mapped_column(Integer, ForeignKey('alertas.id'), primary_key=True)
-    push_endpoint_id: Mapped[int] = mapped_column(Integer, ForeignKey('push_endpoint.id'), primary_key=True)
-    usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios.id'))
+    usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios.id'), primary_key=True)

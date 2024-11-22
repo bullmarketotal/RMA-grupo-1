@@ -5,11 +5,12 @@ import { useAxios } from "../context/AxiosProvider";
 const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmEXckfEXYawnzytMjOEyCJsQ8NX7-gGHk';
 
 const ID_ALERTA = 1;
-const baseURL = import.meta.env.VITE_API_URL + 'subscribe'
+const baseURL = import.meta.env.VITE_API_URL + '/subscribe'
 
 export function TestNotifications() {
     askNotificationPermission();
     const [consolelog, setConsolelog] = useState('')
+    const [alertId, setAlertId] = useState(1)
     const axios = useAxios();
 
     async function subscribeUser(event) {
@@ -24,11 +25,14 @@ export function TestNotifications() {
                 });
     
     
-                const alerta_id = parseInt(event.target.dataset.alerta);
-        
+                if(!alertId) {
+                    alert("Elegi un alerta capo")
+                    return
+                }
+                
                 const requestBody = {
                     subscription,
-                    alerta_id
+                    alerta_id: alertId
                 }
                 // Enviar la suscripción al backend para almacenarla
         
@@ -41,15 +45,25 @@ export function TestNotifications() {
         }
     }
     
-    
+    function handleSelect(event){
+        setAlertId(event.target.value);
+    }
 
     return (
         <div>
             <h1 className="bold text-2xl">Test suscripcion</h1>
+            <select onChange={handleSelect}>
+                <option value={1}>Alerta amarilla</option>
+                <option value={2}>Alerta naranja</option>
+                <option value={3}>Alerta roja</option>
+                <option value={4}>Dato invalido</option>
+                <option value={5}>Bateria baja</option>
+            </select><hr></hr>
             <button data-alerta={ID_ALERTA} onClick={subscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600">Suscribirse</button>
-
-            <p>{consolelog}</p>
-            <p>url: {baseURL}</p>
+            <div className="rounded border p-2">
+                <p>{consolelog}</p>
+                <p>url: {baseURL}</p>
+            </div>
         </div>
     )
 }

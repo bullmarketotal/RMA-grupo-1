@@ -27,23 +27,18 @@ async def subscribe_user(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user),
     ):
-    print("ID ALERTA:", body.alerta_id)
-    push_endpoint_id = services.agregar_endpoint(db, body.subscription)
-    print("ID ENDPOINT:", push_endpoint_id)
-    #services.vincular_alerta(db, push_endpoint_id, body.alerta_id, current_user.id)
+    push_endpoint_id = services.agregar_endpoint(db, body.subscription, current_user.id)
+    services.vincular_alerta(db, body.alerta_id, current_user.id)
 
     return {"message": "Suscripción exitosa", "username": current_user.username}
 
 @router.post('/test-notification', tags=["Alertas"])
-def send_push_notification(message: str, db: Session = Depends(get_db)):
+def send_push_notification(message: str, alerta_id: int, db: Session = Depends(get_db)):
 
-    notification_data = {
-        "title": "Notificación de prueba",  # Título de la notificación
-        "body": message  # Mensaje que se enviará como cuerpo
-    }
+    notification_data = services.get_notification_body(db, alerta_id, message)
 
     # Aquí recuperas las suscripciones almacenadas (por ejemplo, desde la base de datos)
-    endpoints = services.obtener_suscriptores_de_alerta(db)
+    endpoints = services.obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
     # Iterar sobre todas las suscripciones y enviar la notificación
     services.notificar_a_endpoints(endpoints, notification_data)
     

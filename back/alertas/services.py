@@ -12,9 +12,10 @@ VAPID_PUBLIC_KEY = os.getenv("PUBLIC_KEY")
 VAPID_PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 VAPID_EMAIL = "mailto:gonzalo.ag88@gmail.com"
 
-def agregar_endpoint(db: Session, subscription: PushEndpointReceive) -> int:
+def agregar_endpoint(db: Session, subscription: PushEndpointReceive, usuario_id: int) -> int:
     
     push_endpoint = PushEndpoint(
+        usuario_id = usuario_id,
         endpoint = subscription.endpoint,
         expiration_time = subscription.expirationTime,
         keys_auth = subscription.keys["auth"],
@@ -25,7 +26,7 @@ def agregar_endpoint(db: Session, subscription: PushEndpointReceive) -> int:
         res =  push_endpoint.save(db)
         id = res.id
     except IntegrityError as e:
-        print("Endpoint ya está registrado")
+        print("Endpoint ya está registrado", e)
         db.rollback()
         res = PushEndpoint.filter(db, endpoint = subscription.endpoint)
         id = res[0].id
@@ -36,8 +37,8 @@ def agregar_endpoint(db: Session, subscription: PushEndpointReceive) -> int:
     finally:
         return id
     
-def vincular_alerta(db: Session, endpoint_id: int, alerta_id: int, user_id: int):
-    suscripcion = Suscripcion(endpoint_id = endpoint_id, alerta_id=alerta_id, user_id=user_id)
+def vincular_alerta(db: Session, alerta_id: int, user_id: int):
+    suscripcion = Suscripcion(alerta_id=alerta_id, usuario_id=user_id)
     print("Vinculando alerta a suscripcion: ", suscripcion)
     try:
         suscripcion.save(db)
@@ -50,8 +51,12 @@ def vincular_alerta(db: Session, endpoint_id: int, alerta_id: int, user_id: int)
         raise HTTPException(status_code=500, detail="Ocurrió un error inesperado.")
     
 
-def obtener_suscriptores_de_alerta(db: Session):
-    return PushEndpoint.get_all(db)
+def obtener_suscriptores_de_alerta(db: Session, alerta_id: int):
+    # Obtener endpoints de usuarios suscriptos al alerta provisto
+
+    query = db.query(PushEndpoint).join(Suscripcion, PushEndpoint.usuario_id == Suscripcion.usuario_id).filter(Suscripcion.alerta_id == alerta_id)
+    result = query.all()
+    return result
 
 def notificar_a_endpoints(endpoints, notification_data: NotificationData):
     for endpoint in endpoints:
@@ -86,3 +91,11 @@ def get_alerta(db: Session, alerta_id: int):
     if not alerta:
         raise HTTPException(status_code = 404, detail="Alerta no encontrada")
     return alerta
+
+def get_notification_body(db: Session, alerta_id: int, message: str) -> AlertaCreate:
+    alerta = get_alerta(db, alerta_id)
+
+    return {
+        "title": alerta.titulo_notificacion,  # Título de la notificación
+        "body": message  # Mensaje que se enviará como cuerpo
+    }
