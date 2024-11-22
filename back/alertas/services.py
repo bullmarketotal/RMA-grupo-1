@@ -73,7 +73,7 @@ def notificar_a_endpoints(endpoints, notification_data: NotificationData):
                 vapid_private_key=VAPID_PRIVATE_KEY,
                 vapid_claims={
                     "sub": VAPID_EMAIL,
-                    "aud": "https://fcm.googleapis.com"
+                    "aud": ""
                 }
             )
         except WebPushException as ex:
