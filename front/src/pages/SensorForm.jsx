@@ -31,31 +31,31 @@ const SensorForm = () => {
     setIsSubmitting(true);
 
     if (typeof addNodo !== "function") {
-        console.error("addNodo no está definido.");
-        setIsSubmitting(false);
-        return;
+      console.error("addNodo no está definido.");
+      setIsSubmitting(false);
+      return;
     }
     const dataToSend = {
-        ...formData,
-        latitud: isNaN(parseFloat(formData.latitud))
-            ? null
-            : parseFloat(formData.latitud),
-        longitud: isNaN(parseFloat(formData.longitud))
-            ? null
-            : parseFloat(formData.longitud),
+      ...formData,
+      latitud: isNaN(parseFloat(formData.latitud))
+        ? null
+        : parseFloat(formData.latitud),
+      longitud: isNaN(parseFloat(formData.longitud))
+        ? null
+        : parseFloat(formData.longitud),
     };
 
     try {
-        await addNodo(dataToSend);
-        showNotification("¡Nodo creado exitosamente!", "success");
-        // navigate("/sensores"); 
+      await addNodo(dataToSend);
+      showNotification("¡Nodo creado exitosamente!", "success");
+      navigate("/sensores");
     } catch (error) {
-        showNotification("Error al crear el sensor.", "error");
-        console.error("Error al crear el sensor:", error);
+      showNotification("Error al crear el sensor.", "error");
+      console.error("Error al crear el sensor:", error);
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
-};
+  };
 
   return (
     <Container>
