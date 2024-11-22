@@ -2,6 +2,8 @@
 from back.paquete.schemas import PaqueteBase, PaqueteRechazado
 from back.paquete.services import crear_paquete_rechazado
 from ..database import get_db
+from back.alertas.services import trigger_notification
+from back.nodos.models import Nodo
 
 def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
     motivo = None
@@ -23,6 +25,9 @@ def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
             "motivo": motivo
         })
         print("rechazando paquete : ", paquete_rechazado)
+        db = next(get_db())
+        nodo = Nodo.get(db, paquete.nodo_id)
+        trigger_notification(db = db, message=f"#{nodo.id} - {nodo.identificador}: {motivo}", alerta_id=4)
         crear_paquete_rechazado(next(get_db()), paquete_rechazado)
         return False
 

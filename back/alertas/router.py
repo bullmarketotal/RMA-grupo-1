@@ -34,14 +34,7 @@ async def subscribe_user(
 
 @router.post('/test-notification', tags=["Alertas"])
 def send_push_notification(message: str, alerta_id: int, db: Session = Depends(get_db)):
-
-    notification_data = services.get_notification_body(db, alerta_id, message)
-
-    # Aquí recuperas las suscripciones almacenadas (por ejemplo, desde la base de datos)
-    endpoints = services.obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
-    # Iterar sobre todas las suscripciones y enviar la notificación
-    services.notificar_a_endpoints(endpoints, notification_data)
-    
+    services.trigger_notification(db=db, message=message, alerta_id=alerta_id)
     return {"message": "Notificaciones enviadas exitosamente"}
 
 
