@@ -21,6 +21,8 @@ from .usuarios.services import get_user_by_username
 from .roles.schemas import UsuarioRole
 from .paquete.schemas import TipoCreate
 from .paquete.services import crear_tipo
+from .alertas.schemas import AlertaCreate
+from .alertas.services import crear_alerta
 
 
 def init_tipos():
@@ -201,6 +203,61 @@ def init_user():
     finally:
         db.close()
 
+def init_alertas():
+    db: Session = next(get_db())
+    
+    alerta = AlertaCreate(
+        nombre="amarilla", titulo_notificacion="Alerta Amarilla"
+    )
+    try:
+        crear_alerta(db, alerta)
+        print(f"alerta creado exitosamente")
+    except IntegrityError:
+        db.rollback()
+        print(f"Alerta amarilla ya existe.")
+    
+    alerta = AlertaCreate(
+        nombre="naranja", titulo_notificacion="Alerta Naranja"
+    )
+    try:
+        crear_alerta(db, alerta)
+        print(f"alerta creado exitosamente")
+    except IntegrityError:
+        db.rollback()
+        print(f"Alerta naranja ya existe.")
+
+    alerta = AlertaCreate(
+        nombre="roja", titulo_notificacion="Alerta Roja"
+    )
+    try:
+        crear_alerta(db, alerta)
+        print(f"alerta creado exitosamente")
+    except IntegrityError:
+        db.rollback()
+        print(f"Alerta roja ya existe.")
+
+    alerta = AlertaCreate(
+        nombre="dato_invalido", titulo_notificacion="Dato erroneo detectado"
+    )
+    try:
+        crear_alerta(db, alerta)
+        print(f"alerta creado exitosamente")
+    except IntegrityError:
+        db.rollback()
+        print(f"Alerta de validacion ya existe.")
+
+    alerta = AlertaCreate(
+        nombre="bateria_baja", titulo_notificacion="Batería baja detectada"
+    )
+    try:
+        crear_alerta(db, alerta)
+        print(f"alerta creado exitosamente")
+    except IntegrityError:
+        db.rollback()
+        print(f"Alerta de bateria ya existe.")
+    
+    db.commit()
+    db.close()
 
 def init_db():
     init_permisos()
@@ -208,6 +265,7 @@ def init_db():
     init_nodos()
     init_user()
     init_tipos()
+    init_alertas()
 
 
 if __name__ == "__main__":

@@ -22,6 +22,7 @@ from .usuarios.router import router as usuarios_router
 from .roles.router import router as roles_router
 from .rango_valores.router import router as config_router
 from .auth.router import router as auth_router
+from .alertas.router import router as alertas_router
 from .carga_db import init_db
 
 # Cargar configuración global
@@ -105,3 +106,4 @@ app.include_router(usuarios_router)
 app.include_router(roles_router)
 app.include_router(auth_router)
 app.include_router(config_router)
+app.include_router(alertas_router)

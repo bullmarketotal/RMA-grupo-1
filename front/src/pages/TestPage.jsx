@@ -12,6 +12,9 @@ import TestFetchNodoData from "./TestFetchNodoData";
 
 const columnHelper = createColumnHelper();
 const TableCell = ({ getValue, row, column, table }) => {
+
+  
+
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
@@ -189,6 +192,7 @@ const NodoTable = () => {
 
   return (
     <Container>
+      
       <h1>Gestión de Nodos</h1>
       {loading && <p>Cargando...</p>}
       {error && <p>Error: {error.message}</p>}
@@ -201,9 +205,9 @@ const NodoTable = () => {
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                 </th>
               ))}
             </tr>
