@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
+from pathlib import Path
+import json
 
 from .database import get_db
 from .nodos.models import Nodo
@@ -259,6 +261,39 @@ def init_alertas():
     db.commit()
     db.close()
 
+
+def init_configjson():
+    
+
+    # Ruta del archivo de configuración
+    config_path = Path("config.json")
+
+    # Valores por defecto
+    default_config = {
+        "type": {
+            "temperatura": 1,
+            "precipitacion": 14,
+            "tension": 16,
+            "nivel_hidrometrico": 25
+        },
+        "umbral": {
+            "temperatura": [1, 99],
+            "nivel_hidrometrico": [0, 100],
+            "tension": [1, 100],
+            "precipitacion": [1, 100]
+        }
+    }
+
+    # Verifica si el archivo existe
+    if not config_path.exists():
+        # Si no existe, crea el archivo con la configuración predeterminada
+        with config_path.open("w", encoding="utf-8") as file:
+            json.dump(default_config, file, indent=4, ensure_ascii=False)
+        print("Archivo config.json creado con valores predeterminados.")
+    else:
+        print("Archivo config.json ya existe.")
+
+
 def init_db():
     init_permisos()
     init_roles()
@@ -266,6 +301,7 @@ def init_db():
     init_user()
     init_tipos()
     init_alertas()
+    init_configjson()
 
 
 if __name__ == "__main__":
