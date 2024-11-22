@@ -6,9 +6,21 @@
         "nivel_hidrometrico": 25
     },
     "umbral": {
-        "temperatura": [-30, 60],
-        "nivel_hidrometrico": [0, 400],
-        "tension": [0, 20],
-        "precipitacion": [0, 300]
+        "temperatura": [
+            -30,
+            61
+        ],
+        "nivel_hidrometrico": [
+            100,
+            400
+        ],
+        "tension": [
+            0,
+            20
+        ],
+        "precipitacion": [
+            0,
+            300
+        ]
     }
 }
