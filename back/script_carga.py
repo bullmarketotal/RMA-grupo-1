@@ -42,8 +42,7 @@ parser.add_argument(
     "--count",
     type=int,
     default=DEFAULT_ENTRY_COUNT,
-    help="Número de entradas a generar",
-    required=True
+    help="Número de entradas a generar"
 )
 parser.add_argument(
     "--nodo", type=int, default=DEFAULT_NODO, help="Nodo de sensor a utilizar", required=True
