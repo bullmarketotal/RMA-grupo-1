@@ -13,8 +13,6 @@ from datetime import datetime, timedelta
 # CONFIGURACION
 
 DEFAULT_ENTRY_COUNT = 500  # abarca 7 dias
-# Cada cuantos minutos llegan los datos
-MINUTES_BETWEEN_ENTRIES = 20
 DEFAULT_NODO = 1
 
 # Temperaturas máximas y minimas permitidas
@@ -28,6 +26,7 @@ import random
 import time
 import os
 import json
+import math
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
@@ -68,6 +67,8 @@ args = parser.parse_args()
 
 ENTRY_COUNT = args.count
 TIME_BETWEEN_MESSAGES = args.delayms / 1000  # segundos
+# Cada cuantos minutos llegan los datos
+MINUTES_BETWEEN_ENTRIES = args.minutes
 
 start_date = datetime.now() - timedelta(minutes=args.count * MINUTES_BETWEEN_ENTRIES)
 
@@ -148,11 +149,9 @@ def generar_temp():
     for i in range(ENTRY_COUNT):
         fecha_hora = start_date + timedelta(minutes=i * MINUTES_BETWEEN_ENTRIES)
         # Simulación de la temperatura
-        data_temp += (random.random() - 0.5) * 2
-        if 8 <= fecha_hora.hour < 16:
-            data_temp += 1  # Subida durante el día
-        elif fecha_hora.hour >= 16:
-            data_temp -= 1  # Bajada hacia la noche
+        data_temp += (random.random() - 0.5) * (1.2 * MINUTES_BETWEEN_ENTRIES / 20)
+
+        data_temp += math.sin(math.pi * (fecha_hora.hour - 7)/12)
         
         # Limitar el dato
         data_temp = max(MIN, min(MAX, data_temp))
