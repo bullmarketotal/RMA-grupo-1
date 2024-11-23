@@ -124,3 +124,20 @@ def trigger_notification( db: Session, message: str, alerta_id: int):
     notificar_a_endpoints(db, endpoints, notification_data)
     almacenar_notificacion(db, endpoints, alerta_id, notification_data)
     
+
+def unsubscribe(db: Session, usuario_id: int, alerta_id: int):
+    sub = db.query(Suscripcion).filter(Suscripcion.usuario_id == usuario_id, Suscripcion.alerta_id == alerta_id).first()
+    if not sub:
+        return {"message": "No existe la suscripción provista"}
+    try:
+        sub.delete(db)
+        # Si al usuario no le queda suscripta ninguna alerta, se elimina su push endpoint
+        alertas_restantes_de_usuario = db.query(Suscripcion).filter(Suscripcion.usuario_id == usuario_id).first()
+        if not alertas_restantes_de_usuario:
+            db.query(PushEndpoint).filter(PushEndpoint.usuario_id == usuario_id).delete()
+        db.commit()
+        return {"message": "Suscripción eliminada", "status_code": 200}
+    except Exception as e:
+        db.rollback()
+        print("Error al desuscribir usuario: ", e)
+        return {"message": "Ocurrió un error inesperado"}

@@ -32,6 +32,10 @@ async def subscribe_user(
 
     return {"message": "Suscripción exitosa", "username": current_user.username}
 
+@router.delete('/unsubscribe', tags=["Alertas"])
+def unsubscribe_user(alerta_id: int, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)):
+    return services.unsubscribe(db, current_user.id, alerta_id)
+
 @router.post('/test-notification', tags=["Alertas"])
 def send_push_notification(message: str, alerta_id: int, db: Session = Depends(get_db)):
     services.trigger_notification(db=db, message=message, alerta_id=alerta_id)
