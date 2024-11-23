@@ -34,9 +34,9 @@ export function TestNotifications() {
                 }
                 // Enviar la suscripción al backend para almacenarla
         
-                await axios.post(baseURL + '/subscribe', requestBody);
+                const response = await axios.post(baseURL + '/subscribe', requestBody);
         
-                alert("Suscripción exitosa");
+                alert(response.data.message);
             }
         } catch(e) {
             setConsolelog( e.toString())
@@ -48,8 +48,8 @@ export function TestNotifications() {
             alerta_id: alertId
         }
 
-        await axios.delete(baseURL + '/unsubscribe', { params: { alerta_id: alertId }})
-        alert("Desuscripto")
+        const response = await axios.delete(baseURL + '/unsubscribe', { params: { alerta_id: alertId }})
+        alert(response.data.message)
     }
     
     function handleSelect(event){
