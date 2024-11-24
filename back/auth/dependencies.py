@@ -36,6 +36,15 @@ def get_permisos_de_rol(db: Session, role_id: int) -> List[str]:
     return [permiso.identificador for permiso in role.permisos] if role else []
 
 
+def get_permisos_de_roles(db: Session, roles: List[Role]) -> List[str]:
+    permisos = set()
+    for role in roles:
+        if role.id is not None:
+            permisos_roles = get_permisos_de_rol(db, role.id)
+            permisos.update(permisos_roles)
+    return list(permisos)
+
+
 def permiso_requerido(required_permission: str):
     def dependencia(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
         payload = decode_token(token)
