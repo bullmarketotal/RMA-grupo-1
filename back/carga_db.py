@@ -277,10 +277,27 @@ def init_configjson():
             "nivel_hidrometrico": 25
         },
         "umbral": {
-            "temperatura": [-15, 50],
-            "nivel_hidrometrico": [0, 1000],
-            "tension": [0, 5],
-            "precipitacion": [0, 100]
+            "temperatura": [
+                -9,
+                45
+            ],
+            "nivel_hidrometrico": [
+                0,
+                300
+            ],
+            "tension": [
+                0,
+                3.5
+            ],
+            "precipitacion": [
+                0,
+                100
+            ]
+        },
+        "nivel_hidrometrico_alertas": {
+            "amarilla": 50,
+            "naranja": 100,
+            "roja": 200
         }
     }
 

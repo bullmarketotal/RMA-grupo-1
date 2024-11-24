@@ -1,13 +1,9 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException
 
-from back.database import get_db
 from .schemas import PushEndpointReceive, AlertaCreate
-from ..usuarios.schemas import Usuario
 from .models import Alerta, PushEndpoint, Suscripcion
-from back.paquete.schemas import PaqueteCreate
-
 
 
 def agregar_endpoint(db: Session, subscription: PushEndpointReceive, usuario_id: int) -> int:
@@ -63,11 +59,8 @@ def get_alerta(db: Session, alerta_id: int):
         raise HTTPException(status_code = 404, detail="Alerta no encontrada")
     return alerta
 
-
-    
-def if_alert_notificate(paquete: PaqueteCreate, db: Session = Depends(get_db)):
-    # TODO
-    return 0
+       
+            
 
 def unsubscribe(db: Session, usuario_id: int, alerta_id: int):
     sub = db.query(Suscripcion).filter(Suscripcion.usuario_id == usuario_id, Suscripcion.alerta_id == alerta_id).first()

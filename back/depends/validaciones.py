@@ -29,12 +29,13 @@ def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
         print("rechazando paquete : ", paquete_rechazado)
         db = next(get_db())
         nodo = Nodo.get(db, paquete.nodo_id)
-        notifications.trigger_notification(db = db, message=f"{nodo.identificador} | {motivo}", alerta_id=4)
-        crear_paquete_rechazado(next(get_db()), paquete_rechazado)
+        notifications.trigger_notification(db = db, message=motivo, alerta_id=4, nodo_id=paquete.nodo_id)
+        crear_paquete_rechazado(db, paquete_rechazado)
         return False
 
 def es_valido(paquete: PaqueteBase) -> bool:
-    from back.main import CONFIG
+    from .config import get_config_alertas
+    CONFIG = get_config_alertas()
     if paquete.type_id == CONFIG["type"]["temperatura"]:
         return validar_o_archivar(paquete, CONFIG["umbral"]["temperatura"], name="temperatura")
     if paquete.type_id == CONFIG["type"]["tension"]:

@@ -1,3 +1,5 @@
+from fastapi import Depends
+
 from sqlalchemy.orm import Session
 from .services import get_alerta
 from datetime import datetime, timedelta
@@ -6,6 +8,11 @@ from .schemas import AlertaCreate, NotificationData
 import json
 import os
 from pywebpush import webpush, WebPushException
+from back.paquete.schemas import PaqueteCreate
+from back.depends.config import get_config_alertas
+from back.database import get_db
+from back.nodos.models import Nodo
+
 
 
 VAPID_PUBLIC_KEY = os.getenv("PUBLIC_KEY")
@@ -30,27 +37,35 @@ class NotificationHandler:
     }
 
     def get_last_notification_time(self):
-        alerts = [self.last_yellow, self.last_orange, self.last_red, self.last_validation_error, self.last_low_battery]
+        alerts = [self.last_sent[1], self.last_sent[2], self.last_sent[3], self.last_sent[4], self.last_sent[5]]
         return max(filter(None, alerts), default=None)
     
-    def trigger_notification(self, db: Session, message: str, alerta_id: int):
+    def trigger_notification(self, db: Session, message: str, alerta_id: int, nodo_id: int):
 
-        notification_data = self.get_notification_body(db, alerta_id, message)
+        notification_data = self.get_notification_body(db, alerta_id, nodo_id, message)
         endpoints = self.obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
         self.almacenar_notificacion(db, endpoints, alerta_id, notification_data)
 
         ten_minutes_ago = datetime.now() - timedelta(minutes=10)
+        twenty_seconds_ago = datetime.now() - timedelta(seconds=20)
         # Enviar push solo si el mismo tipo de alerta no se salio en los ultimos 10 minutos
         if self.last_sent[alerta_id] is None or self.last_sent[alerta_id] < ten_minutes_ago:
-            print("Enviando notificacion push de alerta de tipo ", alerta_id)
-            self.notificar_a_endpoints(db, endpoints, notification_data)
-            self.last_sent[alerta_id] = datetime.now()
+            # Si hubo alguna noti en los ultimos 20 segundos, esperar
+            if self.get_last_notification_time() is None or self.get_last_notification_time() < twenty_seconds_ago:
+                print("Enviando notificacion push de alerta de tipo ", alerta_id)
+                self.notificar_a_endpoints(db, endpoints, notification_data)
+                self.last_sent[alerta_id] = datetime.now()
+            
 
-    def get_notification_body(self, db: Session, alerta_id: int, message: str) -> AlertaCreate:
+    def get_notification_body(self, db: Session, alerta_id: int, nodo_id: int, message: str) -> AlertaCreate:
+        
+
+        nodo = Nodo.get(db, nodo_id)
+
         alerta = get_alerta(db, alerta_id)
 
         return {
-            "title": alerta.titulo_notificacion, 
+            "title": nodo.identificador + " - " + alerta.titulo_notificacion, 
             "body": message
         }
 
@@ -96,3 +111,14 @@ class NotificationHandler:
                 usuario_id = endpoint.usuario_id
             )
             usua_noti.save(db)
+
+    def if_alert_notificate(self, paquete: PaqueteCreate, db: Session = Depends(get_db)):
+        CONFIG = get_config_alertas()
+        if paquete.type_id == 25:
+            message=f"Nivel hidrométrico de {paquete.data}cm"
+            if paquete.data > CONFIG["nivel_hidrometrico_alertas"]["roja"]:
+                self.trigger_notification(db, alerta_id = 3, message=message, nodo_id = paquete.nodo_id)
+            elif paquete.data > CONFIG["nivel_hidrometrico_alertas"]["naranja"]:
+                self.trigger_notification(db, alerta_id = 2, message=message, nodo_id = paquete.nodo_id)
+            elif paquete.data > CONFIG["nivel_hidrometrico_alertas"]["amarilla"]:
+                self.trigger_notification(db, alerta_id = 1, message=message, nodo_id = paquete.nodo_id)
