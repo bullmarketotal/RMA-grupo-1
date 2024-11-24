@@ -40,14 +40,13 @@ def login_for_access_token(
         "refresh_token": refresh_token,
         "token_type": "bearer",
         "permisos": permisos,
+        "user": user.username,
     }
 
 
-@router.post("/refresh_token", response_model=Token, tags=["Auth"])
-def refresh_access_token_view(
-    refresh_token: TokenRefresh, db: Session = Depends(get_db)
-):
-    new_tokens = services.refresh_access_token(db, refresh_token.refresh_token)
+@router.post("/refresh_token", response_model=TokenRefresh, tags=["Auth"])
+def refresh_access_token_view(refresh_token: str, db: Session = Depends(get_db)):
+    new_tokens = services.refresh_access_token(db, refresh_token)
     return new_tokens
 
 

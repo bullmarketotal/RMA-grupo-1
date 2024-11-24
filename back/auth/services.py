@@ -117,7 +117,7 @@ def refresh_access_token(db: Session, refresh_token: str) -> TokenRefreshRespons
             data={"id": user.id, "username": user.username}
         )
 
-        return TokenData(
+        return TokenRefreshResponse(
             access_token=new_access_token,
             refresh_token=new_refresh_token,
             token_type="bearer",

@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
       return acc;
     }, {});
   };
+
   const login = (newAccessToken, newRefreshToken, newPermisos) => {
     setAccessToken(newAccessToken);
     setRefreshToken(newRefreshToken);
@@ -99,8 +100,10 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await loginUser(username, password, () => accessToken);
-      const { access_token, refresh_token, permisos } = data;
+      const response = await loginUser(username, password, () => accessToken);
+      const { access_token, refresh_token, permisos } = response;
+      console.log(response);
+      setUsername(response.user);
       const permisosDict = transformPermisos(permisos);
       login(access_token, refresh_token, permisosDict);
     } catch (err) {

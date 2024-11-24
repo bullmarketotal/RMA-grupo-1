@@ -36,6 +36,10 @@ const logo = "/logo.png";
 export default function NavBar() {
   const location = useLocation();
   const { isAuthenticated, username, loading } = useAuth();
+  // useEffect(() => {
+  //   console.log("El valor username es:", username);
+  // }, [username]);
+
   return (
     <>
       <Disclosure as="nav" className="bg-neutral-100 dark:bg-neutral-800">

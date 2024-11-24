@@ -8,6 +8,7 @@ class Token(BaseModel):
     refresh_token: str
     token_type: str
     permisos: List[str]
+    user: str
 
 
 class TokenRefreshResponse(BaseModel):
