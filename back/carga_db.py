@@ -278,7 +278,7 @@ def init_configjson():
         },
         "umbral": {
             "temperatura": [-15, 50],
-            "nivel_hidrometrico": [0, 100],
+            "nivel_hidrometrico": [0, 1000],
             "tension": [0, 5],
             "precipitacion": [0, 100]
         }
