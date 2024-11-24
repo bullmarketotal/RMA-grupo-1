@@ -51,7 +51,7 @@ parser.add_argument(
     "--type", type=int, default=None, help="Tipo de dato a enviar -> 1: temp | 14: precipitacion | 16: tension | 25: nivel hidrométrico | Si no lo incluyes, envia una tanda para cada tipo"
 )
 parser.add_argument(
-    "--data", type=int, default=None, help="Dato unico para enviar manualmente"
+    "--data", type=float, default=None, help="Dato unico para enviar manualmente"
 )
 
 parser.add_argument(
