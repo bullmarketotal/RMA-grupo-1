@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../hooks";
+import { useAuth } from "../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { loginUser, loading, error, isAuthenticated } = useAuth();
+  const {
+    loginUserWrapper,
+    loading,
+    error,
+    isAuthenticated,
+    username: user,
+  } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await loginUser(username, password);
+    await loginUserWrapper(username, password);
   };
 
   useEffect(() => {
