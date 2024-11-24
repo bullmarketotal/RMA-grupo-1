@@ -11,66 +11,90 @@ from typing import List
 router = APIRouter()
 
 
-# Test auth y roles
-@router.get("/protected")
-def read_protected_data(current_user: Usuario = Depends(get_current_user)):
-    return {"message": f"Hello, {current_user.username}!"}
-
-
-@router.get("/roles_seguros")
-async def obtener_roles_seguros(
-    permisos: bool = Depends(permiso_requerido("Admin")),
-):
-    return {"roles": ["El usuario tiene permiso Admin y la clave del sistema es 123"]}
-
-
-##############################################
-
-
 # R
-@router.get("/roles/{role_id}", response_model=Role, tags=["Roles"])
+@router.get(
+    "/roles/{role_id}",
+    response_model=Role,
+    tags=["Roles"],
+    dependencies=[Depends(permiso_requerido("read_roles"))],
+)
 def get_role(role_id: int, db: Session = Depends(get_db)):
     return services.get_role(db, role_id)
 
 
-# C
-@router.post("/roles", response_model=Role, tags=["Roles"])
-def create_role(role: RoleCreate, db: Session = Depends(get_db)):
-    return services.create_role(db, role)
-
-
 # R
-@router.get("/roles", response_model=list[Role], tags=["Roles"])
+@router.get(
+    "/roles",
+    response_model=list[Role],
+    tags=["Roles"],
+    dependencies=[Depends(permiso_requerido("read_roles"))],
+)
 def get_roles(db: Session = Depends(get_db)):
     return services.get_roles(db)
 
 
+# C
+@router.post(
+    "/roles",
+    response_model=Role,
+    tags=["Roles"],
+    dependencies=[Depends(permiso_requerido("create_roles"))],
+)
+def create_role(role: RoleCreate, db: Session = Depends(get_db)):
+    return services.create_role(db, role)
+
+
 # U
-@router.put("/roles/{role_id}", response_model=Role, tags=["Roles"])
+@router.put(
+    "/roles/{role_id}",
+    response_model=Role,
+    tags=["Roles"],
+    dependencies=[Depends(permiso_requerido("update_roles"))],
+)
 def update_role(role_id: int, role: RoleUpdate, db: Session = Depends(get_db)):
     return services.update_role(db, role_id, role)
 
 
 # D
-@router.delete("/roles/{role_id}", response_model=dict, tags=["Roles"])
+@router.delete(
+    "/roles/{role_id}",
+    response_model=dict,
+    tags=["Roles"],
+    dependencies=[Depends(permiso_requerido("delete_roles"))],
+)
 def delete_role(role_id: int, db: Session = Depends(get_db)):
     return services.delete_role(db, role_id)
 
 
-@router.post("/rolesassign", response_model=dict, tags=["RolesUsuarios"])
+@router.post(
+    "/rolesassign",
+    response_model=dict,
+    tags=["RolesUsuarios"],
+    dependencies=[Depends(permiso_requerido("assign_roles"))],
+)
 def assign_role_to_usuario(
     usuario_role_data: UsuarioRole, db: Session = Depends(get_db)
 ):
     return services.assign_role_to_usuario(db, usuario_role_data)
 
 
-@router.delete("/rolesrevoke", response_model=dict, tags=["RolesUsuarios"])
+@router.delete(
+    "/rolesrevoke",
+    response_model=dict,
+    tags=["RolesUsuarios"],
+    dependencies=[Depends(permiso_requerido("assign_roles"))],
+)
 def revoke_role_from_usuario(
     usuario_role_data: UsuarioRole, db: Session = Depends(get_db)
 ):
     return services.revoke_role_from_usuario(db, usuario_role_data)
 
 
-@router.get("/usuarios_roles", response_model=List[UsuarioRole], tags=["RolesUsuarios"])
+@router.get(
+    "/usuarios_roles",
+    response_model=List[UsuarioRole],
+    tags=["RolesUsuarios"],
+    dependencies=[Depends(permiso_requerido("read_usuarios_roles"))],
+)
 def get_usuarios_con_roles(db: Session = Depends(get_db)):
     return services.get_user_roles(db)

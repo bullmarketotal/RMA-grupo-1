@@ -4,11 +4,10 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
+from ..auth.dependencies import permiso_requerido
 from ..database import get_db
 from ..nodos import schemas, services
 from ..paquete.services import listar_paquetes
-from ..auth.dependencies import permiso_requerido
-
 
 router = APIRouter()
 
@@ -23,17 +22,32 @@ def read_nodos(db: Session = Depends(get_db)):
     return services.listar_nodos(db)
 
 
-@router.post("/nodos", response_model=schemas.Nodo, tags=["Nodos"])
+@router.post(
+    "/nodos",
+    response_model=schemas.Nodo,
+    tags=["Nodos"],
+    dependencies=[Depends(permiso_requerido("create_nodos"))],
+)
 def create_nodo(nodo: schemas.NodoCreate, db: Session = Depends(get_db)):
     return services.crear_nodo(db, nodo)
 
 
-@router.get("/nodos/{id}", response_model=schemas.Nodo, tags=["Nodos"])
+@router.get(
+    "/nodos/{id}",
+    response_model=schemas.Nodo,
+    tags=["Nodos"],
+    dependencies=[Depends(permiso_requerido("read_nodos"))],
+)
 def read_nodo(id: int, db: Session = Depends(get_db)):
     return services.get_nodo(nodo_id=id, db=db)
 
 
-@router.put("/nodos/{nodo_id}", response_model=schemas.Nodo, tags=["Nodos"])
+@router.put(
+    "/nodos/{nodo_id}",
+    response_model=schemas.Nodo,
+    tags=["Nodos"],
+    dependencies=[Depends(permiso_requerido("update_nodos"))],
+)
 def update_nodo(nodo_id: int, nodo: schemas.NodoUpdate, db: Session = Depends(get_db)):
     return services.modificar_nodo(db, nodo_id, nodo)
 
@@ -42,7 +56,7 @@ def update_nodo(nodo_id: int, nodo: schemas.NodoUpdate, db: Session = Depends(ge
     "/nodos/{nodo_id}",
     response_model=schemas.DeleteResponseSchema,
     tags=["Nodos"],
-    dependencies=[Depends(permiso_requerido("delete_nodo"))],
+    dependencies=[Depends(permiso_requerido("delete_nodos"))],
 )
 def delete_nodo(nodo_id: int, db: Session = Depends(get_db)):
     return services.archivar_y_eliminar_nodo(db=db, nodo_id=nodo_id)
