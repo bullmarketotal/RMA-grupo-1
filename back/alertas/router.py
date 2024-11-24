@@ -35,7 +35,7 @@ def unsubscribe_user(alerta_id: int, db: Session = Depends(get_db), current_user
 
 @router.post('/test-notification', tags=["Alertas"])
 def send_push_notification(message: str, alerta_id: int, db: Session = Depends(get_db)):
-    notificaciones.trigger_notification(db=db, message=message, alerta_id=alerta_id)
+    notificaciones.trigger_notification(db=db, message=message, alerta_id=alerta_id, nodo_id=1)
     return {"message": "Notificaciones enviadas exitosamente"}
 
 
