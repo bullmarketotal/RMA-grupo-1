@@ -10,12 +10,12 @@ from .schemas import (
 )
 from typing import List
 from ..usuarios.schemas import Usuario
-
+from .push_notifications import NotificationHandler
 from ..database import get_db
 
 router = APIRouter()
 
-
+notificaciones = NotificationHandler()
 
 # Endpoint para recibir la suscripción y almacenarla
 @router.post('/subscribe', response_model = PushEndpointResponse, tags=["Alertas"])
@@ -35,7 +35,7 @@ def unsubscribe_user(alerta_id: int, db: Session = Depends(get_db), current_user
 
 @router.post('/test-notification', tags=["Alertas"])
 def send_push_notification(message: str, alerta_id: int, db: Session = Depends(get_db)):
-    services.trigger_notification(db=db, message=message, alerta_id=alerta_id)
+    notificaciones.trigger_notification(db=db, message=message, alerta_id=alerta_id)
     return {"message": "Notificaciones enviadas exitosamente"}
 
 

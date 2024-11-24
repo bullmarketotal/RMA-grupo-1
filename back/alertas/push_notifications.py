@@ -39,8 +39,6 @@ class NotificationHandler:
         endpoints = self.obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
         self.almacenar_notificacion(db, endpoints, alerta_id, notification_data)
 
-        print("Ultimo alerta: ", self.last_sent[alerta_id] )
-        
         ten_minutes_ago = datetime.now() - timedelta(minutes=10)
         # Enviar push solo si el mismo tipo de alerta no se salio en los ultimos 10 minutos
         if self.last_sent[alerta_id] is None or self.last_sent[alerta_id] < ten_minutes_ago:
