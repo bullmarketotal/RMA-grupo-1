@@ -2,16 +2,18 @@
 from back.paquete.schemas import PaqueteBase, PaqueteRechazado
 from back.paquete.services import crear_paquete_rechazado
 from ..database import get_db
-from back.alertas.services import trigger_notification
+from back.alertas.push_notifications import NotificationHandler
 from back.nodos.models import Nodo
+
+notifications = NotificationHandler()
 
 def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
     motivo = None
 
     if(paquete.data < umbral[0]):
-        motivo = f"Valor de {name}: {paquete.data} menor a {umbral[0]}"
+        motivo = f"{name}: {paquete.data}  (mínimo: {umbral[0]})"
     if(paquete.data > umbral[1]):
-        motivo = f"Valor de {name}: {paquete.data} mayor a {umbral[1]}"
+        motivo = f"{name}: {paquete.data} (máximo: {umbral[1]})"
 
     if motivo is None:
         return True
@@ -27,7 +29,7 @@ def validar_o_archivar(paquete: PaqueteBase, umbral: list, name: str) -> bool:
         print("rechazando paquete : ", paquete_rechazado)
         db = next(get_db())
         nodo = Nodo.get(db, paquete.nodo_id)
-        trigger_notification(db = db, message=f"#{nodo.id} - {nodo.identificador}: {motivo}", alerta_id=4)
+        notifications.trigger_notification(db = db, message=f"{nodo.identificador} | {motivo}", alerta_id=4)
         crear_paquete_rechazado(next(get_db()), paquete_rechazado)
         return False
 

@@ -5,9 +5,6 @@ from . import services
 from .schemas import (
     Alerta,
     AlertaCreate,
-    AlertaUpdate,
-    AlertaUsuario,
-    PushEndpointReceive,
     SubscribeUser,
     PushEndpointResponse
 )

@@ -6,6 +6,7 @@ from ..database import get_db
 from ..depends.validaciones import es_valido
 from ..paquete.schemas import PaqueteCreate
 from ..paquete.services import crear_paquete
+from ..alertas.services import if_alert_notificate
 
 
 def guardar_paquete_en_db(paquete: PaqueteCreate) -> None:
@@ -34,4 +35,5 @@ def mi_callback(mensaje: str) -> None:
     paquete = procesar_mensaje(mensaje)
 
     if paquete is not None and es_valido(paquete):
+        if_alert_notificate(paquete)
         guardar_paquete_en_db(paquete)
