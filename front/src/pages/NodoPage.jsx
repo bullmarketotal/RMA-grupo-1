@@ -21,55 +21,44 @@ const NodoPage = () => {
   const [endDate, setEndDate] = useState("");
   const [isExporting, setIsExporting] = useState(false);
   const [dataTemp, setDataTemp] = useState([]);
-  const [dataNivel, setDataNivel] = useState([]);   
+  const [dataNivel, setDataNivel] = useState([]);
   const [dataTension, setDataTension] = useState([]);
 
- 
+  const { data, loading, error } = useFetchNodoData({
+    offset: 1,
+    nodo_id: id,
+    filterStartDate: startDate || "",
+    filterEndDate: endDate || "",
+    order: "asc",
+    orderBy: "date",
+  });
 
-     const { data, loading, error } = useFetchNodoData({
-      offset: 1,
-      nodo_id: id, 
-      filterStartDate: startDate || "",
-      filterEndDate: endDate || "",
-      order: "asc",
-      orderBy: "date",
-    });
-    
-    const sensorData =useNodos({
-      nodo_id: id,
-      enableAdd: true,
-      enableUpdate: true,
-      enableDelete: true,
-    });
-   
-    
-    useEffect(() => {
-      if (data && Array.isArray(data.items)) {
-        const temp = data.items.filter((item) => item.type_id === 1); // Tipo 1: Temperatura
-        const nivel = data.items.filter((item) => item.type_id === 25); // Tipo 25: Nivel
-        const tension = data.items.filter((item) => item.type_id === 16); // Tipo 16: Tensión
-  
-        setDataTemp(temp);
-        setDataNivel(nivel);
-        setDataTension(tension);
-      } else {
-        console.warn("Datos inesperados:", data);
-      }
-    },[data]);
+  const sensorData = useNodos({
+    nodo_id: id,
+  });
 
-    //Convertir .data de nivel hidrometrico de cm a m y redondear a 2 decimales
-    const processedDataNivel = dataNivel.map((punto) => ({
-      ...punto,
-      data: parseFloat((punto.data / 100).toFixed(2)),
-    }));
+  useEffect(() => {
+    if (data && Array.isArray(data.items)) {
+      const temp = data.items.filter((item) => item.type_id === 1); // Tipo 1: Temperatura
+      const nivel = data.items.filter((item) => item.type_id === 25); // Tipo 25: Nivel
+      const tension = data.items.filter((item) => item.type_id === 16); // Tipo 16: Tensión
+
+      setDataTemp(temp);
+      setDataNivel(nivel);
+      setDataTension(tension);
+    } else {
+      console.warn("Datos inesperados:", data);
+    }
+  }, [data]);
+
+  //Convertir .data de nivel hidrometrico de cm a m y redondear a 2 decimales
+  const processedDataNivel = dataNivel.map((punto) => ({
+    ...punto,
+    data: parseFloat((punto.data / 100).toFixed(2)),
+  }));
 
   const chartRef = useRef(null);
   const bateriaChartRef = useRef(null);
-
- 
- 
-
- 
 
   const paquetesData = useMemo(() => data?.items, [data?.items]);
 
@@ -98,25 +87,34 @@ const NodoPage = () => {
       <Card>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4">
           <div className="col-span-2 flex flex-col">
-            <NodoHeader sensor={sensorData.nodos} />
+            <NodoHeader nodo={sensorData.nodos} />
           </div>
           <div className="row-span-2 shadow-sm rounded-lg overflow-hidden w-full max-h-80 min-h-64 flex justify-end">
             {latitud !== undefined && longitud !== undefined ? (
-             <MiniMap lat={latitud} lng={longitud} />
-             ) : (
-              <LoadingSpinner/>
-             )}
+              <MiniMap lat={latitud} lng={longitud} />
+            ) : (
+              <LoadingSpinner />
+            )}
           </div>
           <div className="col-span-2 flex gap-4 items-center">
             <div className="w-1/2">
-              <NodoRecentDataCard dataTemp={dataTemp} dataNivel={processedDataNivel}/>
+              <NodoRecentDataCard
+                dataTemp={dataTemp}
+                dataNivel={processedDataNivel}
+              />
             </div>
             <div className="w-1/2 flex gap-4">
               <div className="w-1/2">
-                <MaxLevelCard data={processedDataNivel} timeFrame={TIMEFRAME_7D} />
+                <MaxLevelCard
+                  data={processedDataNivel}
+                  timeFrame={TIMEFRAME_7D}
+                />
               </div>
               <div className="w-1/2">
-                <MaxLevelCard data={processedDataNivel} timeFrame={TIMEFRAME_24H} />
+                <MaxLevelCard
+                  data={processedDataNivel}
+                  timeFrame={TIMEFRAME_24H}
+                />
               </div>
             </div>
           </div>

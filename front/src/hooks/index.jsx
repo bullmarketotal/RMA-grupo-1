@@ -1,4 +1,3 @@
-export { default as useAuth } from "./useAuth";
 export { default as useBreadcrumbsUpdater } from "./useBreadcrumbsUpdater";
 export { default as useFetchNodoData } from "./useFetchNodoData";
 export { default as useFetchSensores } from "./useFetchSensores";

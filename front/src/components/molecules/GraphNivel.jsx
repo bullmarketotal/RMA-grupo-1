@@ -29,7 +29,6 @@ import { useTheme } from "../../context/ThemeContext";
 */
 
 export default function GraphNivel({ data, noBrush }) {
-  console.log("GRAPNIVEL",data);
   if (!data || data.length === 0)
     return (
       <div className="flex items-center justify-center h-full text-xs">
@@ -37,9 +36,6 @@ export default function GraphNivel({ data, noBrush }) {
       </div>
     );
   const { isDarkMode } = useTheme();
-
-
-
 
   const midnightTicks = getMidnightTicks(
     data[0].date,
@@ -52,9 +48,6 @@ export default function GraphNivel({ data, noBrush }) {
       punto.date = new Date(punto.date).getTime();
     });
   }
-
-
-
 
   return (
     <ResponsiveContainer width="100%" height={200}>
@@ -89,12 +82,7 @@ export default function GraphNivel({ data, noBrush }) {
           );
         })}
         <Tooltip content={CustomTooltip} />
-        <Area
-          type="linear"
-          dataKey="data"
-          stroke="#8884d8"
-          fill="#8884d8"
-        />
+        <Area type="linear" dataKey="data" stroke="#8884d8" fill="#8884d8" />
         {!noBrush ? (
           <Brush
             height={25}

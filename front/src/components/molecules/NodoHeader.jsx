@@ -4,21 +4,20 @@ import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import { useUpdateSensor } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
-const NodoHeader = ({ sensor, loading }) => {
+const NodoHeader = ({ nodo }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
-    identificador: sensor.identificador,
-    porcentajeBateria: sensor.porcentajeBateria || 0,
-    latitud: sensor.latitud || 0,
-    longitud: sensor.longitud || 0,
-    descripcion: sensor.descripcion,
+    identificador: nodo.identificador,
+    porcentajeBateria: nodo.porcentajeBateria || 0,
+    latitud: nodo.latitud || 0,
+    longitud: nodo.longitud || 0,
+    descripcion: nodo.descripcion,
   });
 
-  const {
-    updateSensor,
-    loading: loadingSensor,
-    error,
-  } = useUpdateSensor(sensor.id, editableSensor);
+  const { updateSensor, loading, error } = useUpdateSensor(
+    nodo.id,
+    editableSensor
+  );
 
   const navigate = useNavigate();
 
@@ -39,9 +38,9 @@ const NodoHeader = ({ sensor, loading }) => {
           : value,
     });
   };
-  const idSensor = sensor.id;
+  const idSensor = nodo.id;
   function monitorearBateria() {
-    navigate(`/sensor/${idSensor}/bateria-page`);
+    navigate(`/nodo/${nodo.id}/bateria-page`);
   }
 
   return (
@@ -50,7 +49,7 @@ const NodoHeader = ({ sensor, loading }) => {
         <LoadingSpinner />
       ) : (
         <>
-          <div id="info-sensor">
+          <div id="info-nodo">
             {/* identificador */}
             <h1 className="flex text-3xl items-center normal-text font-semibold">
               <MdOutlineSettingsInputAntenna className="mr-2" />
