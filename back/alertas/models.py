@@ -1,5 +1,6 @@
 from sqlalchemy import Boolean, DateTime, Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from datetime import datetime
 
 from ..models import ModeloBase
 
@@ -26,3 +27,20 @@ class Suscripcion(ModeloBase):
 
     alerta_id: Mapped[int] = mapped_column(Integer, ForeignKey('alertas.id'), primary_key=True)
     usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios.id'), primary_key=True)
+
+class Notificacion(ModeloBase):
+    __tablename__ = 'notificaciones_historial'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
+    alerta_id: Mapped[int] = mapped_column(Integer, ForeignKey('alertas.id'), index=True)
+    fecha_hora: Mapped[datetime] = mapped_column(DateTime)
+    titulo: Mapped[str] = mapped_column(String)
+    message: Mapped[str] = mapped_column(String)
+
+class UsuarioNotificacion(ModeloBase):
+    __tablename__ = "usuario_notificacion"
+
+    notificacion_id: Mapped[int] = mapped_column(Integer, ForeignKey('notificaciones_historial.id'), index=True, primary_key=True)
+    usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios.id'), index=True, primary_key=True)
+    is_read: Mapped[bool] = mapped_column(Boolean, default=False)
+

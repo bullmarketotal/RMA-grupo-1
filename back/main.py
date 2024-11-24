@@ -25,22 +25,6 @@ from .auth.router import router as auth_router
 from .alertas.router import router as alertas_router
 from .carga_db import init_db
 
-# Cargar configuración global
-CONFIG = {}
-
-
-def cargar_configuracion():
-    global CONFIG
-    ruta = os.path.join(os.path.dirname(__file__), "config.json")
-    if os.path.exists(ruta):
-        with open(ruta, "r") as archivo:
-            CONFIG = json.load(archivo)
-    else:
-        print("Advertencia: config.json no encontrado.")
-
-
-cargar_configuracion()
-
 # Cargar variables de entorno
 load_dotenv()
 ENV = os.getenv("ENV")

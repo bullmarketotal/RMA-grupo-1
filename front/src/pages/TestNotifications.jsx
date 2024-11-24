@@ -3,9 +3,7 @@ import { askNotificationPermission, urlBase64ToUint8Array } from "../components/
 import { useAxios } from "../context/AxiosProvider";
 
 const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmEXckfEXYawnzytMjOEyCJsQ8NX7-gGHk';
-
-const ID_ALERTA = 1;
-const baseURL = import.meta.env.VITE_API_URL + '/subscribe'
+const baseURL = import.meta.env.VITE_API_URL
 
 export function TestNotifications() {
     askNotificationPermission();
@@ -36,13 +34,22 @@ export function TestNotifications() {
                 }
                 // Enviar la suscripción al backend para almacenarla
         
-                await axios.post(baseURL, requestBody);
+                const response = await axios.post(baseURL + '/subscribe', requestBody);
         
-                alert("Suscripción exitosa");
+                alert(response.data.message);
             }
         } catch(e) {
             setConsolelog( e.toString())
         }
+    }
+
+    async function unsubscribeUser(event) {
+        const requestBody = {
+            alerta_id: alertId
+        }
+
+        const response = await axios.delete(baseURL + '/unsubscribe', { params: { alerta_id: alertId }})
+        alert(response.data.message)
     }
     
     function handleSelect(event){
@@ -59,8 +66,10 @@ export function TestNotifications() {
                 <option value={4}>Dato invalido</option>
                 <option value={5}>Bateria baja</option>
             </select><hr></hr>
-            <button data-alerta={ID_ALERTA} onClick={subscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600">Suscribirse</button>
+            <button onClick={subscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 me-5 my-4">Suscribirse</button>
+            <button  onClick={unsubscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 my-4">Desuscribirse</button>
             <div className="rounded border p-2">
+                <h2 className="font-bold">Consola:</h2>
                 <p>{consolelog}</p>
                 <p>url: {baseURL}</p>
             </div>
