@@ -14,7 +14,6 @@ const ConfigAlert = () => {
         const response = await axios.get("http://localhost:8000/alertaconfig/");
         setAlerts(response.data);
       } catch (error) {
-        console.error("Error al cargar la configuración:", error);
         showNotification("Error al cargar la configuración", "error");
       }
     };

@@ -68,7 +68,6 @@ const ConfigFormList = () => {
         const response = await axios.get("http://localhost:8000/config/");
         setConfig(response.data);
       } catch (err) {
-        console.error("Error al obtener la config:", err);
         showNotification("Error al cargar la configuración", "error");
       }
     };

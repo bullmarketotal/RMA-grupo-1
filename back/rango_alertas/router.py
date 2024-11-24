@@ -18,7 +18,7 @@ async def get_config():
             "tension_bateria_baja": current_config.get("tension_bateria_baja"),
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al cargar la configuración: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error al cargar rrrrla configuración: {str(e)}")
 
 
 @router.put("/")

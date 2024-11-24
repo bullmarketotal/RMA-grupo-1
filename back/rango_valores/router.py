@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 router = APIRouter(prefix="/config", tags=["Config"])
 
-
 class ConfigUpdate(BaseModel):
     umbral: dict
 
@@ -13,7 +12,7 @@ async def get_config():
     try:
         return load_config()
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al cargar la configuración: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Errorrrrr al cargar la configuración: {str(e)}")
 
 @router.put("/")
 async def update_config_endpoint(config_update: ConfigUpdate):

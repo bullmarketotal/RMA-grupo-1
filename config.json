@@ -7,20 +7,26 @@
     },
     "umbral": {
         "temperatura": [
-            1,
-            99
+            -10,
+            45
         ],
         "nivel_hidrometrico": [
             0,
-            100
+            300
         ],
         "tension": [
-            1,
-            100
+            0,
+            3.5
         ],
         "precipitacion": [
-            1,
+            0,
             100
         ]
-    }
+    },
+    "nivel_hidrometrico_alertas": {
+        "amarilla": 50,
+        "naranja": 100,
+        "roja": 200
+    },
+    "tension_bateria_baja": 1
 }
