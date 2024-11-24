@@ -298,7 +298,8 @@ def init_configjson():
             "amarilla": 50,
             "naranja": 100,
             "roja": 200
-        }
+        },
+        "tension_bateria_baja": 1
     }
 
     # Verifica si el archivo existe
