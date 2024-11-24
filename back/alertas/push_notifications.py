@@ -114,7 +114,7 @@ class NotificationHandler:
 
     def if_alert_notificate(self, paquete: PaqueteCreate, db: Session = Depends(get_db)):
         CONFIG = get_config_alertas()
-        if paquete.type_id == 25:
+        if paquete.type_id == CONFIG["type"]["nivel_hidrometrico"]:
             message=f"Nivel hidrométrico de {paquete.data}cm"
             if paquete.data > CONFIG["nivel_hidrometrico_alertas"]["roja"]:
                 self.trigger_notification(db, alerta_id = 3, message=message, nodo_id = paquete.nodo_id)
@@ -122,3 +122,6 @@ class NotificationHandler:
                 self.trigger_notification(db, alerta_id = 2, message=message, nodo_id = paquete.nodo_id)
             elif paquete.data > CONFIG["nivel_hidrometrico_alertas"]["amarilla"]:
                 self.trigger_notification(db, alerta_id = 1, message=message, nodo_id = paquete.nodo_id)
+        if paquete.type_id == CONFIG["type"]["tension"] and paquete.data < CONFIG["tension_bateria_baja"]:
+            message=f"Nivel de tensión de {paquete.data}V"
+            self.trigger_notification(db, alerta_id = 5, message=message, nodo_id = paquete.nodo_id)
