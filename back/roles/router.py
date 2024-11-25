@@ -5,8 +5,15 @@ from ..auth.dependencies import get_current_user, permiso_requerido
 from ..database import get_db
 from ..usuarios.models import Usuario
 from . import services
-from .schemas import Role, RoleCreate, RoleUpdate, UsuarioRole
+from .schemas import (
+    Role,
+    RoleCreate,
+    RoleUpdate,
+    UsuarioRole,
+    UsuarioConRolesSchema,
+)
 from typing import List
+from .services import get_user_roles
 
 router = APIRouter()
 
@@ -68,7 +75,7 @@ def delete_role(role_id: int, db: Session = Depends(get_db)):
 
 @router.post(
     "/rolesassign",
-    response_model=dict,
+    response_model=UsuarioRole,
     tags=["RolesUsuarios"],
     dependencies=[Depends(permiso_requerido("assign_roles"))],
 )
@@ -82,7 +89,6 @@ def assign_role_to_usuario(
     "/rolesrevoke",
     response_model=dict,
     tags=["RolesUsuarios"],
-    dependencies=[Depends(permiso_requerido("assign_roles"))],
 )
 def revoke_role_from_usuario(
     usuario_role_data: UsuarioRole, db: Session = Depends(get_db)
@@ -92,9 +98,8 @@ def revoke_role_from_usuario(
 
 @router.get(
     "/usuarios_roles",
-    response_model=List[UsuarioRole],
+    response_model=List[UsuarioConRolesSchema],
     tags=["RolesUsuarios"],
-    dependencies=[Depends(permiso_requerido("read_usuarios_roles"))],
 )
 def get_usuarios_con_roles(db: Session = Depends(get_db)):
-    return services.get_user_roles(db)
+    return get_user_roles(db)

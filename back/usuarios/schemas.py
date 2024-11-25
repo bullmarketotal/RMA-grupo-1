@@ -5,7 +5,9 @@ from typing import Optional
 
 ##ESQUEMA DE USUARIOS##
 class UsuarioBase(BaseModel):
+    id: int
     username: str
+    model_config = {"from_attributes": True}
 
 
 class UsuarioOut(UsuarioBase):

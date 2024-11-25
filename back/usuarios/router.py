@@ -11,9 +11,12 @@ router = APIRouter()
 # Rutas para usuarios
 
 
-@router.get("/usuarios", response_model=list[schemas.Usuario])
+@router.get(
+    "/usuarios",
+    response_model=list[schemas.Usuario],
+    dependencies=[Depends(permiso_requerido("read_usuarios"))],
+)
 def read_usuarios(
     db: Session = Depends(get_db),
-    dependencies=[Depends(permiso_requerido("read_usuarios"))],
 ):
     return services.listar_usuarios(db)

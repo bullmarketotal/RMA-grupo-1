@@ -7,11 +7,8 @@ const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
 const MaxLevelCard = React.memo(({ data, timeFrame }) => {
-
   const filteredData = filterDataByTime(data, timeFrame);
-
   const maxNivel = getMaxValue(filteredData, "data");
-
 
   return (
     <CardData title={`Pico ${timeFrame === TIMEFRAME_24H ? "24hs" : "7 días"}`}>

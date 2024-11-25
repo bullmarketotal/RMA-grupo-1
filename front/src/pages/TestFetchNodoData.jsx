@@ -85,7 +85,7 @@ const TestFetchNodoData = () => {
       },
       {
         accessorKey: "type_id",
-        header: () => "Type ID",
+        header: () => "Tipo ID",
       },
     ],
     []
@@ -133,15 +133,7 @@ const TestFetchNodoData = () => {
             onChange={handleInputChange}
           />
         </label>
-        <label>
-          Order By:
-          <input
-            type="text"
-            name="orderBy"
-            value={params.orderBy || ""}
-            onChange={handleInputChange}
-          />
-        </label>
+
         <label>
           Order:
           <select

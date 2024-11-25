@@ -3,6 +3,7 @@ from pydantic import field_validator
 from typing import Optional
 from typing import List, Optional
 from ..permisos.schemas import Permiso
+from ..usuarios.schemas import UsuarioBase
 
 
 class RoleBase(BaseModel):
@@ -52,15 +53,14 @@ class RoleConPermisos(Role):
     permisos: List[Permiso]
 
 
-class RoleSchema(BaseModel):
+class RoleSchemares(BaseModel):
     id: int
     name: str
+    description: str
 
 
-class UsuarioRoleSchema(BaseModel):
-    usuario_id: int
+class UsuarioConRolesSchema(BaseModel):
+    id: int
     username: str
-    roles: List[RoleSchema]
-
-    class Config:
-        from_attributes = True
+    roles: List[RoleSchemares]
+    model_config = {"from_attributes": True}

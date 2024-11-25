@@ -3,7 +3,6 @@ import { LoadingSpinner } from "../atoms";
 import { useNavigate } from "react-router-dom";
 
 const BateriaHeader = ({ sensor, loading }) => {
-  
   const { identificador, latitud, longitud } = sensor;
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
@@ -18,7 +17,6 @@ const BateriaHeader = ({ sensor, loading }) => {
     }
     setIsEditing(!isEditing);
   };
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +52,9 @@ const BateriaHeader = ({ sensor, loading }) => {
                 identificador
               )}
             </h2>
-            <p className="normal-text font-semibold">ACA ESTAMOS VIENDO LA BATERIA.</p>
+            <p className="normal-text font-semibold">
+              ACA ESTAMOS VIENDO LA BATERIA.
+            </p>
           </div>
         </>
       )}

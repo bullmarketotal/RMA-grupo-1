@@ -4,6 +4,9 @@
  * @returns
  */
 export const obtenerTimeAgoString = (lastData) => {
+  if (!lastData || data.lastData == 0) {
+    return "Sin datos";
+  }
   const lastTime = new Date(lastData.date);
   const now = new Date();
   const minutesBetween = (now - lastTime) / (1000 * 60);

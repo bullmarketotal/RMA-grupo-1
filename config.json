@@ -28,5 +28,5 @@
         "naranja": 100,
         "roja": 200
     },
-    "tension_bateria_baja": 1
+    "tension_bateria_baja": 2.0
 }

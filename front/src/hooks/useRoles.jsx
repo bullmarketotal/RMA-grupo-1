@@ -2,37 +2,29 @@ import useSWR from "swr";
 import { useAxios } from "../context/AxiosProvider";
 
 const fetcher = async (url, axios) => {
-  if (!axios) {
-    throw new Error("Axios en el fetcher");
-  }
   const response = await axios.get(url);
   return response.data;
 };
-
-export const useRoles = () => {
+export const useRoles = ({ role_id } = {}) => {
   const axios = useAxios();
-
-  if (!axios) {
-    throw new Error("Axios en useRoles");
-  }
-
-  const { data, error, isValidating, mutate } = useSWR("/roles", (url) =>
-    fetcher(url, axios)
+  const endpoint = role_id ? `/roles/${role_id}` : "/roles";
+  const { data, error, isValidating, mutate } = useSWR(
+    endpoint,
+    (url) => fetcher(url, axios),
+    {
+      revalidateOnFocus: true,
+      errorRetryCount: 3,
+      errorRetryInterval: 10000,
+      dedupingInterval: 60000,
+    }
   );
-  const isForbidden = error?.response?.status === 403;
 
   const addRole = async (role) => {
     try {
       await axios.post("/roles", role);
       mutate();
-    } catch (err) {
-      if (err.response?.status === 403) {
-        const error = new Error("Forbidden");
-        error.status = 403;
-        throw error;
-      } else {
-        throw err;
-      }
+    } catch (error) {
+      console.error("Error adding role:", error);
     }
   };
 
@@ -40,14 +32,8 @@ export const useRoles = () => {
     try {
       await axios.put(`/roles/${roleId}`, role);
       mutate();
-    } catch (err) {
-      if (err.response?.status === 403) {
-        const error = new Error("Forbidden");
-        error.status = 403;
-        throw error;
-      } else {
-        throw err;
-      }
+    } catch (error) {
+      console.error("Error updating role:", error);
     }
   };
 
@@ -55,14 +41,8 @@ export const useRoles = () => {
     try {
       await axios.delete(`/roles/${roleId}`);
       mutate();
-    } catch (err) {
-      if (err.response?.status === 403) {
-        const error = new Error("Forbidden");
-        error.status = 403;
-        throw error;
-      } else {
-        throw err;
-      }
+    } catch (error) {
+      console.error("Error deleting role:", error);
     }
   };
 
@@ -70,9 +50,10 @@ export const useRoles = () => {
     roles: data ?? [],
     loading: isValidating,
     error,
-    isForbidden,
     addRole,
     updateRole,
     deleteRole,
   };
 };
+
+export default useRoles;

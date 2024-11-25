@@ -6,15 +6,14 @@ const fetcher = async (url, axios) => {
   return response.data;
 };
 
-export const usePermisos = ({ permiso_id } = {}) => {
+export const useUsuariosRoles = () => {
   const axios = useAxios();
 
-  const endpoint = permiso_id ? `/permisos/${permiso_id}` : "/permisos";
   const { data, error, isValidating, mutate } = useSWR(
-    endpoint,
+    "/usuarios_roles",
     (url) => fetcher(url, axios),
     {
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
       errorRetryCount: 3,
       errorRetryInterval: 10000,
       dedupingInterval: 60000,
@@ -22,11 +21,11 @@ export const usePermisos = ({ permiso_id } = {}) => {
   );
 
   return {
-    permisos: data ?? [],
+    usuariosRoles: data ?? [],
     loading: isValidating,
     error,
     mutate,
   };
 };
 
-export default usePermisos;
+export default useUsuariosRoles;

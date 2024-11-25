@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { LoadingSpinner, SubmitButton } from "../atoms";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
-import { useUpdateSensor } from "../../hooks";
 import { useNavigate } from "react-router-dom";
+import { useNodos } from "../../hooks";
+import { LoadingSpinner } from "../atoms";
 
 const NodoHeader = ({ nodo }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -14,20 +14,16 @@ const NodoHeader = ({ nodo }) => {
     descripcion: nodo.descripcion,
   });
 
-  const { updateSensor, loading, error } = useUpdateSensor(
-    nodo.id,
-    editableSensor
-  );
+  const { updateNodo, loading, error } = useNodos();
 
   const navigate = useNavigate();
 
   const handleEditClick = async () => {
     if (isEditing) {
-      await updateSensor();
+      await updateNodo(nodo.id, editableSensor);
     }
     setIsEditing(!isEditing);
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditableSensor({
@@ -38,10 +34,10 @@ const NodoHeader = ({ nodo }) => {
           : value,
     });
   };
-  const idSensor = nodo.id;
-  function monitorearBateria() {
+
+  const monitorearBateria = () => {
     navigate(`/nodo/${nodo.id}/bateria-page`);
-  }
+  };
 
   return (
     <div id="header" className="flex items-center justify-between">
@@ -50,7 +46,6 @@ const NodoHeader = ({ nodo }) => {
       ) : (
         <>
           <div id="info-nodo">
-            {/* identificador */}
             <h1 className="flex text-3xl items-center normal-text font-semibold">
               <MdOutlineSettingsInputAntenna className="mr-2" />
               {isEditing ? (
@@ -65,7 +60,6 @@ const NodoHeader = ({ nodo }) => {
                 editableSensor.identificador
               )}
             </h1>
-            {/* descripción */}
 
             <div className="normal-text text-sm py-2">
               {isEditing ? (
