@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { askNotificationPermission, urlBase64ToUint8Array } from "../components/utils/notifications";
 import { useAxios } from "../context/AxiosProvider";
+import Container from "../components/atoms/Container";
 
 const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmEXckfEXYawnzytMjOEyCJsQ8NX7-gGHk';
 const baseURL = import.meta.env.VITE_API_URL
@@ -9,7 +10,15 @@ export function TestNotifications() {
     askNotificationPermission();
     const [consolelog, setConsolelog] = useState('')
     const [alertId, setAlertId] = useState(1)
+    const [subbedAlerts, setSubbedAlerts] = useState([])
+
     const axios = useAxios();
+
+    useEffect(() => {
+        axios.get(baseURL + "/subscriptions")
+        .then(res => setSubbedAlerts(res.data))
+        .catch()
+    }, [])
 
     async function subscribeUser(event) {
         try{
@@ -39,7 +48,7 @@ export function TestNotifications() {
                 alert(response.data.message);
             }
         } catch(e) {
-            setConsolelog( e.toString())
+            console.log("Error al suscribirse: ", e)
         }
     }
 
@@ -57,8 +66,20 @@ export function TestNotifications() {
     }
 
     return (
-        <div>
-            <h1 className="bold text-2xl">Test suscripcion</h1>
+        <Container>
+            <h1 className="bold text-2xl">Mis suscripciones</h1>
+
+            <div>
+                <h2 className="text-2xl font-bold">Alertas por nivel hidrométrico</h2>
+                <div className=" w-3/5 py-2 my-2 min-w-96 grid grid-cols-[auto_1fr]">
+                    <div className="">
+                        <h3 className="text-xl font-bold">Alerta amarilla</h3>
+                        <p>Avisar cuando el nivel supere los 0.5m</p>
+                    </div>
+                    <button onClick={subscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 self-end place-self-center">Suscribirse</button>
+                </div>
+            </div>
+
             <select onChange={handleSelect}>
                 <option value={1}>Alerta amarilla</option>
                 <option value={2}>Alerta naranja</option>
@@ -68,11 +89,6 @@ export function TestNotifications() {
             </select><hr></hr>
             <button onClick={subscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 me-5 my-4">Suscribirse</button>
             <button  onClick={unsubscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 my-4">Desuscribirse</button>
-            <div className="rounded border p-2">
-                <h2 className="font-bold">Consola:</h2>
-                <p>{consolelog}</p>
-                <p>url: {baseURL}</p>
-            </div>
-        </div>
+        </Container>
     )
 }
