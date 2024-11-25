@@ -24,7 +24,6 @@ export function filterDataByTime(data, timeFrame) {
  * @returns
  */
 export function getMaxValue(data, key) {
-  console.log("UTILS:",data.length);
   if (data.length === 0) {
     return { [key]: "--", stringTime: "Sin datos" };
   }

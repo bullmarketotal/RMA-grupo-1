@@ -10,7 +10,6 @@ const NodoDataVisualizer = ({ dataTemp,dataNivel, loading, onFilterChange, isExp
     setIsToggled(!isToggled);
   };
 
-  console.log("showFiltro en NodoDataVisualizer:", !isExporting); 
 
   return (
     <Card>

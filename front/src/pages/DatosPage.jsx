@@ -32,8 +32,6 @@ const DatosPage = () => {
   // Obtención de los tipos con useTipos
   const { tipos, loading: loadingTipos, error: errorTipos } = useTipoDato();
 
-  console.log(nodos); // Verificar que los nodos estén llegando correctamente
-  console.log(tipos);
 
   // Manejo de error y carga
   if (error) {
@@ -58,7 +56,6 @@ const DatosPage = () => {
     setEndDate(newEndDate);
   };
 
-  console.log(data);
 
   return (
     <Container>

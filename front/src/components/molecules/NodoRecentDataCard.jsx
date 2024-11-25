@@ -8,7 +8,6 @@ const NodoRecentDataCard = React.memo(({ dataTemp, dataNivel }) => {
   }
   
   const lastDataNivel = dataNivel.reduce( (a, b) => a?.date < b?.date ? b : a );
-  console.log("LastDataNivel:", lastDataNivel);
   const lastDataTemp = dataTemp[dataTemp.length - 1];
 
   return (

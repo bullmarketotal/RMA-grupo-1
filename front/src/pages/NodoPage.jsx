@@ -34,7 +34,6 @@ const NodoPage = () => {
       order: "asc",
       orderBy: "date",
     });
-    console.log("ID: ", id);
     
     const {nodos:sensorData,loading:loadingNodo,error: errorNodo} =useNodos({
       nodo_id: id,
