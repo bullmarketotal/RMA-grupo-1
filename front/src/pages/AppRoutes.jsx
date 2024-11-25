@@ -38,9 +38,9 @@ const AppRoutes = () => {
         <Route path="testpage" element={<Example />} />
         <Route path="/confirm-logout" element={<LogoutConfirmationPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/notificaciones" element={<TestNotifications />} />
-        <Route path="/configuracion/general" element={<ConfigPage/>} />
-        <Route path="/configuracion" element={<ConfiguracionMenuPage/>} />
+        <Route path="/notificaciones" element={<ProtectedRoute><TestNotifications /></ProtectedRoute>} />
+        <Route path="/configuracion/general" element={<ProtectedRoute><ConfigPage/></ProtectedRoute>} />
+        <Route path="/configuracion" element={<ProtectedRoute><ConfiguracionMenuPage/></ProtectedRoute>} />
 
         
       </Route>
