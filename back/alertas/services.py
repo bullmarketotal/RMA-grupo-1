@@ -78,3 +78,12 @@ def unsubscribe(db: Session, usuario_id: int, alerta_id: int):
         db.rollback()
         print("Error al desuscribir usuario: ", e)
         return {"message": "Ocurrió un error inesperado"}
+    
+def get_user_subscriptions(db: Session, usuario_id: int) -> list[Alerta]:
+    subs = Suscripcion.filter(db, usuario_id = usuario_id)
+    response = []
+
+    for sub in subs:
+        alerta = Alerta.get(db, sub.alerta_id)
+        response.append(alerta)
+    return response
