@@ -15,11 +15,11 @@ export const NotificationProvider = ({ children }) => {
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
       <ToastContainer 
-        autoClose={2500}       // Duración en milisegundos (5000ms = 5 segundos)
+        autoClose={3500}       // Duración en milisegundos (5000ms = 5 segundos)
         hideProgressBar={false} // Muestra la barra de progreso
         newestOnTop={true}      // Muestra la última notificación en la parte superior
         pauseOnHover            // Pausa la notificación al pasar el cursor sobre ella
-        style={{ marginTop: "50px" }} // Baja la notificación 50 píxeles desde el borde superior
+        style={{ marginTop: "65px" }} // Baja la notificación 50 píxeles desde el borde superior
       />
     </NotificationContext.Provider>
   );
