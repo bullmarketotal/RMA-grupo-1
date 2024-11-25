@@ -12,7 +12,7 @@ const ConfiguracionMenuPage = () => {
       <div className="row">
         <Link to="/configuracion/general" className="col-md-4">
           <div className="mb-12 ">
-            <div className="card shadow-sm hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white">
+            <div className="card shadow-sm hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white rounded-2xl">
               <div className="card-body text-center">
                 <div
                   className="mb-3 text-primary"
@@ -30,7 +30,7 @@ const ConfiguracionMenuPage = () => {
 
         <Link to="/##########" className="col-md-4">
           <div className="mb-12 ">
-            <div className="card shadow-sm hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white">
+            <div className="card shadow-sm hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white  rounded-2xl">
               <div className="card-body text-center">
               <div className="mb-3 text-primary" style={{ fontSize: "5.3em" }}>
                 <i class="bi bi-radar"></i>
@@ -45,7 +45,7 @@ const ConfiguracionMenuPage = () => {
 
         <Link to="/notificaciones" className="col-md-4">
           <div className="mb-12 ">
-            <div className="card shadow-sm hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white">
+            <div className="card shadow-sm hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white  rounded-2xl">
               <div className="card-body text-center">
               <div className="mb-3 text-primary" style={{ fontSize: "5.3em" }}>
                 <i className="bi bi-exclamation-circle"></i>
