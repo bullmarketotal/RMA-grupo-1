@@ -29,7 +29,6 @@ import { useTheme } from "../../context/ThemeContext";
 */
 
 export default function GraphNivel({ data, noBrush }) {
-  console.log("GRAPNIVEL",data);
   if (!data || data.length === 0)
     return (
       <div className="flex items-center justify-center h-full text-xs">

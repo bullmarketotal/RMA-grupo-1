@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 
 export default function FiltroDatos({ onFilterChange, isExporting = false }) {
-  console.log("isExporting en FiltroDatos:", isExporting);
 
   const [startDate, setStartDate] = useState(
     new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
