@@ -17,6 +17,10 @@ router = APIRouter()
 
 notificaciones = NotificationHandler()
 
+@router.get('/subscriptions', response_model = list[Alerta], tags=["Alertas"])
+def get_user_subscriptions(db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)):
+    return services.get_user_subscriptions(usuario_id = current_user.id, db = db)
+
 # Endpoint para recibir la suscripción y almacenarla
 @router.post('/subscribe', response_model = PushEndpointResponse, tags=["Alertas"])
 async def subscribe_user(

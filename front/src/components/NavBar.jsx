@@ -13,6 +13,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
+import { FaUser } from "react-icons/fa";
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -84,6 +85,7 @@ export default function NavBar() {
                     <MenuButton className="dark-bg relative flex rounded-md px-3 py-2 text-sm font-medium text-neutral-800 dark:text-white">
                       <span className="absolute -inset-1.5" />
                       {username}
+                      <FaUser className="size-6 p-1" />
                     </MenuButton>
                     <MenuItems
                       transition

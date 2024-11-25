@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import { useFetchNodoData, useNodos } from "../hooks";
+import { useFetchNodoData, useNodos, useTipoDato } from "../hooks"; // Asegúrate de importar useTipos
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import { FiltroDatos } from "../components/molecules";
 import { TableView } from "../components/organisms";
 import DownloadCSVButton from "../components/atoms/DownloadCSVButton";
 
+
 const DatosPage = () => {
   const [id, setId] = useState(1); // Estado para el ID del nodo seleccionado
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  /*const [tipos, setTipos] = useState([]); // Estado para los tipos de datos */
-  /*const [selectedTipo, setSelectedTipo] = useState("");  Estado para el tipo de dato seleccionado */
-  
+  const [selectedTipo, setSelectedTipo] = useState(""); // Estado para el tipo de dato seleccionado
+
   // Parámetros para la búsqueda de datos (params no necesita useState)
   const params = {
     offset: 0,
@@ -20,7 +20,7 @@ const DatosPage = () => {
     filterStartDate: startDate || "",
     filterEndDate: endDate || "",
     orden: "asc",
-    type: 1
+    type: selectedTipo || 1 // Usamos el tipo seleccionado o 1 por defecto
   };
 
   // Obtención de datos del nodo con hook useFetchNodoData
@@ -29,38 +29,37 @@ const DatosPage = () => {
   // Obtención de nodos con useNodos
   const { nodos, loading: loadingSensores, error: errorSensores } = useNodos();
 
+  // Obtención de los tipos con useTipos
+  const { tipos, loading: loadingTipos, error: errorTipos } = useTipoDato();
+
   console.log(nodos); // Verificar que los nodos estén llegando correctamente
+  console.log(tipos);
 
   // Manejo de error y carga
   if (error) {
     return <p>Hubo un problema al cargar los datos. Intenta nuevamente más tarde.</p>;
   }
 
-  if (loadingSensores) return <LoadingSpinner />; // Mostrar spinner mientras se cargan los nodos
+  if (loadingSensores || loadingTipos) return <LoadingSpinner />; // Mostrar spinner mientras se cargan los nodos o tipos
 
+  // Filtro de fechas
+  const handleFilterChange = (newStartDate, newEndDate) => {
+    const previousStartDate = startDate;
+    const previousEndDate = endDate;
 
-//Filtro de fechas
-const handleFilterChange = (newStartDate, newEndDate) => {
-  // Guardamos las fechas anteriores en caso de que necesitemos restaurarlas
-  const previousStartDate = startDate;
-  const previousEndDate = endDate;
+    if (newStartDate && newEndDate && new Date(newStartDate) > new Date(newEndDate)) {
+      alert('La fecha de inicio no puede ser posterior a la fecha de fin.');
+      setStartDate(previousStartDate);
+      setEndDate(previousEndDate);
+      return;
+    }
 
-  // Verificamos si la fecha de inicio es posterior a la fecha de fin
-  if (newStartDate && newEndDate && new Date(newStartDate) > new Date(newEndDate)) {
-    // Mostramos un mensaje de alerta y restauramos las fechas anteriores
-    alert('La fecha de inicio no puede ser posterior a la fecha de fin.');
-    setStartDate(previousStartDate);
-    setEndDate(previousEndDate);
-    return;
-  }
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+  };
 
-  // Si las fechas son válidas, actualizamos el estado
-  setStartDate(newStartDate);
-  setEndDate(newEndDate);
-};
+  console.log(data);
 
-console.log(data);
-  
   return (
     <Container>
       <Header title={"Datos de Nodos"} />
@@ -92,8 +91,7 @@ console.log(data);
             </select>
           </div>
         )}
-{/*
-        
+
         <div className="mb-6">
           <label className="form-label me-2 mb-1">
             <strong>Seleccionar Tipo de Dato</strong>
@@ -102,17 +100,18 @@ console.log(data);
             id="tipoDato"
             className="form-select"
             value={selectedTipo}
-            onChange={(e) => setSelectedTipo(e.target.value)}
+            onChange={(e) => setSelectedTipo(e.target.value)} // Actualizamos el tipo seleccionado
           >
             <option value="">Selecciona un tipo de dato</option>
+            {/* Si los tipos están cargados, los mostramos en el select */}
             {tipos.map((tipo) => (
-              <option key={tipo.id} value={tipo.id}>
-                {tipo.nombre}
+              <option key={tipo.id} value={tipo.data_type}> {/* Usamos el data_type como valor */}
+                {tipo.nombre} ({tipo.data_symbol})
               </option>
             ))}
           </select>
         </div>
-*/}
+
         <div className="flex items-center">
           <FiltroDatos onFilterChange={handleFilterChange} className="px-2" />
 

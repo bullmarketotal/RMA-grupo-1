@@ -44,3 +44,10 @@ def read_paquetes(
         type=type,
     )
     return result
+
+# Endpoint para obtener todos los tipos de datos
+@router.get("/tipos", response_model=list[schemas.TipoBase])
+def read_tipos(db: Session = Depends(get_db)):
+    # Llamamos a la función de servicio para obtener todos los tipos de la base de datos
+    tipos = services.listar_tipos(db)
+    return tipos
