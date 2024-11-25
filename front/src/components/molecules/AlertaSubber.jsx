@@ -1,6 +1,7 @@
 import SwitchButton from "../atoms/SwitchButton";
 import { urlBase64ToUint8Array } from "../utils/notifications";
 import { useAxios } from "../../context/AxiosProvider";
+import { useNotification } from "../../context/NotificationContext";
 
 const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmEXckfEXYawnzytMjOEyCJsQ8NX7-gGHk';
 const baseURL = import.meta.env.VITE_API_URL
@@ -8,6 +9,8 @@ const baseURL = import.meta.env.VITE_API_URL
 function AlertaSubber({ title, description, value, isInitiallySubbed }) {
 
     const axios = useAxios();
+
+    const { showNotification } = useNotification();
 
     async function suscribirUsuario(alerta_id) {
         try{
@@ -28,16 +31,20 @@ function AlertaSubber({ title, description, value, isInitiallySubbed }) {
         
                 const response = await axios.post(baseURL + '/subscribe', requestBody);
         
-                alert(response.data.message);
+                showNotification(response.data.message, "success");
             }
         } catch(e) {
-            console.log("Error al suscribirse: ", e)
+            showNotification("Error al suscribirse", "error");
         }
     }
 
     async function desuscribirUsuario(alerta_id) {
-        const response = await axios.delete(baseURL + '/unsubscribe', { params: { alerta_id }})
-        alert(response.data.message)
+        try {
+            const response = await axios.delete(baseURL + '/unsubscribe', { params: { alerta_id }})
+            showNotification(response.data.message, "success");
+        } catch (e) {
+            showNotification("Error al suscribirse", "error");
+        }
     }
 
     function onChange(event) {
