@@ -5,7 +5,7 @@ import { useAxios } from "../../context/AxiosProvider";
 const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmEXckfEXYawnzytMjOEyCJsQ8NX7-gGHk';
 const baseURL = import.meta.env.VITE_API_URL
 
-function AlertaSubber({ title, description, value }) {
+function AlertaSubber({ title, description, value, isInitiallySubbed }) {
 
     const axios = useAxios();
 
@@ -53,7 +53,7 @@ function AlertaSubber({ title, description, value }) {
         <h3 className="text-xl font-bold">{title}</h3>
         <p>{description}</p>
       </div>
-      <SwitchButton value={value} onChange={onChange}/>
+      <SwitchButton value={value} onChange={onChange} isInitiallySubbed={isInitiallySubbed}/>
     </div>
   );
 }

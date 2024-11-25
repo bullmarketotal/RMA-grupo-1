@@ -3,100 +3,46 @@ import { askNotificationPermission, urlBase64ToUint8Array } from "../components/
 import Container from "../components/atoms/Container";
 import AlertaSubber from "../components/molecules/AlertaSubber";
 import { useAxios } from "../context/AxiosProvider";
+import { LoadingSpinner } from "../components/atoms";
 
-
-const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmEXckfEXYawnzytMjOEyCJsQ8NX7-gGHk';
 const baseURL = import.meta.env.VITE_API_URL
 
 export function ConfigNotifications() {
     askNotificationPermission();
-    const [consolelog, setConsolelog] = useState('')
-    const [alertId, setAlertId] = useState(1)
+
     const [subbedAlerts, setSubbedAlerts] = useState([])
-
-    const [checkedSubs, setCheckedSubs] = useState({
-        alertaAmarilla: false,
-        alertaNaranja: false,
-        alertaRojo: false,
-        datoInvalido: false,
-        bateriaBaja: false
-      });
-
+    const [loadingAlerts, setLoadingAlerts] = useState(true)
     const axios = useAxios();
 
     useEffect(() => {
         axios.get(baseURL + "/subscriptions")
         .then(res => setSubbedAlerts(res.data))
-        .catch()
+        .then(() => setLoadingAlerts(false))
+        .catch(() => console.error("Error al buscar las alertas del usuario: ", e))
     }, [])
 
-    async function subscribeUser(event) {
-        try{
-            if ('serviceWorker' in navigator) {
-                // Se inyecta el service worker al navegador del usuario
-                const registration = await navigator.serviceWorker.register('./service_worker.js');
-        
-                const subscription = await registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-                });
-    
-    
-                if(!alertId) {
-                    alert("Elegi un alerta capo")
-                    return
-                }
-                
-                const requestBody = {
-                    subscription,
-                    alerta_id: alertId
-                }
-                // Enviar la suscripción al backend para almacenarla
-        
-                const response = await axios.post(baseURL + '/subscribe', requestBody);
-        
-                alert(response.data.message);
-            }
-        } catch(e) {
-            console.log("Error al suscribirse: ", e)
-        }
-    }
-
-    async function unsubscribeUser(event) {
-        const requestBody = {
-            alerta_id: alertId
-        }
-
-        const response = await axios.delete(baseURL + '/unsubscribe', { params: { alerta_id: alertId }})
-        alert(response.data.message)
-    }
-    
-    function handleSelect(event){
-        setAlertId(event.target.value);
+    function isSubscribed(alerta_id) {
+        if(subbedAlerts.length === 0)
+            return false
+        const existe = subbedAlerts.some(sub => sub.id === alerta_id)
+        console.log("Existe? ", existe)
+        return existe
     }
 
     return (
         <Container>
             <h1 className="bold text-2xl">Mis suscripciones</h1>
 
-            <div>
-                <h2 className="text-2xl font-bold">Alertas por nivel hidrométrico</h2>
-                <AlertaSubber value={1} title="Alerta Amarilla" description={"Avisar cuando el nivel supere los 0.5m"}/>
-                <AlertaSubber value={2} title="Alerta Naranja" description={"Avisar cuando el nivel supere 1m"}/>
-                <AlertaSubber value={3} title="Alerta Roja" description={"Avisar cuando el nivel supere los 2m"}/>
-                <AlertaSubber value={4} title="Datos inválidos" description={"Avisar cuando llegue un dato erróneo"}/>
-                <AlertaSubber value={5} title="Batería baja" description={"Avisar cuando un nodo tenga batería baja"}/>
-            </div>
-
-            <select onChange={handleSelect}>
-                <option value={1}>Alerta amarilla</option>
-                <option value={2}>Alerta naranja</option>
-                <option value={3}>Alerta roja</option>
-                <option value={4}>Dato invalido</option>
-                <option value={5}>Bateria baja</option>
-            </select><hr></hr>
-            <button onClick={subscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 me-5 my-4">Suscribirse</button>
-            <button  onClick={unsubscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 my-4">Desuscribirse</button>
+                {loadingAlerts ? <LoadingSpinner/> : (
+                    <div>
+                        <h2 className="text-2xl font-bold">Alertas por nivel hidrométrico</h2>
+                        <AlertaSubber value={1} title="Alerta Amarilla" description={"Avisarme cuando el nivel de un nodo supere los 0.5m"} isInitiallySubbed={ isSubscribed(1) }/>
+                        <AlertaSubber value={2} title="Alerta Naranja" description={"Avisarme cuando el nivel de un nodo supere 1m"} isInitiallySubbed={ isSubscribed(2) }/>
+                        <AlertaSubber value={3} title="Alerta Roja" description={"Avisarme cuando el nivel de un nodo supere los 2m"} isInitiallySubbed={ isSubscribed(3) }/>
+                        <AlertaSubber value={4} title="Datos inválidos" description={"Avisarme cuando llegue un dato erróneo a algún nodo"} isInitiallySubbed={ isSubscribed(4) }/>
+                        <AlertaSubber value={5} title="Batería baja" description={"Avisarme cuando un nodo tenga batería baja"} isInitiallySubbed={ isSubscribed(5) }/>
+                    </div>
+                )}
         </Container>
     )
 }
