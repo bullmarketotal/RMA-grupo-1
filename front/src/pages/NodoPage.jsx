@@ -32,8 +32,13 @@ const NodoPage = () => {
     order: "asc",
     orderBy: "date",
   });
+  console.log("ID: ", id);
 
-  const sensorData = useNodos({
+  const {
+    nodos: sensorData,
+    loading: loadingNodo,
+    error: errorNodo,
+  } = useNodos({
     nodo_id: id,
   });
 
@@ -80,18 +85,25 @@ const NodoPage = () => {
   if (loading) return <LoadingSpinner />;
   if (error) return <p>{error}</p>;
 
-  const { latitud, longitud } = sensorData.nodos;
+  //const { latitud, longitud } = sensorData;
+  if (loading || loadingNodo) return <LoadingSpinner />;
 
   return (
     <Container>
       <Card>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4">
           <div className="col-span-2 flex flex-col">
-            <NodoHeader nodo={sensorData.nodos} />
+            <NodoHeader sensor={sensorData} loading={loadingNodo} />
           </div>
           <div className="row-span-2 shadow-sm rounded-lg overflow-hidden w-full max-h-80 min-h-64 flex justify-end">
             {latitud !== undefined && longitud !== undefined ? (
               <MiniMap lat={latitud} lng={longitud} />
+            ) : (
+              <LoadingSpinner />
+            )}
+            {sensorData.latitud !== undefined &&
+            sensorData.longitud !== undefined ? (
+              <MiniMap lat={sensorData.latitud} lng={sensorData.longitud} />
             ) : (
               <LoadingSpinner />
             )}
