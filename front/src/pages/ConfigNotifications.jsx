@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { askNotificationPermission, urlBase64ToUint8Array } from "../components/utils/notifications";
-import { useAxios } from "../context/AxiosProvider";
 import Container from "../components/atoms/Container";
+import AlertaSubber from "../components/molecules/AlertaSubber";
+import { useAxios } from "../context/AxiosProvider";
+
 
 const publicVapidKey = 'BEYUuNByv4Pt5XP-zxDeU1zqEQpitr9_D98zKwTm1DiDP0vVh1iazUmEXckfEXYawnzytMjOEyCJsQ8NX7-gGHk';
 const baseURL = import.meta.env.VITE_API_URL
 
-export function TestNotifications() {
+export function ConfigNotifications() {
     askNotificationPermission();
     const [consolelog, setConsolelog] = useState('')
     const [alertId, setAlertId] = useState(1)
     const [subbedAlerts, setSubbedAlerts] = useState([])
+
+    const [checkedSubs, setCheckedSubs] = useState({
+        alertaAmarilla: false,
+        alertaNaranja: false,
+        alertaRojo: false,
+        datoInvalido: false,
+        bateriaBaja: false
+      });
 
     const axios = useAxios();
 
@@ -71,13 +81,11 @@ export function TestNotifications() {
 
             <div>
                 <h2 className="text-2xl font-bold">Alertas por nivel hidrométrico</h2>
-                <div className=" w-3/5 py-2 my-2 min-w-96 grid grid-cols-[auto_1fr]">
-                    <div className="">
-                        <h3 className="text-xl font-bold">Alerta amarilla</h3>
-                        <p>Avisar cuando el nivel supere los 0.5m</p>
-                    </div>
-                    <button onClick={subscribeUser} className="p-2 border rounded bg-cyan-200 hover:bg-slate-600 self-end place-self-center">Suscribirse</button>
-                </div>
+                <AlertaSubber value={1} title="Alerta Amarilla" description={"Avisar cuando el nivel supere los 0.5m"}/>
+                <AlertaSubber value={2} title="Alerta Naranja" description={"Avisar cuando el nivel supere 1m"}/>
+                <AlertaSubber value={3} title="Alerta Roja" description={"Avisar cuando el nivel supere los 2m"}/>
+                <AlertaSubber value={4} title="Datos inválidos" description={"Avisar cuando llegue un dato erróneo"}/>
+                <AlertaSubber value={5} title="Batería baja" description={"Avisar cuando un nodo tenga batería baja"}/>
             </div>
 
             <select onChange={handleSelect}>
