@@ -160,7 +160,7 @@ def generar_temp():
             "id": args.nodo,
             "type": 1,
             "data": args.data if args.data is not None else data_temp,
-            "time": int(fecha_hora.timestamp()),
+            "time": int(fecha_hora.timestamp()) if args.data is None else int(datetime.now().timestamp()),
         }
 
         enviar_mensaje(mensaje)
@@ -183,7 +183,7 @@ def generar_nivel():
             "id": args.nodo,
             "type": 25,
             "data": args.data if args.data is not None else data_nivel,
-            "time": int(fecha_hora.timestamp()),
+            "time": int(fecha_hora.timestamp()) if args.data is None else int(datetime.now().timestamp()),
         }
         enviar_mensaje(mensaje)
 
@@ -212,7 +212,7 @@ def generar_tension():
             "id": args.nodo,
             "type": 16,
             "data": args.data if args.data is not None else data_tension,
-            "time": int(fecha_hora.timestamp()),
+            "time": int(fecha_hora.timestamp()) if args.data is None else int(datetime.now().timestamp()),
         }
 
         enviar_mensaje(mensaje)
@@ -239,7 +239,7 @@ def generar_precip():
             "id": args.nodo,
             "type": 14,
             "data": args.data if args.data is not None else data_precip,
-            "time": int(fecha_hora.timestamp()),
+            "time": int(fecha_hora.timestamp()) if args.data is None else int(datetime.now().timestamp()),
         }
 
         enviar_mensaje(mensaje)
