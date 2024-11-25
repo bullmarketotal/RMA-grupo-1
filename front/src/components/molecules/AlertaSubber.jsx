@@ -48,9 +48,9 @@ function AlertaSubber({ title, description, value, isInitiallySubbed }) {
     }
 
   return (
-    <div className=" w-3/5 py-2 my-2 min-w-96 grid grid-cols-[2fr_1fr] gap-x-12">
+    <div className="sm:ms-10 w-4/5 py-2 my-2 min-w-96 grid grid-cols-[3fr_1fr] gap-x-12">
       <div className="">
-        <h3 className="text-xl font-bold">{title}</h3>
+        <h3 className="text-xl font-semibold">{title}</h3>
         <p>{description}</p>
       </div>
       <SwitchButton value={value} onChange={onChange} isInitiallySubbed={isInitiallySubbed}/>

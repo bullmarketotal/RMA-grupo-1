@@ -31,18 +31,23 @@ export function ConfigNotifications() {
 
     return (
         <Container>
-            <h1 className="bold text-2xl">Mis suscripciones</h1>
+            <div className="roboto">
+                <h1 className="bold text-3xl font-bold ">Mis suscripciones</h1>
+                <p className="mt-4 text-lg">En este panel podés configurar las alertas que te interesa recibir personalmente. Recordá permitir las notificaciones en tu navegador.</p>
+                    {loadingAlerts ? <LoadingSpinner/> : (
+                        <div className="mt-8">
+                            <h2 className="text-2xl font-bold">Alertas por nivel hidrométrico</h2>
+                            <AlertaSubber value={1} title="Alerta Amarilla" description={"Avisarme cuando el nivel de un nodo supere los 0.5m"} isInitiallySubbed={ isSubscribed(1) }/>
+                            <AlertaSubber value={2} title="Alerta Naranja" description={"Avisarme cuando el nivel de un nodo supere 1m"} isInitiallySubbed={ isSubscribed(2) }/>
+                            <AlertaSubber value={3} title="Alerta Roja" description={"Avisarme cuando el nivel de un nodo supere los 2m"} isInitiallySubbed={ isSubscribed(3) }/>
+                            <h2 className="text-2xl font-bold">Alertas de administración
+                            </h2>
+                            <AlertaSubber value={4} title="Datos inválidos" description={"Avisarme cuando llegue un dato erróneo a algún nodo"} isInitiallySubbed={ isSubscribed(4) }/>
+                            <AlertaSubber value={5} title="Batería baja" description={"Avisarme cuando un nodo tenga batería baja"} isInitiallySubbed={ isSubscribed(5) }/>
+                        </div>
+                    )}
 
-                {loadingAlerts ? <LoadingSpinner/> : (
-                    <div>
-                        <h2 className="text-2xl font-bold">Alertas por nivel hidrométrico</h2>
-                        <AlertaSubber value={1} title="Alerta Amarilla" description={"Avisarme cuando el nivel de un nodo supere los 0.5m"} isInitiallySubbed={ isSubscribed(1) }/>
-                        <AlertaSubber value={2} title="Alerta Naranja" description={"Avisarme cuando el nivel de un nodo supere 1m"} isInitiallySubbed={ isSubscribed(2) }/>
-                        <AlertaSubber value={3} title="Alerta Roja" description={"Avisarme cuando el nivel de un nodo supere los 2m"} isInitiallySubbed={ isSubscribed(3) }/>
-                        <AlertaSubber value={4} title="Datos inválidos" description={"Avisarme cuando llegue un dato erróneo a algún nodo"} isInitiallySubbed={ isSubscribed(4) }/>
-                        <AlertaSubber value={5} title="Batería baja" description={"Avisarme cuando un nodo tenga batería baja"} isInitiallySubbed={ isSubscribed(5) }/>
-                    </div>
-                )}
+            </div>
         </Container>
     )
 }
