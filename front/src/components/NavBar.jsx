@@ -13,6 +13,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
+import { FaUser } from "react-icons/fa";
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -81,11 +82,7 @@ export default function NavBar() {
                     {/* Menu de usuario */}
                     <MenuButton className="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 dark:bg-neutral-800 bg-white text-neutral-800 dark:text-white focus:ring-offset-neutral-800">
                       <span className="absolute -inset-1.5" />
-                      <img
-                        alt=""
-                        src="Imagen de usuario"
-                        className="h-8 w-8 rounded-full"
-                      />
+                      <FaUser className="size-6 p-1"/>
                     </MenuButton>
                     <MenuItems
                       transition
