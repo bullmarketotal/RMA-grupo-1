@@ -14,6 +14,7 @@ import LogoutConfirmationPage from "./LogoutConfirmationPage";
 import RegisterPage from "./RegisterPage";
 import { TestNotifications } from "./TestNotifications";
 import ConfigPage from "./ConfigPage";
+import ConfiguracionMenuPage from "./ConfiguracionMenuPage";
 
 const AppRoutes = () => {
   return (
@@ -38,7 +39,9 @@ const AppRoutes = () => {
         <Route path="/confirm-logout" element={<LogoutConfirmationPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/notificaciones" element={<TestNotifications />} />
-        <Route path="/configuracion" element={<ConfigPage/>} />
+        <Route path="/configuracion/general" element={<ConfigPage/>} />
+        <Route path="/configuracion" element={<ConfiguracionMenuPage/>} />
+
         
       </Route>
     </Routes>

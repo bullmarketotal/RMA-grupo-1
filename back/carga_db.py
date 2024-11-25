@@ -259,6 +259,8 @@ def init_configjson():
             "tension": [1, 100],
             "precipitacion": [1, 100],
         },
+        "nivel_hidrometrico_alertas": {"amarilla": 50, "naranja": 100, "roja": 200},
+        "tension_bateria_baja": 1,
     }
 
     # Verifica si el archivo existe

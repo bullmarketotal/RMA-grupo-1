@@ -1,16 +1,10 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
-from .schemas import PushEndpointReceive, AlertaCreate, NotificationData
-from ..usuarios.schemas import Usuario
-from .models import Alerta, PushEndpoint, Suscripcion
-from pywebpush import webpush, WebPushException
-import os
-import json
 
-VAPID_PUBLIC_KEY = os.getenv("PUBLIC_KEY")
-VAPID_PRIVATE_KEY = os.getenv("PRIVATE_KEY")
-VAPID_EMAIL = "mailto:gonzalo.ag88@gmail.com"
+from .schemas import PushEndpointReceive, AlertaCreate
+from .models import Alerta, PushEndpoint, Suscripcion
+
 
 def agregar_endpoint(db: Session, subscription: PushEndpointReceive, usuario_id: int) -> int:
     
@@ -51,33 +45,6 @@ def vincular_alerta(db: Session, alerta_id: int, user_id: int):
         raise HTTPException(status_code=500, detail="Ocurrió un error inesperado.")
     
 
-def obtener_suscriptores_de_alerta(db: Session, alerta_id: int):
-    # Obtener endpoints de usuarios suscriptos al alerta provisto
-
-    query = db.query(PushEndpoint).join(Suscripcion, PushEndpoint.usuario_id == Suscripcion.usuario_id).filter(Suscripcion.alerta_id == alerta_id)
-    result = query.all()
-    return result
-
-def notificar_a_endpoints(endpoints, notification_data: NotificationData):
-    for endpoint in endpoints:
-        try:
-            webpush(
-                subscription_info={
-                    "endpoint": endpoint.endpoint,
-                    "keys": {
-                        "auth": endpoint.keys_auth,
-                        "p256dh": endpoint.keys_p256dh
-                    }
-                },
-                data=json.dumps(notification_data),
-                vapid_private_key=VAPID_PRIVATE_KEY,
-                vapid_claims={
-                    "sub": VAPID_EMAIL,
-                    "aud": "https://fcm.googleapis.com"
-                }
-            )
-        except WebPushException as ex:
-            print(f"Error enviando notificación: {str(ex)}")
 
 
 def crear_alerta(db: Session, alerta: AlertaCreate):
@@ -92,10 +59,22 @@ def get_alerta(db: Session, alerta_id: int):
         raise HTTPException(status_code = 404, detail="Alerta no encontrada")
     return alerta
 
-def get_notification_body(db: Session, alerta_id: int, message: str) -> AlertaCreate:
-    alerta = get_alerta(db, alerta_id)
+       
+            
 
-    return {
-        "title": alerta.titulo_notificacion,  # Título de la notificación
-        "body": message  # Mensaje que se enviará como cuerpo
-    }
+def unsubscribe(db: Session, usuario_id: int, alerta_id: int):
+    sub = db.query(Suscripcion).filter(Suscripcion.usuario_id == usuario_id, Suscripcion.alerta_id == alerta_id).first()
+    if not sub:
+        return {"message": "No existe la suscripción provista"}
+    try:
+        sub.delete(db)
+        # Si al usuario no le queda suscripta ninguna alerta, se elimina su push endpoint
+        alertas_restantes_de_usuario = db.query(Suscripcion).filter(Suscripcion.usuario_id == usuario_id).first()
+        if not alertas_restantes_de_usuario:
+            db.query(PushEndpoint).filter(PushEndpoint.usuario_id == usuario_id).delete()
+        db.commit()
+        return {"message": "Suscripción eliminada", "status_code": 200}
+    except Exception as e:
+        db.rollback()
+        print("Error al desuscribir usuario: ", e)
+        return {"message": "Ocurrió un error inesperado"}

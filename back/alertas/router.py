@@ -5,20 +5,17 @@ from . import services
 from .schemas import (
     Alerta,
     AlertaCreate,
-    AlertaUpdate,
-    AlertaUsuario,
-    PushEndpointReceive,
     SubscribeUser,
     PushEndpointResponse
 )
 from typing import List
 from ..usuarios.schemas import Usuario
-
+from .push_notifications import NotificationHandler
 from ..database import get_db
 
 router = APIRouter()
 
-
+notificaciones = NotificationHandler()
 
 # Endpoint para recibir la suscripción y almacenarla
 @router.post('/subscribe', response_model = PushEndpointResponse, tags=["Alertas"])
@@ -32,16 +29,13 @@ async def subscribe_user(
 
     return {"message": "Suscripción exitosa", "username": current_user.username}
 
+@router.delete('/unsubscribe', tags=["Alertas"])
+def unsubscribe_user(alerta_id: int, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)):
+    return services.unsubscribe(db, current_user.id, alerta_id)
+
 @router.post('/test-notification', tags=["Alertas"])
 def send_push_notification(message: str, alerta_id: int, db: Session = Depends(get_db)):
-
-    notification_data = services.get_notification_body(db, alerta_id, message)
-
-    # Aquí recuperas las suscripciones almacenadas (por ejemplo, desde la base de datos)
-    endpoints = services.obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
-    # Iterar sobre todas las suscripciones y enviar la notificación
-    services.notificar_a_endpoints(endpoints, notification_data)
-    
+    notificaciones.trigger_notification(db=db, message=message, alerta_id=alerta_id, nodo_id=1)
     return {"message": "Notificaciones enviadas exitosamente"}
 
 
