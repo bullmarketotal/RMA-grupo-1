@@ -24,3 +24,5 @@ export const useUsuarios = ({ usuario_id } = {}) => {
     mutate,
   };
 };
+
+export default useUsuarios;

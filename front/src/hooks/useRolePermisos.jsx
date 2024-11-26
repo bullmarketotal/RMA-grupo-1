@@ -4,6 +4,7 @@ import { fetcher } from "../utils";
 
 export const useRolePermisos = () => {
   const axios = useAxios();
+
   const { data, error, isValidating, mutate } = useSWR(
     "/permisos_role",
     (url) => fetcher(url, axios),

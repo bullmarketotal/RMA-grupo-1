@@ -6,9 +6,10 @@ const TogglePanel = ({ items, enabledItems, toggleItem }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {items.map((item) => (
         <div key={item.id} className="flex items-center py-2">
-          <div className="flex items-center w-full">
-            {" "}
-            <span className="block font-medium mr-2">{item.descripcion}</span>
+          <div className="flex items-center w-full mr-10">
+            <span className="block font-medium mr-2 flex-grow">
+              {item.descripcion}
+            </span>
             <Switch
               checked={enabledItems[item.id]}
               onChange={() => toggleItem(item.id)}

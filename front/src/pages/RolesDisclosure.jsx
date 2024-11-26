@@ -4,20 +4,36 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import {
+  ChevronDownIcon,
+  PencilIcon,
+  TrashIcon,
+  KeyIcon,
+  CheckIcon,
+  XCircleIcon,
+} from "@heroicons/react/20/solid";
 import useRolePermisos from "../hooks/useRolePermisos";
 import usePermisos from "../hooks/usePermisos";
 import useRoles from "../hooks/useRoles";
 import useAsignarRevocarPermiso from "../hooks/useAsignarRevocarPermiso";
 import TogglePanel from "./TogglePanel";
+import LoadingSkeleton from "../components/atoms/LoadingSkeleton";
+import AddRoleForm from "./AddRoleForm";
 
 const RolesDisclosure = () => {
+  const {
+    roles,
+    loading: loadingRoles,
+    error: errorRoles,
+    deleteRole,
+    updateRole,
+    addRole,
+  } = useRoles();
   const {
     permisos,
     loading: loadingPermisos,
     error: errorPermisos,
   } = usePermisos();
-  const { roles, loading: loadingRoles, error: errorRoles } = useRoles();
   const {
     rolePermisos,
     loading: loadingRolePermisos,
@@ -27,6 +43,9 @@ const RolesDisclosure = () => {
   const { assignPermisoToRole, revokePermisoFromRole } =
     useAsignarRevocarPermiso();
   const [rolesPermisos, setRolesPermisos] = useState({});
+  const [editingRoleId, setEditingRoleId] = useState(null);
+  const [newRoleName, setNewRoleName] = useState("");
+  const [newRoleDesc, setNewRoleDesc] = useState("");
 
   useEffect(() => {
     if (rolePermisos.length > 0 && permisos.length > 0) {
@@ -61,9 +80,6 @@ const RolesDisclosure = () => {
       } else {
         await revokePermisoFromRole({ role_id: roleId, permiso_id: permisoId });
       }
-      console.log(
-        `Permiso ${permisoId} ${!isAssigned ? "assigned to" : "revoked from"} role ${roleId}`
-      );
     } catch (error) {
       // Revert optimistic update if API call fails
       setRolesPermisos((prevState) => ({
@@ -76,23 +92,119 @@ const RolesDisclosure = () => {
     }
   };
 
-  if (loadingPermisos || loadingRolePermisos) return <div>Loading...</div>;
-  if (errorPermisos || errorRolePermisos) return <div>Error loading data</div>;
+  const handleEdit = (role) => {
+    setEditingRoleId(role.id);
+    setNewRoleName(role.name);
+    setNewRoleDesc(role.descripcion);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingRoleId(null);
+    setNewRoleName("");
+    setNewRoleDesc("");
+  };
+
+  const handleSaveEdit = async (role) => {
+    await updateRole(role.id, {
+      name: newRoleName,
+      descripcion: newRoleDesc,
+    });
+    setEditingRoleId(null);
+  };
+
+  const handleDelete = async (roleId) => {
+    if (window.confirm("¿Estás seguro de eliminar este rol?")) {
+      //TODO HACER CONFIRMACIÓN
+      try {
+        await deleteRole(roleId);
+        console.log(`Deleted role ${roleId}`);
+      } catch (error) {
+        console.error("Error eliminando el rol", error);
+      }
+    }
+  };
+  const handleAddRole = async (role) => {
+    await addRole(role);
+    console.log("Nuevo rol añadido", role);
+  };
+
+  if (loadingPermisos || loadingRolePermisos || loadingRoles)
+    return <LoadingSkeleton />;
+  if (errorPermisos || errorRolePermisos || errorRoles)
+    return <div>Error cargando los datos</div>;
 
   return (
-    <div className="p-4 max-w-screen-xl mx-auto bg-white shadow-lg rounded-lg">
+    <div className="p-2 max-w-screen-xl mx-auto normal-bg shadow-sm divide-y divide-neutral-600/5 dark:divide-white/5">
+      <div className="grid grid-cols-2 font-semibold normal-text ">
+        <div>Nombre</div>
+        <div>Descripción</div>
+      </div>
       {roles.map((role) => (
-        <Disclosure key={role.id} as="div" className="p-6">
+        <Disclosure key={role.id} as="div" className="p-2">
           {({ open }) => (
             <>
-              <DisclosureButton className="group flex w-full items-center justify-between">
-                <span className="text-sm/6 font-medium text-gray-900 group-hover:text-gray-700">
-                  {role.name}
-                </span>
-                <ChevronDownIcon
-                  className={`size-5 fill-gray-600 group-hover:fill-gray-400 ${open ? "rotate-180 transform" : ""}`}
-                />
-              </DisclosureButton>
+              <div className="flex justify-between items-center">
+                {editingRoleId === role.id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={newRoleName}
+                      onChange={(e) => setNewRoleName(e.target.value)}
+                      className="input input-bordered w-full max-w-xs mr-2"
+                    />
+                    <input
+                      type="text"
+                      value={newRoleDesc}
+                      onChange={(e) => setNewRoleDesc(e.target.value)}
+                      className="input input-bordered w-full max-w-xs"
+                    />
+                    <button
+                      onClick={() => handleSaveEdit(role)}
+                      className="btn btn-success ml-2"
+                    >
+                      <CheckIcon className="h-5 w-5" />
+                    </button>
+                    <button
+                      onClick={handleCancelEdit}
+                      className="btn btn-danger ml-2"
+                    >
+                      <XCircleIcon className="h-5 w-5" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 w-full">
+                      <span className="text-base normal-text">{role.name}</span>
+                      <span className="text-base normal-text">
+                        {role.descripcion}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span
+                        className="p-1 rounded-md bg-blue-500 text-white hover:bg-blue-700"
+                        onClick={() => handleEdit(role)}
+                      >
+                        <PencilIcon className="h-5 w-5" />
+                      </span>
+                      <span
+                        className="p-1 rounded-md bg-red-500 text-white hover:bg-red-700"
+                        onClick={() => handleDelete(role.id)}
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </span>
+                      <DisclosureButton className="p-1 rounded-md bg-green-500 text-white hover:bg-green-700 flex items-center">
+                        <KeyIcon className="h-5 w-5 mr-1" />
+                        Permisos
+                        <ChevronDownIcon
+                          className={`h-5 w-5 ml-1 ${
+                            open ? "rotate-180 transform" : ""
+                          }`}
+                        />
+                      </DisclosureButton>
+                    </div>
+                  </>
+                )}
+              </div>
               <DisclosurePanel className="mt-2 text-sm/5 text-gray-500">
                 <TogglePanel
                   items={permisos}
@@ -104,6 +216,7 @@ const RolesDisclosure = () => {
           )}
         </Disclosure>
       ))}
+      <AddRoleForm onAddRole={handleAddRole} />
     </div>
   );
 };
