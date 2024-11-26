@@ -1,10 +1,24 @@
-export const useNotifications = () => {
-    const notifications = [{
-        alerta_id: 1,
-        fecha_hora: new Date(),
-        titulo: "Legolas - Alerta Naranja",
-        message: "Nivel hidrométrico de 123.0cm"
-    }]
+import { useState, useEffect } from "react"
+import { useAxios } from "../context/AxiosProvider"
+const baseURL = import.meta.env.VITE_API_URL
 
-    return { notifications, loading: false }
+export const useNotifications = () => {
+    const [notificaciones, setNotificaciones] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    const axios = useAxios()
+
+    useEffect(() => {
+        axios.get(baseURL + "/usernotifications", { params: {
+            count_limit: 5
+        }})
+        .then(res => {
+            setNotificaciones(res.data)
+            setLoading(false)
+        })
+        .catch(e => setError(e))
+    },[])
+
+    return { notificaciones, loading, error }
 }

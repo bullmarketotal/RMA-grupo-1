@@ -1,8 +1,22 @@
+import { obtenerTimeAgoString } from "../utils/date";
+
+const getDotColor = (alert_id) => {
+  if(alert_id === 1)
+    return "yellow"
+  if(alert_id === 2)
+    return "orange"
+  if(alert_id === 3)
+    return "red"
+  return "blue"
+}
+
 function NotificationItem({data}) {   
-    console.log("data: ", data)
+  const time = new Date(data.fecha_hora)
+  
+  
     return ( 
-        <div className="relative mx-auto flex w-full max-w-full md:pt-[unset] mb-6">
-              <div className="w-3 h-3 mt-3 me-4 rounded-full bg-blue-500"></div>
+        <div className="rounded p-2 cursor-pointer relative mx-0 flex w-full max-w-full md:pt-[unset] mb-1 transition-all duration-200 ease-in-out hover:bg-slate-300 dark:hover:bg-slate-700">
+              <div className={`w-3 h-3 mt-3 me-4 rounded-full bg-${getDotColor(data.alerta_id)}-500`}></div>
               <div>
                 <p className="text-zinc-950 text-lg dark:text-white font-semibold mb-1">
                   {data.titulo}
@@ -11,7 +25,7 @@ function NotificationItem({data}) {
                   {data.message}
                 </p>
                 <p className="text-zinc-500 dark:text-zinc-400 text-sm">
-                  {data.fecha_hora.toString()}
+                  {obtenerTimeAgoString({ date: new Date(data.fecha_hora) })}
                 </p>
               </div>
       </div>
