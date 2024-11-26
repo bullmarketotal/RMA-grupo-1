@@ -8,12 +8,13 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, React } from "react";
+import { React, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
 import { FaUser } from "react-icons/fa";
+import NotificacionCard from "./molecules/NotificationList"
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -32,15 +33,17 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
-  const { isAuthenticated, username, loading } = useAuth();
-  // useEffect(() => {
-  //   console.log("El valor username es:", username);
-  // }, [username]);
 
+  const { isAuthenticated, username, loading } = useAuth();
+  const [ showNotis, setShowNotis ] = useState(false)
+  
+  const toggleNotifications = () => setShowNotis(!showNotis)
+  
   return (
     <>
       <Disclosure as="nav" className="bg-neutral-100 dark:bg-neutral-800">
@@ -76,7 +79,8 @@ export default function NavBar() {
               <DarkModeToggle />
 
               {/* Campana de notificaciones */}
-              <NotificationButton />
+              <NotificationButton onClick={toggleNotifications}/>
+              {showNotis && <NotificacionCard/> }
 
               <div>
                 {isAuthenticated ? (

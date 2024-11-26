@@ -1,10 +1,10 @@
 import React from "react";
 import { FaRegBell } from "react-icons/fa";
 
-const NotificationButton = () => {
+const NotificationButton = ({onClick}) => {
   return (
     <button
-      onClick={() => console.log("Hacer algo ... algo...")}
+      onClick={onClick}
       type="button"
       className="relative rounded-full p-2 transition-all duration-200 ease-in-out
               text-gray-600 hover:bg-gray-50 
