@@ -8,7 +8,7 @@ from ..usuarios.schemas import UsuarioBase
 
 class RoleBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    descripcion: Optional[str] = None
 
     @field_validator("name")
     def validate_name_length(cls, v):

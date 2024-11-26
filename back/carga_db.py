@@ -75,7 +75,7 @@ def init_permisos():
             identificador="assign_roles", descripcion="Asignar rol a usuario"
         ),
         PermisoCreate(
-            identificador="read_usuarios_roles", descripcion="Leer usuarios con roles"
+            identificador="read_usuarios_roles", descripcion="Ver usuarios con roles"
         ),
         PermisoCreate(identificador="admin", descripcion="Administrador"),
     ]
@@ -130,7 +130,7 @@ def init_nodos():
 def init_roles():
     db: Session = next(get_db())
     admin_role_data = RoleCreate(
-        name="admin", description="Administrador con todos los permisos"
+        name="admin", descripcion="Administrador con todos los permisos"
     )
     try:
         admin_role = create_role(db, admin_role_data)

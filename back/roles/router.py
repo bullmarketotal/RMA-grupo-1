@@ -88,6 +88,7 @@ def assign_role_to_usuario(
     "/rolesrevoke",
     response_model=dict,
     tags=["RolesUsuarios"],
+    dependencies=[Depends(permiso_requerido("assign_roles"))],
 )
 def revoke_role_from_usuario(
     usuario_role_data: UsuarioRole, db: Session = Depends(get_db)
@@ -99,6 +100,7 @@ def revoke_role_from_usuario(
     "/usuarios_roles",
     response_model=List[UsuarioRole],
     tags=["RolesUsuarios"],
+    dependencies=[Depends(permiso_requerido("read_usuarios_roles"))],
 )
 def read_usuarioroles(db: Session = Depends(get_db)):
     return services.get_all_userroles(db)
