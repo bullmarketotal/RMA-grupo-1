@@ -190,11 +190,11 @@ const RolesDisclosure = () => {
                         onConfirm={() => handleDelete(role.id)}
                         onCancel={() => console.log("Cancel")}
                       >
-                        <span className="p-2 rounded-md bg-red-500 text-white hover:bg-red-700">
+                        <span className="p-2 rounded-md btn-alert">
                           <TrashIcon className="h-5 w-5" />
                         </span>
                       </ConfirmationPopover>
-                      <DisclosureButton className="p-1 rounded-md bg-emerald-500 text-white hover:bg-green-700 flex items-center">
+                      <DisclosureButton className="p-1 rounded-md bg-emerald-500 text-white hover:bg-emerald-700 flex items-center">
                         <KeyIcon className="h-5 w-5 mr-1" />
                         Permisos
                         <ChevronDownIcon
