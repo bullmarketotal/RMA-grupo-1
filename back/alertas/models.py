@@ -33,6 +33,7 @@ class Notificacion(ModeloBase):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
     alerta_id: Mapped[int] = mapped_column(Integer, ForeignKey('alertas.id'), index=True)
+    nodo_id: Mapped[int] = mapped_column(Integer, ForeignKey('nodos.id'), index=True)
     fecha_hora: Mapped[datetime] = mapped_column(DateTime)
     titulo: Mapped[str] = mapped_column(String)
     message: Mapped[str] = mapped_column(String)
