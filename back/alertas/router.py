@@ -61,7 +61,7 @@ def post_alerta(alerta: AlertaCreate, db: Session = Depends(get_db)):
     return services.crear_alerta(db, alerta)
 
 @router.get('/usernotifications', response_model=List[Notificacion], tags=["Alertas"])
-def get_user_notifications(not_read_only: bool, count_limit: int, start_date_limit: Optional[datetime] = None, db: Session = Depends(get_db)): #, current_user: Usuario = Depends(get_current_user)
+def get_user_notifications(count_limit: int, not_read_only: Optional[bool] = False, start_date_limit: Optional[datetime] = None, db: Session = Depends(get_db)): #, current_user: Usuario = Depends(get_current_user)
     return services.get_user_notifications(not_read_only, count_limit, start_date_limit, db, 1) #current_user.id
 
 """ 
