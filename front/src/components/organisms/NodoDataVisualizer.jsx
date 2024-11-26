@@ -28,7 +28,7 @@ const NodoDataVisualizer = ({ dataTemp,dataNivel, loading, onFilterChange, isExp
       {!isToggled ? (
         <GraphView dataTemp={dataTemp} loading={loading} dataNivel={dataNivel}/>
       ) : (
-        <TableView data={data} loading={loading} />
+        <TableView data={{items: dataTemp.concat(dataNivel)}} loading={loading} />
       )}
     </Card>
   );

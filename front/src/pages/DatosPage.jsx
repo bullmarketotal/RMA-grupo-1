@@ -19,7 +19,8 @@ const DatosPage = () => {
     nodo_id: id || 1,
     filterStartDate: startDate || "",
     filterEndDate: endDate || "",
-    orden: "asc",
+    order: "desc",
+    orderBy: "date",
     type: selectedTipo || 1 // Usamos el tipo seleccionado o 1 por defecto
   };
 
