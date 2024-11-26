@@ -32,7 +32,7 @@ const AddRoleForm = ({ onAddRole }) => {
       />
       <button
         type="submit"
-        className="btn btn-primary ml-2 flex items-center justify-center"
+        className="btn btn-active btn-action ml-2 flex items-center justify-center"
       >
         <PlusIcon className="h-5 w-5" />
       </button>

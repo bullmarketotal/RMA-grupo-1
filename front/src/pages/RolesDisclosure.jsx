@@ -10,7 +10,7 @@ import {
   TrashIcon,
   KeyIcon,
   CheckIcon,
-  XCircleIcon,
+  XMarkIcon,
 } from "@heroicons/react/20/solid";
 import useRolePermisos from "../hooks/useRolePermisos";
 import usePermisos from "../hooks/usePermisos";
@@ -19,6 +19,7 @@ import useAsignarRevocarPermiso from "../hooks/useAsignarRevocarPermiso";
 import TogglePanel from "./TogglePanel";
 import LoadingSkeleton from "../components/atoms/LoadingSkeleton";
 import AddRoleForm from "./AddRoleForm";
+import ConfirmationPopover from "../components/atoms/ConfirmationPopover";
 
 const RolesDisclosure = () => {
   const {
@@ -113,19 +114,18 @@ const RolesDisclosure = () => {
   };
 
   const handleDelete = async (roleId) => {
-    if (window.confirm("¿Estás seguro de eliminar este rol?")) {
-      //TODO HACER CONFIRMACIÓN
-      try {
-        await deleteRole(roleId);
-        console.log(`Deleted role ${roleId}`);
-      } catch (error) {
-        console.error("Error eliminando el rol", error);
-      }
+    try {
+      await deleteRole(roleId);
+    } catch (error) {
+      console.error("Error eliminando el rol", error);
     }
   };
   const handleAddRole = async (role) => {
-    await addRole(role);
-    console.log("Nuevo rol añadido", role);
+    try {
+      await addRole(role);
+    } catch (error) {
+      console.error("Error eliminando el rol", error);
+    }
   };
 
   if (loadingPermisos || loadingRolePermisos || loadingRoles)
@@ -168,7 +168,7 @@ const RolesDisclosure = () => {
                       onClick={handleCancelEdit}
                       className="btn btn-danger ml-2"
                     >
-                      <XCircleIcon className="h-5 w-5" />
+                      <XMarkIcon className="h-5 w-5" />
                     </button>
                   </>
                 ) : (
@@ -181,18 +181,20 @@ const RolesDisclosure = () => {
                     </div>
                     <div className="flex gap-2">
                       <span
-                        className="p-1 rounded-md bg-blue-500 text-white hover:bg-blue-700"
+                        className="p-2 rounded-md bg-sky-500 text-white hover:bg-sky-700"
                         onClick={() => handleEdit(role)}
                       >
                         <PencilIcon className="h-5 w-5" />
                       </span>
-                      <span
-                        className="p-1 rounded-md bg-red-500 text-white hover:bg-red-700"
-                        onClick={() => handleDelete(role.id)}
+                      <ConfirmationPopover
+                        onConfirm={() => handleDelete(role.id)}
+                        onCancel={() => console.log("Cancel")}
                       >
-                        <TrashIcon className="h-5 w-5" />
-                      </span>
-                      <DisclosureButton className="p-1 rounded-md bg-green-500 text-white hover:bg-green-700 flex items-center">
+                        <span className="p-2 rounded-md bg-red-500 text-white hover:bg-red-700">
+                          <TrashIcon className="h-5 w-5" />
+                        </span>
+                      </ConfirmationPopover>
+                      <DisclosureButton className="p-1 rounded-md bg-emerald-500 text-white hover:bg-green-700 flex items-center">
                         <KeyIcon className="h-5 w-5 mr-1" />
                         Permisos
                         <ChevronDownIcon
