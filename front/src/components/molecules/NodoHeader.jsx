@@ -1,29 +1,34 @@
 import React, { useState } from "react";
+import { LoadingSpinner, SubmitButton } from "../atoms";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
+import { useUpdateSensor } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import { useNodos } from "../../hooks";
-import { LoadingSpinner } from "../atoms";
 
-const NodoHeader = ({ nodo }) => {
+const NodoHeader = ({ sensor, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
-    identificador: nodo.identificador,
-    porcentajeBateria: nodo.porcentajeBateria || 0,
-    latitud: nodo.latitud || 0,
-    longitud: nodo.longitud || 0,
-    descripcion: nodo.descripcion,
+    identificador: sensor.identificador,
+    porcentajeBateria: sensor.porcentajeBateria || 0,
+    latitud: sensor.latitud || 0,
+    longitud: sensor.longitud || 0,
+    descripcion: sensor.descripcion,
   });
 
-  const { updateNodo, loading, error } = useNodos();
+  const {
+    updateSensor,
+    loading: loadingSensor,
+    error,
+  } = useUpdateSensor(sensor.id, editableSensor);
 
   const navigate = useNavigate();
 
   const handleEditClick = async () => {
     if (isEditing) {
-      await updateNodo(nodo.id, editableSensor);
+      await updateSensor();
     }
     setIsEditing(!isEditing);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditableSensor({
@@ -34,10 +39,10 @@ const NodoHeader = ({ nodo }) => {
           : value,
     });
   };
-
-  const monitorearBateria = () => {
-    navigate(`/nodo/${nodo.id}/bateria-page`);
-  };
+  const idSensor = sensor.id;
+  function monitorearBateria() {
+    navigate(`/sensor/${idSensor}/bateria-page`);
+  }
 
   return (
     <div id="header" className="flex items-center justify-between">
@@ -45,7 +50,8 @@ const NodoHeader = ({ nodo }) => {
         <LoadingSpinner />
       ) : (
         <>
-          <div id="info-nodo">
+          <div id="info-sensor">
+            {/* identificador */}
             <h1 className="flex text-3xl items-center normal-text font-semibold">
               <MdOutlineSettingsInputAntenna className="mr-2" />
               {isEditing ? (
@@ -60,6 +66,7 @@ const NodoHeader = ({ nodo }) => {
                 editableSensor.identificador
               )}
             </h1>
+            {/* descripción */}
 
             <div className="normal-text text-sm py-2">
               {isEditing ? (
