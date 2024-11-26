@@ -183,3 +183,9 @@
 .dark .leaflet-container {
   background: #000;
 }
+
+.leaflet-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

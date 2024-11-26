@@ -31,24 +31,19 @@ const useColorBasedOnAlert = (nodo) => {
   }, [])
 
   if(loadingColor)
-    return {alertColor: "gray-400", loadingColor: true}
+    return {alertColor: "gray-400", loadingColor: true, lastNivel}
 
-  if(nodo.id === 4){
-    console.log("lastnivel: ", lastNivel)
-    console.log("versus: ", config?.nivel_hidrometrico_alertas?.naranja)
-
-  }
 
   if(!lastNivel)
-    return {alertColor: "gray-500", loading: false};
+    return {alertColor: "gray-500", loading: false, lastNivel};
   if(lastNivel?.data < config?.nivel_hidrometrico_alertas?.amarilla)
-      return {alertColor: "sky-500", loading: false};
+      return {alertColor: "sky-500", loading: false, lastNivel};
   if(lastNivel?.data < config?.nivel_hidrometrico_alertas?.naranja)
-      return {alertColor: "yellow-500", loading: false};
+      return {alertColor: "yellow-500", loading: false, lastNivel};
   if(lastNivel?.data < config?.nivel_hidrometrico_alertas?.roja)
-    return {alertColor: "orange-500", loading: false};
+    return {alertColor: "orange-500", loading: false, lastNivel};
   else
-    return {alertColor: "red-500", loading: false};
+    return {alertColor: "red-500", loading: false, lastNivel};
 };
 
 export default useColorBasedOnAlert;
