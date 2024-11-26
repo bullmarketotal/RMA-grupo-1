@@ -91,9 +91,10 @@ const TablaDatos = ({ items, tipo }) => {
               >
                 {row.cells.map((cell) => {
                   const { key, ...cellProps } = cell.getCellProps();
+                  console.log("cell: ", cell)
                   return (
                     <td key={key} {...cellProps} className="table-row-cell">
-                      {cell.column.Header === "Dato" && `${Number(cell.value).toFixed(1)} ${tiposMap[tipo]}`} 
+                      {cell.column.Header === "Dato" && `${Number(cell.value).toFixed(1)} ${tiposMap[cell.row.original.type_id]}`} 
                       {cell.column.Header === 'Fecha y Hora' && dateFormatter(cell.value) }
                     </td>
                   );

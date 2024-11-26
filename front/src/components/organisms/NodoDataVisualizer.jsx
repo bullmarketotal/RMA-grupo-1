@@ -10,6 +10,9 @@ const NodoDataVisualizer = ({ dataTemp,dataNivel, loading, onFilterChange, isExp
     setIsToggled(!isToggled);
   };
 
+  function mergeAndSortByDate(arr1, arr2) {
+    return [...arr1, ...arr2].sort((a, b) => new Date(b.date) - new Date(a.date));
+}
 
   return (
     <Card>
@@ -28,7 +31,7 @@ const NodoDataVisualizer = ({ dataTemp,dataNivel, loading, onFilterChange, isExp
       {!isToggled ? (
         <GraphView dataTemp={dataTemp} loading={loading} dataNivel={dataNivel}/>
       ) : (
-        <TableView data={{items: dataTemp.concat(dataNivel)}} loading={loading} />
+        <TableView data={{items: mergeAndSortByDate(dataTemp, dataNivel)}} loading={loading} />
       )}
     </Card>
   );
