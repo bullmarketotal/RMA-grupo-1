@@ -3,7 +3,7 @@ import NodoCard from "../components/organisms/NodoCard";
 import ErrorSimple from "../components/molecules/ErrorSimple";
 import { useNodos } from "../hooks/useNodos";
 import { useBreadcrumbsUpdater } from "../hooks";
-import ExpandableCard from "../components/molecules/ExpandableCard"; // Importar el componente
+import ExpandableCard from "../components/molecules/ExpandableCard";
 
 const NodoList = () => {
   const { nodos, loading, error } = useNodos();

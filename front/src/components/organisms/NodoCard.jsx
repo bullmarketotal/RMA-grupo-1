@@ -38,6 +38,7 @@ const NodoCard = ({ nodo }) => {
   const dataTemp = items.filter((item) => item.type_id === 1);
   const dataNivel = items.filter((item) => item.type_id === 25);
   const dataTension = items.filter((item) => item.type_id === 16);
+
   if (error) return <p>Error al obtener los datos: {error.message}</p>;
   if (isForbidden) return <p>Acceso prohibido.</p>;
 
