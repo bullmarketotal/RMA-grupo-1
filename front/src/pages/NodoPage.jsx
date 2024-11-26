@@ -10,7 +10,6 @@ import { NodoDataVisualizer } from "../components/organisms";
 import { useFetchNodoData, useNodos } from "../hooks";
 import PDFNodo from "../components/molecules/PDFNodo";
 import BateriaDataVisualizer from "../components/organisms/BateriaDataVisualizer";
-import TestComponent from "./TestComponent";
 
 const TIMEFRAME_24H = 1000 * 60 * 60 * 24;
 const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
@@ -95,11 +94,6 @@ const NodoPage = () => {
             <NodoHeader sensor={sensorData} loading={loadingNodo} />
           </div>
           <div className="row-span-2 shadow-sm rounded-lg overflow-hidden w-full max-h-80 min-h-64 flex justify-end">
-            {latitud !== undefined && longitud !== undefined ? (
-              <MiniMap lat={latitud} lng={longitud} />
-            ) : (
-              <LoadingSpinner />
-            )}
             {sensorData.latitud !== undefined &&
             sensorData.longitud !== undefined ? (
               <MiniMap lat={sensorData.latitud} lng={sensorData.longitud} />
