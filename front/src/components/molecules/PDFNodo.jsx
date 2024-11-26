@@ -4,6 +4,7 @@ import html2canvas from "html2canvas";
 
 const PDFNodo = ({ data, chartRef, bateriaChartRef, startDate, endDate, onExport, onExportComplete, isExporting }) => {
   useEffect(() => {
+    console.log("Data PDF:", data)
     const capturePDF = async () => {
       const doc = new jsPDF("p", "mm", "a4");
       const pageWidth = doc.internal.pageSize.getWidth();
@@ -16,11 +17,11 @@ const PDFNodo = ({ data, chartRef, bateriaChartRef, startDate, endDate, onExport
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
-      doc.text(`Informe de Nodo: ${data.sensor.identificador}`, marginX, 15);
+      doc.text(`Informe de Nodo: ${data.identificador}`, marginX, 15);
 
       doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
-      const descripcionLines = splitText(data.sensor.descripcion, pageWidth - marginX * 2);
+      const descripcionLines = splitText(data.descripcion, pageWidth - marginX * 2);
       doc.text(descripcionLines, marginX, 25);
 
       doc.setDrawColor(200, 200, 200); 
@@ -39,8 +40,8 @@ const PDFNodo = ({ data, chartRef, bateriaChartRef, startDate, endDate, onExport
       }
       currentY += 10;
       doc.text("Posición del Nodo:", marginX, currentY);
-      doc.text(`Latitud: ${data.sensor.latitud}`, marginX + 10, currentY + 10);
-      doc.text(`Longitud: ${data.sensor.longitud}`, marginX + 90, currentY + 10);
+      doc.text(`Latitud: ${data.latitud}`, marginX + 10, currentY + 10);
+      doc.text(`Longitud: ${data.longitud}`, marginX + 90, currentY + 10);
       currentY += 20;
 
       if (chartRef.current) {
@@ -62,7 +63,7 @@ const PDFNodo = ({ data, chartRef, bateriaChartRef, startDate, endDate, onExport
         doc.addImage(batteryChartImage, "PNG", marginX, currentY + 10, pageWidth - marginX * 2, 80);
       }
 
-      doc.save(`nodo_${data.sensor.identificador}_data.pdf`);
+      doc.save(`nodo_${data.identificador}_data.pdf`);
       onExportComplete();
     };
 
