@@ -66,8 +66,12 @@ const TablaDatos = ({ items, tipo }) => {
   };
 
   const getTipoName = typeid => {
-    tipo = tipos.reduce((a, b) => b.data_type == typeid ? b : a)
-    return tipo?.nombre
+    try {
+      tipo = tipos.reduce((a, b) => b.data_type == typeid ? b : a)
+      return tipo?.nombre
+    } catch(e) {
+      return ""
+    }
   }
   
   return (
