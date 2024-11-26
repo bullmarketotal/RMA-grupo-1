@@ -46,10 +46,15 @@ const GraphTension = ({ data }) => {
           <Tooltip content={<CustomTooltip />} animationDuration={0} />
 
           <ReferenceLine
-            y={3.5}
-            label="Nivel normal de batería"
+            y={3}
+            label={{
+              value: "Nivel normal de batería",
+              position: "insideTop",
+              style: { fill: "red", fontWeight: "bold" }, // Cambiar el color y estilo
+            }}
             stroke="red"
-            strokeDasharray="3 3"
+            strokeWidth={5}
+            strokeDasharray="10 10"
           />
 
           <Area
