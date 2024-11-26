@@ -5,7 +5,7 @@ const BASE_CLASSES_FOR_MARKERS =
   import useColorBasedOnAlert from "../../hooks/useColorBasedOnAlert";
 
 
-const OldNodoMarker = ({ nodo, dataNodo }) => {
+const MarkerTooltip = ({ nodo, dataNodo }) => {
 
   
   const {alertColor, loadingColor} = useColorBasedOnAlert(nodo)
@@ -21,7 +21,6 @@ const OldNodoMarker = ({ nodo, dataNodo }) => {
     );
     
     const lastData = dataNodo[dataNodo.length - 1];
-    console.log("DESDE OLDNODO ", alertColor)
    const stringUltimoDato = obtenerStringTiempoDesdeUltimoDato(dataNodo);
 
   if(loadingColor)
@@ -43,4 +42,4 @@ const OldNodoMarker = ({ nodo, dataNodo }) => {
   );
 };
 
-export default OldNodoMarker;
+export default MarkerTooltip;

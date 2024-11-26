@@ -5,7 +5,7 @@ import { CreateCustomIcon } from "../utils";
 import useColorBasedOnAlert from "../../hooks/useColorBasedOnAlert";
 import { useNavigate } from "react-router-dom";
 import { useBreadcrumbs } from "../../context/BreadcrumbsContext";
-import OldNodoMarker from "../atoms/OldNodoMarker";
+import MarkerTooltip from "../atoms/MarkerTooltip";
 
 const NodoMarker = ({ nodo }) => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const NodoMarker = ({ nodo }) => {
       }}
     >
       <Tooltip className="leaflet-tooltip">
-        <OldNodoMarker nodo={nodo} dataNodo={[lastNivel]}/>
+        <MarkerTooltip nodo={nodo} dataNodo={[lastNivel]}/>
       </Tooltip>
     </Marker>
   );
