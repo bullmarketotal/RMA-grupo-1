@@ -150,13 +150,13 @@ const RolesDisclosure = () => {
                       type="text"
                       value={newRoleName}
                       onChange={(e) => setNewRoleName(e.target.value)}
-                      className="input input-bordered w-full max-w-xs mr-2"
+                      className="input-text w-full max-w-xs mr-2"
                     />
                     <input
                       type="text"
                       value={newRoleDesc}
                       onChange={(e) => setNewRoleDesc(e.target.value)}
-                      className="input input-bordered w-full max-w-xs"
+                      className="input-text w-full max-w-xs"
                     />
                     <button
                       onClick={() => handleSaveEdit(role)}
@@ -181,7 +181,7 @@ const RolesDisclosure = () => {
                     </div>
                     <div className="flex gap-2">
                       <span
-                        className="p-2 rounded-md bg-sky-500 text-white hover:bg-sky-700"
+                        className="p-2 rounded-md btn-active btn-action"
                         onClick={() => handleEdit(role)}
                       >
                         <PencilIcon className="h-5 w-5" />

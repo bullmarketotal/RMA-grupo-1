@@ -21,18 +21,18 @@ const AddRoleForm = ({ onAddRole }) => {
         placeholder="Nombre del Rol"
         value={newRoleName}
         onChange={(e) => setNewRoleName(e.target.value)}
-        className="input input-bordered w-full max-w-xs mr-2"
+        className="input-text border-neutral-200 w-full max-w-xs mr-2"
       />
       <input
         type="text"
         placeholder="Descripción del Rol"
         value={newRoleDesc}
         onChange={(e) => setNewRoleDesc(e.target.value)}
-        className="input input-bordered w-full max-w-xs"
+        className="input input-text w-full max-w-xs"
       />
       <button
         type="submit"
-        className="btn btn-active btn-action ml-2 flex items-center justify-center"
+        className="btn-active btn-action ml-2 flex items-center justify-center"
       >
         <PlusIcon className="h-5 w-5" />
       </button>
