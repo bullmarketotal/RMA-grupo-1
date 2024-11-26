@@ -2,7 +2,7 @@ import React from "react";
 import { Marker, Tooltip } from "react-leaflet";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import { CreateCustomIcon } from "../utils";
-import useColorBasedOnAlert from "../utils/getColorBasedOnAlert";
+import useColorBasedOnAlert from "../../hooks/useColorBasedOnAlert";
 import { useNavigate } from "react-router-dom";
 import { useBreadcrumbs } from "../../context/BreadcrumbsContext";
 

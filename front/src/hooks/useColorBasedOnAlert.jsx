@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAxios } from "../../context/AxiosProvider";
+import { useAxios } from "../context/AxiosProvider";
 const baseURL = import.meta.env.VITE_API_URL
 
 const useColorBasedOnAlert = (nodo) => {
