@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 from typing import Optional
 
 class AlertaBase(BaseModel):
@@ -35,3 +36,12 @@ class PushEndpointResponse(BaseModel):
 class NotificationData(BaseModel):
     message: str
     body: str
+
+class Notificacion(BaseModel):
+    id: int
+    alerta_id: int
+    nodo_id: int
+    fecha_hora: datetime
+    titulo: str
+    message: str
+    is_read: bool

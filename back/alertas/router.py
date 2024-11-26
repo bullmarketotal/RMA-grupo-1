@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from datetime import datetime
 from ..auth.dependencies import get_current_user
 from . import services
 from .schemas import (
     Alerta,
     AlertaCreate,
     SubscribeUser,
-    PushEndpointResponse
+    PushEndpointResponse,
+    Notificacion
 )
-from typing import List
+from typing import List, Optional
 from ..usuarios.schemas import Usuario
 from .push_notifications import NotificationHandler
 from ..database import get_db
@@ -57,6 +59,10 @@ def get_all_alertas(db: Session = Depends(get_db)):
 @router.post('/alertas', tags=["Alertas"])
 def post_alerta(alerta: AlertaCreate, db: Session = Depends(get_db)):
     return services.crear_alerta(db, alerta)
+
+@router.get('/usernotifications', response_model=List[Notificacion], tags=["Alertas"])
+def get_user_notifications(not_read_only: bool, count_limit: int, start_date_limit: Optional[datetime] = None, db: Session = Depends(get_db)): #, current_user: Usuario = Depends(get_current_user)
+    return services.get_user_notifications(not_read_only, count_limit, start_date_limit, db, 1) #current_user.id
 
 """ 
 @router.delete('/alertas/{alerta_id}', response_model=Alerta, tags=["Alertas"])

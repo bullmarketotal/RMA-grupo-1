@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
+from datetime import datetime
 
 from .schemas import PushEndpointReceive, AlertaCreate
-from .models import Alerta, PushEndpoint, Suscripcion
+from .models import Alerta, PushEndpoint, Suscripcion, Notificacion, UsuarioNotificacion
 
 
 def agregar_endpoint(db: Session, subscription: PushEndpointReceive, usuario_id: int) -> int:
@@ -87,3 +88,29 @@ def get_user_subscriptions(db: Session, usuario_id: int) -> list[Alerta]:
         alerta = Alerta.get(db, sub.alerta_id)
         response.append(alerta)
     return response
+
+def get_user_notifications(not_read_only: bool, count_limit: int, start_date_limit: datetime, db: Session, usuario_id):
+    try:
+        query = db.query(
+            Notificacion.id,
+            Notificacion.alerta_id,
+            Notificacion.nodo_id,
+            Notificacion.fecha_hora,
+            Notificacion.titulo,
+            Notificacion.message,
+            UsuarioNotificacion.is_read
+        ).join(UsuarioNotificacion).filter(UsuarioNotificacion.usuario_id == usuario_id)
+        if start_date_limit is not None:
+            query = query.filter(Notificacion.fecha_hora >= start_date_limit)
+        if not_read_only is True:
+            query = query.filter(UsuarioNotificacion.is_read == False)
+
+        query = query.order_by(Notificacion.fecha_hora.desc())
+
+        if count_limit is not None:
+            query = query.limit(count_limit)
+        
+        response = query.all()
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -37,6 +37,9 @@ class Notificacion(ModeloBase):
     fecha_hora: Mapped[datetime] = mapped_column(DateTime)
     titulo: Mapped[str] = mapped_column(String)
     message: Mapped[str] = mapped_column(String)
+    usuario_notificaciones: Mapped[list["UsuarioNotificacion"]] = relationship(
+        "UsuarioNotificacion", back_populates="notificacion"
+    )
 
 class UsuarioNotificacion(ModeloBase):
     __tablename__ = "usuario_notificacion"
@@ -44,4 +47,7 @@ class UsuarioNotificacion(ModeloBase):
     notificacion_id: Mapped[int] = mapped_column(Integer, ForeignKey('notificaciones_historial.id'), index=True, primary_key=True)
     usuario_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios.id'), index=True, primary_key=True)
     is_read: Mapped[bool] = mapped_column(Boolean, default=False)
+    notificacion: Mapped[Notificacion] = relationship(
+        "Notificacion", back_populates="usuario_notificaciones"
+    )
 
