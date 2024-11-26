@@ -1,0 +1,22 @@
+/* Centrar las celdas de la tabla */
+.table-container th,
+.table-container td {
+  text-align: center;  /* Centrar el texto en ambas celdas y encabezados */
+  vertical-align: middle; /* Asegura que el contenido verticalmente está centrado */
+}
+
+/* Estilo adicional para las celdas de la tabla */
+.table-container td {
+  padding: 8px;
+}
+
+/* Estilo para los encabezados */
+.table-header {
+  font-weight: bold;
+}
+
+/* Asegura que el contenido en la tabla no se desborde */
+.table-container {
+  table-layout: fixed;
+  width: 100%;
+}

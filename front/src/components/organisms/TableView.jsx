@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LoadingSpinner } from "../atoms";
 import { Paginacion, TablaDatos } from "../molecules";
 
-const TableView = ({ data, loading }) => {
+const TableView = ({ data, loading, tipoDato}) => {
   const itemsPerPage = 25;
   const totalItems = data.items.length;
 
@@ -17,7 +17,7 @@ const TableView = ({ data, loading }) => {
     const endIndex = startIndex + itemsPerPage;
     return newData.slice(startIndex, endIndex);
   };
-
+  
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -30,7 +30,7 @@ const TableView = ({ data, loading }) => {
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
-      {loading ? <LoadingSpinner /> : <TablaDatos items={getVisibleData()} />}
+      {loading ? <LoadingSpinner /> : <TablaDatos items={getVisibleData()} tipo={tipoDato}/>}
       <Paginacion
         itemsPerPage={itemsPerPage}
         totalItems={totalItems}

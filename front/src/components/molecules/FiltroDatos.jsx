@@ -18,7 +18,7 @@ export default function FiltroDatos({ onFilterChange, isExporting = false }) {
 
   return (
     <div
-      className="flex items-center space-x-4 my-2 normal-bg"
+      className="flex items-center space-x-4 my-2 normal-bg "
       style={isExporting ? { display: "none" } : {}}
     >
       <div className="flex items-center normal-text space-x-2">
