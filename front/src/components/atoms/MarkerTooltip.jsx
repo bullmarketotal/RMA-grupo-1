@@ -1,5 +1,5 @@
 const BASE_CLASSES_FOR_MARKERS =
-  " roboto-light text-black p-2 border border-gray-800 shadow-md rounded-3xl font-serif text-sm hover:text-m w-32 hover:-translate-y-1 text-center text-center transition-all duration-300";
+  " roboto-light text-black p-2 border border-gray-800 shadow-md rounded-3xl font-serif min-w-32 text-center text-center transition-all duration-300";
 
   import { obtenerStringTiempoDesdeUltimoDato } from "../utils/date";
   import useColorBasedOnAlert from "../../hooks/useColorBasedOnAlert";
@@ -28,16 +28,16 @@ const MarkerTooltip = ({ nodo, dataNodo }) => {
 
   return (
     <div className={`${BASE_CLASSES_FOR_MARKERS} bg-gradient-to-tr from-gray-300 to-gray-400}`}>
-      <span className="text-xs text-nowrap text-ellipsis">
+      <span className="text-sm text-nowrap text-ellipsis">
         {nodo.identificador}
       </span>
       <br />
       <i className="fa fa-tint mr-2" />{" "}
-      <span className="roboto-bold text-base">
+      <span className="roboto-bold text-lg">
         {(lastData?.data / 100).toFixed(1)}m
       </span>
       <br />
-      <span className="text-[0.6rem] bold ">{stringUltimoDato}</span>
+      <span className="text-xs bold ">{stringUltimoDato}</span>
     </div>
   );
 };
