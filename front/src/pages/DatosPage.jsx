@@ -55,7 +55,7 @@ const DatosPage = () => {
     setStartDate(newStartDate);
     setEndDate(newEndDate);
   };
-
+  console.log(data)
 
   return (
     <Container>
