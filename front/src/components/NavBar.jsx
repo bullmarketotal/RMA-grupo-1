@@ -158,7 +158,7 @@ export default function NavBar() {
           <Breadcrumbs />
         </div>
       </div>
-      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-80px)] scrollbar-custom overflow-y-scroll">
+      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-84px)] scrollbar-custom overflow-y-scroll">
         <Outlet />
       </div>
     </>

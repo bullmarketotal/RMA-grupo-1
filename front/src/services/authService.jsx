@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createAxiosInstance } from "./axiosService";
 
 export const loginUser = async (username, password, getToken) => {

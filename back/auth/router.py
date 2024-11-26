@@ -7,7 +7,7 @@ from ..usuarios.models import Usuario
 from ..usuarios.schemas import UsuarioCreate, UsuarioOut
 from . import services
 from .dependencies import oauth2_scheme, get_permisos_de_roles
-from .schemas import Token, TokenRefresh
+from .schemas import Token, TokenRefresh, TokenRefreshResponse
 
 router = APIRouter()
 
@@ -44,7 +44,7 @@ def login_for_access_token(
     }
 
 
-@router.post("/refresh_token", response_model=TokenRefresh, tags=["Auth"])
+@router.post("/refresh_token", response_model=TokenRefreshResponse, tags=["Auth"])
 def refresh_access_token_view(refresh_token: str, db: Session = Depends(get_db)):
     new_tokens = services.refresh_access_token(db, refresh_token)
     return new_tokens

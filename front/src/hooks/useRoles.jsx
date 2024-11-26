@@ -1,10 +1,7 @@
 import useSWR from "swr";
 import { useAxios } from "../context/AxiosProvider";
+import { fetcher } from "../utils";
 
-const fetcher = async (url, axios) => {
-  const response = await axios.get(url);
-  return response.data;
-};
 export const useRoles = ({ role_id } = {}) => {
   const axios = useAxios();
   const endpoint = role_id ? `/roles/${role_id}` : "/roles";

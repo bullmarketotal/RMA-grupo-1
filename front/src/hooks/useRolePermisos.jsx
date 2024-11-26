@@ -1,14 +1,9 @@
 import useSWR from "swr";
 import { useAxios } from "../context/AxiosProvider";
-
-const fetcher = async (url, axios) => {
-  const response = await axios.get(url);
-  return response.data;
-};
+import { fetcher } from "../utils";
 
 export const useRolePermisos = () => {
   const axios = useAxios();
-
   const { data, error, isValidating, mutate } = useSWR(
     "/permisos_role",
     (url) => fetcher(url, axios),

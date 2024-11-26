@@ -1,4 +1,5 @@
 const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem("refresh_token");
   if (!refreshToken) {
     setIsAuthenticated(false);
     return false;
@@ -23,3 +24,5 @@ const refreshAccessToken = async () => {
     return false;
   }
 };
+
+export default refreshAccessToken;

@@ -13,7 +13,6 @@ from .schemas import (
     UsuarioConRolesSchema,
 )
 from typing import List
-from .services import get_user_roles
 
 router = APIRouter()
 
@@ -98,8 +97,17 @@ def revoke_role_from_usuario(
 
 @router.get(
     "/usuarios_roles",
-    response_model=List[UsuarioConRolesSchema],
+    response_model=List[UsuarioRole],
     tags=["RolesUsuarios"],
 )
-def get_usuarios_con_roles(db: Session = Depends(get_db)):
-    return get_user_roles(db)
+def read_usuarioroles(db: Session = Depends(get_db)):
+    return services.get_all_userroles(db)
+
+
+# @router.get(
+#     "/usuarios_roles",
+#     response_model=List[UsuarioConRolesSchema],
+#     tags=["RolesUsuarios"],
+# )
+# def get_usuarios_con_roles(db: Session = Depends(get_db)):
+#     return get_user_roles(db)

@@ -44,8 +44,6 @@ class UsuarioRoleUpdate(UsuarioRoleBase):
 
 
 class UsuarioRole(UsuarioRoleBase):
-    usuario_id: int
-    role_id: int
     model_config = {"from_attributes": True}
 
 

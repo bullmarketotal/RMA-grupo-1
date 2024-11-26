@@ -3,7 +3,7 @@ import UsersDisclosure from "./UsersDisclosure";
 import RolesDisclosure from "./RolesDisclosure";
 import { Container } from "../components/atoms";
 import TestFetchNodoData from "./TestFetchNodoData";
-
+import TanstackTable from "./TanstackTable";
 const users = [
   { id: 1, username: "Usuario1" },
   { id: 2, username: "Usuario2" },
@@ -33,6 +33,7 @@ const App = () => {
         </div>
       </div>
       <TestFetchNodoData />
+      <TanstackTable />
     </Container>
   );
 };
