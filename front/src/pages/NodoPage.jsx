@@ -35,9 +35,14 @@ const NodoPage = () => {
       orderBy: "date",
     });
     
-    const {nodos:sensorData,loading:loadingNodo,error: errorNodo} =useNodos({
+    const { 
+      nodos: sensorData,
+      loading: loadingNodo,
+      error: errorNodo
+    } = useNodos({
       nodo_id: id,
     });
+    
     
     
     useEffect(() => {
@@ -149,7 +154,7 @@ const NodoPage = () => {
       </div>
 
       <PDFNodo
-        data={data}
+        data={sensorData}
         chartRef={chartRef}
         bateriaChartRef={bateriaChartRef}
         startDate={startDate}
