@@ -6,8 +6,6 @@ const TableView = ({ data, loading, tipoDato}) => {
   const itemsPerPage = 25;
   const totalItems = data.items.length;
 
-  console.log(tipoDato)
-
   const newData = data.items.map((item) => ({
     ...item
   }));
