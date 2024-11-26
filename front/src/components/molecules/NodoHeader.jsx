@@ -142,7 +142,7 @@ const NodoHeader = ({ sensor, loading }) => {
           >
             <span
               id="btn-eliminar"
-              className="flex items-center justify-center h-16 w-32 bg-rose-500 btn-action text-neutral-50 dark:bg-rose-700 hover:bg-rose-400 hover:dark:bg-rose-800 shadow-sm"
+              className="flex items-center justify-center h-16 w-32 btn-alert"
             >
               Eliminar Nodo
             </span>

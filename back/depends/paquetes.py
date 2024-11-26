@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 from ..database import get_db
-from ..depends.validaciones import es_valido
+from ..depends.validaciones import es_valido, nodo_is_activo
 from ..paquete.schemas import PaqueteCreate
 from ..paquete.services import crear_paquete
 from ..alertas.push_notifications import NotificationHandler
@@ -29,12 +29,14 @@ def procesar_mensaje(mensaje) -> Optional[PaqueteCreate]:
     except Exception as e:
         print(f"Error de validación: {e}")
 
+
 notifications = NotificationHandler()
+
 
 def mi_callback(mensaje: str) -> None:
     print(f"he recibido: {mensaje}")
     paquete = procesar_mensaje(mensaje)
 
-    if paquete is not None and es_valido(paquete):
-        notifications.if_alert_notificate(paquete, db= next(get_db()))
+    if paquete is not None and nodo_is_activo(paquete) and es_valido(paquete):
+        notifications.if_alert_notificate(paquete, db=next(get_db()))
         guardar_paquete_en_db(paquete)
