@@ -61,6 +61,14 @@ def update_nodo(nodo_id: int, nodo: schemas.NodoUpdate, db: Session = Depends(ge
 def delete_nodo(nodo_id: int, db: Session = Depends(get_db)):
     return services.archivar_y_eliminar_nodo(db=db, nodo_id=nodo_id)
 
+@router.put(
+    "/nodos/{nodo_id}/resurrect",
+    response_model=schemas.Nodo,
+    tags=["Nodos"]
+    dependencies=[Depends(permiso_requerido("activar_nodos"))]
+)
+def revivir_nodo(nodo_id: int, db: Session = Depends(get_db)):
+    return services.activar_nodo(db,nodo_id)
 
 @router.get(
     "/nodos/{nodo_id}/paquetes",
