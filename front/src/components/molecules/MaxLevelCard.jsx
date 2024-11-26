@@ -8,6 +8,7 @@ const TIMEFRAME_7D = 1000 * 60 * 60 * 24 * 7;
 
 const MaxLevelCard = React.memo(({ data, timeFrame }) => {
   const filteredData = filterDataByTime(data, timeFrame);
+
   const maxNivel = getMaxValue(filteredData, "data");
 
   return (
