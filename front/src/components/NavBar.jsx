@@ -80,7 +80,7 @@ export default function NavBar() {
 
               {/* Campana de notificaciones */}
               <NotificationButton onClick={toggleNotifications}/>
-              {showNotis && <NotificacionCard/> }
+              <NotificacionCard showNotis={showNotis}/>
 
               <div>
                 {isAuthenticated ? (
