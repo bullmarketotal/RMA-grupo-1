@@ -32,8 +32,8 @@ def init_tipos():
     tipos_data = [
         TipoCreate(data_type=1, data_symbol="°C", nombre="Temperatura"),
         TipoCreate(data_type=14, data_symbol="mm", nombre="Precipitación"),
-        TipoCreate(data_type=16, data_symbol="V", nombre="Tension"),
-        TipoCreate(data_type=25, data_symbol="cm", nombre="Nivel Hidormetrico"),
+        TipoCreate(data_type=16, data_symbol="V", nombre="Tensión"),
+        TipoCreate(data_type=25, data_symbol="cm", nombre="Nivel Hidrométrico"),
     ]
     for tipo_data in tipos_data:
         try:
