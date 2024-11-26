@@ -1,8 +1,3 @@
-/**
- * Obtiene una cadena del tiempo transcurrido desde una fecha
- * @param {*} lastData
- * @returns
- */
 export const obtenerTimeAgoString = (lastData) => {
   const lastTime = new Date(lastData.date);
   const now = new Date();

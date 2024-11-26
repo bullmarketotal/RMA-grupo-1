@@ -54,11 +54,12 @@ def assign_permiso_to_role(db: Session, role_permiso_data: RolePermisoCreate):
         raise HTTPException(
             status_code=400, detail="El permiso ya está asignado al rol"
         )
+
     role_permiso = RolePermiso.create(db, role_permiso_data)
     return RolePermisoSchema.model_validate(role_permiso).model_dump()
 
 
-def revoke_permiso_from_role(db: Session, role_permiso: RolePermiso):
+def revoke_permiso_from_role(db: Session, role_permiso: RolePermisoSchema):
     role_id = role_permiso.role_id
     permiso_id = role_permiso.permiso_id
 

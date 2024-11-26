@@ -1,32 +1,28 @@
 import useSWR from "swr";
 import { useAxios } from "../context/AxiosProvider";
+import { fetcher } from "../utils";
 
-export const useUsuarios = () => {
+export const useUsuarios = ({ usuario_id } = {}) => {
   const axios = useAxios();
 
-  const fetcher = async (url) => {
-    try {
-      const response = await axios.get(url);
-      return response.data;
-    } catch (err) {
-      if (err.response?.status === 403) {
-        const error = new Error("Forbidden");
-        error.status = 403;
-        throw error;
-      } else {
-        throw err;
-      }
+  const endpoint = usuario_id ? `/usuarios/${usuario_id}` : "/usuarios";
+  const { data, error, isValidating, mutate } = useSWR(
+    endpoint,
+    (url) => fetcher(url, axios),
+    {
+      revalidateOnFocus: true,
+      errorRetryCount: 3,
+      errorRetryInterval: 10000,
+      dedupingInterval: 60000,
     }
-  };
-
-  const { data, error, isValidating, mutate } = useSWR("/usuarios", fetcher);
-  const isForbidden = error?.status === 403;
+  );
 
   return {
-    usuarios: data,
-    loading: isValidating,
-    error: error && !isForbidden ? error.message : null,
-    isForbidden,
-    refreshUsuarios: mutate,
+    data,
+    error,
+    isValidating,
+    mutate,
   };
 };
+
+export default useUsuarios;

@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthProvider";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useAuth();
   const accessToken = localStorage.getItem("access_token");
 
   return isAuthenticated && accessToken ? (

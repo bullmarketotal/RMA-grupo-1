@@ -1,14 +1,12 @@
-from typing import List
-
 from fastapi import HTTPException
+from sqlalchemy import join, select
 from sqlalchemy.orm import Session
 
-from ..permisos.models import Permiso
-from ..usuarios.models import Usuario
 from .models import Role, UsuarioRole
 from .schemas import Role as RoleSchema
 from .schemas import RoleConPermisos, RoleCreate, RoleUpdate
 from .schemas import UsuarioRole as UsuarioRoleSchema
+from ..usuarios.models import Usuario
 
 
 def get_role(db: Session, role_id: int) -> RoleConPermisos:
@@ -46,32 +44,38 @@ def delete_role(db: Session, role_id: int):
     return {"detail": "Rol eliminado correctamente"}
 
 
-def assign_role_to_usuario(
-    db: Session, usuario_role_data: UsuarioRoleSchema
-) -> UsuarioRoleSchema:
+def assign_role_to_usuario(db: Session, usuario_role_data: UsuarioRoleSchema):
     role_id = usuario_role_data.role_id
     usuario_id = usuario_role_data.usuario_id
-    usuario_role = (
+
+    usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    role = db.query(Role).filter(Role.id == role_id).first()
+    if not role:
+        raise HTTPException(status_code=404, detail="Permiso no encontrado")
+
+    existing_relation = (
         db.query(UsuarioRole)
         .filter(UsuarioRole.role_id == role_id, UsuarioRole.usuario_id == usuario_id)
         .first()
     )
-
-    if usuario_role:
+    if existing_relation:
         raise HTTPException(
             status_code=404, detail="El rol ya está asignado al usuario"
         )
+
     usuario_role = UsuarioRole.create(db, usuario_role_data)
-    return UsuarioRoleSchema.model_validate(usuario_role)
+    return UsuarioRoleSchema.model_validate(usuario_role).model_dump()
 
 
 def revoke_role_from_usuario(db: Session, usuario_role_data: UsuarioRoleSchema):
     role_id = usuario_role_data.role_id
     usuario_id = usuario_role_data.usuario_id
 
-    usuario_role_instance = UsuarioRole.filter(
+    usuario_role_instance = UsuarioRole.find_first(
         db, role_id=role_id, usuario_id=usuario_id
-    ).first()
+    )
 
     if not usuario_role_instance:
         raise HTTPException(
@@ -81,19 +85,40 @@ def revoke_role_from_usuario(db: Session, usuario_role_data: UsuarioRoleSchema):
     return {"detail": "Rol revocado del usuario"}
 
 
-def get_user_roles(db: Session) -> List[UsuarioRoleSchema]:
-    results = (
-        db.query(Usuario, Role)
-        .join(UsuarioRole, Usuario.id == UsuarioRole.usuario_id)
-        .join(Role, Role.id == UsuarioRole.role_id)
-        .all()
-    )
-    usuarios_con_roles = [
-        {
-            "usuario_id": usuario.id,
-            "username": usuario.username,
-            "roles": [role for role in roles],
-        }
-        for usuario, roles in results
-    ]
-    return usuarios_con_roles
+def get_all_userroles(db: Session) -> list[UsuarioRoleSchema]:
+    usuario_role = UsuarioRole.get_all(db)
+    return [UsuarioRoleSchema.model_validate(ur) for ur in usuario_role]
+
+
+# def get_user_roles(db: Session) -> List[UsuarioConRolesSchema]:
+
+#     stmt = (
+#         select(Usuario, Role)
+#         .select_from(join(Usuario, UsuarioRole, Usuario.id == UsuarioRole.usuario_id))
+#         .join(Role, Role.id == UsuarioRole.role_id)
+#     )
+
+#     result = db.execute(stmt).all()
+
+#     usuarios_dict = {}
+#     for usuario, role in result:
+#         if usuario.id not in usuarios_dict:
+#             usuarios_dict[usuario.id] = {
+#                 "id": usuario.id,
+#                 "username": usuario.username,
+#                 "roles": [],
+#             }
+#         usuarios_dict[usuario.id]["roles"].append(
+#             {"id": role.id, "name": role.name, "description": role.description}
+#         )
+
+#     usuarios_con_roles = [
+#         UsuarioConRolesSchema(
+#             id=usuario["id"],
+#             username=usuario["username"],
+#             roles=[RoleSchemares(**role) for role in usuario["roles"]],
+#         )
+#         for usuario in usuarios_dict.values()
+#     ]
+#     print(usuarios_con_roles)
+#     return usuarios_con_roles

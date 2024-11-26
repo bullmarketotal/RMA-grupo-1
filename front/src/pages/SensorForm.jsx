@@ -73,7 +73,7 @@ const SensorForm = () => {
                 </label>
                 <input
                   type="text"
-                  className="input-text h-full w-full"
+                  className="input-text h-10 w-full"
                   id="identificador"
                   name="identificador"
                   value={formData.identificador}
@@ -90,7 +90,7 @@ const SensorForm = () => {
                 </label>
                 <input
                   type="number"
-                  className="input-text h-full w-full"
+                  className="input-text h-10 w-full"
                   id="porcentajeBateria"
                   name="porcentajeBateria"
                   value={formData.porcentajeBateria}
@@ -109,7 +109,7 @@ const SensorForm = () => {
                 </label>
                 <input
                   type="number"
-                  className="input-text h-full w-full"
+                  className="input-text h-10 w-full"
                   id="latitud"
                   name="latitud"
                   value={formData.latitud}
@@ -123,7 +123,7 @@ const SensorForm = () => {
                 </label>
                 <input
                   type="number"
-                  className="input-text h-full w-full"
+                  className="input-text h-10 w-full"
                   id="longitud"
                   name="longitud"
                   value={formData.longitud}

@@ -1,30 +1,28 @@
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
-from fastapi import HTTPException
-from pathlib import Path
 import json
+from pathlib import Path
 
+from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from .alertas.schemas import AlertaCreate
+from .alertas.services import crear_alerta
+from .auth.services import crear_usuario
 from .database import get_db
 from .nodos.models import Nodo
 from .nodos.schemas import NodoCreate
-from .permisos.schemas import PermisoCreate, RolePermisoCreate
-from .permisos.services import create_permiso
-from .roles.models import Role
-from .roles.schemas import RoleCreate
-from .roles.services import create_role
-from .permisos.services import assign_permiso_to_role
+from .paquete.schemas import TipoCreate
+from .paquete.services import crear_tipo
 from .permisos.models import Permiso
-from .auth.services import crear_usuario
+from .permisos.schemas import PermisoCreate, RolePermisoCreate
+from .permisos.services import assign_permiso_to_role, create_permiso
+from .roles.models import Role
+from .roles.schemas import RoleCreate, UsuarioRole
+from .roles.services import assign_role_to_usuario, create_role
 from .usuarios.models import Usuario
 from .usuarios.schemas import Usuario as UsuarioSchema
 from .usuarios.schemas import UsuarioCreate
-from .roles.services import assign_role_to_usuario
 from .usuarios.services import get_user_by_username
-from .roles.schemas import UsuarioRole
-from .paquete.schemas import TipoCreate
-from .paquete.services import crear_tipo
-from .alertas.schemas import AlertaCreate
-from .alertas.services import crear_alerta
 
 
 def init_tipos():
@@ -49,50 +47,35 @@ def init_tipos():
 def init_permisos():
     db: Session = next(get_db())
     permisos_data = [
+        # permisos
         PermisoCreate(
-            identificador="read_permiso", descripcion="Leer detalles de permisos"
-        ),
-        PermisoCreate(
-            identificador="list_permisos", descripcion="Listar todos los permisos"
+            identificador="read_permisos", descripcion="Leer detalles de permisos"
         ),
         PermisoCreate(
             identificador="read_rolepermisos", descripcion="Ver permisos-roles"
         ),
         PermisoCreate(
-            identificador="assign_permiso", descripcion="Asignar permiso a rol"
+            identificador="assign_permiso", descripcion="Asignar/Revocar permiso"
         ),
-        PermisoCreate(
-            identificador="revoke_permiso", descripcion="Revocar permiso de rol"
-        ),
+        # nodos
         PermisoCreate(identificador="read_nodos", descripcion="Leer nodos"),
-        PermisoCreate(identificador="create_nodo", descripcion="Crear nodo"),
-        PermisoCreate(
-            identificador="read_nodo", descripcion="Leer detalles de un nodo"
-        ),
-        PermisoCreate(identificador="update_nodo", descripcion="Actualizar nodo"),
-        PermisoCreate(identificador="delete_nodo", descripcion="Eliminar nodo"),
-        PermisoCreate(
-            identificador="read_nodo_paquetes", descripcion="Leer paquetes de un nodo"
-        ),
+        PermisoCreate(identificador="create_nodos", descripcion="Crear nodos"),
+        PermisoCreate(identificador="update_nodos", descripcion="Actualizar nodos"),
+        PermisoCreate(identificador="delete_nodos", descripcion="Eliminar nodos"),
+        # paquetes
         PermisoCreate(identificador="read_paquetes", descripcion="Leer paquetes"),
+        # usuarios
         PermisoCreate(identificador="read_usuarios", descripcion="Leer usuarios"),
-        PermisoCreate(
-            identificador="read_protected", descripcion="Leer datos protegidos"
-        ),
-        PermisoCreate(
-            identificador="read_roles_seguros", descripcion="Obtener roles seguros"
-        ),
+        # roles
+        PermisoCreate(identificador="create_roles", descripcion="Crear rol"),
         PermisoCreate(identificador="read_roles", descripcion="Leer roles"),
-        PermisoCreate(identificador="create_role", descripcion="Crear rol"),
-        PermisoCreate(identificador="read_role", descripcion="Leer detalles de un rol"),
-        PermisoCreate(identificador="update_role", descripcion="Actualizar rol"),
-        PermisoCreate(identificador="delete_role", descripcion="Eliminar rol"),
-        PermisoCreate(identificador="assign_role", descripcion="Asignar rol a usuario"),
+        PermisoCreate(identificador="update_roles", descripcion="Actualizar rol"),
+        PermisoCreate(identificador="delete_roles", descripcion="Eliminar rol"),
         PermisoCreate(
-            identificador="revoke_role", descripcion="Revocar rol de usuario"
+            identificador="assign_roles", descripcion="Asignar rol a usuario"
         ),
         PermisoCreate(
-            identificador="read_usuarios_roles", descripcion="Leer usuarios con roles"
+            identificador="read_usuarios_roles", descripcion="Ver usuarios con roles"
         ),
         PermisoCreate(identificador="admin", descripcion="Administrador"),
     ]
@@ -147,7 +130,7 @@ def init_nodos():
 def init_roles():
     db: Session = next(get_db())
     admin_role_data = RoleCreate(
-        name="admin", description="Administrador con todos los permisos"
+        name="admin", descripcion="Administrador con todos los permisos"
     )
     try:
         admin_role = create_role(db, admin_role_data)
@@ -205,22 +188,19 @@ def init_user():
     finally:
         db.close()
 
+
 def init_alertas():
     db: Session = next(get_db())
-    
-    alerta = AlertaCreate(
-        nombre="amarilla", titulo_notificacion="Alerta Amarilla"
-    )
+
+    alerta = AlertaCreate(nombre="amarilla", titulo_notificacion="Alerta Amarilla")
     try:
         crear_alerta(db, alerta)
         print(f"alerta creado exitosamente")
     except IntegrityError:
         db.rollback()
         print(f"Alerta amarilla ya existe.")
-    
-    alerta = AlertaCreate(
-        nombre="naranja", titulo_notificacion="Alerta Naranja"
-    )
+
+    alerta = AlertaCreate(nombre="naranja", titulo_notificacion="Alerta Naranja")
     try:
         crear_alerta(db, alerta)
         print(f"alerta creado exitosamente")
@@ -228,9 +208,7 @@ def init_alertas():
         db.rollback()
         print(f"Alerta naranja ya existe.")
 
-    alerta = AlertaCreate(
-        nombre="roja", titulo_notificacion="Alerta Roja"
-    )
+    alerta = AlertaCreate(nombre="roja", titulo_notificacion="Alerta Roja")
     try:
         crear_alerta(db, alerta)
         print(f"alerta creado exitosamente")
@@ -257,13 +235,12 @@ def init_alertas():
     except IntegrityError:
         db.rollback()
         print(f"Alerta de bateria ya existe.")
-    
+
     db.commit()
     db.close()
 
 
 def init_configjson():
-    
 
     # Ruta del archivo de configuración
     config_path = Path("config.json")
@@ -274,32 +251,16 @@ def init_configjson():
             "temperatura": 1,
             "precipitacion": 14,
             "tension": 16,
-            "nivel_hidrometrico": 25
+            "nivel_hidrometrico": 25,
         },
         "umbral": {
-            "temperatura": [
-                -9,
-                45
-            ],
-            "nivel_hidrometrico": [
-                0,
-                300
-            ],
-            "tension": [
-                0,
-                3.5
-            ],
-            "precipitacion": [
-                0,
-                100
-            ]
+            "temperatura": [1, 99],
+            "nivel_hidrometrico": [0, 100],
+            "tension": [1, 100],
+            "precipitacion": [1, 100],
         },
-        "nivel_hidrometrico_alertas": {
-            "amarilla": 50,
-            "naranja": 100,
-            "roja": 200
-        },
-        "tension_bateria_baja": 1
+        "nivel_hidrometrico_alertas": {"amarilla": 50, "naranja": 100, "roja": 200},
+        "tension_bateria_baja": 1,
     }
 
     # Verifica si el archivo existe

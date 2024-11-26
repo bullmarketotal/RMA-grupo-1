@@ -10,7 +10,7 @@ class Role(ModeloBase):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(50), unique=True)
-    description: Mapped[str] = mapped_column(String)
+    descripcion: Mapped[str] = mapped_column(String)
 
     usuarios: Mapped[list["Usuario"]] = relationship(
         "Usuario", secondary="usuario_roles", back_populates="roles"

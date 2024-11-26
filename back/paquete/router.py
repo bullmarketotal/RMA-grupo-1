@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import Optional
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
+from ..auth.dependencies import permiso_requerido
 from ..database import get_db
 from ..paquete import schemas, services
 from ..auth.dependencies import permiso_requerido
@@ -10,7 +12,12 @@ from ..auth.dependencies import permiso_requerido
 router = APIRouter()
 
 
-@router.get("/paquetes", response_model=schemas.PaqueteResponse)
+@router.get(
+    "/paquetes",
+    response_model=schemas.PaqueteResponse,
+    tags=["Paquetes"],
+    dependencies=[Depends(permiso_requerido("read_paquetes"))],
+)
 def read_paquetes(
     limit: int = Query(None, ge=1),
     offset: int = Query(0, ge=0),

@@ -8,9 +8,9 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { React } from "react";
+import { useEffect, React } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
 import { FaUser } from "react-icons/fa";
@@ -20,7 +20,6 @@ const navigationItems = [
   { name: "Crear Nodo", link: "/create-sensor" },
   { name: "Nodos", link: "/lista-nodos" },
   { name: "Datos", link: "/datos-view" },
-  
 ];
 
 const menuItems = [
@@ -37,7 +36,10 @@ const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, username, loading } = useAuth();
+  // useEffect(() => {
+  //   console.log("El valor username es:", username);
+  // }, [username]);
 
   return (
     <>
@@ -80,13 +82,14 @@ export default function NavBar() {
                 {isAuthenticated ? (
                   <Menu as="div" className="relative">
                     {/* Menu de usuario */}
-                    <MenuButton className="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 dark:bg-neutral-800 bg-white text-neutral-800 dark:text-white focus:ring-offset-neutral-800">
+                    <MenuButton className="dark-bg relative flex rounded-md px-3 py-2 text-sm font-medium text-neutral-800 dark:text-white">
                       <span className="absolute -inset-1.5" />
-                      <FaUser className="size-6 p-1"/>
+                      {username}
+                      <FaUser className="size-6 p-1" />
                     </MenuButton>
                     <MenuItems
                       transition
-                      className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none bg-neutral-50 dark:bg-neutral-800"
+                      className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg normal-bg"
                     >
                       {menuItems.map((item) => (
                         <MenuItem key={item.name}>
@@ -150,10 +153,12 @@ export default function NavBar() {
           </div>
         </DisclosurePanel>
       </Disclosure>
-      <div className="flex h-4 justify-center bg-neutral-100 dark:bg-neutral-800 items-center">
-        <Breadcrumbs />
+      <div className="bg-neutral-200 dark:bg-neutral-800">
+        <div className="mx-auto max-w-7xl flex items-center shadow-md">
+          <Breadcrumbs />
+        </div>
       </div>
-      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-80px)] scrollbar-custom overflow-y-scroll">
+      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-84px)] scrollbar-custom overflow-y-scroll">
         <Outlet />
       </div>
     </>

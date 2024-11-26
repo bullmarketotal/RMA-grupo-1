@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { GraphNivel, GraphTemp } from "../molecules";
 import { LoadingSpinner } from "../atoms";
 
-const GraphView = ({ dataNivel,dataTemp, loading }) => {
+const GraphView = ({ dataNivel, dataTemp, loading }) => {
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -26,9 +26,13 @@ const GraphView = ({ dataNivel,dataTemp, loading }) => {
 
   return (
     <div style={{ width: "100%" }}>
-      <h4 className="roboto-bold text-2xl text-center mt-8 py-3 dark:text-slate-100">Nivel Hidrométrico</h4>
+      <h4 className="roboto-bold text-2xl text-center mt-8 py-3 dark:text-slate-100">
+        Nivel Hidrométrico
+      </h4>
       <GraphNivel data={dataNivel} />
-      <h4 className="roboto-bold text-2xl text-center py-3 dark:text-slate-100">Temperatura</h4>
+      <h4 className="roboto-bold text-2xl text-center py-3 dark:text-slate-100">
+        Temperatura
+      </h4>
       <GraphTemp data={dataTemp} />
     </div>
   );

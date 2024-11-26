@@ -1,16 +1,6 @@
-// Importamos useSWR para manejar la carga de datos
 import useSWR from "swr";
-
-// Importamos el contexto de Axios que utilizamos para hacer las peticiones HTTP
 import { useAxios } from "../context/AxiosProvider";
-
-// Función fetcher para hacer las peticiones HTTP y retornar los datos
-const fetcher = async (url, axios) => {
-  // Realizamos la petición GET utilizando Axios
-  const response = await axios.get(url);
-  // Retornamos la data de la respuesta
-  return response.data;
-};
+import { fetcher } from "../utils";
 
 // Custom Hook useTipos que no recibe parámetros (ya que no es necesario un tipo_id)
 export const useTipoDato = () => {
@@ -19,7 +9,7 @@ export const useTipoDato = () => {
 
   // Definimos el endpoint para obtener todos los tipos
   const endpoint = "/tipos";
-  
+
   // Usamos useSWR para manejar la solicitud y el estado de los datos
   const { data, error, isValidating } = useSWR(
     // Endpoint de la API que queremos consumir

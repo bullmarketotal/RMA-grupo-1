@@ -3,11 +3,12 @@ from pydantic import field_validator
 from typing import Optional
 from typing import List, Optional
 from ..permisos.schemas import Permiso
+from ..usuarios.schemas import UsuarioBase
 
 
 class RoleBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    descripcion: Optional[str] = None
 
     @field_validator("name")
     def validate_name_length(cls, v):
@@ -43,8 +44,6 @@ class UsuarioRoleUpdate(UsuarioRoleBase):
 
 
 class UsuarioRole(UsuarioRoleBase):
-    usuario_id: int
-    role_id: int
     model_config = {"from_attributes": True}
 
 
@@ -52,15 +51,14 @@ class RoleConPermisos(Role):
     permisos: List[Permiso]
 
 
-class RoleSchema(BaseModel):
+class RoleSchemares(BaseModel):
     id: int
     name: str
+    description: str
 
 
-class UsuarioRoleSchema(BaseModel):
-    usuario_id: int
+class UsuarioConRolesSchema(BaseModel):
+    id: int
     username: str
-    roles: List[RoleSchema]
-
-    class Config:
-        from_attributes = True
+    roles: List[RoleSchemares]
+    model_config = {"from_attributes": True}

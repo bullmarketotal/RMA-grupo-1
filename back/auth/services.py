@@ -10,7 +10,8 @@ from sqlalchemy.orm import Session
 from ..usuarios.models import Usuario
 from ..usuarios.schemas import Usuario as UsuarioSchema
 from ..usuarios.schemas import UsuarioCreate
-from .schemas import TokenData
+from .schemas import TokenData, TokenRefreshResponse
+import bcrypt
 
 
 load_dotenv()
@@ -20,15 +21,16 @@ TOKEN_EXPIRE_MINUTES = int(os.getenv("TOKEN_EXPIRE_MINUTES") or "30")
 REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS") or "7")
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
+    return hashed_password.decode("utf-8")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    return bcrypt.checkpw(
+        plain_password.encode("utf-8"), hashed_password.encode("utf-8")
+    )
 
 
 def get_user_from_token(db: Session, token: str) -> Usuario:
@@ -77,7 +79,7 @@ def create_access_token(
     return encoded_jwt
 
 
-def refresh_access_token(db: Session, refresh_token: str) -> TokenData:
+def refresh_access_token(db: Session, refresh_token: str) -> TokenRefreshResponse:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -115,7 +117,7 @@ def refresh_access_token(db: Session, refresh_token: str) -> TokenData:
             data={"id": user.id, "username": user.username}
         )
 
-        return TokenData(
+        return TokenRefreshResponse(
             access_token=new_access_token,
             refresh_token=new_refresh_token,
             token_type="bearer",
@@ -144,7 +146,6 @@ def crear_usuario(db: Session, usuario: UsuarioCreate) -> UsuarioSchema:
 def decode_token(token: str) -> dict:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print(f"Payload: {payload}")  # TODO borrar
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(
