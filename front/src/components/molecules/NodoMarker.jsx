@@ -1,14 +1,15 @@
 import React from "react";
 import { Marker, Tooltip } from "react-leaflet";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
-import { CreateCustomIcon, getColorBasedOnAlert } from "../utils";
+import { CreateCustomIcon } from "../utils";
+import useColorBasedOnAlert from "../utils/getColorBasedOnAlert";
 import { useNavigate } from "react-router-dom";
 import { useBreadcrumbs } from "../../context/BreadcrumbsContext";
 
 const NodoMarker = ({ nodo }) => {
   const navigate = useNavigate();
   const { setBreadcrumbs } = useBreadcrumbs();
-  const alertColor = getColorBasedOnAlert(nodo.alerta);
+  const {alertColor, loadingColor} = useColorBasedOnAlert(nodo);
 
   const handleNavigate = (e) => {
     setBreadcrumbs([
@@ -18,7 +19,7 @@ const NodoMarker = ({ nodo }) => {
     navigate(`/sensor/${nodo.id}`);
     e.originalEvent.preventDefault();
   };
-
+  
   return (
     <Marker
       key={nodo.id}

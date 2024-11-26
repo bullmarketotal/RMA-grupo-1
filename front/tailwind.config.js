@@ -8,7 +8,7 @@ export default {
         //128: "32rem",
       },
       fontFamily: {
-        sans: ["Helvetica Neue", "Arial", "sans-serif"],
+        sans: ["Roboto", "Helvetica Neue", "Arial", "sans-serif"],
       },
       animation: {
         'spin-slow': 'spin 32s linear infinite', 
@@ -17,4 +17,8 @@ export default {
   },
   darkMode: "class",
   plugins: [],
+  safelist: [
+    'bg-orange-500',
+    'text-orange-500',
+  ]
 };
