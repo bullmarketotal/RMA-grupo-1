@@ -8,7 +8,7 @@ export const useTipoDato = () => {
   const axios = useAxios();
 
   // Definimos el endpoint para obtener todos los tipos
-  const endpoint = "/paquete";
+  const endpoint = "/tipos";
 
   // Usamos useSWR para manejar la solicitud y el estado de los datos
   const { data, error, isValidating } = useSWR(

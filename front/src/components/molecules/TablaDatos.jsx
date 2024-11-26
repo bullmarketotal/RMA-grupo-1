@@ -1,24 +1,20 @@
 import React from "react";
+import './TablaDatos.css';
 import { useTable } from "react-table";
 import { Card } from "../atoms";
 import { dateFormatter } from "../utils/utils-graphs";
+import { useTipoDato }  from "../../hooks"; // Asegúrate de importar useTipos
 
-const TablaDatos = ({ items }) => {
+
+
+const TablaDatos = ({ items, tipo }) => {
   const data = React.useMemo(() => items, [items]);
-  const columns = React.useMemo(
-    () => [
+  const columns = React.useMemo(() => {
+    const baseColumns = [
       {
-        Header: "Nodo", // Cambiado a "Nombre Nodo"
-        accessor: "nodo_id", // Ahora el acceso es a "nodo" que contiene el nombre
-      },
-      {
-        Header: "Tipo de Dato", // Cambiado a "Tipo de Dato"
-        accessor: "type.nombre", // Aquí accedemos al nombre del tipo de dato
-      },
-      {
-        Header: "Dato", // Columna para el dato
-        accessor: "data", // Accedemos directamente a `data` que es el valor a mostrar
-        Cell: ({ value }) => value.toFixed(1), // Aseguramos que se muestre un solo decimal
+        Header: "Dato",
+        accessor: "data",
+        Cell: ({ value }) => value.toFixed(1),
       },
       {
         Header: "Fecha y Hora",
@@ -35,13 +31,33 @@ const TablaDatos = ({ items }) => {
           });
         },
       },
-    ],
-    []
-  );
+    ];
+    if (!tipo) {
+      return [
+        {
+          Header: "Tipo de Dato", 
+          accessor: "type_id",
+        },
+        ...baseColumns,
+      ];
+    }
+    return baseColumns;
+  }, [tipo]);
 
+
+
+  const { tipos} = useTipoDato();
+  
+  // Crear un objeto de búsqueda rápida para los tipos de datos
+  const tiposMap = tipos.reduce((acc, tipo) => {
+    acc[tipo.data_type] = tipo.data_symbol; // Mapeamos `data_type` a `data_symbol`
+    return acc;
+  }, {});
+  
+  
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
-
+  useTable({ columns, data });
+  
   const copiarFila = (row) => {
     const texto = row.cells.map((cell) => cell.value).join(" | ");
     navigator.clipboard.writeText(texto).then(() => {
@@ -49,6 +65,15 @@ const TablaDatos = ({ items }) => {
     });
   };
 
+  const getTipoName = typeid => {
+    try {
+      tipo = tipos.reduce((a, b) => b.data_type == typeid ? b : a)
+      return tipo?.nombre
+    } catch(e) {
+      return ""
+    }
+  }
+  
   return (
     <Card>
       <table
@@ -89,10 +114,9 @@ const TablaDatos = ({ items }) => {
                   const { key, ...cellProps } = cell.getCellProps();
                   return (
                     <td key={key} {...cellProps} className="table-row-cell">
-                      {cell.column.Header === "ID Nodo" && cell.render("Cell")}
-                      {cell.column.Header === "Tipo de Dato" && cell.render("Cell")}
-                      {cell.column.Header === "Dato" && `${Number(cell.value).toFixed(1)} °C`} {/* Agregamos unidad en Dato */}
-                      { cell.column.Header === 'Fecha y Hora' && dateFormatter(cell.value) }
+                      {cell.column.Header === "Tipo de Dato" && `${getTipoName(cell.value)}`}
+                      {cell.column.Header === "Dato" && `${Number(cell.value).toFixed(1)} ${tiposMap[cell.row.original.type_id]}`} 
+                      {cell.column.Header === 'Fecha y Hora' && dateFormatter(cell.value) }
                     </td>
                   );
                 })}

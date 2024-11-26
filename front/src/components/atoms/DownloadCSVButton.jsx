@@ -13,12 +13,18 @@ const generateCSV = (data) => {
     return ""; // Si el primer elemento no es un objeto, no generamos el CSV
   }
 
-  const header = Object.keys(data[0]); // Obtener las claves del primer objeto
+  const header = Object.keys(data[0]).filter(field => field !== "id"); // Filtramos 'id'
   console.log("Cabecera del CSV:", header); // Verificar la cabecera generada
 
-  const rows = data.map(
-    (row) => header.map((field) => `${row[field]}`).join(",") // Crear cada fila con los datos correspondientes
-  );
+  const rows = data.map((row) => {
+    return header.map((field) => {
+      // Formatear la fecha, reemplazando "T" por un espacio
+      if (field === "date" && row[field]) {
+        return row[field].replace("T", " "); // Reemplazar "T" por un espacio
+      }
+      return `${row[field]}`; // Para otros campos, simplemente devolver el valor
+    }).join(",");
+  });
 
   // Verificar las filas generadas
   console.log("Filas generadas:", rows);
@@ -50,8 +56,8 @@ const DownloadCSVButton = ({ data, disabled }) => {
   const handleDownload = () => {
     console.log("Descargando CSV...");
 
-    // Acceder a la propiedad 'paquetes' si existe
-    const paquetes = data?.paquetes || []; // Si no existe, pasamos un array vacío
+    // Acceder a la propiedad 'items' si existe
+    const paquetes = data?.items || []; // Si no existe, pasamos un array vacío
     console.log("Datos para generar el CSV:", paquetes); // Verificar los datos que pasamos
 
     downloadCSV(paquetes); // Pasar 'paquetes' a la función
@@ -59,10 +65,10 @@ const DownloadCSVButton = ({ data, disabled }) => {
 
   return (
     <button
-      className="btn btn-action btn-active"
+      className="btn btn-action btn-success"
       onClick={handleDownload}
       disabled={
-        disabled || !data || !data.paquetes || data.paquetes.length === 0
+        disabled || !data || !data.items || data.items.length === 0
       }
     >
       Descargar CSV

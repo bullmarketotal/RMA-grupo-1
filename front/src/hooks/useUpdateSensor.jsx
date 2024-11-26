@@ -10,6 +10,7 @@ const useUpdateSensor = (sensorId, sensorData) => {
     setError(null);
 
     try {
+      console.log("desde updatesensor: ", sensorId);
       const response = await fetch(`${api}/nodos/${sensorId}`, {
         method: "PUT",
         headers: {

@@ -1,14 +1,16 @@
 import React from "react";
 import { Marker, Tooltip } from "react-leaflet";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
-import { CreateCustomIcon, getColorBasedOnAlert } from "../utils";
+import { CreateCustomIcon } from "../utils";
+import useColorBasedOnAlert from "../../hooks/useColorBasedOnAlert";
 import { useNavigate } from "react-router-dom";
 import { useBreadcrumbs } from "../../context/BreadcrumbsContext";
+import MarkerTooltip from "../atoms/MarkerTooltip";
 
 const NodoMarker = ({ nodo }) => {
   const navigate = useNavigate();
   const { setBreadcrumbs } = useBreadcrumbs();
-  const alertColor = getColorBasedOnAlert(nodo.alerta);
+  const {alertColor, loadingColor, lastNivel} = useColorBasedOnAlert(nodo);
 
   const handleNavigate = (e) => {
     setBreadcrumbs([
@@ -18,7 +20,8 @@ const NodoMarker = ({ nodo }) => {
     navigate(`/sensor/${nodo.id}`);
     e.originalEvent.preventDefault();
   };
-
+  if(loadingColor)
+    return null
   return (
     <Marker
       key={nodo.id}
@@ -28,18 +31,8 @@ const NodoMarker = ({ nodo }) => {
         preclick: handleNavigate,
       }}
     >
-      <Tooltip className="normal-bg rounded-lg shadow-lg overflow-hidden">
-        <div className="">
-          <h3 className="font-bold text-lg text-sky-500 mb-2">
-            Nodo: {nodo.identificador}
-          </h3>
-          <p className="text-sm normal-text">
-            <strong>Latitud:</strong> {nodo.latitud}
-          </p>
-          <p className="text-sm normal-text">
-            <strong>Longitud:</strong> {nodo.longitud}
-          </p>
-        </div>
+      <Tooltip className="leaflet-tooltip">
+        <MarkerTooltip nodo={nodo} dataNodo={[lastNivel]}/>
       </Tooltip>
     </Marker>
   );

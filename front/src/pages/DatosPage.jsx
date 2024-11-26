@@ -15,11 +15,12 @@ const DatosPage = () => {
   // Parámetros para la búsqueda de datos (params no necesita useState)
   const params = {
     offset: 0,
-    limit: 10,
+    limit: 500,
     nodo_id: id || 1,
     filterStartDate: startDate || "",
     filterEndDate: endDate || "",
-    orden: "asc",
+    order: "desc",
+    orderBy: "date",
     type: selectedTipo || 1 // Usamos el tipo seleccionado o 1 por defecto
   };
 
@@ -31,9 +32,6 @@ const DatosPage = () => {
 
   // Obtención de los tipos con useTipos
   const { tipos, loading: loadingTipos, error: errorTipos } = useTipoDato();
-
-  console.log(nodos); // Verificar que los nodos estén llegando correctamente
-  console.log(tipos);
 
   // Manejo de error y carga
   if (error) {
@@ -57,8 +55,7 @@ const DatosPage = () => {
     setStartDate(newStartDate);
     setEndDate(newEndDate);
   };
-
-  console.log(data);
+  console.log(data)
 
   return (
     <Container>
@@ -70,7 +67,7 @@ const DatosPage = () => {
         ) : (
           <div className="mb-6">
             <label className="form-label me-2 mb-1">
-              <strong>Seleccionar ID de Sensor</strong>
+              <strong>Seleccionar Nodo</strong>
             </label>
             <select
               id="sensorId"
@@ -84,7 +81,7 @@ const DatosPage = () => {
               ) : (
                 nodos.map((nodo) => (
                   <option key={nodo.id} value={nodo.id}>
-                    {`${nodo.id} - ${nodo.identificador}`}
+                    {`${nodo.identificador}`}
                   </option>
                 ))
               )}
@@ -102,17 +99,20 @@ const DatosPage = () => {
             value={selectedTipo}
             onChange={(e) => setSelectedTipo(e.target.value)} // Actualizamos el tipo seleccionado
           >
-            <option value="">Selecciona un tipo de dato</option>
-            {/* Si los tipos están cargados, los mostramos en el select */}
-            {tipos.map((tipo) => (
+              {/* Si no hay tipos, mostrar un mensaje por defecto */}
+              {tipos.length === 0 ? (
+                <option value="">No hay nodos disponibles</option>
+              ) : (
+              tipos.map((tipo) => (
               <option key={tipo.id} value={tipo.data_type}> {/* Usamos el data_type como valor */}
                 {tipo.nombre} ({tipo.data_symbol})
               </option>
-            ))}
+            ))
+          )}
           </select>
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center mb-4 justify-between">
           <FiltroDatos onFilterChange={handleFilterChange} className="px-2" />
 
           {/* Botón para descargar CSV */}
@@ -125,7 +125,7 @@ const DatosPage = () => {
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <TableView data={data} loading={loading} />
+          <TableView data={data} loading={loading} tipoDato={selectedTipo || 1}/>
         )}
       </div>
     </Container>

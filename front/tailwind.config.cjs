@@ -5,7 +5,7 @@ module.exports = {
       colors: {},
       spacing: {},
       fontFamily: {
-        sans: ["Helvetica Neue", "Arial", "sans-serif"],
+        sans: ["Roboto", "Helvetica Neue", "Arial", "sans-serif"],
       },
       animation: {
         "spin-slow": "spin 32s linear infinite",
@@ -22,4 +22,8 @@ module.exports = {
     "border-t-green-500",
   ],
   plugins: [],
+  safelist: [
+    'bg-orange-500',
+    'text-orange-500',
+  ]
 };

@@ -32,7 +32,6 @@ const NodoPage = () => {
     order: "asc",
     orderBy: "date",
   });
-  console.log("ID: ", id);
 
   const {
     nodos: sensorData,
@@ -159,7 +158,7 @@ const NodoPage = () => {
       </div>
 
       <PDFNodo
-        data={data}
+        data={sensorData}
         chartRef={chartRef}
         bateriaChartRef={bateriaChartRef}
         startDate={startDate}

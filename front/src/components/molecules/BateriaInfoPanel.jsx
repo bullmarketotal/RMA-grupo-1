@@ -6,8 +6,6 @@ const CARD_HEIGHT = 300;
 const CARD_WIDTH = 400;
 
 const BateriaInfoPanel = ({ sensor,data, loading }) => {
-  console.log("DATA: ", data);
-  console.log("Sesnor: ", sensor);
   const { latitud, longitud } = sensor;
   return (
     <div

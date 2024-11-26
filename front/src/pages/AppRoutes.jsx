@@ -20,9 +20,19 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<NavBar />}>
-        <Route index element={<Inicio />} />
-        <Route path="lista-nodos" element={<NodoList />} />
-        <Route path="datos-view" element={<DatosPage />} />
+        <Route index element={<ProtectedRoute>
+           <Inicio />
+          </ProtectedRoute>} />
+        <Route path="lista-nodos" element={
+          <ProtectedRoute>
+           <NodoList />
+          </ProtectedRoute>
+          } />
+        <Route path="datos-view" element={
+          <ProtectedRoute>
+            <DatosPage />
+          </ProtectedRoute>
+          } />
         <Route
           path="create-sensor"
           element={

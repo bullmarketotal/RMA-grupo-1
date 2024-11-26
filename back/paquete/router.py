@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from ..auth.dependencies import permiso_requerido
 from ..database import get_db
 from ..paquete import schemas, services
+from ..auth.dependencies import permiso_requerido
 
 router = APIRouter()
 
@@ -51,3 +52,7 @@ def read_tipos(db: Session = Depends(get_db)):
     # Llamamos a la función de servicio para obtener todos los tipos de la base de datos
     tipos = services.listar_tipos(db)
     return tipos
+
+@router.get("/tipos/{id}", response_model=schemas.TipoBase, tags=["Tipos"])
+def read_tipos(id: int, db: Session = Depends(get_db)):
+    return services.get_tipo(db=db,tipo_id=id) 
