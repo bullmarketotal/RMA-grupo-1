@@ -22,8 +22,13 @@ def listar_nodos(db: Session) -> List[Nodo]:
 
 def get_nodo(db: Session, nodo_id: int) -> NodoSchema | None:
     nodo = Nodo.get(db, nodo_id)
+
     if not nodo:
         raise HTTPException(status_code=404, detail="Nodo no encontrado")
+
+    if not nodo.is_active:
+        raise HTTPException(status_code=400, detail="Nodo inactivo")
+
     return NodoSchema.model_validate(nodo)
 
 

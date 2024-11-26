@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { LoadingSpinner, SubmitButton } from "../atoms";
+import { ConfirmationPopover, LoadingSpinner, SubmitButton } from "../atoms";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
-import { useUpdateSensor } from "../../hooks";
 import { useNavigate } from "react-router-dom";
+import { useNodos } from "../../hooks";
 
 const NodoHeader = ({ sensor, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -13,18 +13,26 @@ const NodoHeader = ({ sensor, loading }) => {
     longitud: sensor.longitud || 0,
     descripcion: sensor.descripcion,
   });
-
-  const {
-    updateSensor,
-    loading: loadingSensor,
-    error,
-  } = useUpdateSensor(sensor.id, editableSensor);
+  const { deleteNodo, updateNodo, loading: loadingNodo } = useNodos();
 
   const navigate = useNavigate();
 
-  const handleEditClick = async () => {
+  const handleDelete = async (nodoId) => {
+    try {
+      await deleteNodo(nodoId);
+    } catch (error) {
+      console.error("Error eliminando el nodo", nodoId, error);
+    }
+  };
+
+  const handleUpdate = async () => {
     if (isEditing) {
-      await updateSensor();
+      try {
+        await updateNodo(sensor.id, editableSensor);
+        console.log("Sensor actualizado:", editableSensor);
+      } catch (error) {
+        console.error("Error actualizando el sensor:", error);
+      }
     }
     setIsEditing(!isEditing);
   };
@@ -39,7 +47,9 @@ const NodoHeader = ({ sensor, loading }) => {
           : value,
     });
   };
+
   const idSensor = sensor.id;
+
   function monitorearBateria() {
     navigate(`/sensor/${idSensor}/bateria-page`);
   }
@@ -51,7 +61,6 @@ const NodoHeader = ({ sensor, loading }) => {
       ) : (
         <>
           <div id="info-sensor">
-            {/* identificador */}
             <h1 className="flex text-3xl items-center normal-text font-semibold">
               <MdOutlineSettingsInputAntenna className="mr-2" />
               {isEditing ? (
@@ -66,8 +75,6 @@ const NodoHeader = ({ sensor, loading }) => {
                 editableSensor.identificador
               )}
             </h1>
-            {/* descripción */}
-
             <div className="normal-text text-sm py-2">
               {isEditing ? (
                 <>
@@ -89,7 +96,6 @@ const NodoHeader = ({ sensor, loading }) => {
                 editableSensor.descripcion
               )}
             </div>
-
             <span className="normal-text">
               <i className="fa fa-map-marker mr-2" aria-hidden="true" />
               <span className="space-x-2">
@@ -106,7 +112,6 @@ const NodoHeader = ({ sensor, loading }) => {
                 ) : (
                   editableSensor.latitud?.toFixed(5)
                 )}
-
                 <b>Longitud:</b>
                 {isEditing ? (
                   <input
@@ -127,10 +132,21 @@ const NodoHeader = ({ sensor, loading }) => {
           <button
             id="btn-modificar"
             className="h-16 w-32 btn-action btn-active"
-            onClick={handleEditClick}
+            onClick={handleUpdate}
           >
             {isEditing ? "Guardar" : "Modificar Nodo"}
           </button>
+          <ConfirmationPopover
+            onConfirm={() => handleDelete(sensor.id)}
+            onCancel={() => console.log("Cancel")}
+          >
+            <span
+              id="btn-eliminar"
+              className="flex items-center justify-center h-16 w-32 bg-rose-500 btn-action text-neutral-50 dark:bg-rose-700 hover:bg-rose-400 hover:dark:bg-rose-800 shadow-sm"
+            >
+              Eliminar Nodo
+            </span>
+          </ConfirmationPopover>
           <button
             id="btn-ver-bateria"
             className="h-16 w-32 btn-action btn-active"

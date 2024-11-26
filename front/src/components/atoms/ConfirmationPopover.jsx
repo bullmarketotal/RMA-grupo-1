@@ -11,7 +11,7 @@ const ConfirmationPopover = ({ children, onConfirm, onCancel }) => {
           </PopoverButton>
           <PopoverPanel className="absolute z-10 mt-2 w-64 normal-bg border-neutral-300 rounded-md shadow-lg">
             <div className="p-4">
-              <h3 className="text-lg font-semibold">
+              <h3 className="normal-text text-lg font-semibold">
                 ¿Estás seguro de eliminar el elemento?
               </h3>
               <div className="flex justify-end mt-4 gap-2">
