@@ -17,8 +17,11 @@ export const useNotifications = ({count_limit}) => {
             setNotificaciones(res.data)
             setLoading(false)
         })
-        .catch(e => setError(e))
+        .catch(e => {
+            setError(e)
+            setLoading(false)
+        })
     },[])
 
-    return { notificaciones, loading, error }
+    return { notificaciones, loadingNotifications: loading, error }
 }

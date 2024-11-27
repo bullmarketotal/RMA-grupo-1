@@ -15,6 +15,7 @@ import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
 import { FaUser } from "react-icons/fa";
 import NotificacionCard from "./molecules/NotificationList"
+import { useNotifications } from "../hooks/useNotifications";
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -38,13 +39,15 @@ const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
-
+  
+  const { notificaciones, loadingNotifications } = useNotifications({count_limit: 5});
   const { isAuthenticated, username, loading } = useAuth();
   const [ showNotis, setShowNotis ] = useState(false)
   
   const toggleNotifications = () => {
     setShowNotis(!showNotis)
   }
+
 
   
   return (
@@ -83,7 +86,7 @@ export default function NavBar() {
 
               {/* Campana de notificaciones */}
               <NotificationButton onClick={toggleNotifications}/>
-              <NotificacionCard showNotis={showNotis} onClose={() => setShowNotis(false)}/>
+              <NotificacionCard showNotis={showNotis} onClose={() => setShowNotis(false)} notificaciones={notificaciones} loading={loadingNotifications}/>
 
               <div>
                 {isAuthenticated ? (

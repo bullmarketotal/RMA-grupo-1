@@ -1,10 +1,9 @@
 
 import NotificationItem from "../atoms/NotificationItem";
-import { useNotifications } from "../../hooks/useNotifications";
 import { LoadingDots } from "../atoms";
 
-function NotificationList({ showNotis, onClose }) {
-  const { notificaciones, loading } = useNotifications({count_limit: 5});
+function NotificationList({ showNotis, onClose, notificaciones, loadingNotifications }) {
+  
 
 
   return (
@@ -17,11 +16,11 @@ function NotificationList({ showNotis, onClose }) {
           <div className="border bg-card text-card-foreground shadow-sm mr-0 h-min max-w-full pt-8 pb-6 px-6 dark:border-zinc-800 md:mb-0 rounded-lg">
             <div className="mb-2">
               <p className="mt-1 text-sm font-medium text-zinc-500 dark:text-zinc-400 md:mt-4 md:text-lg">
-                Tenés {notificaciones.length} notificaciones
+                
               </p>
             </div>
 
-            {loading ? <LoadingDots /> : notificaciones.map((noti) => <NotificationItem key={noti.id} data={noti} />)}
+            {loadingNotifications ? <LoadingDots /> : notificaciones.map((noti) => <NotificationItem key={noti.id} data={noti} />)}
           </div>
         </div>
       </div>
