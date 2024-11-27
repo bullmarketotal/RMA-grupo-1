@@ -8,7 +8,7 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
@@ -17,6 +17,7 @@ import { FaUser } from "react-icons/fa";
 import NotificacionList from "./molecules/NotificationList";
 import { useNotifications } from "../hooks/useNotifications";
 import { useAxios } from "../context/AxiosProvider";
+import { useIsTabActive } from "../hooks/useIsTabActive";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -42,13 +43,14 @@ const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
-  const [reloadNotifications, setReloadNotifications] = useState(false); // Estado para controlar recarga
+  const [reloadNotifications, setReloadNotifications] = useState(0); // Estado para controlar recarga
+  
+  const { notificaciones, loadingNotifications, unreadPresent } = useNotifications({
+    count_limit: 5,
+    shouldReload: reloadNotifications,  // Pasar la dependencia para recargar
+  });
+  const isTabActive = useIsTabActive()
 
-  const { notificaciones, loadingNotifications, unreadPresent } =
-    useNotifications({
-      count_limit: 5,
-      shouldReload: reloadNotifications, // Pasar la dependencia para recargar
-    });
   const { isAuthenticated, username, loading, permisos } = useAuth();
   const [showNotis, setShowNotis] = useState(false);
 
@@ -61,13 +63,23 @@ export default function NavBar() {
   };
 
   const toggleNotifications = () => {
-    setShowNotis(!showNotis);
-    markNotificationsAsRead(notificaciones);
-    if (showNotis) {
-      setReloadNotifications((prev) => !prev); // Toggle recarga
-    }
-  };
+    setShowNotis(!showNotis)
+    markNotificationsAsRead(notificaciones)
+  }
 
+  useEffect(() => {
+    // Configurar el intervalo solo si la pestaña está activa
+    if (isTabActive) {
+      const interval = setInterval(() => {
+        setReloadNotifications((prev) => prev + 1);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isTabActive]); 
+
+  
+  
   return (
     <>
       <Disclosure as="nav" className="bg-neutral-100 dark:bg-neutral-800">
@@ -103,15 +115,8 @@ export default function NavBar() {
               <DarkModeToggle />
 
               {/* Campana de notificaciones */}
-              <NotificationButton
-                onClick={toggleNotifications}
-                newNotifications={unreadPresent}
-              />
-              <NotificacionList
-                showNotis={showNotis}
-                notificaciones={notificaciones}
-                loading={loadingNotifications}
-              />
+              <NotificationButton onClick={toggleNotifications} newNotifications={unreadPresent} reload={reloadNotifications}/>
+              <NotificacionList showNotis={showNotis} notificaciones={notificaciones} loading={loadingNotifications}/>
 
               <div>
                 {isAuthenticated ? (
