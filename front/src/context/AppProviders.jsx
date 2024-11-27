@@ -11,15 +11,17 @@ const AppProviders = ({ children }) => {
 };
 
 const AuthWrapper = ({ children }) => {
-  const { accessToken, refreshToken } = useAuth();
+  const { accessToken, refreshAccessToken } = useAuth();
 
   const getToken = () => {
     return accessToken || localStorage.getItem("access_token");
   };
-  const getRefreshToken = () => {
-    return refreshToken || localStorage.getItem("refresh_token");
-  };
-  return <AxiosProvider getToken={getToken}>{children}</AxiosProvider>;
+
+  return (
+    <AxiosProvider getToken={getToken} refreshAccessToken={refreshAccessToken}>
+      {children}
+    </AxiosProvider>
+  );
 };
 
 export default AppProviders;

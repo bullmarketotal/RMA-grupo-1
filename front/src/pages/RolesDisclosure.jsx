@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from "@headlessui/react";
-import {
-  ChevronDownIcon,
-  PencilIcon,
-  TrashIcon,
-  KeyIcon,
-  CheckIcon,
-  XMarkIcon,
-} from "@heroicons/react/20/solid";
 import useRolePermisos from "../hooks/useRolePermisos";
 import usePermisos from "../hooks/usePermisos";
 import useRoles from "../hooks/useRoles";
 import useAsignarRevocarPermiso from "../hooks/useAsignarRevocarPermiso";
-import TogglePanel from "./TogglePanel";
+import RoleItem from "./RoleItem";
 import LoadingSkeleton from "../components/atoms/LoadingSkeleton";
 import AddRoleForm from "./AddRoleForm";
-import ConfirmationPopover from "../components/atoms/ConfirmationPopover";
 
 const RolesDisclosure = () => {
   const {
@@ -106,10 +92,7 @@ const RolesDisclosure = () => {
   };
 
   const handleSaveEdit = async (role) => {
-    await updateRole(role.id, {
-      name: newRoleName,
-      descripcion: newRoleDesc,
-    });
+    await updateRole(role.id, { name: newRoleName, descripcion: newRoleDesc });
     setEditingRoleId(null);
   };
 
@@ -120,11 +103,12 @@ const RolesDisclosure = () => {
       console.error("Error eliminando el rol", error);
     }
   };
+
   const handleAddRole = async (role) => {
     try {
       await addRole(role);
     } catch (error) {
-      console.error("Error eliminando el rol", error);
+      console.error("Error agregando el rol", error);
     }
   };
 
@@ -134,89 +118,28 @@ const RolesDisclosure = () => {
     return <div>Error cargando los datos</div>;
 
   return (
-    <div className="p-2 max-w-screen-xl mx-auto normal-bg shadow-sm divide-y divide-neutral-600/5 dark:divide-white/5">
-      <div className="grid grid-cols-2 font-semibold normal-text ">
+    <div className="max-w-screen-xl mx-auto normal-bg shadow-sm divide-y divide-neutral-600/5 dark:divide-white/5">
+      <div className="grid grid-cols-2 font-semibold normal-text">
         <div>Nombre</div>
         <div>Descripción</div>
       </div>
       {roles.map((role) => (
-        <Disclosure key={role.id} as="div" className="p-2">
-          {({ open }) => (
-            <>
-              <div className="flex justify-between items-center">
-                {editingRoleId === role.id ? (
-                  <>
-                    <input
-                      type="text"
-                      value={newRoleName}
-                      onChange={(e) => setNewRoleName(e.target.value)}
-                      className="input-text w-full max-w-xs mr-2"
-                    />
-                    <input
-                      type="text"
-                      value={newRoleDesc}
-                      onChange={(e) => setNewRoleDesc(e.target.value)}
-                      className="input-text w-full max-w-xs"
-                    />
-                    <button
-                      onClick={() => handleSaveEdit(role)}
-                      className="btn btn-success ml-2"
-                    >
-                      <CheckIcon className="h-5 w-5" />
-                    </button>
-                    <button
-                      onClick={handleCancelEdit}
-                      className="btn btn-danger ml-2"
-                    >
-                      <XMarkIcon className="h-5 w-5" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="grid grid-cols-2 w-full">
-                      <span className="text-base normal-text">{role.name}</span>
-                      <span className="text-base normal-text">
-                        {role.descripcion}
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span
-                        className="p-2 rounded-md btn-active btn-action"
-                        onClick={() => handleEdit(role)}
-                      >
-                        <PencilIcon className="h-5 w-5" />
-                      </span>
-                      <ConfirmationPopover
-                        onConfirm={() => handleDelete(role.id)}
-                        onCancel={() => console.log("Cancel")}
-                      >
-                        <span className="p-2 rounded-md btn-alert">
-                          <TrashIcon className="h-5 w-5" />
-                        </span>
-                      </ConfirmationPopover>
-                      <DisclosureButton className="p-1 rounded-md bg-emerald-500 text-white hover:bg-emerald-700 flex items-center">
-                        <KeyIcon className="h-5 w-5 mr-1" />
-                        Permisos
-                        <ChevronDownIcon
-                          className={`h-5 w-5 ml-1 ${
-                            open ? "rotate-180 transform" : ""
-                          }`}
-                        />
-                      </DisclosureButton>
-                    </div>
-                  </>
-                )}
-              </div>
-              <DisclosurePanel className="mt-2 text-sm/5 text-gray-500">
-                <TogglePanel
-                  items={permisos}
-                  enabledItems={rolesPermisos[role.id] || {}}
-                  toggleItem={(permisoId) => togglePermiso(role.id, permisoId)}
-                />
-              </DisclosurePanel>
-            </>
-          )}
-        </Disclosure>
+        <RoleItem
+          key={role.id}
+          role={role}
+          permisos={permisos}
+          rolesPermisos={rolesPermisos}
+          togglePermiso={togglePermiso}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleSaveEdit={handleSaveEdit}
+          handleCancelEdit={handleCancelEdit}
+          isEditing={editingRoleId === role.id}
+          newRoleName={newRoleName}
+          newRoleDesc={newRoleDesc}
+          setNewRoleName={setNewRoleName}
+          setNewRoleDesc={setNewRoleDesc}
+        />
       ))}
       <AddRoleForm onAddRole={handleAddRole} />
     </div>

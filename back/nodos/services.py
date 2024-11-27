@@ -20,7 +20,11 @@ def listar_nodos(db: Session) -> List[Nodo]:
     return Nodo.filter(db, is_active=True)
 
 
-def get_nodo(db: Session, nodo_id: int) -> NodoSchema | None:
+def listar_nodos_inactivos(db: Session) -> List[Nodo]:
+    return Nodo.filter(db, is_active=False)
+
+
+def get_nodo(db: Session, nodo_id: int) -> NodoSchema:
     nodo = Nodo.get(db, nodo_id)
 
     if not nodo:
@@ -47,8 +51,19 @@ def archivar_y_eliminar_nodo(db: Session, nodo_id: int) -> dict:
     db.execute(delete(Paquete).where(Paquete.id.in_(subquery)))
     nodo = Nodo.get(db, nodo_id)
     if nodo:
-        # Soft delete
         nodo.is_active = False
         nodo.save(db)
     db.commit()
     return {"detail": "Nodo archivado y marcado como inactivo correctamente"}
+
+
+def activar_nodo(db: Session, nodo_id: int) -> NodoSchema:
+    nodo = Nodo.get(db, nodo_id)
+    if not nodo:
+        raise HTTPException(status_code=404, detail="Nodo no encontrado")
+
+    if nodo:
+        nodo.is_active = True
+        nodo.save(db)
+        db.commit()
+    return NodoSchema.model_validate(nodo)

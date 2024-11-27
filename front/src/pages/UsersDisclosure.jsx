@@ -84,8 +84,7 @@ const UsuariosDisclosure = () => {
   return (
     <div className="p-2 max-w-screen-xl mx-auto normal-bg shadow-sm divide-y divide-neutral-600/5 dark:divide-white/5">
       <div className="grid grid-cols-2 font-semibold normal-text">
-        <div>Nombre</div>
-        <div>Email</div>
+        <div>Nombre de usuario</div>
       </div>
       {loadingUsuarios || loadingUsuariosRoles || loadingRoles ? (
         <LoadingSkeleton />
@@ -96,20 +95,23 @@ const UsuariosDisclosure = () => {
           <Disclosure key={usuario.id} as="div" className="p-2">
             {({ open }) => (
               <>
-                <DisclosureButton className="group flex w-full items-center justify-between">
+                <div className="flex justify-between items-center">
                   <div className="grid grid-cols-2 w-full text-center">
                     <span className="text-base normal-text group-hover:text-gray-700">
                       {usuario.username}
                     </span>
-                    <span className="text-base normal-text group-hover:text-gray-700">
-                      {usuario.email}
-                    </span>
                   </div>
-                  <ChevronDownIcon
-                    className={`size-5 fill-gray-600 group-hover:fill-gray-400 ${open ? "rotate-180 transform" : ""}`}
-                  />
-                </DisclosureButton>
-                <DisclosurePanel className="mt-2 text-sm/5 text-gray-500">
+                  <DisclosureButton className="p-1 min-w-48 rounded-md bg-emerald-500 text-white hover:bg-emerald-700 flex items-center text-center justify-center">
+                    Roles de usuarios
+                    <ChevronDownIcon
+                      className={`h-5 w- ml-1 transition-transform ${
+                        open ? "rotate-180 transform" : ""
+                      }`}
+                    />
+                  </DisclosureButton>
+                </div>
+                <DisclosurePanel className="mt-2 text-sm text-gray-500">
+                  Roles:
                   <TogglePanel
                     items={roles}
                     enabledItems={usuariosRolesState[usuario.id] || {}}
