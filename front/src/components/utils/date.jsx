@@ -14,7 +14,6 @@ export const obtenerTimeAgoString = (lastData) => {
 };
 
 export const obtenerStringTiempoDesdeUltimoDato = (data) => {
-  console.log(data)
   if (!data || data.length == 0 || data[0] === undefined) {
     return "Sin datos";
   }
