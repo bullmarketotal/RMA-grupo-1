@@ -34,7 +34,7 @@ const MarkerTooltip = ({ nodo, dataNodo }) => {
       <br />
       <i className="fa fa-tint mr-2" />{" "}
       <span className="roboto-bold text-lg">
-        {(lastData?.data / 100).toFixed(1)}m
+        {lastData?.data ? (lastData?.data / 100).toFixed(1) + "m" : "--"}
       </span>
       <br />
       <span className="text-xs bold ">{stringUltimoDato}</span>
