@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useAxios } from "../context/AxiosProvider"
 const baseURL = import.meta.env.VITE_API_URL
 
-export const useNotifications = () => {
+export const useNotifications = ({count_limit}) => {
     const [notificaciones, setNotificaciones] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -11,7 +11,7 @@ export const useNotifications = () => {
 
     useEffect(() => {
         axios.get(baseURL + "/usernotifications", { params: {
-            count_limit: 5
+            count_limit
         }})
         .then(res => {
             setNotificaciones(res.data)

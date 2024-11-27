@@ -1,5 +1,4 @@
 import { obtenerTimeAgoString } from "../utils/date";
-import LinkComponent from "./LinkComponent";
 
 const getDotColor = (alert_id) => {
   if (alert_id === 1) return "yellow";
@@ -16,10 +15,11 @@ function NotificationItem({ data }) {
     { label: `Nodo Nº${data.nodo_id}`, path: `/nodo/${data.nodo_id}` },
   ];
 
+  // intente usar un LinkComponent pero bugeaba la informacion del nodo
   return (
-    <LinkComponent
-      to={`/sensor/${data.nodo_id}`}
-      breadcrumbPath={breadcrumbPath}
+
+    <a
+      href={`/sensor/${data.nodo_id}`}
     >
       <div className="rounded p-2 cursor-pointer relative mx-0 flex w-full max-w-full md:pt-[unset] mb-1 transition-all duration-200 ease-in-out hover:bg-slate-300 dark:hover:bg-slate-700">
         <div
@@ -35,7 +35,7 @@ function NotificationItem({ data }) {
           </p>
         </div>
       </div>
-    </LinkComponent>
+    </a>
   );
 }
 

@@ -42,7 +42,10 @@ export default function NavBar() {
   const { isAuthenticated, username, loading } = useAuth();
   const [ showNotis, setShowNotis ] = useState(false)
   
-  const toggleNotifications = () => setShowNotis(!showNotis)
+  const toggleNotifications = () => {
+    setShowNotis(!showNotis)
+  }
+
   
   return (
     <>
@@ -80,7 +83,7 @@ export default function NavBar() {
 
               {/* Campana de notificaciones */}
               <NotificationButton onClick={toggleNotifications}/>
-              <NotificacionCard showNotis={showNotis}/>
+              <NotificacionCard showNotis={showNotis} onClose={() => setShowNotis(false)}/>
 
               <div>
                 {isAuthenticated ? (
