@@ -2,7 +2,7 @@
 import NotificationItem from "../atoms/NotificationItem";
 import { LoadingDots } from "../atoms";
 
-function NotificationList({ showNotis, onClose, notificaciones, loadingNotifications }) {
+function NotificationList({ showNotis, notificaciones, loadingNotifications }) {
   
 
 

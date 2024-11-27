@@ -114,3 +114,15 @@ def get_user_notifications(not_read_only: bool, count_limit: int, start_date_lim
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+def mark_notifications_as_read(notifications: list[Notificacion], db: Session, user_id: int):
+    notification_ids = [notification.id for notification in notifications]
+
+    db.query(UsuarioNotificacion).filter(
+        UsuarioNotificacion.notificacion_id.in_(notification_ids),
+        UsuarioNotificacion.usuario_id == user_id
+    ).update(
+        {"is_read": True}, synchronize_session=False
+    )
+
+    db.commit()

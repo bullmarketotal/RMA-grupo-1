@@ -6,6 +6,7 @@ export const useNotifications = ({count_limit}) => {
     const [notificaciones, setNotificaciones] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [unreadPresent, setUnreadPresent] = useState(false)
 
     const axios = useAxios()
 
@@ -16,6 +17,7 @@ export const useNotifications = ({count_limit}) => {
         .then(res => {
             setNotificaciones(res.data)
             setLoading(false)
+            setUnreadPresent(res.data.some(noti => !noti.is_read))
         })
         .catch(e => {
             setError(e)
@@ -23,5 +25,5 @@ export const useNotifications = ({count_limit}) => {
         })
     },[])
 
-    return { notificaciones, loadingNotifications: loading, error }
+    return { notificaciones, loadingNotifications: loading, error, unreadPresent }
 }

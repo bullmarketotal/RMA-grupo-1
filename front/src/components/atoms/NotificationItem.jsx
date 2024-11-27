@@ -4,20 +4,13 @@ const getDotColor = (alert_id) => {
   if (alert_id === 1) return "yellow";
   if (alert_id === 2) return "orange";
   if (alert_id === 3) return "red";
-  return "blue";
+  return "sky";
 };
 
 function NotificationItem({ data }) {
-  const time = new Date(data.fecha_hora);
 
-  const breadcrumbPath = [
-    { label: "Home", path: "/" },
-    { label: `Nodo Nº${data.nodo_id}`, path: `/nodo/${data.nodo_id}` },
-  ];
-
-  // intente usar un LinkComponent pero bugeaba la informacion del nodo
   return (
-
+    // intente usar un LinkComponent pero bugeaba la informacion del nodo
     <a
       href={`/sensor/${data.nodo_id}`}
     >
@@ -26,10 +19,10 @@ function NotificationItem({ data }) {
           className={`w-3 h-3 mt-3 me-4 rounded-full bg-${getDotColor(data.alerta_id)}-500`}
         ></div>
         <div>
-          <p className="text-zinc-950 text-lg dark:text-white font-semibold mb-1">
+          <p className={`text-${data.is_read ? "zinc-500" : "zinc-950"} text-lg dark:text-${data.is_read ? "gray-500" : "white"} font-semibold mb-1`}>
             {data.titulo}
           </p>
-          <p className="text-zinc-950 dark:text-white mb-1">{data.message}</p>
+          <p className={`text-zinc-${data.is_read ? "500" : "950"} dark:text-${data.is_read ? "gray-500" : "white"} mb-1`}>{data.message}</p>
           <p className="text-zinc-500 dark:text-zinc-400 text-sm">
             {obtenerTimeAgoString({ date: new Date(data.fecha_hora) })}
           </p>

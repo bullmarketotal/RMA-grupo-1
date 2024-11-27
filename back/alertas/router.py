@@ -64,6 +64,10 @@ def post_alerta(alerta: AlertaCreate, db: Session = Depends(get_db)):
 def get_user_notifications(count_limit: int, not_read_only: Optional[bool] = False, start_date_limit: Optional[datetime] = None, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)): 
     return services.get_user_notifications(not_read_only, count_limit, start_date_limit, db, current_user.id) 
 
+@router.put('/markasread', tags=["Alertas"])
+def mark_notifications_as_read(notifications: list[Notificacion], db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)):
+    return services.mark_notifications_as_read(notifications, db, current_user.id)
+
 """ 
 @router.delete('/alertas/{alerta_id}', response_model=Alerta, tags=["Alertas"])
 def delete_alerta(alerta_id: int, db: Session = Depends(get_db)):

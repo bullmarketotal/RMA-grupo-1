@@ -14,8 +14,11 @@ import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
 import { FaUser } from "react-icons/fa";
-import NotificacionCard from "./molecules/NotificationList"
+import NotificacionList from "./molecules/NotificationList"
 import { useNotifications } from "../hooks/useNotifications";
+import { useAxios } from "../context/AxiosProvider";
+
+const baseURL = import.meta.env.VITE_API_URL
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -35,17 +38,30 @@ function classNames(...classes) {
 }
 
 
+
 const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
   
-  const { notificaciones, loadingNotifications } = useNotifications({count_limit: 5});
+  const { notificaciones, loadingNotifications, unreadPresent } = useNotifications({count_limit: 5});
   const { isAuthenticated, username, loading } = useAuth();
   const [ showNotis, setShowNotis ] = useState(false)
+
+  const axios = useAxios()
+
+  const markNotificationsAsRead = (notis) => {
+    const notReadNotis = notis.filter(n => !n.is_read)
+    if(notReadNotis.length > 0)
+      axios.put(baseURL + "/markasread", notReadNotis)
+  }
   
   const toggleNotifications = () => {
     setShowNotis(!showNotis)
+    markNotificationsAsRead(notificaciones)
+    if(!showNotis){
+      // indicar que debo actualizar las notificaciones
+    }
   }
 
 
@@ -85,8 +101,8 @@ export default function NavBar() {
               <DarkModeToggle />
 
               {/* Campana de notificaciones */}
-              <NotificationButton onClick={toggleNotifications}/>
-              <NotificacionCard showNotis={showNotis} onClose={() => setShowNotis(false)} notificaciones={notificaciones} loading={loadingNotifications}/>
+              <NotificationButton onClick={toggleNotifications} newNotifications={unreadPresent}/>
+              <NotificacionList showNotis={showNotis} notificaciones={notificaciones} loading={loadingNotifications}/>
 
               <div>
                 {isAuthenticated ? (
