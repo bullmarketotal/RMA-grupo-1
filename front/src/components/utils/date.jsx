@@ -14,10 +14,10 @@ export const obtenerTimeAgoString = (lastData) => {
 };
 
 export const obtenerStringTiempoDesdeUltimoDato = (data) => {
-  if (!data || data.length == 0) {
+  if (!data || data.length == 0 || data[0] === undefined) {
     return "Sin datos";
   }
-  const lastTime = new Date(data[data.length - 1].date);
+  const lastTime = new Date(data[data.length - 1]?.date);
   const now = new Date();
 
   const minutesBetween = (now - lastTime) / (1000 * 60);

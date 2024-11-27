@@ -8,12 +8,17 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, React } from "react";
+import { React, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
 import { FaUser } from "react-icons/fa";
+import NotificacionList from "./molecules/NotificationList";
+import { useNotifications } from "../hooks/useNotifications";
+import { useAxios } from "../context/AxiosProvider";
+
+const baseURL = import.meta.env.VITE_API_URL;
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -37,10 +42,31 @@ const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
+  const [reloadNotifications, setReloadNotifications] = useState(false); // Estado para controlar recarga
+
+  const { notificaciones, loadingNotifications, unreadPresent } =
+    useNotifications({
+      count_limit: 5,
+      shouldReload: reloadNotifications, // Pasar la dependencia para recargar
+    });
   const { isAuthenticated, username, loading, permisos } = useAuth();
-  // useEffect(() => {
-  //   console.log("El valor username es:", username);
-  // }, [username]);
+  const [showNotis, setShowNotis] = useState(false);
+
+  const axios = useAxios();
+
+  const markNotificationsAsRead = (notis) => {
+    const notReadNotis = notis.filter((n) => !n.is_read);
+    if (notReadNotis.length > 0)
+      axios.put(baseURL + "/markasread", notReadNotis);
+  };
+
+  const toggleNotifications = () => {
+    setShowNotis(!showNotis);
+    markNotificationsAsRead(notificaciones);
+    if (showNotis) {
+      setReloadNotifications((prev) => !prev); // Toggle recarga
+    }
+  };
 
   return (
     <>
@@ -77,7 +103,15 @@ export default function NavBar() {
               <DarkModeToggle />
 
               {/* Campana de notificaciones */}
-              <NotificationButton />
+              <NotificationButton
+                onClick={toggleNotifications}
+                newNotifications={unreadPresent}
+              />
+              <NotificacionList
+                showNotis={showNotis}
+                notificaciones={notificaciones}
+                loading={loadingNotifications}
+              />
 
               <div>
                 {isAuthenticated ? (
