@@ -62,6 +62,10 @@ def init_permisos():
         PermisoCreate(identificador="create_nodos", descripcion="Crear nodos"),
         PermisoCreate(identificador="update_nodos", descripcion="Actualizar nodos"),
         PermisoCreate(identificador="delete_nodos", descripcion="Eliminar nodos"),
+        PermisoCreate(identificador="activar_nodos", descripcion="Activar nodos"),
+        PermisoCreate(
+            identificador="read_nodos_inactivos", descripcion="Ver nodos inactivos"
+        ),
         # paquetes
         PermisoCreate(identificador="read_paquetes", descripcion="Leer paquetes"),
         # usuarios
