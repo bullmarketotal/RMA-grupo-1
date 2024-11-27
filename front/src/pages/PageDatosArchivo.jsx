@@ -2,18 +2,21 @@ import { useState } from "react";
 import { usePaqueteArchivo, useTipoDato } from "../hooks";
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import { FiltroDatos } from "../components/molecules";
-import { TableView } from "../components/organisms";
+import { TableViewArchivos } from "../components/organisms";
 import DownloadCSVButton from "../components/atoms/DownloadCSVButton";
-
-const DatosPage = () => {
+import { useNavigate } from "react-router-dom";
+const DatosArchivo = () => {
   const [id, setId] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedTipo, setSelectedTipo] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const itemsPerPage = 25;
 
   const params = {
-    offset: 0,
-    limit: 500,
+    offset: (currentPage - 1) * itemsPerPage,
+    limit: itemsPerPage,
     nodo_id: id,
     filterStartDate: startDate || "",
     filterEndDate: endDate || "",
@@ -53,20 +56,26 @@ const DatosPage = () => {
     setEndDate(newEndDate);
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  const handleNavigate = () => {
+    navigate("/datos-view");
+  };
   return (
     <Container>
-      <Header title={"Datos de Nodos"} />
+      <Header title={"Archivo de los Datos de Nodos"} />
       <div className="card-body">
         <div className="mb-6">
           <label className="form-label me-2 mb-1">
-            <strong>Ingresar ID Nodo</strong>
+            <strong>Ingresar ID del Nodo</strong>
           </label>
           <input
             type="number"
             id="sensorId"
-            className="input-text form-input max-w-32"
+            className="form-input"
             value={id || ""}
-            placeholder="ID del nodo"
+            placeholder="Ingresar ID del nodo (opcional)"
             onChange={(e) => setId(parseInt(e.target.value) || null)}
           />
         </div>
@@ -95,19 +104,26 @@ const DatosPage = () => {
 
         <div className="flex items-center mb-4 justify-between">
           <FiltroDatos onFilterChange={handleFilterChange} className="px-2" />
-
-          <div className="px-2">
+          <div className="flex space-x-2 px-2">
             <DownloadCSVButton data={data || []} disabled={loading} />
+            <button
+              className="btn btn-action btn-active"
+              onClick={handleNavigate}
+            >
+              Volver a Datos
+            </button>
           </div>
         </div>
 
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <TableView
-            data={{ items: data }}
+          <TableViewArchivos
+            data={{ items: data, pagination }}
             loading={loading}
             tipoDato={selectedTipo || 1}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
           />
         )}
       </div>
@@ -115,4 +131,4 @@ const DatosPage = () => {
   );
 };
 
-export default DatosPage;
+export default DatosArchivo;

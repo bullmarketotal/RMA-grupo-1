@@ -1,8 +1,15 @@
 import React from "react";
 import { LoadingSpinner } from "../atoms";
-import { Paginacion, TablaDatos } from "../molecules";
+import { Paginacion } from "../molecules";
+import TablaDatosArchivo from "../molecules/TablaDatosArchivo";
 
-const TableView = ({ data, loading, tipoDato, currentPage, onPageChange }) => {
+const TableViewArchivos = ({
+  data,
+  loading,
+  tipoDato,
+  currentPage,
+  onPageChange,
+}) => {
   const itemsPerPage = data.pagination.limit || 25;
   const totalItems = data.pagination.total_items || 0;
 
@@ -21,7 +28,7 @@ const TableView = ({ data, loading, tipoDato, currentPage, onPageChange }) => {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <TablaDatos items={data.items} tipo={tipoDato} />
+        <TablaDatosArchivo items={data.items} tipo={tipoDato} />
       )}
       <Paginacion
         itemsPerPage={itemsPerPage}
@@ -33,4 +40,4 @@ const TableView = ({ data, loading, tipoDato, currentPage, onPageChange }) => {
   );
 };
 
-export default TableView;
+export default TableViewArchivos;

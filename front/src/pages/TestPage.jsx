@@ -13,35 +13,9 @@ const App = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Container>
-      <div>
-        <h1>Lista de Paquetes Archivo</h1>
-        <div>
-          <strong>Total Items:</strong> {pagination.total_items}
-          <br />
-          <strong>Total Pages:</strong> {pagination.total_pages}
-          <br />
-          <strong>Current Page:</strong> {pagination.current_page}
-          <br />
-          <strong>Limit:</strong> {pagination.limit}
-          <br />
-          <strong>Offset:</strong> {pagination.offset}
-        </div>
-        {data.length === 0 ? (
-          <div>No hay datos disponibles</div>
-        ) : (
-          <ul>
-            {data.map((item) => (
-              <li key={item.id}>
-                Nodo ID: {item.nodo_id}, Data: {item.data}, Date: {item.date},
-                Type ID: {item.type_id}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+    <>
       <PageDatosArchivo />
-    </Container>
+    </>
   );
 };
 
