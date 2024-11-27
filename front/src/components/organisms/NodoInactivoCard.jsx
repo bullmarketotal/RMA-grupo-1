@@ -6,7 +6,7 @@ import "../../assets/font-awesome/css/font-awesome.min.css";
 import { LoadingSpinner } from "../atoms";
 import { useAuth } from "../../context/AuthProvider";
 import { useNotification } from "../../context/NotificationContext";
-const NodoInactivoCard = ({ nodo }) => {
+const NodoInactivoCard = ({ nodo, refresh, mutate }) => {
   const { activarNodo } = useActivarNodo();
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -21,6 +21,8 @@ const NodoInactivoCard = ({ nodo }) => {
       showNotification("Error activando el nodo:", "error");
     } finally {
       setLoading(false);
+      refresh();
+      mutate();
     }
   };
 

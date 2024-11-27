@@ -10,7 +10,7 @@ export const useNodos = ({ nodo_id } = {}) => {
     endpoint,
     (url) => fetcher(url, axios),
     {
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
       errorRetryCount: 3,
       errorRetryInterval: 10000,
       dedupingInterval: 60000,
@@ -39,6 +39,7 @@ export const useNodos = ({ nodo_id } = {}) => {
     addNodo,
     updateNodo,
     deleteNodo,
+    refresh: mutate,
   };
 };
 

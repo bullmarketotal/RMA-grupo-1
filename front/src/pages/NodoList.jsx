@@ -10,13 +10,14 @@ import { useAuth } from "../context/AuthProvider";
 const NodoList = () => {
   const { permisos } = useAuth();
 
-  const { nodos, loading, error } = useNodos();
+  const { nodos, loading, error, refresh } = useNodos();
   useBreadcrumbsUpdater();
 
   const {
     nodosInactivos,
     loading: loadingInactivos,
     error: errorInactivos,
+    mutate,
   } = permisos.read_nodos_inactivos
     ? useNodosInactivos()
     : { nodosInactivos: [], loading: false, error: null };
@@ -53,7 +54,11 @@ const NodoList = () => {
             <>
               {nodosInactivos.map((nodo) => (
                 <div className="mb-3" key={nodo.id}>
-                  <NodoInactivoCard nodo={nodo} />
+                  <NodoInactivoCard
+                    nodo={nodo}
+                    mutate={mutate}
+                    refresh={refresh}
+                  />
                 </div>
               ))}
             </>

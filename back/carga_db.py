@@ -68,6 +68,10 @@ def init_permisos():
         ),
         # paquetes
         PermisoCreate(identificador="read_paquetes", descripcion="Leer paquetes"),
+        PermisoCreate(
+            identificador="read_paquetes_archivos",
+            descripcion="Leer paquetes archivados",
+        ),
         # usuarios
         PermisoCreate(identificador="read_usuarios", descripcion="Leer usuarios"),
         # roles
