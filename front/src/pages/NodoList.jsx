@@ -8,26 +8,24 @@ import { NodoInactivoCard } from "../components/organisms";
 import { useAuth } from "../context/AuthProvider";
 
 const NodoList = () => {
-  const { nodos, loading, error } = useNodos();
   const { permisos } = useAuth();
+
+  const { nodos, loading, error } = useNodos();
   useBreadcrumbsUpdater();
+
   const {
     nodosInactivos,
     loading: loadingInactivos,
     error: errorInactivos,
-  } = useNodosInactivos();
+  } = permisos.read_nodos_inactivos
+    ? useNodosInactivos()
+    : { nodosInactivos: [], loading: false, error: null };
+
   console.log(permisos);
   if (error)
     return (
       <ErrorSimple
         title={"No se pudieron obtener los nodos"}
-        description={"Error interno del servidor."}
-      />
-    );
-  if (errorInactivos)
-    return (
-      <ErrorSimple
-        title={"No se pudieron obtener los nodos inactivos"}
         description={"Error interno del servidor."}
       />
     );

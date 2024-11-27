@@ -15,24 +15,38 @@ import RegisterPage from "./RegisterPage";
 import ConfigPage from "./ConfigPage";
 import ConfiguracionMenuPage from "./ConfiguracionMenuPage";
 import { ConfigNotifications } from "./ConfigNotifications";
+import AdminPage from "./AdminPage";
+import Error403 from "./Error403";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<NavBar />}>
-        <Route index element={<ProtectedRoute>
-           <Inicio />
-          </ProtectedRoute>} />
-        <Route path="lista-nodos" element={
-          <ProtectedRoute>
-           <NodoList />
-          </ProtectedRoute>
-          } />
-        <Route path="datos-view" element={
-          <ProtectedRoute>
-            <DatosPage />
-          </ProtectedRoute>
-          } />
+        <Route
+          index
+          element={
+            <ProtectedRoute>
+              <Inicio />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="403" element={<Error403 />} />
+        <Route
+          path="lista-nodos"
+          element={
+            <ProtectedRoute>
+              <NodoList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="datos-view"
+          element={
+            <ProtectedRoute>
+              <DatosPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="create-sensor"
           element={
@@ -48,11 +62,38 @@ const AppRoutes = () => {
         <Route path="testpage" element={<Example />} />
         <Route path="/confirm-logout" element={<LogoutConfirmationPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/notificaciones" element={<ProtectedRoute><ConfigNotifications /></ProtectedRoute>} />
-        <Route path="/configuracion/general" element={<ProtectedRoute><ConfigPage/></ProtectedRoute>} />
-        <Route path="/configuracion" element={<ProtectedRoute><ConfiguracionMenuPage/></ProtectedRoute>} />
-
-        
+        <Route
+          path="/notificaciones"
+          element={
+            <ProtectedRoute>
+              <ConfigNotifications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/configuracion/general"
+          element={
+            <ProtectedRoute>
+              <ConfigPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/configuracion"
+          element={
+            <ProtectedRoute>
+              <ConfiguracionMenuPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/administrador"
+          element={
+            <ProtectedRoute permission={"admin"}>
+              <AdminPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );

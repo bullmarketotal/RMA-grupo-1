@@ -44,10 +44,12 @@ export const AuthProvider = ({ children }) => {
     setAccessToken(null);
     setRefreshToken(null);
     setPermisos([]);
+    setUsername(null);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("permisos");
     setIsAuthenticated(false);
+    setLoading(false);
   };
 
   const verifyAccessToken = async () => {
@@ -98,9 +100,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const verifyOrRefreshToken = async () => {
-    const isAccessTokenValid = await verifyAccessToken();
-    if (!isAccessTokenValid) {
-      await refreshAccessToken();
+    try {
+      const isAccessTokenValid = await verifyAccessToken();
+      if (!isAccessTokenValid) {
+        await refreshAccessToken();
+      }
+    } catch (err) {
+      console.error("Error en verifyOrRefreshToken:", err);
+      logout();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -113,14 +122,15 @@ export const AuthProvider = ({ children }) => {
       setUsername(response.user);
       login(access_token, refresh_token, permisos);
     } catch (err) {
-      setError(err.message);
+      console.error("Error en loginUserWrapper:", err);
+      setError(err.message || "Error desconocido al iniciar sesión");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    verifyOrRefreshToken().then(() => setLoading(false));
+    verifyOrRefreshToken();
   }, []);
 
   return (

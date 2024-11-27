@@ -96,7 +96,7 @@ const NodoInactivoCard = ({ nodo }) => {
                 disabled={loading}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="roboto-medium mt-2 bg-sky-500 hover:bg-sky-400 dark:hover:bg-slate-900 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-all duration-100"
+                className="roboto-medium mt-2 bg-sky-500 hover:bg-sky-400 dark:hover:bg-slate-900 text-neutral-100 font-bold py-2 px-4 rounded-2xl transition-all duration-100"
               >
                 {loading ? <LoadingSpinner /> : "Activar Nodo"}
               </button>

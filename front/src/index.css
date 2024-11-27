@@ -72,7 +72,7 @@
 }
 
 .btn-action {
-  @apply px-6 py-2 rounded-md transition-colors duration-200;
+  @apply px-2 py-2 rounded-md transition-colors duration-200;
 }
 
 .btn-disabled {
