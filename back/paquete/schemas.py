@@ -16,6 +16,10 @@ class Paquete(PaqueteBase):
     id: int
 
 
+class PaqueteArchivo(PaqueteBase):
+    id: int
+
+
 class PaqueteCreate(PaqueteBase):
     pass
 
@@ -31,6 +35,11 @@ class PaginationInfo(BaseModel):
 class PaqueteResponse(BaseModel):
     info: PaginationInfo
     items: List[Paquete]
+
+
+class PaqueteArchivoResponse(BaseModel):
+    info: PaginationInfo
+    items: List[PaqueteArchivo]
 
 
 class PaqueteRechazado(PaqueteBase):

@@ -17,13 +17,16 @@ module.exports = {
     "bg-red-500",
     "bg-sky-500",
     "bg-green-500",
+    "bg-gray-500",
+    "bg-yellow-500",
+    "border-t-yellow-500",
+    "border-t-gray-500",
     "border-t-red-500",
     "border-t-sky-500",
     "border-t-green-500",
+    "border-t-organge-500",
+    "bg-orange-500",
+    "text-orange-500",
   ],
   plugins: [],
-  safelist: [
-    'bg-orange-500',
-    'text-orange-500',
-  ]
 };

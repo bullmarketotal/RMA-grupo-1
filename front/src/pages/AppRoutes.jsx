@@ -17,6 +17,7 @@ import ConfiguracionMenuPage from "./ConfiguracionMenuPage";
 import { ConfigNotifications } from "./ConfigNotifications";
 import AdminPage from "./AdminPage";
 import Error403 from "./Error403";
+import PageDatosArchivos from "./PageDatosArchivo";
 
 const AppRoutes = () => {
   return (
@@ -44,6 +45,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <DatosPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="datos-view/archivos"
+          element={
+            <ProtectedRoute>
+              <PageDatosArchivos />
             </ProtectedRoute>
           }
         />

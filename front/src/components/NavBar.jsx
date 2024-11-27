@@ -29,7 +29,7 @@ const navigationItems = [
 ];
 
 const menuItems = [
-  { name: "Perfil", link: "#" },
+  // { name: "Perfil", link: "#" },
   { name: "Administrador", link: "/administrador" },
   { name: "Configuración", link: "/configuracion" },
   { name: "Cerrar sesión", link: "/confirm-logout" },

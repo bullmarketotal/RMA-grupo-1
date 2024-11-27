@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import useRolePermisos from "../hooks/useRolePermisos";
-import usePermisos from "../hooks/usePermisos";
-import useRoles from "../hooks/useRoles";
-import useAsignarRevocarPermiso from "../hooks/useAsignarRevocarPermiso";
+import useRolePermisos from "../../hooks/useRolePermisos";
+import usePermisos from "../../hooks/usePermisos";
+import useRoles from "../../hooks/useRoles";
+import useAsignarRevocarPermiso from "../../hooks/useAsignarRevocarPermiso";
 import RoleItem from "./RoleItem";
-import LoadingSkeleton from "../components/atoms/LoadingSkeleton";
-import AddRoleForm from "./AddRoleForm";
+import LoadingSkeleton from "../atoms/LoadingSkeleton";
+import AddRoleForm from "../../pages/AddRoleForm";
 
 const RolesDisclosure = () => {
   const {

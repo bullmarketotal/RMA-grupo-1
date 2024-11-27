@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import RolesDisclosure from "./RolesDisclosure";
+import RolesDisclosure from "../components/organisms/RolesDisclosure";
 import { Container, Header } from "../components/atoms";
-import UsersDisclosure from "./UsersDisclosure";
+import UsersDisclosure from "../components/organisms/UsersDisclosure";
 class AdminPage extends Component {
   render() {
     return (

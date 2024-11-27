@@ -7,3 +7,4 @@ export { default as useNodos } from "./useNodos";
 export { default as useTipoDato } from "./useTipoDato";
 export { useNodosInactivos } from "./useNodosInactivos";
 export { useActivarNodo } from "./useActivarNodo";
+export { default as usePaqueteArchivo } from "./usePaqueteArchivo";

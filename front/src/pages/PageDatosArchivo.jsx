@@ -1,25 +1,23 @@
-import { useState, useEffect } from "react";
-import { useFetchNodoData, useNodos, useTipoDato } from "../hooks";
+import { useState } from "react";
+import { usePaqueteArchivo, useTipoDato } from "../hooks";
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import { FiltroDatos } from "../components/molecules";
-import { TableView } from "../components/organisms";
+import { TableViewArchivos } from "../components/organisms";
 import DownloadCSVButton from "../components/atoms/DownloadCSVButton";
 import { useNavigate } from "react-router-dom";
-
-const DatosPage = () => {
-  const [id, setId] = useState(1);
+const DatosArchivo = () => {
+  const [id, setId] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedTipo, setSelectedTipo] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-
   const itemsPerPage = 25;
 
   const params = {
     offset: (currentPage - 1) * itemsPerPage,
     limit: itemsPerPage,
-    nodo_id: id || 1,
+    nodo_id: id,
     filterStartDate: startDate || "",
     filterEndDate: endDate || "",
     order: "desc",
@@ -27,9 +25,8 @@ const DatosPage = () => {
     type: selectedTipo || 1,
   };
 
-  const { data, loading, error, mutate, isForbidden } =
-    useFetchNodoData(params);
-  const { nodos, loading: loadingSensores, error: errorSensores } = useNodos();
+  const { data, pagination, loading, error, isForbidden, mutate } =
+    usePaqueteArchivo(params);
   const { tipos, loading: loadingTipos, error: errorTipos } = useTipoDato();
 
   if (error) {
@@ -38,7 +35,7 @@ const DatosPage = () => {
     );
   }
 
-  if (loadingSensores || loadingTipos) return <LoadingSpinner />;
+  if (loading || loadingTipos) return <LoadingSpinner />;
 
   const handleFilterChange = (newStartDate, newEndDate) => {
     const previousStartDate = startDate;
@@ -62,40 +59,26 @@ const DatosPage = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
   const handleNavigate = () => {
-    navigate("/datos-view/archivos");
+    navigate("/datos-view");
   };
-
   return (
     <Container>
-      <Header title={"Datos de Nodos"} />
+      <Header title={"Archivo de los Datos de Nodos"} />
       <div className="card-body">
-        {errorSensores ? (
-          <p>{errorSensores}</p>
-        ) : (
-          <div className="mb-6">
-            <label className="form-label me-2 mb-1">
-              <strong>Seleccionar Nodo</strong>
-            </label>
-            <select
-              id="sensorId"
-              className="form-select"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-            >
-              {nodos.length === 0 ? (
-                <option value="">No hay nodos disponibles</option>
-              ) : (
-                nodos.map((nodo) => (
-                  <option key={nodo.id} value={nodo.id}>
-                    {`${nodo.identificador}`}
-                  </option>
-                ))
-              )}
-            </select>
-          </div>
-        )}
+        <div className="mb-6">
+          <label className="form-label me-2 mb-1">
+            <strong>Ingresar ID del Nodo</strong>
+          </label>
+          <input
+            type="number"
+            id="sensorId"
+            className="form-input"
+            value={id || ""}
+            placeholder="Ingresar ID del nodo (opcional)"
+            onChange={(e) => setId(parseInt(e.target.value) || null)}
+          />
+        </div>
 
         <div className="mb-6">
           <label className="form-label me-2 mb-1">
@@ -122,9 +105,12 @@ const DatosPage = () => {
         <div className="flex items-center mb-4 justify-between">
           <FiltroDatos onFilterChange={handleFilterChange} className="px-2" />
           <div className="flex space-x-2 px-2">
-            <DownloadCSVButton data={data?.items || []} disabled={loading} />
-            <button className="btn btn-secondary" onClick={handleNavigate}>
-              Ver Archivos
+            <DownloadCSVButton data={data || []} disabled={loading} />
+            <button
+              className="btn btn-action btn-active"
+              onClick={handleNavigate}
+            >
+              Volver a Datos
             </button>
           </div>
         </div>
@@ -132,8 +118,8 @@ const DatosPage = () => {
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <TableView
-            data={{ items: data.items, pagination: data.info }}
+          <TableViewArchivos
+            data={{ items: data, pagination }}
             loading={loading}
             tipoDato={selectedTipo || 1}
             currentPage={currentPage}
@@ -145,4 +131,4 @@ const DatosPage = () => {
   );
 };
 
-export default DatosPage;
+export default DatosArchivo;

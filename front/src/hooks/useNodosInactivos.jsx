@@ -10,7 +10,7 @@ export const useNodosInactivos = () => {
     endpoint,
     (url) => fetcher(url, axios),
     {
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
       errorRetryCount: 3,
       errorRetryInterval: 10000,
       dedupingInterval: 60000,
