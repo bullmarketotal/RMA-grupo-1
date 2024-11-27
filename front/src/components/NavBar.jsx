@@ -43,8 +43,12 @@ const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
+  const [reloadNotifications, setReloadNotifications] = useState(false); // Estado para controlar recarga
   
-  const { notificaciones, loadingNotifications, unreadPresent } = useNotifications({count_limit: 5});
+  const { notificaciones, loadingNotifications, unreadPresent } = useNotifications({
+    count_limit: 5,
+    shouldReload: reloadNotifications,  // Pasar la dependencia para recargar
+  });
   const { isAuthenticated, username, loading } = useAuth();
   const [ showNotis, setShowNotis ] = useState(false)
 
@@ -59,8 +63,8 @@ export default function NavBar() {
   const toggleNotifications = () => {
     setShowNotis(!showNotis)
     markNotificationsAsRead(notificaciones)
-    if(!showNotis){
-      // indicar que debo actualizar las notificaciones
+    if(showNotis){
+      setReloadNotifications((prev) => !prev); // Toggle recarga
     }
   }
 
