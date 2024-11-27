@@ -5,12 +5,12 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import useUsuariosRoles from "../hooks/useUsuariosRoles";
-import useUsuarios from "../hooks/useUsuarios";
-import useRoles from "../hooks/useRoles";
-import useAsignarRevocarRol from "../hooks/useAsignarRevocarRol";
-import TogglePanel from "./TogglePanel";
-import LoadingSkeleton from "../components/atoms/LoadingSkeleton";
+import useUsuariosRoles from "../../hooks/useUsuariosRoles";
+import useUsuarios from "../../hooks/useUsuarios";
+import useRoles from "../../hooks/useRoles";
+import useAsignarRevocarRol from "../../hooks/useAsignarRevocarRol";
+import TogglePanel from "../molecules/TogglePanel";
+import LoadingSkeleton from "../atoms/LoadingSkeleton";
 
 const UsuariosDisclosure = () => {
   const { roles, loading: loadingRoles, error: errorRoles } = useRoles();

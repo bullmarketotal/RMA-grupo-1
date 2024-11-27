@@ -12,8 +12,8 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import TogglePanel from "./TogglePanel";
-import ConfirmationPopover from "../components/atoms/ConfirmationPopover";
+import TogglePanel from "../molecules/TogglePanel";
+import ConfirmationPopover from "../atoms/ConfirmationPopover";
 
 const RoleItem = ({
   role,
