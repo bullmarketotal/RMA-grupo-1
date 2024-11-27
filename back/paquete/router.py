@@ -65,9 +65,9 @@ def read_tipo(id: int, db: Session = Depends(get_db)):
 
 @router.get(
     "/paquetesarchivos",
-    response_model=list[schemas.PaqueteArchivo],
+    response_model=schemas.PaqueteArchivoResponse,
     tags=["Paquetes"],
-    dependencies=[Depends(permiso_requerido("read_paquetes_archivos"))],
+    # dependencies=[Depends(permiso_requerido("read_paquetes_archivos"))],
 )
 def read_paquetes(
     limit: int = Query(None, ge=1),

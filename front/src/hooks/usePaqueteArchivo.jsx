@@ -58,7 +58,7 @@ const usePaqueteArchivo = ({
   ]);
 
   const { data, error, isValidating, mutate } = useSWR(
-    `//paquetesarchivos?${query}`,
+    `/paquetesarchivos${query ? `?${query}` : ""}`, // Solo añade el query si existe
     (url) => fetcher(url, axios),
     {
       revalidateOnFocus: false,
@@ -71,7 +71,8 @@ const usePaqueteArchivo = ({
   const isForbidden = error?.status === 403;
 
   return {
-    data: data ?? [],
+    data: data?.items ?? [],
+    pagination: data?.info ?? {},
     loading: isValidating,
     error,
     isForbidden,
