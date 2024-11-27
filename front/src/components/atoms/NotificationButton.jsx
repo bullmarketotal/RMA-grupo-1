@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaRegBell } from "react-icons/fa";
 
-const NotificationButton = ({onClick, newNotifications}) => {
+const NotificationButton = ({onClick, newNotifications, reload}) => {
 
   const [clicked, setClicked] = useState(false)
 

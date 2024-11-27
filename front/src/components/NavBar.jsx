@@ -8,7 +8,7 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
@@ -17,6 +17,7 @@ import { FaUser } from "react-icons/fa";
 import NotificacionList from "./molecules/NotificationList"
 import { useNotifications } from "../hooks/useNotifications";
 import { useAxios } from "../context/AxiosProvider";
+import { useIsTabActive } from "../hooks/useIsTabActive";
 
 const baseURL = import.meta.env.VITE_API_URL
 
@@ -43,7 +44,7 @@ const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
-  const [reloadNotifications, setReloadNotifications] = useState(false); // Estado para controlar recarga
+  const [reloadNotifications, setReloadNotifications] = useState(0); // Estado para controlar recarga
   
   const { notificaciones, loadingNotifications, unreadPresent } = useNotifications({
     count_limit: 5,
@@ -51,6 +52,7 @@ export default function NavBar() {
   });
   const { isAuthenticated, username, loading } = useAuth();
   const [ showNotis, setShowNotis ] = useState(false)
+  const isTabActive = useIsTabActive()
 
   const axios = useAxios()
 
@@ -63,12 +65,20 @@ export default function NavBar() {
   const toggleNotifications = () => {
     setShowNotis(!showNotis)
     markNotificationsAsRead(notificaciones)
-    if(showNotis){
-      setReloadNotifications((prev) => !prev); // Toggle recarga
-    }
   }
 
+  useEffect(() => {
+    // Configurar el intervalo solo si la pestaña está activa
+    if (isTabActive) {
+      const interval = setInterval(() => {
+        setReloadNotifications((prev) => prev + 1);
+      }, 3000);
 
+      return () => clearInterval(interval);
+    }
+  }, [isTabActive]); 
+
+  
   
   return (
     <>
@@ -105,7 +115,7 @@ export default function NavBar() {
               <DarkModeToggle />
 
               {/* Campana de notificaciones */}
-              <NotificationButton onClick={toggleNotifications} newNotifications={unreadPresent}/>
+              <NotificationButton onClick={toggleNotifications} newNotifications={unreadPresent} reload={reloadNotifications}/>
               <NotificacionList showNotis={showNotis} notificaciones={notificaciones} loading={loadingNotifications}/>
 
               <div>
