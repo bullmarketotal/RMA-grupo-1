@@ -51,7 +51,6 @@ def archivar_y_eliminar_nodo(db: Session, nodo_id: int) -> dict:
     db.execute(delete(Paquete).where(Paquete.id.in_(subquery)))
     nodo = Nodo.get(db, nodo_id)
     if nodo:
-        # Soft delete
         nodo.is_active = False
         nodo.save(db)
     db.commit()
@@ -65,4 +64,6 @@ def activar_nodo(db: Session, nodo_id: int) -> NodoSchema:
 
     if nodo:
         nodo.is_active = True
-    return nodo.update(db, nodo)
+        nodo.save(db)
+        db.commit()
+    return NodoSchema.model_validate(nodo)

@@ -24,9 +24,9 @@ const NodoInactivoCard = ({ nodo }) => {
   };
 
   const items = [
-    { type_id: 1, data: 22.5 },
-    { type_id: 25, data: 3.0 },
-    { type_id: 16, data: 5.5 },
+    { type_id: 1, data: 0 },
+    { type_id: 25, data: 0 },
+    { type_id: 16, data: 0 },
   ];
 
   const dataTemp = items.filter((item) => item.type_id === 1);
@@ -37,7 +37,7 @@ const NodoInactivoCard = ({ nodo }) => {
     <div
       className={`roboto border-2 rounded-2xl p-3 ${
         isHovered ? "normal-bg" : "dark-bg"
-      } dark:border-neutral-800 dark:text-neutral-50 transition-colors duration-300`}
+      } dark:border-neutral-800 dark:text-neutral-50`}
     >
       <div className="flex">
         <div className="w-1/3 min-w-64">
