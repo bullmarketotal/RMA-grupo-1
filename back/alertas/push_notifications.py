@@ -44,7 +44,7 @@ class NotificationHandler:
 
         notification_data = self.get_notification_body(db, alerta_id, nodo_id, message)
         endpoints = self.obtener_suscriptores_de_alerta(db, alerta_id=alerta_id)
-        self.almacenar_notificacion(db, endpoints, alerta_id, notification_data)
+        self.almacenar_notificacion(db, endpoints, alerta_id, nodo_id, notification_data)
 
         ten_minutes_ago = datetime.now() - timedelta(minutes=10)
         twenty_seconds_ago = datetime.now() - timedelta(seconds=20)
@@ -95,9 +95,10 @@ class NotificationHandler:
             except WebPushException as ex:
                 print(f"Error enviando notificación: {str(ex)}")
 
-    def almacenar_notificacion(self, db: Session, endpoints: list[PushEndpoint], alerta_id: int, notification_data):
+    def almacenar_notificacion(self, db: Session, endpoints: list[PushEndpoint], alerta_id: int, nodo_id: int, notification_data):
         notificacion = Notificacion(
             alerta_id = alerta_id,
+            nodo_id = nodo_id,
             fecha_hora = datetime.now(),
             message = notification_data["body"],
             titulo = notification_data["title"]
