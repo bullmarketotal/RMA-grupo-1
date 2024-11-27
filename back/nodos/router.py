@@ -76,7 +76,7 @@ def revivir_nodo(nodo_id: int, db: Session = Depends(get_db)):
     "/nodosinactivos",
     response_model=list[schemas.Nodo],
     tags=["Nodos"],
-    # dependencies=[Depends(permiso_requerido("read_nodos_inactivos"))],
+    dependencies=[Depends(permiso_requerido("read_nodos_inactivos"))],
 )
 def read_nodos_inactivos(db: Session = Depends(get_db)):
     return services.listar_nodos_inactivos(db)

@@ -5,15 +5,18 @@ import { useNodos, useNodosInactivos } from "../hooks";
 import { useBreadcrumbsUpdater } from "../hooks";
 import ExpandableCard from "../components/molecules/ExpandableCard";
 import { NodoInactivoCard } from "../components/organisms";
+import { useAuth } from "../context/AuthProvider";
+
 const NodoList = () => {
   const { nodos, loading, error } = useNodos();
+  const { permisos } = useAuth();
   useBreadcrumbsUpdater();
   const {
     nodosInactivos,
     loading: loadingInactivos,
     error: errorInactivos,
   } = useNodosInactivos();
-
+  console.log(permisos);
   if (error)
     return (
       <ErrorSimple
@@ -43,20 +46,28 @@ const NodoList = () => {
           ))}
         </>
       )}
+
       {loadingInactivos ? (
         <LoadingSpinner />
       ) : (
         <>
-          {nodosInactivos.map((nodo) => (
-            <div className="mb-3" key={nodo.id}>
-              <NodoInactivoCard nodo={nodo} />
-            </div>
-          ))}
+          {permisos.read_nodos_inactivos && (
+            <>
+              {nodosInactivos.map((nodo) => (
+                <div className="mb-3" key={nodo.id}>
+                  <NodoInactivoCard nodo={nodo} />
+                </div>
+              ))}
+            </>
+          )}
         </>
       )}
-      <div className="mb-3">
-        <ExpandableCard />
-      </div>
+
+      {permisos.create_nodos && (
+        <div className="mb-3">
+          <ExpandableCard />
+        </div>
+      )}
     </Container>
   );
 };

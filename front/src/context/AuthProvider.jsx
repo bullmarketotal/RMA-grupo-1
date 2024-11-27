@@ -15,7 +15,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(null);
-  const [permisos, setPermisos] = useState([]);
+  const [permisos, setPermisos] = useState(() => {
+    const storedPermisos = localStorage.getItem("permisos");
+    return storedPermisos ? JSON.parse(storedPermisos) : [];
+  });
 
   const axiosInstance = createAxiosInstance(() => accessToken);
 
@@ -27,11 +30,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (newAccessToken, newRefreshToken, newPermisos) => {
+    const permisosDict = transformPermisos(newPermisos);
     setAccessToken(newAccessToken);
     setRefreshToken(newRefreshToken);
-    setPermisos(newPermisos);
+    setPermisos(permisosDict);
     localStorage.setItem("access_token", newAccessToken);
     localStorage.setItem("refresh_token", newRefreshToken);
+    localStorage.setItem("permisos", JSON.stringify(permisosDict));
     setIsAuthenticated(true);
   };
 
@@ -41,6 +46,7 @@ export const AuthProvider = ({ children }) => {
     setPermisos([]);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("permisos");
     setIsAuthenticated(false);
   };
 
@@ -66,12 +72,14 @@ export const AuthProvider = ({ children }) => {
   const refreshAccessToken = async () => {
     if (!refreshToken) {
       setIsAuthenticated(false);
-      return false;
+      throw new Error("No refresh token available");
     }
     try {
-      const response = await axiosInstance.post("/refresh_token", {
-        refresh_token: refreshToken,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/refresh_token`,
+        { refresh_token: refreshToken }
+      );
+
       const { access_token: newAccessToken, refresh_token: newRefreshToken } =
         response.data;
 
@@ -85,7 +93,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.error("Error al refrescar el token:", err);
       logout();
-      return false;
+      throw err;
     }
   };
 
@@ -102,10 +110,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await loginUser(username, password, () => accessToken);
       const { access_token, refresh_token, permisos } = response;
-      console.log(response);
       setUsername(response.user);
-      const permisosDict = transformPermisos(permisos);
-      login(access_token, refresh_token, permisosDict);
+      login(access_token, refresh_token, permisos);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -128,6 +134,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         error,
         loginUserWrapper,
+        refreshAccessToken,
       }}
     >
       {children}

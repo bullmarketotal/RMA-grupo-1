@@ -1,7 +1,7 @@
 import axios from "axios";
 import refreshAccessToken from "../utils/refreshAccessToken";
 
-export const createAxiosInstance = (getToken) => {
+export const createAxiosInstance = (getToken, refreshAccessToken) => {
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: {
@@ -9,6 +9,7 @@ export const createAxiosInstance = (getToken) => {
     },
   });
 
+  // Interceptor para añadir el token en las solicitudes
   api.interceptors.request.use(
     (config) => {
       const token = getToken();
@@ -36,6 +37,10 @@ export const createAxiosInstance = (getToken) => {
           }
         } catch (refreshError) {
           console.error("Error al refrescar el token:", refreshError);
+          if (refreshError.response?.status === 401) {
+            localStorage.clear();
+            window.location.reload();
+          }
         }
       }
 

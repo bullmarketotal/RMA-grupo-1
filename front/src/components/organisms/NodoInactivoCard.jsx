@@ -4,20 +4,21 @@ import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import { useActivarNodo } from "../../hooks/useActivarNodo";
 import "../../assets/font-awesome/css/font-awesome.min.css";
 import { LoadingSpinner } from "../atoms";
-
+import { useAuth } from "../../context/AuthProvider";
+import { useNotification } from "../../context/NotificationContext";
 const NodoInactivoCard = ({ nodo }) => {
   const { activarNodo } = useActivarNodo();
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
+  const { permisos } = useAuth();
+  const { showNotification } = useNotification();
   const handleActivarNodo = async () => {
     setLoading(true);
     try {
       await activarNodo(nodo.id);
-      alert("Nodo activado exitosamente");
+      showNotification("Nodo activado exitosamente", "success");
     } catch (error) {
-      console.error("Error activando el nodo:", error);
-      alert("Hubo un error al activar el nodo");
+      showNotification("Error activando el nodo:", "error");
     } finally {
       setLoading(false);
     }
@@ -88,17 +89,19 @@ const NodoInactivoCard = ({ nodo }) => {
               V
             </span>
           </div>
-          <div className="">
-            <button
-              onClick={handleActivarNodo}
-              disabled={loading}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              className="roboto-medium mt-2 bg-sky-500 hover:bg-sky-400 dark:hover:bg-slate-900 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-all duration-100"
-            >
-              {loading ? <LoadingSpinner /> : "Activar Nodo"}
-            </button>
-          </div>
+          {permisos.activar_nodos && (
+            <div className="">
+              <button
+                onClick={handleActivarNodo}
+                disabled={loading}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="roboto-medium mt-2 bg-sky-500 hover:bg-sky-400 dark:hover:bg-slate-900 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-all duration-100"
+              >
+                {loading ? <LoadingSpinner /> : "Activar Nodo"}
+              </button>
+            </div>
+          )}
         </div>
         <div className="sm:flex sm:flex-col md:flex-row justify-end w-full hidden">
           <div className="md:h-full md:w-1/2 w-full"></div>
