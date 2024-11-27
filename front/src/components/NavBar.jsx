@@ -14,11 +14,11 @@ import { useAuth } from "../context/AuthProvider";
 import { DarkModeToggle, NotificationButton } from "./atoms";
 import Breadcrumbs from "./BreadCrumb";
 import { FaUser } from "react-icons/fa";
-import NotificacionList from "./molecules/NotificationList"
+import NotificacionList from "./molecules/NotificationList";
 import { useNotifications } from "../hooks/useNotifications";
 import { useAxios } from "../context/AxiosProvider";
 
-const baseURL = import.meta.env.VITE_API_URL
+const baseURL = import.meta.env.VITE_API_URL;
 
 const navigationItems = [
   { name: "Inicio", link: "/" },
@@ -29,6 +29,7 @@ const navigationItems = [
 
 const menuItems = [
   { name: "Perfil", link: "#" },
+  { name: "Administrador", link: "/administrador" },
   { name: "Configuración", link: "/configuracion" },
   { name: "Cerrar sesión", link: "/confirm-logout" },
 ];
@@ -37,39 +38,36 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-
-
 const logo = "/logo.png";
 
 export default function NavBar() {
   const location = useLocation();
   const [reloadNotifications, setReloadNotifications] = useState(false); // Estado para controlar recarga
-  
-  const { notificaciones, loadingNotifications, unreadPresent } = useNotifications({
-    count_limit: 5,
-    shouldReload: reloadNotifications,  // Pasar la dependencia para recargar
-  });
-  const { isAuthenticated, username, loading } = useAuth();
-  const [ showNotis, setShowNotis ] = useState(false)
 
-  const axios = useAxios()
+  const { notificaciones, loadingNotifications, unreadPresent } =
+    useNotifications({
+      count_limit: 5,
+      shouldReload: reloadNotifications, // Pasar la dependencia para recargar
+    });
+  const { isAuthenticated, username, loading, permisos } = useAuth();
+  const [showNotis, setShowNotis] = useState(false);
+
+  const axios = useAxios();
 
   const markNotificationsAsRead = (notis) => {
-    const notReadNotis = notis.filter(n => !n.is_read)
-    if(notReadNotis.length > 0)
-      axios.put(baseURL + "/markasread", notReadNotis)
-  }
-  
+    const notReadNotis = notis.filter((n) => !n.is_read);
+    if (notReadNotis.length > 0)
+      axios.put(baseURL + "/markasread", notReadNotis);
+  };
+
   const toggleNotifications = () => {
-    setShowNotis(!showNotis)
-    markNotificationsAsRead(notificaciones)
-    if(showNotis){
+    setShowNotis(!showNotis);
+    markNotificationsAsRead(notificaciones);
+    if (showNotis) {
       setReloadNotifications((prev) => !prev); // Toggle recarga
     }
-  }
+  };
 
-
-  
   return (
     <>
       <Disclosure as="nav" className="bg-neutral-100 dark:bg-neutral-800">
@@ -105,32 +103,41 @@ export default function NavBar() {
               <DarkModeToggle />
 
               {/* Campana de notificaciones */}
-              <NotificationButton onClick={toggleNotifications} newNotifications={unreadPresent}/>
-              <NotificacionList showNotis={showNotis} notificaciones={notificaciones} loading={loadingNotifications}/>
+              <NotificationButton
+                onClick={toggleNotifications}
+                newNotifications={unreadPresent}
+              />
+              <NotificacionList
+                showNotis={showNotis}
+                notificaciones={notificaciones}
+                loading={loadingNotifications}
+              />
 
               <div>
                 {isAuthenticated ? (
                   <Menu as="div" className="relative">
                     {/* Menu de usuario */}
                     <MenuButton className="dark-bg relative flex rounded-md px-3 py-2 text-sm font-medium text-neutral-800 dark:text-white">
-                      <span className="absolute -inset-1.5" />
-                      {username}
+                      <span className="absolute -inset-1.5" /> {username}
                       <FaUser className="size-6 p-1" />
                     </MenuButton>
                     <MenuItems
                       transition
                       className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg normal-bg"
                     >
-                      {menuItems.map((item) => (
-                        <MenuItem key={item.name}>
-                          <Link
-                            to={item.link}
-                            className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
-                          >
-                            {item.name}
-                          </Link>
-                        </MenuItem>
-                      ))}
+                      {menuItems.map(
+                        (item) =>
+                          (item.name !== "Administrador" || permisos.admin) && (
+                            <MenuItem key={item.name}>
+                              <Link
+                                to={item.link}
+                                className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                              >
+                                {item.name}
+                              </Link>
+                            </MenuItem>
+                          )
+                      )}
                     </MenuItems>
                   </Menu>
                 ) : (
@@ -184,11 +191,11 @@ export default function NavBar() {
         </DisclosurePanel>
       </Disclosure>
       <div className="bg-neutral-200 dark:bg-neutral-800">
-        <div className="mx-auto max-w-7xl flex items-center shadow-md">
+        {/* <div className="mx-auto max-w-7xl flex items-center shadow-md">
           <Breadcrumbs />
-        </div>
+        </div> */}
       </div>
-      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-84px)] scrollbar-custom overflow-y-scroll">
+      <div className="bg-neutral-200 dark:bg-neutral-900 transition-colors duration-300 overflow-auto h-[calc(100vh-64px)] scrollbar-custom overflow-y-scroll">
         <Outlet />
       </div>
     </>

@@ -1,14 +1,27 @@
 import { Container, Header, LoadingSpinner } from "../components/atoms";
 import NodoCard from "../components/organisms/NodoCard";
 import ErrorSimple from "../components/molecules/ErrorSimple";
-import { useNodos } from "../hooks/useNodos";
+import { useNodos, useNodosInactivos } from "../hooks";
 import { useBreadcrumbsUpdater } from "../hooks";
 import ExpandableCard from "../components/molecules/ExpandableCard";
+import { NodoInactivoCard } from "../components/organisms";
+import { useAuth } from "../context/AuthProvider";
 
 const NodoList = () => {
+  const { permisos } = useAuth();
+
   const { nodos, loading, error } = useNodos();
   useBreadcrumbsUpdater();
 
+  const {
+    nodosInactivos,
+    loading: loadingInactivos,
+    error: errorInactivos,
+  } = permisos.read_nodos_inactivos
+    ? useNodosInactivos()
+    : { nodosInactivos: [], loading: false, error: null };
+
+  console.log(permisos);
   if (error)
     return (
       <ErrorSimple
@@ -16,6 +29,7 @@ const NodoList = () => {
         description={"Error interno del servidor."}
       />
     );
+
   return (
     <Container>
       <Header title={"Lista de Nodos"} />
@@ -28,10 +42,29 @@ const NodoList = () => {
               <NodoCard nodo={nodo} />
             </div>
           ))}
-          <div className="mb-3">
-            <ExpandableCard />
-          </div>
         </>
+      )}
+
+      {loadingInactivos ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          {permisos.read_nodos_inactivos && (
+            <>
+              {nodosInactivos.map((nodo) => (
+                <div className="mb-3" key={nodo.id}>
+                  <NodoInactivoCard nodo={nodo} />
+                </div>
+              ))}
+            </>
+          )}
+        </>
+      )}
+
+      {permisos.create_nodos && (
+        <div className="mb-3">
+          <ExpandableCard />
+        </div>
       )}
     </Container>
   );

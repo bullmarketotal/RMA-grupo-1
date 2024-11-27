@@ -62,6 +62,10 @@ def init_permisos():
         PermisoCreate(identificador="create_nodos", descripcion="Crear nodos"),
         PermisoCreate(identificador="update_nodos", descripcion="Actualizar nodos"),
         PermisoCreate(identificador="delete_nodos", descripcion="Eliminar nodos"),
+        PermisoCreate(identificador="activar_nodos", descripcion="Activar nodos"),
+        PermisoCreate(
+            identificador="read_nodos_inactivos", descripcion="Ver nodos inactivos"
+        ),
         # paquetes
         PermisoCreate(identificador="read_paquetes", descripcion="Leer paquetes"),
         # usuarios
@@ -96,15 +100,15 @@ def init_nodos():
         NodoCreate(
             identificador="Legolas",
             porcentajeBateria=100,
-            latitud=-34.6037,
-            longitud=-58.3816,
+            latitud=-43.5,
+            longitud=-65.95,
             descripcion="Descripción del Nodo 1",
         ),
         NodoCreate(
             identificador="Gandalf",
             porcentajeBateria=100,
-            latitud=-34.6038,
-            longitud=-58.3817,
+            latitud=-43.6333,
+            longitud=-66.0667,
             descripcion="Descripción del Nodo 2",
         ),
         NodoCreate(

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ConfirmationPopover, LoadingSpinner, SubmitButton } from "../atoms";
+import { ConfirmationPopover, LoadingSpinner } from "../atoms";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useNodos } from "../../hooks";
+import { useNotification } from "../../context/NotificationContext";
 
 const NodoHeader = ({ sensor, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -14,14 +15,17 @@ const NodoHeader = ({ sensor, loading }) => {
     descripcion: sensor.descripcion,
   });
   const { deleteNodo, updateNodo, loading: loadingNodo } = useNodos();
+  const { showNotification } = useNotification();
 
   const navigate = useNavigate();
 
   const handleDelete = async (nodoId) => {
     try {
       await deleteNodo(nodoId);
+      showNotification("Nodo eliminado exitosamente", "success");
     } catch (error) {
       console.error("Error eliminando el nodo", nodoId, error);
+      showNotification("Error eliminando el nodo", "error");
     }
   };
 
@@ -30,8 +34,10 @@ const NodoHeader = ({ sensor, loading }) => {
       try {
         await updateNodo(sensor.id, editableSensor);
         console.log("Sensor actualizado:", editableSensor);
+        showNotification("Nodo actualizado exitosamente", "success");
       } catch (error) {
         console.error("Error actualizando el sensor:", error);
+        showNotification("Error actualizando el nodo", "error");
       }
     }
     setIsEditing(!isEditing);
@@ -55,12 +61,15 @@ const NodoHeader = ({ sensor, loading }) => {
   }
 
   return (
-    <div id="header" className="flex items-center justify-between">
+    <div id="header" className="relative flex items-start justify-between">
       {loading ? (
         <LoadingSpinner />
       ) : (
         <>
-          <div id="info-sensor">
+          <div
+            id="info-sensor"
+            className="flex-grow max-w-2xl flex flex-col space-y-2"
+          >
             <h1 className="flex text-3xl items-center normal-text font-semibold">
               <MdOutlineSettingsInputAntenna className="mr-2" />
               {isEditing ? (
@@ -69,17 +78,19 @@ const NodoHeader = ({ sensor, loading }) => {
                   name="identificador"
                   value={editableSensor.identificador}
                   onChange={handleChange}
-                  className="normal text input-text border border-gray-300 rounded px-2 py-1 mr-2"
+                  className="normal-text input-text border max-w-80 border-gray-300 rounded px-2 py-1 w-32"
                 />
               ) : (
                 editableSensor.identificador
               )}
             </h1>
-            <div className="normal-text text-sm py-2">
+            <div
+              className={`normal-text text-sm ${isEditing ? "w-full" : "w-auto"}`}
+            >
               {isEditing ? (
                 <>
                   <textarea
-                    className="input-text h-full w-full"
+                    className="input-text min-w-80 mt-8 max-w-120 flex-shrink"
                     id="descripcion"
                     name="descripcion"
                     value={editableSensor.descripcion}
@@ -93,67 +104,70 @@ const NodoHeader = ({ sensor, loading }) => {
                   </div>
                 </>
               ) : (
-                editableSensor.descripcion
+                <div className="max-w-lg">{editableSensor.descripcion}</div>
               )}
             </div>
-            <span className="normal-text">
+            <span className="normal-text flex flex-wrap items-center space-x-2">
               <i className="fa fa-map-marker mr-2" aria-hidden="true" />
-              <span className="space-x-2">
-                <b>Latitud:</b>
-                {isEditing ? (
-                  <input
-                    type="number"
-                    step="0.00001"
-                    name="latitud"
-                    value={editableSensor.latitud}
-                    onChange={handleChange}
-                    className="input-text border border-gray-300 rounded px-2 py-1 w-24 ml-1"
-                  />
-                ) : (
-                  editableSensor.latitud?.toFixed(5)
-                )}
-                <b>Longitud:</b>
-                {isEditing ? (
-                  <input
-                    type="number"
-                    step="0.00001"
-                    name="longitud"
-                    value={editableSensor.longitud}
-                    onChange={handleChange}
-                    className="input-text border border-gray-300 rounded px-2 py-1 w-24 ml-1"
-                  />
-                ) : (
-                  editableSensor.longitud?.toFixed(5)
-                )}
-              </span>
+              <b>Latitud:</b>
+              {isEditing ? (
+                <input
+                  type="number"
+                  step="0.00001"
+                  name="latitud"
+                  value={editableSensor.latitud}
+                  onChange={handleChange}
+                  className="input-text border border-gray-300 rounded px-2 py-1 w-24"
+                />
+              ) : (
+                editableSensor.latitud?.toFixed(5)
+              )}
+              <b>Longitud:</b>
+              {isEditing ? (
+                <input
+                  type="number"
+                  step="0.00001"
+                  name="longitud"
+                  value={editableSensor.longitud}
+                  onChange={handleChange}
+                  className="input-text border border-gray-300 rounded px-2 py-1 w-24"
+                />
+              ) : (
+                editableSensor.longitud?.toFixed(5)
+              )}
             </span>
           </div>
 
-          <button
-            id="btn-modificar"
-            className="h-16 w-32 btn-action btn-active"
-            onClick={handleUpdate}
+          <div
+            id="action-buttons"
+            className="flex flex-row space-x-2 absolute right-0 top-0"
           >
-            {isEditing ? "Guardar" : "Modificar Nodo"}
-          </button>
-          <ConfirmationPopover
-            onConfirm={() => handleDelete(sensor.id)}
-            onCancel={() => console.log("Cancel")}
-          >
-            <span
-              id="btn-eliminar"
-              className="flex items-center justify-center h-16 w-32 btn-alert"
+            <button
+              id="btn-modificar"
+              className="h-16 w-32 btn-action btn-active"
+              onClick={handleUpdate}
             >
-              Eliminar Nodo
-            </span>
-          </ConfirmationPopover>
-          <button
-            id="btn-ver-bateria"
-            className="h-16 w-32 btn-action btn-active"
-            onClick={monitorearBateria}
-          >
-            Monitorear Bateria
-          </button>
+              {isEditing ? "Guardar" : "Modificar Nodo"}
+            </button>
+            <ConfirmationPopover
+              onConfirm={() => handleDelete(sensor.id)}
+              onCancel={() => console.log("Cancel")}
+            >
+              <span
+                id="btn-eliminar"
+                className="flex items-center justify-center h-16 w-32 btn-alert"
+              >
+                Eliminar Nodo
+              </span>
+            </ConfirmationPopover>
+            <button
+              id="btn-ver-bateria"
+              className="h-16 w-32 btn-action btn-active"
+              onClick={monitorearBateria}
+            >
+              Monitorear Bateria
+            </button>
+          </div>
         </>
       )}
     </div>
