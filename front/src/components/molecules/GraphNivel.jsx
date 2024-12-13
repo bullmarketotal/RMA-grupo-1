@@ -71,7 +71,7 @@ export default function GraphNivel({ data, noBrush }) {
           tick={true}
           tickFormatter={tickFormatter}
         />
-        <YAxis unit={"m"} />
+        <YAxis unit={"cm"} />
         {midnightTicks.map((tick) => {
           const fecha = new Date(tick);
           const fechaStr = fecha.getDate() + "/" + fecha.getMonth();
