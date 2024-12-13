@@ -3,8 +3,8 @@ import { LoadingSpinner } from "../atoms";
 import { Paginacion, TablaDatos } from "../molecules";
 
 const TableView = ({ data, loading, tipoDato, currentPage, onPageChange }) => {
-  const itemsPerPage = data.pagination.limit || 25;
-  const totalItems = data.pagination.total_items || 0;
+  const itemsPerPage = data?.pagination?.limit || 25;
+  const totalItems = data?.pagination?.total_items || 0;
 
   const handlePageChange = (pageNumber) => {
     onPageChange(pageNumber);
