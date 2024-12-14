@@ -99,7 +99,7 @@ const ConfigFormList = () => {
 
   return (
     <div>
-        <h2 className="display-6 font-weight-bold">Configuración de Umbrelas</h2>
+        <h2 className="display-6 font-weight-bold">Configuración de rangos de validez</h2>
         <p className="mb-4">Configura el rango válido de valores para cada tipo. </p>      {Object.keys(config.umbral).map((type) => (
         <div className="mb-3" key={type}>
           <RangeInput
