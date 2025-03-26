@@ -6,11 +6,14 @@ import { useBreadcrumbsUpdater } from "../hooks";
 import ExpandableCard from "../components/molecules/ExpandableCard";
 import { NodoInactivoCard } from "../components/organisms";
 import { useAuth } from "../context/AuthProvider";
+import { useSearchParams } from "react-router-dom";
 
 const NodoList = () => {
   const { permisos } = useAuth();
+  const [searchParams] = useSearchParams();
+  const cuencaId = Number(searchParams.get("cuencaId")) || null; 
 
-  const { nodos, loading, error, refresh } = useNodos();
+  const { nodos, loading, error, refresh } = useNodos({ cuenca_id: cuencaId });
   useBreadcrumbsUpdater();
 
   const {
@@ -22,7 +25,7 @@ const NodoList = () => {
     ? useNodosInactivos()
     : { nodosInactivos: [], loading: false, error: null };
 
-  console.log(permisos);
+
   if (error)
     return (
       <ErrorSimple
@@ -30,6 +33,9 @@ const NodoList = () => {
         description={"Error interno del servidor."}
       />
     );
+    
+    console.log("NODOSXCUENCA",nodos);
+    console.log("IDXCUENCA",cuencaId, "tipo:", typeof cuencaId);
 
   return (
     <Container>

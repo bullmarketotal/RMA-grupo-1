@@ -18,8 +18,15 @@ router = APIRouter()
     tags=["Nodos"],
     dependencies=[Depends(permiso_requerido("read_nodos"))],
 )
-def read_nodos(db: Session = Depends(get_db)):
-    return services.listar_nodos(db)
+def read_nodos(
+    cuenca_id: Optional[int] = Query(None, alias="cuenca_id"),  # Parámetro de consulta para cuenca_id
+    db: Session = Depends(get_db)
+):
+    if cuenca_id:
+        return services.get_nodos_por_cuenca(db, cuenca_id)  # Filtrar por cuenca_id
+    else:
+        return services.listar_nodos(db)  # Si no se pasa cuenca_id, devuelve todos los nodos
+
 
 
 @router.post(
@@ -40,6 +47,9 @@ def create_nodo(nodo: schemas.NodoCreate, db: Session = Depends(get_db)):
 )
 def read_nodo(id: int, db: Session = Depends(get_db)):
     return services.get_nodo(nodo_id=id, db=db)
+
+
+
 
 
 @router.put(

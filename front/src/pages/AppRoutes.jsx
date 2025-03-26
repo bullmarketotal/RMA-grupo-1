@@ -8,6 +8,7 @@ import NodoPage from "./NodoPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
 import NodoList from "./NodoList";
+import CuencaList from "./CuencaList";
 import Example from "./TestPage";
 import BateriaPage from "./BateriaPage";
 import LogoutConfirmationPage from "./LogoutConfirmationPage";
@@ -37,6 +38,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <NodoList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="lista-cuencas"
+          element={
+            <ProtectedRoute>
+              <CuencaList />
             </ProtectedRoute>
           }
         />

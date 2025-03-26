@@ -35,6 +35,10 @@ def get_nodo(db: Session, nodo_id: int) -> NodoSchema:
 
     return NodoSchema.model_validate(nodo)
 
+def get_nodos_por_cuenca(db: Session, cuenca_id: int):
+    return db.query(Nodo).filter(Nodo.cuenca_id == cuenca_id).all()
+
+
 
 def modificar_nodo(db: Session, nodo_id: int, nodo_actualizado: NodoUpdate) -> Nodo:
     nodo = Nodo.get(db, nodo_id)
@@ -67,3 +71,4 @@ def activar_nodo(db: Session, nodo_id: int) -> NodoSchema:
         nodo.save(db)
         db.commit()
     return NodoSchema.model_validate(nodo)
+

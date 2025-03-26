@@ -24,6 +24,7 @@ from .rango_valores.router import router as config_router
 from .auth.router import router as auth_router
 from .alertas.router import router as alertas_router
 from .rango_alertas.router import router as rango_alertas_router
+from .cuencas.router import router as cuencas_router  # Importar el router de cuencas
 from .carga_db import init_db
 
 # Cargar variables de entorno
@@ -93,3 +94,4 @@ app.include_router(auth_router)
 app.include_router(config_router)
 app.include_router(alertas_router)
 app.include_router(rango_alertas_router)
+app.include_router(cuencas_router)  # Agregar el router de cuencas

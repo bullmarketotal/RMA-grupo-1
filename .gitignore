@@ -3,7 +3,8 @@
 
 ### Linux ###
 *~
-
+#entorno virutal
+/back/entornoVirtualFork
 # SQLite
 /back/*.db
 *.db

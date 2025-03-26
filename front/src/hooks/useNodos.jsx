@@ -2,10 +2,21 @@ import useSWR from "swr";
 import { useAxios } from "../context/AxiosProvider";
 import { fetcher } from "../utils";
 
-export const useNodos = ({ nodo_id } = {}) => {
+export const useNodos = ({ nodo_id, cuenca_id } = {}) => {
   const axios = useAxios();
+  
 
-  const endpoint = nodo_id ? `/nodos/${nodo_id}` : "/nodos";
+  // Determinar el endpoint según si se pasa cuenca_id o nodo_id
+  let endpoint = "/nodos";
+  if (nodo_id) {
+    endpoint = `/nodos/${nodo_id}`;
+  } else if (cuenca_id) {
+    console.log("CUENCAIDusenodos",cuenca_id);
+    endpoint = `/nodos?cuenca_id=${cuenca_id}`;  // Modificado para filtrar por cuencaId
+    console.log("ENPOINT",endpoint);
+  }
+  
+
   const { data, error, isValidating, mutate } = useSWR(
     endpoint,
     (url) => fetcher(url, axios),
