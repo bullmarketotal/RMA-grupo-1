@@ -3,13 +3,15 @@ import { useNodos } from "../../hooks/useNodos";
 import { useNotification } from "../../context/NotificationContext";
 import { MapaComponent } from "../molecules";
 
-const FormularioNodo = ({ onClose }) => {
+const FormularioNodo = ({ onClose, cuencaId}) => {
+  console.log(cuencaId.cuencaId);
   const [formData, setFormData] = useState({
     identificador: "",
     porcentajeBateria: "",
     latitud: "",
     longitud: "",
     descripcion: "",
+    cuenca_id: cuencaId.cuencaId,
   });
   const { addNodo, loading } = useNodos();
   const { showNotification } = useNotification();

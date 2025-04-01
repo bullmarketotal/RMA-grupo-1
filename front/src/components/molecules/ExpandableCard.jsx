@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormularioNodo from "./FormularioNodo";
 
-const ExpandableCard = () => {
+const ExpandableCard = (cuencaId) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -26,7 +26,7 @@ const ExpandableCard = () => {
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">Crear Nuevo Nodo</h3>
           </div>
-          <FormularioNodo onClose={handleCollapseClick} />
+          <FormularioNodo cuencaId={cuencaId} onClose={handleCollapseClick} />
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import LoginPage from "./LoginPage";
 import NodoPage from "./NodoPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
+import CuencaForm from "./CuencaForm";
 import NodoList from "./NodoList";
 import CuencaList from "./CuencaList";
 import Example from "./TestPage";
@@ -70,6 +71,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <SensorForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="create-cuenca"
+          element={
+            <ProtectedRoute>
+              <CuencaForm />
             </ProtectedRoute>
           }
         />

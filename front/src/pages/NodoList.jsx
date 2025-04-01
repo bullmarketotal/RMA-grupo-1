@@ -33,13 +33,11 @@ const NodoList = () => {
         description={"Error interno del servidor."}
       />
     );
-    
-    console.log("NODOSXCUENCA",nodos);
-    console.log("IDXCUENCA",cuencaId, "tipo:", typeof cuencaId);
 
   return (
     <Container>
-      <Header title={"Lista de Nodos"} />
+      <Header title={`Lista de Nodos de la Cuenca ${cuencaId}`} />
+
       {loading ? (
         <LoadingSpinner />
       ) : (
@@ -74,7 +72,7 @@ const NodoList = () => {
 
       {permisos.create_nodos && (
         <div className="mb-3">
-          <ExpandableCard />
+          <ExpandableCard cuencaId= {cuencaId}/>
         </div>
       )}
     </Container>

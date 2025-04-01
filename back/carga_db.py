@@ -107,6 +107,7 @@ def init_nodos():
             latitud=-43.5,
             longitud=-65.95,
             descripcion="Descripción del Nodo 1",
+            cuenca_id=1,
         ),
         NodoCreate(
             identificador="Gandalf",
@@ -114,6 +115,7 @@ def init_nodos():
             latitud=-43.6333,
             longitud=-66.0667,
             descripcion="Descripción del Nodo 2",
+            cuenca_id=2,
         ),
         NodoCreate(
             identificador="Aragorn",
@@ -121,6 +123,7 @@ def init_nodos():
             latitud=-34.6039,
             longitud=-58.3818,
             descripcion="Descripción del Nodo 3",
+            cuenca_id=1,
         ),
     ]
     for nodo_data in nodos_data:

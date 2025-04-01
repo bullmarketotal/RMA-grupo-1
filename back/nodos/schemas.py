@@ -10,13 +10,13 @@ class NodoBase(BaseModel):
     porcentajeBateria: int
     latitud: Optional[float]
     longitud: Optional[float]
-    descripcion: Optional[str]
+    descripcion: Optional[str] 
 
 class NodoCreate(NodoBase):
-    pass
+    cuenca_id: int
 
 class NodoUpdate(NodoBase):
-    cuenca_id: Optional[int]  # Permitir actualizar la relación con la cuenca
+    cuenca_id: Optional[int]  #Permite actualizar la cuenca
 
 class Nodo(NodoBase):
     id: int

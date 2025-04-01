@@ -24,7 +24,7 @@ const CuencaList = () => {
       } finally {
         setLoading(false);
       }
-      console.log("CUENCANODOS",cuencas);
+      console.log("CUENCANODOS",cuencasData);
     };
 
     fetchCuencas();
