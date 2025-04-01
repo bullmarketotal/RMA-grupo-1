@@ -5,6 +5,7 @@ import DatosPage from "./DatosPage";
 import Inicio from "./inicio";
 import LoginPage from "./LoginPage";
 import NodoPage from "./NodoPage";
+import CuencaPage from "./CuencaPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SensorForm from "./SensorForm";
 import CuencaForm from "./CuencaForm";
@@ -83,6 +84,7 @@ const AppRoutes = () => {
           }
         />
         <Route path="sensor/:id" element={<NodoPage />} />
+        <Route path="cuenca/:id" element={<CuencaPage />} />
         <Route path="sensor/:id/bateria-page" element={<BateriaPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" />} />

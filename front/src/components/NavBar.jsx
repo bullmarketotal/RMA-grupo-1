@@ -24,9 +24,9 @@ const baseURL = import.meta.env.VITE_API_URL;
 const navigationItems = [
   { name: "Inicio", link: "/" },
   { name: "Cuencas", link: "/lista-cuencas"},
-  { name: "Crear Nodo", link: "/create-sensor" },
-  { name: "Datos", link: "/datos-view" },
   { name: "Crear Cuenca", link: "/create-cuenca" },
+  { name: "Datos", link: "/datos-view" },
+
 
   
 ];

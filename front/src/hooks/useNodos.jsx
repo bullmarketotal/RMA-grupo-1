@@ -11,7 +11,9 @@ export const useNodos = ({ nodo_id, cuenca_id } = {}) => {
   if (nodo_id) {
     endpoint = `/nodos/${nodo_id}`;
   } else if (cuenca_id) {
+
     endpoint = `/nodos?cuenca_id=${cuenca_id}`;  // Modificado para filtrar por cuencaId
+
   }
   
 

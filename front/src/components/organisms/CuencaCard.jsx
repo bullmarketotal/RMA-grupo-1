@@ -22,11 +22,11 @@ const CuencaCard = ({ cuenca }) => {
 
         <div className="mt-4">
           <LinkComponent
-              to={`/lista-nodos?cuencaId=${cuenca.id}`}
+              to={`/cuenca/${cuenca.id}`}
               breadcrumbPath={breadcrumbPath}
               className="roboto-medium bg-gray-300 hover:bg-gray-400 dark:hover:bg-slate-900 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-all duration-100 dark:bg-slate-800 dark:text-slate-200"
           >
-            VER NODOS DE LA CUENCA
+            VER CUENCA
           </LinkComponent>
         </div>
       </div>

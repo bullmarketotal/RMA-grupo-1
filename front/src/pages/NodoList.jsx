@@ -8,10 +8,9 @@ import { NodoInactivoCard } from "../components/organisms";
 import { useAuth } from "../context/AuthProvider";
 import { useSearchParams } from "react-router-dom";
 
-const NodoList = () => {
+const NodoList = (cuenca_id) => {
   const { permisos } = useAuth();
-  const [searchParams] = useSearchParams();
-  const cuencaId = Number(searchParams.get("cuencaId")) || null; 
+  const cuencaId = cuenca_id.cuenca_id|| null; 
 
   const { nodos, loading, error, refresh } = useNodos({ cuenca_id: cuencaId });
   useBreadcrumbsUpdater();
@@ -35,7 +34,7 @@ const NodoList = () => {
     );
 
   return (
-    <Container>
+    <Container >
       <Header title={`Lista de Nodos de la Cuenca ${cuencaId}`} />
 
       {loading ? (
