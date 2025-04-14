@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const BateriaPage = () => {
   
-  const {id} = useParams();
+  const { cuencaId, id } = useParams();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const BateriaPage = () => {
   if (error) return <p>{error}</p>;
 
     function volverAlSensor() {
-      navigate(`/sensor/${id}`);
+      navigate(`/cuenca/${cuencaId}/sensor/${id}`);
     }
 
   return (

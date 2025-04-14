@@ -91,6 +91,15 @@ def revivir_nodo(nodo_id: int, db: Session = Depends(get_db)):
 def read_nodos_inactivos(db: Session = Depends(get_db)):
     return services.listar_nodos_inactivos(db)
 
+@router.get(
+    "/nodosinactivos/{cuenca_id}",
+    response_model=list[schemas.Nodo],
+    tags=["Nodos"],
+    dependencies=[Depends(permiso_requerido("read_nodos_inactivos"))],
+)
+def read_nodos_inactivos(cuenca_id: int, db: Session = Depends(get_db)):
+    return services.listar_nodos_inactivos_por_cuenca(db, cuenca_id)
+
 
 # @router.get(
 #     "/nodos/{nodo_id}/paquetes",

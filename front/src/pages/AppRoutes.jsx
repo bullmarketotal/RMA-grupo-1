@@ -21,6 +21,7 @@ import { ConfigNotifications } from "./ConfigNotifications";
 import AdminPage from "./AdminPage";
 import Error403 from "./Error403";
 import PageDatosArchivos from "./PageDatosArchivo";
+import GestionNodosPage from "./GestionNodosPage";
 
 const AppRoutes = () => {
   return (
@@ -83,14 +84,15 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="sensor/:id" element={<NodoPage />} />
+        <Route path="cuenca/:cuencaId/sensor/:id" element={<NodoPage />} />
         <Route path="cuenca/:id" element={<CuencaPage />} />
-        <Route path="sensor/:id/bateria-page" element={<BateriaPage />} />
+        <Route path="cuenca/:cuencaId/sensor/:id/bateria-page" element={<BateriaPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="testpage" element={<Example />} />
         <Route path="/confirm-logout" element={<LogoutConfirmationPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/gestion-nodos" element={<GestionNodosPage />} />
         <Route
           path="/notificaciones"
           element={

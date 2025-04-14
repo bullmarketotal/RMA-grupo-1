@@ -7,8 +7,6 @@ import { MapaComponent } from "../components/molecules";
 const CuencaForm = () => {
   const [formData, setFormData] = useState({
     nombre: "",
-    latitud: "",
-    longitud: "",
     descripcion: "",
   });
 
@@ -29,8 +27,6 @@ const CuencaForm = () => {
 
     const dataToSend = {
       ...formData,
-      latitud: isNaN(parseFloat(formData.latitud)) ? null : parseFloat(formData.latitud),
-      longitud: isNaN(parseFloat(formData.longitud)) ? null : parseFloat(formData.longitud),
     };
 
     try {
@@ -76,32 +72,6 @@ const CuencaForm = () => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
-              <div>
-                <label htmlFor="latitud" className="block text-sm font-medium">Latitud:</label>
-                <input
-                  type="number"
-                  className="input-text h-10 w-full"
-                  id="latitud"
-                  name="latitud"
-                  value={formData.latitud}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="longitud" className="block text-sm font-medium">Longitud:</label>
-                <input
-                  type="number"
-                  className="input-text h-10 w-full"
-                  id="longitud"
-                  name="longitud"
-                  value={formData.longitud}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-10 mb-8">
               <div>
                 <label htmlFor="descripcion" className="block text-sm font-medium">Descripción:</label>
@@ -118,9 +88,6 @@ const CuencaForm = () => {
                   {256 - formData.descripcion.length} caracteres restantes
                 </div>
               </div>
-            </div>
-            <div className="mt-10 rounded-md overflow-hidden shadow">
-              <MapaComponent setFormData={setFormData} />
             </div>
             <div className="flex justify-center mt-6">
               <SubmitButton isSubmitting={isSubmitting} name={"Crear Cuenca"} />

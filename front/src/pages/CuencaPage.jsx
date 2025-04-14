@@ -40,9 +40,7 @@ const CuencaPage = () => {
       };
   
       fetchCuencas();
-      console.log("CUENCANODOS",sensorData);
     }, []);
-  
     if (error) {
       return (
         <ErrorSimple
@@ -52,29 +50,27 @@ const CuencaPage = () => {
       );
     }
 
+
   return (
     <div>
     <Container>
       <Card>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4">
           <div className="col-span-2 flex flex-col">
-            <CuencaHeader sensor={sensorData}  />
+            <CuencaHeader cuenca={sensorData}  />
           </div>
-          <div className="row-span-2 shadow-sm rounded-lg overflow-hidden w-full max-h-80 min-h-64 flex justify-end">
-            {sensorData.latitud !== undefined &&
-            sensorData.longitud !== undefined ? (
-              <MiniMap lat={sensorData.latitud} lng={sensorData.longitud} />
-            ) : (
-              <LoadingSpinner />
-            )}
-          </div>
+        
+        </div>
+        <div className="mt-12">
+         <NodoList cuenca={sensorData} />
         </div>
         
       </Card>
-
-
+    
+      
     </Container>
-    <NodoList cuenca_id={id}/>
+    
+    
     </div>
   );
 };

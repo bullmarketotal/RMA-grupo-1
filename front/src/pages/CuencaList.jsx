@@ -3,34 +3,22 @@ import ErrorSimple from "../components/molecules/ErrorSimple";
 import CuencaCard from "../components/organisms/CuencaCard";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
+import {useCuencas} from "../hooks/useCuencas";
+import CuencaInactivaCard from "../components/organisms/CuencaInactivaCard";
+import { useCuencasInactivas } from "../hooks/useCuencasInactivas";
 
 const CuencaList = () => {
   const { permisos } = useAuth();
-  const [cuencas, setCuencas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchCuencas = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/cuencas");
-        if (!response.ok) {
-          throw new Error("Error al obtener las cuencas");
-        }
-        const cuencasData = await response.json();
-        setCuencas(cuencasData);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-      console.log("CUENCANODOS",cuencasData);
-    };
 
-    fetchCuencas();
+  const { cuencas, loading, error, refresh } = useCuencas({ });
 
-  }, []);
-
+  const {
+      cuencasInactivas,
+      loading: loadingInactivas,
+      error: errorInactivas,
+      mutate,
+    } =  useCuencasInactivas();
   if (error) {
     return (
       <ErrorSimple
@@ -39,7 +27,6 @@ const CuencaList = () => {
       />
     );
   }
-
   return (
     <Container>
       <Header title={"Lista de Cuencas"} />
@@ -54,9 +41,25 @@ const CuencaList = () => {
           )}
         </>
       )}
-
+        {loadingInactivas ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="mt-2">
+            <>
+            {cuencasInactivas.map((cuenca) => (
+              <div className="mb-3" key={cuenca.id}>
+                <CuencaInactivaCard
+                  nodo={cuenca}
+                  mutate={mutate}
+                  refresh={refresh}
+                />
+              </div>
+            ))}
+            </>
+        </div>
+      )}
       {permisos.create_cuencas && (
-        <div className="mb-3">
+        <div className="mb-3" >
           {/* Aquí podrías incluir un componente para crear cuencas si es necesario */}
         </div>
       )}

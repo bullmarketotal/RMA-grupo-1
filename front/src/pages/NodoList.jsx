@@ -7,10 +7,13 @@ import ExpandableCard from "../components/molecules/ExpandableCard";
 import { NodoInactivoCard } from "../components/organisms";
 import { useAuth } from "../context/AuthProvider";
 import { useSearchParams } from "react-router-dom";
+import CuencaCard from "../components/organisms/CuencaCard";
 
-const NodoList = (cuenca_id) => {
+const NodoList = (cuenca) => {
   const { permisos } = useAuth();
-  const cuencaId = cuenca_id.cuenca_id|| null; 
+  const cuencaId = cuenca.cuenca.id|| null; 
+  const nombreCuenca = cuenca.cuenca.nombre
+  
 
   const { nodos, loading, error, refresh } = useNodos({ cuenca_id: cuencaId });
   useBreadcrumbsUpdater();
@@ -21,9 +24,8 @@ const NodoList = (cuenca_id) => {
     error: errorInactivos,
     mutate,
   } = permisos.read_nodos_inactivos
-    ? useNodosInactivos()
+    ? useNodosInactivos({ cuenca_id: cuencaId })
     : { nodosInactivos: [], loading: false, error: null };
-
 
   if (error)
     return (
@@ -34,8 +36,8 @@ const NodoList = (cuenca_id) => {
     );
 
   return (
-    <Container >
-      <Header title={`Lista de Nodos de la Cuenca ${cuencaId}`} />
+    <div >
+      <Header title={`Lista de Nodos de ${nombreCuenca}`} />
 
       {loading ? (
         <LoadingSpinner />
@@ -43,7 +45,7 @@ const NodoList = (cuenca_id) => {
         <>
           {nodos.map((nodo) => (
             <div className="mb-3" key={nodo.id}>
-              <NodoCard nodo={nodo} />
+              <NodoCard nodo={nodo} cuencaId={cuencaId} />
             </div>
           ))}
         </>
@@ -58,7 +60,7 @@ const NodoList = (cuenca_id) => {
               {nodosInactivos.map((nodo) => (
                 <div className="mb-3" key={nodo.id}>
                   <NodoInactivoCard
-                    nodo={nodo}
+                    nodo={nodo} 
                     mutate={mutate}
                     refresh={refresh}
                   />
@@ -74,7 +76,7 @@ const NodoList = (cuenca_id) => {
           <ExpandableCard cuencaId= {cuencaId}/>
         </div>
       )}
-    </Container>
+    </div>
   );
 };
 

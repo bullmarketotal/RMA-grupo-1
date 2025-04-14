@@ -28,7 +28,7 @@ const ConfiguracionMenuPage = () => {
           </div>
         </Link>
 
-        <Link to="/##########" className="col-md-4">
+        <Link to="/gestion-nodos" className="col-md-4">
           <div className="mb-12 ">
             <div className="card shadow-sm hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white  rounded-2xl">
               <div className="card-body text-center">

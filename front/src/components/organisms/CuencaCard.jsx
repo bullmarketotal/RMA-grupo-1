@@ -9,7 +9,7 @@ const CuencaCard = ({ cuenca }) => {
     { label: `Cuenca ${cuenca.id}`, path: `/cuenca/${cuenca.id}` },
   ];
   return (
-    <div className="roboto border-2 rounded-2xl p-3 dark:border-neutral-800 dark:text-neutral-50">
+    <div className="roboto border-2 rounded-2xl p-3 dark:border-neutral-800 dark:text-neutral-50 mt-2">
       <div className="flex flex-col">
         <h4 className="card-title flex items-center text-xl sm:text-2xl text-neutral-600 dark:text-neutral-400 font-semibold">
           <MdOutlineSettingsInputAntenna className="mr-2" />

@@ -28,10 +28,10 @@ const Inicio = () => {
             Cooperativa Eléctrica de Trelew. Explore el mapa de abajo o consulta
             la{" "}
             <a
-              href="list-sensor"
+              href="lista-cuencas"
               className="font-semibold text-blue-950 dark:text-blue-300"
             >
-              lista de nodos
+              lista de cuencas
             </a>
             .
           </p>

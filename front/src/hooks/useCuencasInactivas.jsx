@@ -2,16 +2,11 @@ import useSWR from "swr";
 import { useAxios } from "../context/AxiosProvider";
 import { fetcher } from "../utils";
 
-export const useNodosInactivos = ({cuenca_id}) => {
+export const useCuencasInactivas = () => {
+    
   const axios = useAxios();
 
-  let endpoint;
-
-  if (cuenca_id){
-    endpoint = `/nodosinactivos/${cuenca_id}`;
-  }else{
-     endpoint = "/nodosinactivos";
-  };
+  const endpoint = "cuencas/cuencasinactivas";
   const { data, error, isValidating, mutate } = useSWR(
     endpoint,
     (url) => fetcher(url, axios),
@@ -22,9 +17,8 @@ export const useNodosInactivos = ({cuenca_id}) => {
       dedupingInterval: 60000,
     }
   );
-
   return {
-    nodosInactivos: data ?? [],
+    cuencasInactivas: data ?? [],
     loading: isValidating,
     error,
     mutate,

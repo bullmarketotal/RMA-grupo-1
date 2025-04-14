@@ -23,6 +23,9 @@ def listar_nodos(db: Session) -> List[Nodo]:
 def listar_nodos_inactivos(db: Session) -> List[Nodo]:
     return Nodo.filter(db, is_active=False)
 
+def listar_nodos_inactivos_por_cuenca(db: Session, cuenca_id: int) -> List[Nodo]:
+    return Nodo.filter(db, is_active=False, cuenca_id = cuenca_id)
+
 
 def get_nodo(db: Session, nodo_id: int) -> NodoSchema:
     nodo = Nodo.get(db, nodo_id)
@@ -36,7 +39,10 @@ def get_nodo(db: Session, nodo_id: int) -> NodoSchema:
     return NodoSchema.model_validate(nodo)
 
 def get_nodos_por_cuenca(db: Session, cuenca_id: int):
-    return db.query(Nodo).filter(Nodo.cuenca_id == cuenca_id).all()
+    return db.query(Nodo).filter(
+        Nodo.cuenca_id == cuenca_id,
+        Nodo.is_active == True
+    ).all()
 
 
 

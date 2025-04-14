@@ -7,12 +7,14 @@ import { LoadingSpinner, LinkComponent } from "../atoms";
 import { GraphNivel, GraphTemp } from "../molecules";
 import { useFetchNodoData } from "../../hooks";
 
-const NodoCard = ({ nodo }) => {
+const NodoCard = ({ nodo,cuencaId}) => {
   const breadcrumbPath = [
     { label: "Home", path: "/" },
-    { label: "Lista de Nodos", path: "/lista-nodos" },
-    { label: `Nodo ${nodo.identificador}`, path: `/nodo/${nodo.id}` },
+    { label: "Lista de Cuencas", path: "/cuencas" },
+    { label: `Cuenca ${cuencaId}`, path: `/cuenca/${cuencaId}` },
+    { label: `Nodo ${nodo.identificador}`, path: `/cuenca/${cuencaId}/sensor/${nodo.id}` },
   ];
+  
   const now = useMemo(() => new Date(), []);
 
   const past24Hours = new Date(
@@ -86,7 +88,7 @@ const NodoCard = ({ nodo }) => {
 
           <div className="">
             <LinkComponent
-              to={`/sensor/${nodo.id}`}
+              to={`/cuenca/${cuencaId}/sensor/${nodo.id}`}
               breadcrumbPath={breadcrumbPath}
               className="roboto-medium mt-16 bg-gray-300 hover:bg-gray-400 dark:hover:bg-slate-900 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-all duration-100 dark:bg-slate-800 dark:text-slate-200"
             >

@@ -78,3 +78,4 @@ class Subscriptor:
 
     def set_should_exit(self, value: bool) -> None:
         self.should_exit = value
+    

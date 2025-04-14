@@ -3,7 +3,7 @@ import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 
 const ConfirmationPopover = ({ children, onConfirm, onCancel }) => {
   return (
-    <Popover className="relative">
+    <Popover className="relative ">
       {({ close }) => (
         <>
           <PopoverButton className="focus:outline-none flex items-center justify-center">

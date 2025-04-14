@@ -8,6 +8,7 @@ import { useNotification } from "../../context/NotificationContext";
 const NodoHeader = ({ sensor, loading }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editableSensor, setEditableSensor] = useState({
+    cuenca_id:sensor.cuenca_id,
     identificador: sensor.identificador,
     porcentajeBateria: sensor.porcentajeBateria || 0,
     latitud: sensor.latitud || 0,
@@ -57,7 +58,7 @@ const NodoHeader = ({ sensor, loading }) => {
   const idSensor = sensor.id;
 
   function monitorearBateria() {
-    navigate(`/sensor/${idSensor}/bateria-page`);
+    navigate(`/cuenca/${sensor.cuenca_id}/sensor/${idSensor}/bateria-page`);
   }
 
   return (

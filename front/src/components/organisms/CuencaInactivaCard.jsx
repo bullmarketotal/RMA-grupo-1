@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { MdOutlineSettingsInputAntenna } from "react-icons/md";
 import { useActivarNodo } from "../../hooks/useActivarNodo";
+import { useActivarCuenca } from "../../hooks/useActivarCuenca";
 import "../../assets/font-awesome/css/font-awesome.min.css";
 import { LoadingSpinner } from "../atoms";
 import { useAuth } from "../../context/AuthProvider";
 import { useNotification } from "../../context/NotificationContext";
 
 
-const NodoInactivoCard = ({ nodo, refresh, mutate }) => {
-  const { activarNodo } = useActivarNodo();
+const CuencaInactivaCard = ({ nodo, refresh, mutate }) => {
+  const { activarNodo } = useActivarCuenca();
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { permisos } = useAuth();
@@ -48,7 +49,7 @@ const NodoInactivoCard = ({ nodo, refresh, mutate }) => {
         <div className="w-1/3 min-w-64">
           <h4 className="card-title flex items-center text-xl sm:text-2xl text-neutral-600 dark:text-neutral-400 font-semibold">
             <MdOutlineSettingsInputAntenna className="mr-2" />
-            {nodo.identificador}
+            {nodo.nombre}
           </h4>
           <p className="normal-text text-sm py-2 mb-1">{nodo.descripcion}</p>
           <span className="text-xs sm:text-sm text-neutral-600">
@@ -102,7 +103,7 @@ const NodoInactivoCard = ({ nodo, refresh, mutate }) => {
                 onMouseLeave={() => setIsHovered(false)}
                 className="roboto-medium mt-2 bg-sky-500 hover:bg-sky-400 dark:hover:bg-slate-900 text-neutral-100 font-bold py-2 px-4 rounded-2xl transition-all duration-100"
               >
-                {loading ? <LoadingSpinner /> : "Activar Nodo"}
+                {loading ? <LoadingSpinner /> : "Activar Cuenca"}
               </button>
             </div>
           )}
@@ -116,4 +117,4 @@ const NodoInactivoCard = ({ nodo, refresh, mutate }) => {
   );
 };
 
-export default NodoInactivoCard;
+export default CuencaInactivaCard;
